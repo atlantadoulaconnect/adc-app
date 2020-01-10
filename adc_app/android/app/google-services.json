@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "314806961166",
+    "firebase_url": "https://atlanta-doula-connect.firebaseio.com",
+    "project_id": "atlanta-doula-connect",
+    "storage_bucket": "atlanta-doula-connect.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314806961166:android:de63c7ee9dcee39aa7e85f",
+        "android_client_info": {
+          "package_name": "org.atlantadoulaconnect.adc_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "314806961166-421kco78trnlje59bcl4juff10kk1c4e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfAo0zvkuH6RweEtnj0KShe5Cc4JdHilI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "314806961166-421kco78trnlje59bcl4juff10kk1c4e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

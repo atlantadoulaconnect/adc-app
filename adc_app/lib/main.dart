@@ -30,7 +30,7 @@ class NotePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Fire Notes')),
+      appBar: AppBar(title: Text('Test Screen')),
       body: Padding(
         padding: const EdgeInsets.all(26.0),
         child: _createBody(),

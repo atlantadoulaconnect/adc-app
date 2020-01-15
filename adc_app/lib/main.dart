@@ -48,7 +48,7 @@ class NotePage extends StatelessWidget {
           if (snapshot.hasData) {
             var doc = snapshot.data;
             if (doc.exists) {
-              return Text(doc['name']);
+              return Text(doc['name'] + '\n' + doc['typeName']);
             }
             return Text('doc doesnt exist');
           } else if (snapshot.hasError) {

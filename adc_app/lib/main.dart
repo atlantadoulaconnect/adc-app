@@ -13,6 +13,7 @@ class ADCApp extends StatelessWidget {
       theme: appTheme(),
       initialRoute: '/',
       routes: routes,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

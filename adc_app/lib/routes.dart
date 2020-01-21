@@ -9,5 +9,5 @@ import 'package:adc_app/screens/applications/doula_app.dart';
 final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   "/": (BuildContext context) => HomePage(),
   "/login": (BuildContext context) => LoginPage(),
-  "/doulaApp": (BuildContext context) => DoulaAppPage(title: 'Doula App Page')
+  "/doulaApp": (BuildContext context) => DoulaAppPage(title: 'Apply as a Doula')
 };

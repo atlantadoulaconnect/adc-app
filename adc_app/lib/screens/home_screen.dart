@@ -42,6 +42,9 @@ class HomePage extends StatelessWidget {
             flex: 3,
           ),
           FlatButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(50.0),
+                side: BorderSide(color: Colors.blueAccent)),
             onPressed: () {
               Navigator.pushNamed(context, '/doulaApp');
             },
@@ -56,6 +59,9 @@ class HomePage extends StatelessWidget {
           ),
           Spacer(),
           FlatButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(50.0),
+                side: BorderSide(color: Colors.blueAccent)),
             onPressed: () {
               Navigator.pushNamed(context, '/doulaApp');
             },
@@ -72,6 +78,9 @@ class HomePage extends StatelessWidget {
             flex: 3,
           ),
           FlatButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(50.0),
+                side: BorderSide(color: Colors.yellow)),
             onPressed: () {
               Navigator.pushNamed(context, '/login');
             },

@@ -17,7 +17,9 @@ class HomePage extends StatelessWidget {
     return Center(
       child: Column(
         children: <Widget>[
-          Spacer(flex: 2,),
+          Spacer(
+            flex: 2,
+          ),
           StreamBuilder(
             stream: Firestore.instance
                 .collection('testCollection')
@@ -36,7 +38,9 @@ class HomePage extends StatelessWidget {
               return Text('no snapshot data, no error');
             },
           ),
-          Spacer(flex: 3,),
+          Spacer(
+            flex: 3,
+          ),
           FlatButton(
             onPressed: () {
               Navigator.pushNamed(context, '/doulaApp');
@@ -60,11 +64,13 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsets.all(15.0),
             splashColor: Colors.blueAccent,
             child: Text(
-              "Apply for a Doula",
+              "Request a Doula",
               style: TextStyle(fontSize: 20.0),
             ),
           ),
-          Spacer(flex: 3,),
+          Spacer(
+            flex: 3,
+          ),
           FlatButton(
             onPressed: () {
               Navigator.pushNamed(context, '/login');

@@ -65,6 +65,19 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Spacer(flex: 3,),
+          FlatButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/login');
+            },
+            color: Colors.yellow,
+            textColor: Colors.black,
+            padding: EdgeInsets.all(15.0),
+            splashColor: Colors.blueAccent,
+            child: Text(
+              "Log In",
+              style: TextStyle(fontSize: 20.0),
+            ),
+          ),
         ],
       ),
     );

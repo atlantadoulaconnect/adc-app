@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +6,10 @@ import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/util/auth.dart';
 
 class ClientSignupPage extends StatefulWidget {
+  final BaseAuth auth;
+
+  ClientSignupPage({this.auth});
+
   @override
   State<StatefulWidget> createState() => _ClientSignupPageState();
 }
@@ -19,7 +22,7 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
   TextEditingController _pwdInputController;
   TextEditingController _confirmPwdInputController;
 
-  bool _isLoading;
+  String userId;
 
   @override
   initState() {
@@ -28,8 +31,11 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
     _pwdInputController = new TextEditingController();
     _confirmPwdInputController = new TextEditingController();
 
-    _isLoading = false;
     super.initState();
+  }
+
+  void resetForm() {
+    _registerFormKey.currentState.reset();
   }
 
   @override
@@ -51,7 +57,7 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                     Navigator.pushNamed(context, "/login");
                   },
                   color: themeColors["yellow"],
-                  textColor: Colors.white,
+                  textColor: Colors.black,
                   padding: EdgeInsets.all(15.0),
                   child: Text("LOG IN")),
             ],
@@ -106,21 +112,18 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
               padding: EdgeInsets.all(15.0),
               child: Text("SIGN UP"),
               onPressed: () async {
-                if (_registerFormKey.currentState.validate()) {
-                  _registerFormKey.currentState.save();
+                final form = _registerFormKey.currentState;
+                if (form.validate()) {
+                  form.save();
                   try {
-                    FirebaseAuth _mAuth = FirebaseAuth.instance;
-                    _mAuth.createUserWithEmailAndPassword(
-                      email: _emailInputController.text, password: _pwdInputController.text)
-                    .then((currentUser) => Firestore.instance
-                      .collection("users")
-                      .document(currentUser.uid))
-                      .setData({
-                        "name": _nameInputController.text,
-                        "email": _emailInputController.text
-                    }))
+                    userId = await widget.auth.signUp(
+                        _emailInputController.text, _pwdInputController.text);
+                    if (userId.length > 0 && userId != null) {
+                      // todo TO client app
+                    }
                   } catch (e) {
-                    print("Error: $e");
+                    print("Client account sign up error: $e");
+                    form.reset();
                   }
                 }
               },

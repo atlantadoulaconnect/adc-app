@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:adc_app/routes.dart';
 import 'package:adc_app/theme/style.dart';
+import 'package:adc_app/util/auth.dart';
+import 'package:adc_app/screens/root_screen.dart';
 
 void main() => runApp(ADCApp());
 
@@ -11,7 +13,7 @@ class ADCApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: appTheme(),
-      initialRoute: '/',
+      home: new RootPage(auth: new Auth()),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:adc_app/util/auth.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  final BaseAuth auth;
+
+  HomePage({this.auth});
+
+  @override
+  State<StatefulWidget> createState() => new _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Test Screen')),
+      appBar: AppBar(title: Text('Home')),
       body: Padding(
         padding: const EdgeInsets.all(26.0),
         child: _createBody(context),
@@ -21,6 +36,7 @@ class HomePage extends StatelessWidget {
             flex: 2,
           ),
           StreamBuilder(
+            // tester stream builder
             stream: Firestore.instance
                 .collection('testCollection')
                 .document('testDoc1')
@@ -96,7 +112,5 @@ class HomePage extends StatelessWidget {
         ],
       ),
     );
-
-    //return Center(child: CircularProgressIndicator());
   }
 }

@@ -10,7 +10,11 @@ import 'package:adc_app/screens/client_signup_screen.dart';
 final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   "/": (BuildContext context) => HomePage(),
   "/login": (BuildContext context) => LoginPage(),
+<<<<<<< HEAD
   "/doulaApp": (BuildContext context) =>
       DoulaAppPage(title: 'Doula Application'),
   "/clientSignup": (BuildContext context) => ClientSignupPage(),
+=======
+  "/doulaApp": (BuildContext context) => DoulaAppPage(title: 'Apply as a Doula')
+>>>>>>> 3dc0268a92c1dd5fcbc71cded33a78ac349032c4
 };

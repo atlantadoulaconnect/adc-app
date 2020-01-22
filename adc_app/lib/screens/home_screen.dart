@@ -57,7 +57,7 @@ class HomePage extends StatelessWidget {
           Spacer(),
           FlatButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/doulaApp');
+              Navigator.pushNamed(context, '/clientSignup');
             },
             color: Colors.blue,
             textColor: Colors.white,

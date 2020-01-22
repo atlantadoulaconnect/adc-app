@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-//TODO this is just a copy of HomePage. Make a login page
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

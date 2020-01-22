@@ -5,9 +5,12 @@ import 'package:adc_app/screens/home_screen.dart';
 import 'package:adc_app/screens/login_screen.dart';
 //import 'package:adc_app/screens/applications/client_app.dart';
 import 'package:adc_app/screens/applications/doula_app.dart';
+import 'package:adc_app/screens/client_signup_screen.dart';
 
 final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   "/": (BuildContext context) => HomePage(),
   "/login": (BuildContext context) => LoginPage(),
-  "/doulaApp": (BuildContext context) => DoulaAppPage(title: 'Doula App Page')
+  "/doulaApp": (BuildContext context) =>
+      DoulaAppPage(title: 'Doula Application'),
+  "/clientSignup": (BuildContext context) => ClientSignupPage(),
 };

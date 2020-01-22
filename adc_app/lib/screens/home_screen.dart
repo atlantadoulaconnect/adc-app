@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(context, '/doulaApp');
             },
-              color: themeColors['lightBlue'],
+            color: themeColors['lightBlue'],
             textColor: Colors.white,
             padding: EdgeInsets.all(15.0),
             splashColor: Colors.blueAccent,
@@ -81,7 +81,7 @@ class HomePage extends StatelessWidget {
           FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
-                side: BorderSide(color: Colors.yellow)),
+                side: BorderSide(color: themeColors['yellow'])),
             onPressed: () {
               Navigator.pushNamed(context, '/login');
             },

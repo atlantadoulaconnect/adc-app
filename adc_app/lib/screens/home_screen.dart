@@ -1,3 +1,4 @@
+import 'package:adc_app/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -48,7 +49,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(context, '/doulaApp');
             },
-            color: Colors.blue,
+              color: themeColors['lightBlue'],
             textColor: Colors.white,
             padding: EdgeInsets.all(15.0),
             splashColor: Colors.blueAccent,
@@ -65,7 +66,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(context, '/doulaApp');
             },
-            color: Colors.blue,
+            color: themeColors['lightBlue'],
             textColor: Colors.white,
             padding: EdgeInsets.all(15.0),
             splashColor: Colors.blueAccent,
@@ -84,7 +85,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(context, '/login');
             },
-            color: Colors.yellow,
+            color: themeColors['yellow'],
             textColor: Colors.black,
             padding: EdgeInsets.all(15.0),
             splashColor: Colors.blueAccent,

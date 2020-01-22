@@ -6,7 +6,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Test Screen')),
+      appBar: AppBar(title: Text('Log In Page')),
       body: Padding(
         padding: const EdgeInsets.all(26.0),
         child: _createBody(),

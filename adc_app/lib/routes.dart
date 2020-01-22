@@ -7,8 +7,9 @@ import 'package:adc_app/screens/login_screen.dart';
 //import 'package:adc_app/screens/applications/client_app.dart';
 import 'package:adc_app/screens/applications/doula_app.dart';
 import 'package:adc_app/screens/client_signup_screen.dart';
+import 'package:adc_app/util/auth.dart';
 
-final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
+final Map<String, WidgetBuilder> routesTable = <String, WidgetBuilder>{
   "/home": (BuildContext context) => HomePage(),
   "/login": (BuildContext context) => LoginPage(),
   "/doulaApp": (BuildContext context) =>

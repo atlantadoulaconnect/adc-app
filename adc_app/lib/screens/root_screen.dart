@@ -33,6 +33,8 @@ class _RootPageState extends State<RootPage> {
         authStatus =
             user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
       });
+      print(
+          "is widget.auth null? ${widget.auth == null}\n${widget.auth.toString()}");
     });
   }
 

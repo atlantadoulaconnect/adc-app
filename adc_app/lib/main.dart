@@ -14,7 +14,7 @@ class ADCApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: appTheme(),
       home: new RootPage(auth: new Auth()),
-      routes: routes,
+      routes: routesTable,
       debugShowCheckedModeBanner: false,
     );
   }

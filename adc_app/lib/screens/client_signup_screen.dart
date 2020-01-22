@@ -116,8 +116,17 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                 if (form.validate()) {
                   form.save();
                   try {
-                    userId = await widget.auth.signUp(
-                        _emailInputController.text, _pwdInputController.text);
+//                    userId = await widget.auth.signUp(
+//                        _emailInputController.text, _pwdInputController.text);
+
+                    AuthResult result = await FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                            email: _emailInputController.text,
+                            password: _pwdInputController.text);
+                    FirebaseUser user = result.user;
+                    userId = user.uid;
+                    print("sign up returned user id: $userId");
+
                     if (userId.length > 0 && userId != null) {
                       // todo TO client app
                     }

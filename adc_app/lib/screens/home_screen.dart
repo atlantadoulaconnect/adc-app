@@ -45,14 +45,14 @@ class HomePage extends StatelessWidget {
           FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
-                side: BorderSide(color: Colors.blueAccent)),
+                side: BorderSide(color: themeColors['lightBlue'])),
             onPressed: () {
               Navigator.pushNamed(context, '/doulaApp');
             },
             color: themeColors['lightBlue'],
             textColor: Colors.white,
             padding: EdgeInsets.all(15.0),
-            splashColor: Colors.blueAccent,
+            splashColor: themeColors['lightBlue'],
             child: Text(
               "Apply as a Doula",
               style: TextStyle(fontSize: 20.0),
@@ -62,14 +62,14 @@ class HomePage extends StatelessWidget {
           FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
-                side: BorderSide(color: Colors.blueAccent)),
+                side: BorderSide(color: themeColors['lightBlue'])),
             onPressed: () {
               Navigator.pushNamed(context, '/doulaApp');
             },
             color: themeColors['lightBlue'],
             textColor: Colors.white,
             padding: EdgeInsets.all(15.0),
-            splashColor: Colors.blueAccent,
+            splashColor: themeColors['lightBlue'],
             child: Text(
               "Request a Doula",
               style: TextStyle(fontSize: 20.0),
@@ -88,7 +88,7 @@ class HomePage extends StatelessWidget {
             color: themeColors['yellow'],
             textColor: Colors.black,
             padding: EdgeInsets.all(15.0),
-            splashColor: Colors.blueAccent,
+            splashColor: themeColors['yellow'],
             child: Text(
               "Log In",
               style: TextStyle(fontSize: 20.0),

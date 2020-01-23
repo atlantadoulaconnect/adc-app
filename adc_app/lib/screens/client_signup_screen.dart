@@ -52,8 +52,8 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                   onPressed: () {
                     Navigator.pushNamed(context, "/login");
                   },
-                  color: themeColors["yellow"],
-                  textColor: Colors.black,
+                  color: themeColors["lightBlue"],
+                  textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
                   child: Text("LOG IN")),
             ],
@@ -117,8 +117,9 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
 
                     AuthResult result = await FirebaseAuth.instance
                         .createUserWithEmailAndPassword(
-                            email: _emailInputController.text,
-                            password: _pwdInputController.text);
+                            email: _emailInputController.text.toString().trim(),
+                            password:
+                                _pwdInputController.text.toString().trim());
                     FirebaseUser user = result.user;
                     userId = user.uid;
                     print("sign up returned user id: $userId");

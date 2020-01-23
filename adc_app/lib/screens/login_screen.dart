@@ -87,11 +87,14 @@ class _LoginPageState extends State<LoginPage> {
                   try {
                     AuthResult result = await FirebaseAuth.instance
                         .signInWithEmailAndPassword(
-                            email: _emailInputController.text,
-                            password: _pwdInputController.text);
+                            email: _emailInputController.text.toString().trim(),
+                            password:
+                                _pwdInputController.text.toString().trim());
 
                     FirebaseUser user = result.user;
                     userId = user.uid;
+
+                    print("successful login of userid: $userId");
 
                     if (userId.length > 0 && userId != null) {
                       // TODO navigate to user specific home screen

@@ -36,41 +36,23 @@ class _HomePageState extends State<HomePage> {
           Spacer(
             flex: 2,
           ),
-          StreamBuilder(
-            // tester stream builder
-            stream: Firestore.instance
-                .collection('testCollection')
-                .document('testDoc1')
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                var doc = snapshot.data;
-                if (doc.exists) {
-                  return Text(doc['name']);
-                }
-                return Text('doc doesnt exist');
-              } else if (snapshot.hasError) {
-                return Text('snapshot.error.toString()');
-              }
-              return Text('no snapshot data, no error');
-            },
-          ),
+          Text("Atlanta Doula Connect", style: TextStyle(fontSize: 50.0)),
           Spacer(
             flex: 3,
           ),
           FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
-                side: BorderSide(color: themeColors['lightBlue'])),
+                side: BorderSide(color: themeColors['mediumBlue'])),
             onPressed: () {
-              Navigator.pushNamed(context, '/doulaApp');
+              Navigator.pushNamed(context, '/clientSignup');
             },
-            color: themeColors['lightBlue'],
+            color: themeColors['mediumBlue'],
             textColor: Colors.white,
             padding: EdgeInsets.all(15.0),
-            splashColor: themeColors['lightBlue'],
+            splashColor: themeColors['mediumBlue'],
             child: Text(
-              "Apply as a Doula",
+              "Request a Doula",
               style: TextStyle(fontSize: 20.0),
             ),
           ),
@@ -80,14 +62,14 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: new BorderRadius.circular(50.0),
                 side: BorderSide(color: themeColors['lightBlue'])),
             onPressed: () {
-              Navigator.pushNamed(context, '/clientSignup');
+              Navigator.pushNamed(context, '/doulaSignup');
             },
             color: themeColors['lightBlue'],
             textColor: Colors.white,
             padding: EdgeInsets.all(15.0),
             splashColor: themeColors['lightBlue'],
             child: Text(
-              "Request a Doula",
+              "Apply as a Doula",
               style: TextStyle(fontSize: 20.0),
             ),
           ),

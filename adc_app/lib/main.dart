@@ -11,7 +11,7 @@ class ADCApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Atlanta Doula Connect',
       theme: appTheme(),
       initialRoute: "/",
       routes: routesTable,

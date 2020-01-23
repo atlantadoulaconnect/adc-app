@@ -68,8 +68,11 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
         child: Column(
           children: <Widget>[
             TextFormField(
-              decoration:
-                  InputDecoration(labelText: "Name*", hintText: "Jane D."),
+              decoration: InputDecoration(
+                  labelText: "Name*",
+                  hintText: "Jane D.",
+                  icon:
+                      new Icon(Icons.person, color: themeColors["coolGray5"])),
               controller: _nameInputController,
               validator: (val) {
                 if (val.length < 3) {
@@ -80,21 +83,28 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
             ),
             TextFormField(
               decoration: InputDecoration(
-                  labelText: "Email*", hintText: "jane.doe@gmail.com"),
+                  labelText: "Email*",
+                  hintText: "jane.doe@gmail.com",
+                  icon: new Icon(Icons.mail, color: themeColors["coolGray5"])),
               controller: _emailInputController,
               validator: emailValidator,
               keyboardType: TextInputType.emailAddress,
             ),
             TextFormField(
-              decoration:
-                  InputDecoration(labelText: "Password*", hintText: "********"),
+              decoration: InputDecoration(
+                  labelText: "Password*",
+                  hintText: "********",
+                  icon: new Icon(Icons.lock, color: themeColors["coolGray5"])),
               controller: _pwdInputController,
               obscureText: true,
               validator: pwdValidator,
             ),
             TextFormField(
                 decoration: InputDecoration(
-                    labelText: "Confirm Password*", hintText: "********"),
+                    labelText: "Confirm Password*",
+                    hintText: "********",
+                    icon:
+                        new Icon(Icons.lock, color: themeColors["coolGray5"])),
                 controller: _confirmPwdInputController,
                 obscureText: true,
                 validator: (val) {
@@ -125,7 +135,7 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                     print("sign up returned user id: $userId");
 
                     if (userId.length > 0 && userId != null) {
-                      // todo TO client app
+                      Navigator.pushNamed(context, '/clientApp');
                     }
                   } catch (e) {
                     print("Client account sign up error: $e");

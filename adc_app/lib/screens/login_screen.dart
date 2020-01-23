@@ -1,15 +1,11 @@
 import 'package:adc_app/theme/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:adc_app/util/auth.dart';
+//import 'package:adc_app/util/auth.dart';
 import 'dart:async';
 
 class LoginPage extends StatefulWidget {
-  final BaseAuth auth;
-  final VoidCallback loginCallback;
-
-  LoginPage({this.auth, this.loginCallback});
-
   @override
   State<StatefulWidget> createState() => new _LoginPageState();
 }
@@ -89,10 +85,15 @@ class _LoginPageState extends State<LoginPage> {
                 if (form.validate()) {
                   form.save();
                   try {
-                    userId = await widget.auth.signIn(
-                        _emailInputController.text, _pwdInputController.text);
+                    AuthResult result = await FirebaseAuth.instance
+                        .signInWithEmailAndPassword(
+                            email: _emailInputController.text,
+                            password: _pwdInputController.text);
+
+                    FirebaseUser user = result.user;
+                    userId = user.uid;
+
                     if (userId.length > 0 && userId != null) {
-                      widget.loginCallback();
                       // TODO navigate to user specific home screen
                     }
                   } catch (e) {

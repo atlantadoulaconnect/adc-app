@@ -1,3 +1,4 @@
+import 'package:adc_app/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:adc_app/util/auth.dart';
@@ -60,14 +61,14 @@ class _HomePageState extends State<HomePage> {
           FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
-                side: BorderSide(color: Colors.blueAccent)),
+                side: BorderSide(color: themeColors['lightBlue'])),
             onPressed: () {
               Navigator.pushNamed(context, '/doulaApp');
             },
-            color: Colors.blue,
+            color: themeColors['lightBlue'],
             textColor: Colors.white,
             padding: EdgeInsets.all(15.0),
-            splashColor: Colors.blueAccent,
+            splashColor: themeColors['lightBlue'],
             child: Text(
               "Apply as a Doula",
               style: TextStyle(fontSize: 20.0),
@@ -77,14 +78,14 @@ class _HomePageState extends State<HomePage> {
           FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
-                side: BorderSide(color: Colors.blueAccent)),
+                side: BorderSide(color: themeColors['lightBlue'])),
             onPressed: () {
               Navigator.pushNamed(context, '/clientSignup');
             },
-            color: Colors.blue,
+            color: themeColors['lightBlue'],
             textColor: Colors.white,
             padding: EdgeInsets.all(15.0),
-            splashColor: Colors.blueAccent,
+            splashColor: themeColors['lightBlue'],
             child: Text(
               "Request a Doula",
               style: TextStyle(fontSize: 20.0),
@@ -96,14 +97,14 @@ class _HomePageState extends State<HomePage> {
           FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
-                side: BorderSide(color: Colors.yellow)),
+                side: BorderSide(color: themeColors['yellow'])),
             onPressed: () {
               Navigator.pushNamed(context, '/login');
             },
-            color: Colors.yellow,
+            color: themeColors['yellow'],
             textColor: Colors.black,
             padding: EdgeInsets.all(15.0),
-            splashColor: Colors.blueAccent,
+            splashColor: themeColors['yellow'],
             child: Text(
               "Log In",
               style: TextStyle(fontSize: 20.0),

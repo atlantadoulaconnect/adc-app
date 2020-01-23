@@ -6,10 +6,6 @@ import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/util/auth.dart';
 
 class ClientSignupPage extends StatefulWidget {
-  final BaseAuth auth;
-
-  ClientSignupPage({this.auth});
-
   @override
   State<StatefulWidget> createState() => _ClientSignupPageState();
 }

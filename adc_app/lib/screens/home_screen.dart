@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
           Spacer(
             flex: 3,
           ),
-          FlatButton(
+          RaisedButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
                 side: BorderSide(color: themeColors['lightBlue'])),
@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Spacer(),
-          FlatButton(
+          RaisedButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
                 side: BorderSide(color: themeColors['lightBlue'])),
@@ -78,7 +78,7 @@ class HomePage extends StatelessWidget {
           Spacer(
             flex: 3,
           ),
-          FlatButton(
+          RaisedButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
                 side: BorderSide(color: themeColors['yellow'])),

@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
           Spacer(
             flex: 3,
           ),
-          FlatButton(
+          RaisedButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
                 side: BorderSide(color: themeColors['mediumBlue'])),
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Spacer(),
-          FlatButton(
+          RaisedButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
                 side: BorderSide(color: themeColors['lightBlue'])),
@@ -74,9 +74,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Spacer(
-            flex: 3,
+            flex: 1,
           ),
-          FlatButton(
+          RaisedButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
                 side: BorderSide(color: themeColors['yellow'])),

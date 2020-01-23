@@ -76,7 +76,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Spacer(
-            flex: 3,
+            flex: 1,
           ),
           RaisedButton(
             shape: RoundedRectangleBorder(

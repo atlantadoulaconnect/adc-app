@@ -1,12 +1,27 @@
 import 'package:adc_app/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:adc_app/util/auth.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  final BaseAuth auth;
+
+  HomePage({this.auth});
+
+  @override
+  State<StatefulWidget> createState() => new _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Test Screen')),
+      appBar: AppBar(title: Text('Home')),
       body: Padding(
         padding: const EdgeInsets.all(26.0),
         child: _createBody(context),
@@ -21,40 +36,23 @@ class HomePage extends StatelessWidget {
           Spacer(
             flex: 2,
           ),
-          StreamBuilder(
-            stream: Firestore.instance
-                .collection('testCollection')
-                .document('testDoc1')
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                var doc = snapshot.data;
-                if (doc.exists) {
-                  return Text(doc['name']);
-                }
-                return Text('doc doesnt exist');
-              } else if (snapshot.hasError) {
-                return Text('snapshot.error.toString()');
-              }
-              return Text('no snapshot data, no error');
-            },
-          ),
+          Text("Atlanta Doula Connect", style: TextStyle(fontSize: 50.0)),
           Spacer(
             flex: 3,
           ),
           RaisedButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(50.0),
-                side: BorderSide(color: themeColors['lightBlue'])),
+                side: BorderSide(color: themeColors['mediumBlue'])),
             onPressed: () {
-              Navigator.pushNamed(context, '/doulaApp');
+              Navigator.pushNamed(context, '/clientSignup');
             },
-            color: themeColors['lightBlue'],
+            color: themeColors['mediumBlue'],
             textColor: Colors.white,
             padding: EdgeInsets.all(15.0),
-            splashColor: themeColors['lightBlue'],
+            splashColor: themeColors['mediumBlue'],
             child: Text(
-              "Apply as a Doula",
+              "Request a Doula",
               style: TextStyle(fontSize: 20.0),
             ),
           ),
@@ -71,7 +69,7 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsets.all(15.0),
             splashColor: themeColors['lightBlue'],
             child: Text(
-              "Request a Doula",
+              "Apply as a Doula",
               style: TextStyle(fontSize: 20.0),
             ),
           ),
@@ -97,7 +95,5 @@ class HomePage extends StatelessWidget {
         ],
       ),
     );
-
-    //return Center(child: CircularProgressIndicator());
   }
 }

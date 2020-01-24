@@ -219,68 +219,68 @@ class _ClientAppContactPageState extends State<ClientAppContactPage> {
                 ),
               ),
             ),
-            Spacer(),
-            Text(
-              'Emergency Contact 2',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['black'],
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 300.0,
-              child: TextField(
-                autocorrect: false,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Name',
-                  prefixIcon: Icon(Icons.person),
-                ),
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 300.0,
-              child: TextField(
-                autocorrect: false,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Relationship',
-                  prefixIcon: Icon(Icons.people),
-                ),
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 300.0,
-              child: TextField(
-                autocorrect: false,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Phone',
-                  prefixIcon: Icon(Icons.phone),
-                ),
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 300.0,
-              child: TextField(
-                autocorrect: false,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Phone 2 (Optional)',
-                  prefixIcon: Icon(Icons.phone),
-                ),
-              ),
-            ),
+//            Spacer(),
+//            Text(
+//              'Emergency Contact 2',
+//              style: TextStyle(
+//                fontFamily: 'Roboto',
+//                color: themeColors['black'],
+//                fontWeight: FontWeight.bold,
+//                fontSize: 20,
+//              ),
+//            ),
+//            Spacer(),
+//            Container(
+//              width: 300.0,
+//              child: TextField(
+//                autocorrect: false,
+//                textCapitalization: TextCapitalization.words,
+//                decoration: InputDecoration(
+//                  border: OutlineInputBorder(),
+//                  labelText: 'Name',
+//                  prefixIcon: Icon(Icons.person),
+//                ),
+//              ),
+//            ),
+//            Spacer(),
+//            Container(
+//              width: 300.0,
+//              child: TextField(
+//                autocorrect: false,
+//                textCapitalization: TextCapitalization.words,
+//                decoration: InputDecoration(
+//                  border: OutlineInputBorder(),
+//                  labelText: 'Relationship',
+//                  prefixIcon: Icon(Icons.people),
+//                ),
+//              ),
+//            ),
+//            Spacer(),
+//            Container(
+//              width: 300.0,
+//              child: TextField(
+//                autocorrect: false,
+//                keyboardType: TextInputType.phone,
+//                decoration: InputDecoration(
+//                  border: OutlineInputBorder(),
+//                  labelText: 'Phone',
+//                  prefixIcon: Icon(Icons.phone),
+//                ),
+//              ),
+//            ),
+//            Spacer(),
+//            Container(
+//              width: 300.0,
+//              child: TextField(
+//                autocorrect: false,
+//                keyboardType: TextInputType.phone,
+//                decoration: InputDecoration(
+//                  border: OutlineInputBorder(),
+//                  labelText: 'Phone 2 (Optional)',
+//                  prefixIcon: Icon(Icons.phone),
+//                ),
+//              ),
+//            ),
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -514,7 +514,7 @@ class _ClientAppPreviousBirthInfoPageState extends State<ClientAppPreviousBirthI
                     borderRadius: new BorderRadius.circular(5.0),
                     side: BorderSide(color: themeColors['yellow'])),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/clientAppDoulaQuestions');
                   },
                   color: themeColors['yellow'],
                   textColor: Colors.black,
@@ -599,7 +599,7 @@ class _ClientAppDoulaQuestionsPageState extends State<ClientAppDoulaQuestionsPag
                     borderRadius: new BorderRadius.circular(5.0),
                     side: BorderSide(color: themeColors['yellow'])),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/clientAppPhotoRelease');
                   },
                   color: themeColors['yellow'],
                   textColor: Colors.black,
@@ -684,7 +684,7 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
                     borderRadius: new BorderRadius.circular(5.0),
                     side: BorderSide(color: themeColors['yellow'])),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/clientAppConfirmation');
                   },
                   color: themeColors['yellow'],
                   textColor: Colors.black,

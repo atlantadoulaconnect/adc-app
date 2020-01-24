@@ -135,7 +135,7 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                     print("sign up returned user id: $userId");
 
                     if (userId.length > 0 && userId != null) {
-                      Navigator.pushNamed(context, '/clientApp');
+                      Navigator.pushNamed(context, '/clientAppPersonalInfo');
                     }
                   } catch (e) {
                     print("Client account sign up error: $e");

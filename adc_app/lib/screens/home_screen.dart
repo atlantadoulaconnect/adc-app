@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: new BorderRadius.circular(50.0),
                 side: BorderSide(color: themeColors['lightBlue'])),
             onPressed: () {
-              Navigator.pushNamed(context, '/clientAppPersonalInfo');
+              Navigator.pushNamed(context, '/doulaSignup');
             },
             color: themeColors['lightBlue'],
             textColor: Colors.white,

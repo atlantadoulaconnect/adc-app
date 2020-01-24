@@ -4,8 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:adc_app/screens/home_screen.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/util/auth.dart';
+import 'package:adc_app/screens/applications/test_app.dart';
+import 'package:adc_app/models/client.dart';
 
 class ClientSignupPage extends StatefulWidget {
+  ClientSignupPage({Key key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _ClientSignupPageState();
 }
@@ -18,7 +22,8 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
   TextEditingController _pwdInputController;
   TextEditingController _confirmPwdInputController;
 
-  String userId;
+  String userId = "";
+  Key key;
 
   @override
   initState() {
@@ -27,7 +32,11 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
     _pwdInputController = new TextEditingController();
     _confirmPwdInputController = new TextEditingController();
 
-    super.initState();
+    @override
+    void initState() {
+      key = widget.key;
+      super.initState();
+    }
   }
 
   void resetForm() {
@@ -135,7 +144,18 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                     print("sign up returned user id: $userId");
 
                     if (userId.length > 0 && userId != null) {
-                      Navigator.pushNamed(context, '/clientApp');
+                      //Navigator.pushNamed(context, '/clientApp');
+                      Client clientApplicant = new Client(
+                          userId,
+                          "client",
+                          _nameInputController.text.toString().trim(),
+                          _emailInputController.text.toString().trim());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TestAppPage(key: key, user: clientApplicant)),
+                      );
                     }
                   } catch (e) {
                     print("Client account sign up error: $e");

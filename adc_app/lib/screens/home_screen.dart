@@ -4,10 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:adc_app/util/auth.dart';
 
 class HomePage extends StatefulWidget {
-  final BaseAuth auth;
-
-  HomePage({this.auth});
-
   @override
   State<StatefulWidget> createState() => new _HomePageState();
 }

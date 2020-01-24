@@ -14,4 +14,9 @@ abstract class User {
     this.name = name;
     this.email = email;
   }
+
+  @override
+  String toString() {
+    return "$userid: $userType $name at $email";
+  }
 }

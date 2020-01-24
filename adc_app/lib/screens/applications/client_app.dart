@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:adc_app/theme/colors.dart';
 
@@ -718,12 +719,15 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text(widget.title),
       ),
+
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          //mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Spacer(),
             Text(
@@ -733,8 +737,186 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
                 color: themeColors['emoryBlue'],
                 fontWeight: FontWeight.bold,
                 fontSize: 25,
+                height: 1.5
               ),
+                textAlign: TextAlign.center
             ),
+
+            Text(
+              ' Personal Information',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  height: 1.5
+                ),
+                textAlign: TextAlign.left,
+              ),
+            Text(
+              ' Name: ',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                color: themeColors['black'],
+                fontSize: 18,
+                height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Birthday: ',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                color: themeColors['black'],
+                fontSize: 18,
+                height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Phone: ',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                color: themeColors['black'],
+                fontSize: 18,
+                height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Phone 2 (Optional): ',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                color: themeColors['black'],
+                fontSize: 18,
+                height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Emergency Contacts',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  height: 2
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Emergency Contact 1: ',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Name: ',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Relationship: ',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Phone: ',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Phone 2 (Optional): ',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Current Birth Information',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Due Date: ',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Planned Birth Location: ',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Birth type: ',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Are you planning to have/do you want to have an epidural? : ',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Are you expecting to have a cesarean section? (C-section)? : ',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
+              ),
+              textAlign: TextAlign.left,
+            ),
+
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

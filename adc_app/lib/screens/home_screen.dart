@@ -64,7 +64,7 @@ class HomePage extends StatelessWidget {
                 borderRadius: new BorderRadius.circular(50.0),
                 side: BorderSide(color: themeColors['lightBlue'])),
             onPressed: () {
-              Navigator.pushNamed(context, '/doulaApp');
+              Navigator.pushNamed(context, '/clientAppPersonalInfo');
             },
             color: themeColors['lightBlue'],
             textColor: Colors.white,

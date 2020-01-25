@@ -95,7 +95,10 @@ class _DoulaAppPage2 extends State<DoulaAppPage2> {
                       splashColor: themeColors['yellow'],
                       child: Text(
                         "Next",
-                        style: TextStyle(fontSize: 20.0),
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: themeColors['black'],
+                        ),
                       ),
                     ),
                     Spacer(flex: 2,),

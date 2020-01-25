@@ -48,6 +48,7 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: new BorderRadius.circular(50.0),
                 side: BorderSide(color: themeColors['mediumBlue'])),
             onPressed: () {
+              //Navigator.pushNamed(context, '/clientAppPersonalInfo'); //testing purposes
               Navigator.pushNamed(context, '/clientSignup');
             },
             color: themeColors['mediumBlue'],

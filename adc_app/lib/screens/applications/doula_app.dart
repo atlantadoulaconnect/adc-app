@@ -2,26 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:adc_app/theme/colors.dart';
 
 class DoulaAppPage extends StatefulWidget {
-  DoulaAppPage({Key key, this.title}) : super(key: key);
-  final String title;
-
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _DoulaAppHomePage createState() => _DoulaAppHomePage();
 }
 
-class _MyHomePageState extends State<DoulaAppPage> {
+class _DoulaAppHomePage extends State<DoulaAppPage> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Doula Application'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Spacer(),
+            Spacer(flex: 2,),
             Text(
               'Personal Information',
               style: TextStyle(
@@ -76,8 +73,59 @@ class _MyHomePageState extends State<DoulaAppPage> {
                 ),
               ),
             ),
-            Spacer(flex: 7,),
-            Spacer(),
+            Spacer(flex: 2,),
+            Container(
+              width: 300.0,
+              child: TextField(
+                autocorrect: false,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Alternate Phone (optional)',
+                ),
+              ),
+            ),
+            Spacer(flex: 4,),
+            Row (
+              children: <Widget>[
+                Spacer(flex: 2,),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: themeColors['mediumBlue'])),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/clientSignup');
+                  },
+                  color: themeColors['mediumBlue'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  splashColor: themeColors['mediumBlue'],
+                  child: Text(
+                    "Back",
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ),
+                Spacer(flex: 2,),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: themeColors['yellow'])),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/doulaAppPage2');
+                  },
+                  color: themeColors['yellow'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  splashColor: themeColors['yellow'],
+                  child: Text(
+                    "Next",
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ),
+                Spacer(flex: 2,),
+              ]
+            ),
+            Spacer(flex: 3,),
           ],
         ),
       ),

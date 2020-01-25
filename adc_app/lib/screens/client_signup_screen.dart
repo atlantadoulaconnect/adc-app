@@ -144,6 +144,8 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                     print("sign up returned user id: $userId");
 
                     if (userId.length > 0 && userId != null) {
+                      // TODO send Client to next page
+                      Navigator.pushNamed(context, '/clientAppPersonalInfo');
                       //Navigator.pushNamed(context, '/clientApp');
                       Client clientApplicant = new Client(
                           userId,

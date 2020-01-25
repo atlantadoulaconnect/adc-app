@@ -714,6 +714,8 @@ class ClientAppConfirmationPage extends StatefulWidget {
   _ClientAppConfirmationPageState createState() => _ClientAppConfirmationPageState();
 }
 
+
+
 class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
 
   @override
@@ -723,6 +725,7 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+
 
       body: Center(
         child: Column(

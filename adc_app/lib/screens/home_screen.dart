@@ -34,11 +34,18 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: <Widget>[
           Spacer(
-            flex: 2,
+            flex: 1,
           ),
-          Text("Atlanta Doula Connect", style: TextStyle(fontSize: 50.0)),
+          Text(
+              "Atlanta Doula Connect",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 50.0,
+                fontWeight: FontWeight.bold,
+              )
+          ),
           Spacer(
-            flex: 3,
+            flex: 2,
           ),
           RaisedButton(
             shape: RoundedRectangleBorder(
@@ -93,6 +100,7 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(fontSize: 20.0),
             ),
           ),
+          Spacer(),
         ],
       ),
     );

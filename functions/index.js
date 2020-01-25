@@ -1,15 +1,26 @@
 const functions = require('firebase-functions');
-
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-
-// The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
-const functions = require('firebase-functions');
-
-// The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require('firebase-admin');
+
 admin.initializeApp();
+require('dotenv').config()
+
+const {SENDER_EMAIL,SENDER_PASSWORD} = process.env;
+
+exports.sendEmail = functions.https.onCall((data, context) => {
+    let authData = nodemailer.createTransport({
+        host:'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user:SENDER_EMAIL,
+            pass:SENDER_PASSWORD
+        }
+    });
+    authData.sendMail({
+        from: 'no-reply@atlantadoulaconnect.org',
+        to: `${data.email}`,
+        subject: `${data.subject}`,
+        text:`${data.message}`,
+        html: `${data.message}`,
+    }).then(res => console.log('Successfully sent email.')).catch(err => console.log(err));
+});

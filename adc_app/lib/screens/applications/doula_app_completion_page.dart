@@ -45,7 +45,10 @@ class _DoulaAppCompletionPage extends State<DoulaAppCompletionPage> {
                 splashColor: themeColors['yellow'],
                 child: Text(
                   "Return Home",
-                  style: TextStyle(fontSize: 20.0),
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: themeColors['black'],
+                  ),
                 ),
               ),
               Spacer(flex: 2,),

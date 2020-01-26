@@ -26,9 +26,10 @@ class Client extends User {
 
   bool photoRelease;
 
-  Client(String userid, String userType, String name, String email)
-      : super(userid, userType, name, email) {
-    this.deliveryTypes = new List();
+  Client(String userid, String userType, String email)
+      : super(userid, userType, email) {
+    this.deliveryTypes = new List<String>();
+    this.emergencyContacts = new List<Contact>();
   }
 
   void addDeliveryType(String deliveryType) {

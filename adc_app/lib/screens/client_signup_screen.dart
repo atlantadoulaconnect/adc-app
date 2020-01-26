@@ -6,6 +6,7 @@ import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/util/auth.dart';
 import 'package:adc_app/screens/applications/test_app.dart';
 import 'package:adc_app/models/client.dart';
+import 'package:adc_app/screens/applications/client_app.dart';
 
 class ClientSignupPage extends StatefulWidget {
   ClientSignupPage({Key key}) : super(key: key);
@@ -17,26 +18,21 @@ class ClientSignupPage extends StatefulWidget {
 class _ClientSignupPageState extends State<ClientSignupPage> {
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
   bool _autoValidate = false;
-  TextEditingController _nameInputController;
   TextEditingController _emailInputController;
   TextEditingController _pwdInputController;
   TextEditingController _confirmPwdInputController;
 
-  String userId = "";
+  String userId;
   Key key;
 
   @override
-  initState() {
-    _nameInputController = new TextEditingController();
+  void initState() {
     _emailInputController = new TextEditingController();
     _pwdInputController = new TextEditingController();
     _confirmPwdInputController = new TextEditingController();
 
-    @override
-    void initState() {
-      key = widget.key;
-      super.initState();
-    }
+    key = widget.key;
+    super.initState();
   }
 
   void resetForm() {
@@ -76,20 +72,6 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
         autovalidate: _autoValidate,
         child: Column(
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(
-                  labelText: "Name*",
-                  hintText: "Jane D.",
-                  icon:
-                      new Icon(Icons.person, color: themeColors["coolGray5"])),
-              controller: _nameInputController,
-              validator: (val) {
-                if (val.length < 3) {
-                  return "Please enter a valid name.";
-                }
-                return null;
-              },
-            ),
             TextFormField(
               decoration: InputDecoration(
                   labelText: "Email*",
@@ -144,19 +126,14 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                     print("sign up returned user id: $userId");
 
                     if (userId.length > 0 && userId != null) {
-                      // TODO send Client to next page
-                      Navigator.pushNamed(context, '/clientAppPersonalInfo');
-                      //Navigator.pushNamed(context, '/clientApp');
-                      Client clientApplicant = new Client(
-                          userId,
-                          "client",
-                          _nameInputController.text.toString().trim(),
+                      Client clientApplicant = new Client(userId, "client",
                           _emailInputController.text.toString().trim());
+                      print("new client: ${clientApplicant.toString()}");
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                TestAppPage(key: key, user: clientApplicant)),
+                            builder: (context) => ClientAppPersonalInfoPage(
+                                key: key, user: clientApplicant)),
                       );
                     }
                   } catch (e) {

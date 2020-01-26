@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ClientHome extends StatefulWidget {
@@ -8,7 +9,25 @@ class ClientHome extends StatefulWidget {
 class _ClientHomeState extends State<ClientHome> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return null;
+    // TODO: sprint 1 'your application has been submitted. you will be notified when ADC has finished their review'
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Doula Application"),
+        ),
+        body: Center(
+          child: FlatButton(
+            color: Colors.blue,
+            textColor: Colors.white,
+            child: Text("LOG OUT"),
+            onPressed: () async {
+              try {
+                await FirebaseAuth.instance.signOut();
+                print("signout success");
+              } catch (e) {
+                print("sign out error $e");
+              }
+            },
+          ),
+        ));
   }
 }

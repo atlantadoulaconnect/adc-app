@@ -714,8 +714,6 @@ class ClientAppConfirmationPage extends StatefulWidget {
   _ClientAppConfirmationPageState createState() => _ClientAppConfirmationPageState();
 }
 
-
-
 class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
 
   @override
@@ -734,14 +732,14 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
           children: <Widget>[
             Spacer(),
             Text(
-              'Confirmation',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['emoryBlue'],
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-                height: 1.5
-              ),
+                'Confirmation',
+                style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['emoryBlue'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                    height: 1.5
+                ),
                 textAlign: TextAlign.center
             ),
 
@@ -753,46 +751,46 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   height: 1.5
-                ),
-                textAlign: TextAlign.left,
               ),
+              textAlign: TextAlign.left,
+            ),
             Text(
               ' Name: ',
               style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['black'],
-                fontSize: 18,
-                height: 1.5
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
               ),
               textAlign: TextAlign.left,
             ),
             Text(
               ' Birthday: ',
               style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['black'],
-                fontSize: 18,
-                height: 1.5
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
               ),
               textAlign: TextAlign.left,
             ),
             Text(
               ' Phone: ',
               style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['black'],
-                fontSize: 18,
-                height: 1.5
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
               ),
               textAlign: TextAlign.left,
             ),
             Text(
               ' Phone 2 (Optional): ',
               style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['black'],
-                fontSize: 18,
-                height: 1.5
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5
               ),
               textAlign: TextAlign.left,
             ),
@@ -849,16 +847,6 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
               textAlign: TextAlign.left,
             ),
             Text(
-              ' Phone 2 (Optional): ',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5
-              ),
-              textAlign: TextAlign.left,
-            ),
-            Text(
               ' Current Birth Information',
               style: TextStyle(
                   fontFamily: 'Roboto',
@@ -900,7 +888,7 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
               textAlign: TextAlign.left,
             ),
             Text(
-              ' Are you planning to have/do you want to have an epidural? : ',
+              ' Are you planning to have an epidural? : ',
               style: TextStyle(
                   fontFamily: 'Roboto',
                   color: themeColors['black'],
@@ -910,7 +898,7 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
               textAlign: TextAlign.left,
             ),
             Text(
-              ' Are you expecting to have a cesarean section? (C-section)? : ',
+              ' Are you expecting to have a C-section? : ',
               style: TextStyle(
                   fontFamily: 'Roboto',
                   color: themeColors['black'],
@@ -922,41 +910,41 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
 
             Spacer(),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(5.0),
-                    side: BorderSide(color: themeColors['lightBlue'])),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  color: themeColors['lightBlue'],
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(15.0),
-                  splashColor: themeColors['lightBlue'],
-                  child: Text(
-                    "PREVIOUS",
-                    style: TextStyle(fontSize: 20.0),
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(5.0),
+                        side: BorderSide(color: themeColors['lightBlue'])),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    color: themeColors['lightBlue'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['lightBlue'],
+                    child: Text(
+                      "PREVIOUS",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
                   ),
-                ),
-                RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(5.0),
-                    side: BorderSide(color: themeColors['yellow'])),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/clientAppRequestSent');
-                  },
-                  color: themeColors['yellow'],
-                  textColor: Colors.black,
-                  padding: EdgeInsets.all(15.0),
-                  splashColor: themeColors['yellow'],
-                  child: Text(
-                    "NEXT",
-                    style: TextStyle(fontSize: 20.0),
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(5.0),
+                        side: BorderSide(color: themeColors['yellow'])),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/clientAppRequestSent');
+                    },
+                    color: themeColors['yellow'],
+                    textColor: Colors.black,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['yellow'],
+                    child: Text(
+                      "NEXT",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
                   ),
-                ),
-              ]
+                ]
             ),
             Spacer(),
           ],
@@ -965,6 +953,7 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
     );
   }
 }
+
 
 class ClientAppRequestSentPage extends StatefulWidget {
   ClientAppRequestSentPage({Key key, this.title}) : super(key: key);

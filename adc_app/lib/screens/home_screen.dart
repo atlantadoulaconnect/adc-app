@@ -1,11 +1,27 @@
+import 'package:adc_app/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:adc_app/util/auth.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  final BaseAuth auth;
+
+  HomePage({this.auth});
+
+  @override
+  State<StatefulWidget> createState() => new _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Test Screen')),
+      appBar: AppBar(title: Text('Home')),
       body: Padding(
         padding: const EdgeInsets.all(26.0),
         child: _createBody(context),
@@ -17,58 +33,76 @@ class HomePage extends StatelessWidget {
     return Center(
       child: Column(
         children: <Widget>[
-          Spacer(flex: 2,),
-          StreamBuilder(
-            stream: Firestore.instance
-                .collection('testCollection')
-                .document('testDoc1')
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                var doc = snapshot.data;
-                if (doc.exists) {
-                  return Text(doc['name']);
-                }
-                return Text('doc doesnt exist');
-              } else if (snapshot.hasError) {
-                return Text('snapshot.error.toString()');
-              }
-              return Text('no snapshot data, no error');
-            },
+          Spacer(
+            flex: 1,
           ),
-          Spacer(flex: 3,),
-          FlatButton(
+          Text(
+              "Atlanta Doula Connect",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 50.0,
+                fontWeight: FontWeight.bold,
+              )
+          ),
+          Spacer(
+            flex: 2,
+          ),
+          RaisedButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(50.0),
+                side: BorderSide(color: themeColors['mediumBlue'])),
             onPressed: () {
-              Navigator.pushNamed(context, '/doulaApp');
+              //Navigator.pushNamed(context, '/clientAppPersonalInfo'); //testing purposes
+              Navigator.pushNamed(context, '/clientSignup');
             },
-            color: Colors.blue,
+            color: themeColors['mediumBlue'],
             textColor: Colors.white,
             padding: EdgeInsets.all(15.0),
-            splashColor: Colors.blueAccent,
+            splashColor: themeColors['mediumBlue'],
+            child: Text(
+              "Request a Doula",
+              style: TextStyle(fontSize: 20.0),
+            ),
+          ),
+          Spacer(),
+          RaisedButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(50.0),
+                side: BorderSide(color: themeColors['lightBlue'])),
+            onPressed: () {
+              Navigator.pushNamed(context, '/doulaSignup');
+            },
+            color: themeColors['lightBlue'],
+            textColor: Colors.white,
+            padding: EdgeInsets.all(15.0),
+            splashColor: themeColors['lightBlue'],
             child: Text(
               "Apply as a Doula",
               style: TextStyle(fontSize: 20.0),
             ),
           ),
-          Spacer(),
-          FlatButton(
+          Spacer(
+            flex: 1,
+          ),
+          RaisedButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(50.0),
+                side: BorderSide(color: themeColors['yellow'])),
             onPressed: () {
-              Navigator.pushNamed(context, '/doulaApp');
+              Navigator.pushNamed(context, '/login');
             },
-            color: Colors.blue,
-            textColor: Colors.white,
+            color: themeColors['yellow'],
+            textColor: Colors.black,
             padding: EdgeInsets.all(15.0),
-            splashColor: Colors.blueAccent,
+            splashColor: themeColors['yellow'],
             child: Text(
-              "Apply for a Doula",
+              "Log In",
               style: TextStyle(fontSize: 20.0),
             ),
           ),
-          Spacer(flex: 3,),
+          Spacer(),
         ],
       ),
     );
-
-    //return Center(child: CircularProgressIndicator());
   }
 }

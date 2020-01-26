@@ -6,5 +6,6 @@ import 'package:adc_app/theme/colors.dart';
 ThemeData appTheme() {
   return ThemeData(
     primaryColor: themeColors["emoryBlue"],
+    accentColor: themeColors["gold"],
   );
 }

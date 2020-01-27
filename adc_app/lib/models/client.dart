@@ -47,4 +47,8 @@ class Client extends User {
   void removeContact(Contact contact) {
     this.emergencyContacts.remove(contact);
   }
+
+  String applicantEmail() {
+    return "APPLICANT:\n\t${this.name}\n\t${this.email}\n\t${this.phone}\n\tBirth date: ${this.bday}\nPREGNANCY:\n\tDue date: ${this.dueDate}\n\tBirth location: ${this.birthLocation}";
+  }
 }

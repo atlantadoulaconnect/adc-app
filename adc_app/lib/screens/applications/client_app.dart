@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/models/contact.dart';
 import 'package:adc_app/models/client.dart';
 import 'package:adc_app/util/auth.dart';
+import 'package:flutter/rendering.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:adc_app/util/sensitive.dart';
 
 class ClientAppPersonalInfoPage extends StatefulWidget {
   Client user;
@@ -103,7 +107,7 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Birthday (MM/DD/YYYY)',
+                          labelText: 'Birthday (MM/YYYY)',
                           prefixIcon: Icon(Icons.cake),
                           suffixIcon: Icon(Icons.calendar_today)),
                       controller: _bdayController,
@@ -160,20 +164,20 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
                           print(currentUser.toString());
                           currentUser.name =
                               _nameController.text.toString().trim();
-                          currentUser.addPhone(
-                              _phoneController.text.toString().trim());
-                          if (_altPhoneController
-                              .toString()
-                              .trim()
-                              .isNotEmpty) {
-                            currentUser.addPhone(
-                                _altPhoneController.toString().trim());
-                          }
+                          currentUser.phone =
+                              _phoneController.text.toString().trim();
+//                          if (_altPhoneController
+//                              .toString()
+//                              .trim()
+//                              .isNotEmpty) {
+//                            currentUser.addPhone(
+//                                _altPhoneController.toString().trim());
+//                          }
                           currentUser.bday =
                               _bdayController.text.toString().trim();
 
                           print(
-                              "userid: ${currentUser.userid}\ntype: ${currentUser.userType}\nname: ${currentUser.name}\nemail: ${currentUser.email}\nphone: ${_phoneController.text.toString().trim()}\nbday: ${currentUser.bday}");
+                              "userid: ${currentUser.userid}\ntype: ${currentUser.userType}\nname: ${currentUser.name}\nemail: ${currentUser.email}\nphone: ${currentUser.phone}\nbday: ${currentUser.bday}");
 
                           Navigator.push(
                               context,
@@ -240,111 +244,111 @@ class _ClientAppContactPageState extends State<ClientAppContactPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Request a Doula"),
-      ),
-      body: Center(
+        appBar: AppBar(
+          title: Text("Request a Doula"),
+        ),
+        body: Center(
           child: Form(
-        key: _formKey,
-        autovalidate: false,
-        child: Column(
-          // TODO: Make screen scrollable
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Spacer(),
-            Text(
-              'Emergency Contacts',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['emoryBlue'],
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 250,
-              child: LinearProgressIndicator(
-                backgroundColor: themeColors['skyBlue'],
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
-                value: 0.2,
-              ),
-            ),
-            Spacer(),
-            Text(
-              'Emergency Contact 1',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['black'],
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 300.0,
-              child: TextFormField(
-                  autocorrect: false,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Name',
-                    prefixIcon: Icon(Icons.person),
+            key: _formKey,
+            autovalidate: false,
+            child: Column(
+              // TODO: Make screen scrollable
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Spacer(),
+                Text(
+                  'Emergency Contacts',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['emoryBlue'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
                   ),
-                  controller: _nameController,
-                  validator: nameValidator),
-            ),
-            Spacer(),
-            Container(
-              width: 300.0,
-              child: TextFormField(
-                autocorrect: false,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Relationship',
-                  prefixIcon: Icon(Icons.people),
                 ),
-                controller: _relationshipController,
-                validator: (val) {
-                  if (val.isEmpty) {
-                    return "Please enter how this contact is related to you.";
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 300.0,
-              child: TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Phone',
-                  prefixIcon: Icon(Icons.phone),
+                Spacer(),
+                Container(
+                  width: 250,
+                  child: LinearProgressIndicator(
+                    backgroundColor: themeColors['skyBlue'],
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        themeColors['mediumBlue']),
+                    value: 0.2,
+                  ),
                 ),
-                controller: _phoneController,
-                validator: phoneValidator,
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 300.0,
-              child: TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Phone 2 (Optional)',
-                  prefixIcon: Icon(Icons.phone),
+                Spacer(),
+                Text(
+                  'Emergency Contact 1',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['black'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
-                controller: _altPhoneController,
-                validator: altPhoneValidator,
-              ),
-            ),
+                Spacer(),
+                Container(
+                  width: 300.0,
+                  child: TextFormField(
+                      autocorrect: false,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Name',
+                        prefixIcon: Icon(Icons.person),
+                      ),
+                      controller: _nameController,
+                      validator: nameValidator),
+                ),
+                Spacer(),
+                Container(
+                  width: 300.0,
+                  child: TextFormField(
+                    autocorrect: false,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Relationship',
+                      prefixIcon: Icon(Icons.people),
+                    ),
+                    controller: _relationshipController,
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return "Please enter how this contact is related to you.";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Spacer(),
+                Container(
+                  width: 300.0,
+                  child: TextFormField(
+                    autocorrect: false,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Phone',
+                      prefixIcon: Icon(Icons.phone),
+                    ),
+                    controller: _phoneController,
+                    validator: phoneValidator,
+                  ),
+                ),
+                Spacer(),
+                Container(
+                  width: 300.0,
+                  child: TextFormField(
+                    autocorrect: false,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Phone 2 (Optional)',
+                      prefixIcon: Icon(Icons.phone),
+                    ),
+                    controller: _altPhoneController,
+                    validator: altPhoneValidator,
+                  ),
+                ),
 //            Spacer(),
 //            Text(
 //              'Emergency Contact 2',
@@ -407,68 +411,70 @@ class _ClientAppContactPageState extends State<ClientAppContactPage> {
 //                ),
 //              ),
 //            ),
-            Spacer(),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(color: themeColors['lightBlue'])),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: themeColors['lightBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['lightBlue'],
-                    child: Text(
-                      "PREVIOUS",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                  RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(5.0),
-                          side: BorderSide(color: themeColors['yellow'])),
-                      color: themeColors['yellow'],
-                      textColor: Colors.black,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['yellow'],
-                      child: Text(
-                        "NEXT",
-                        style: TextStyle(fontSize: 20.0),
+                Spacer(),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            side: BorderSide(color: themeColors['lightBlue'])),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        color: themeColors['lightBlue'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['lightBlue'],
+                        child: Text(
+                          "PREVIOUS",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
                       ),
-                      onPressed: () {
-                        final form = _formKey.currentState;
-                        if (form.validate()) {
-                          form.save();
+                      RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          color: themeColors['yellow'],
+                          textColor: Colors.black,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "NEXT",
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                          onPressed: () {
+                            final form = _formKey.currentState;
+                            if (form.validate()) {
+                              form.save();
 
-                          try {
-                            Contact ec1 = new Contact(
-                                _nameController.text.toString().trim(),
-                                _relationshipController.text.toString().trim(),
-                                _phoneController.text.toString().trim());
+                              try {
+                                Contact ec1 = new Contact(
+                                    _nameController.text.toString().trim(),
+                                    _relationshipController.text
+                                        .toString()
+                                        .trim(),
+                                    _phoneController.text.toString().trim());
 
-                            currentUser.addContact(ec1);
-                          } catch (e) {
-                            print(e);
-                          }
+                                currentUser.addContact(ec1);
+                              } catch (e) {
+                                print(e);
+                              }
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ClientAppCurrentBirthInfoPage(
-                                          key: key, user: currentUser)));
-                        }
-                      }),
-                ]),
-            Spacer(),
-          ],
-        ),
-      )),
-    );
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ClientAppCurrentBirthInfoPage(
+                                              key: key, user: currentUser)));
+                            }
+                          }),
+                    ]),
+                Spacer(),
+              ],
+            ),
+          ),
+        ));
   }
 }
 
@@ -490,22 +496,17 @@ class _ClientAppCurrentBirthInfoPageState
   Key key;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // controllers
-  TextEditingController _nameController;
-  TextEditingController _bdayController;
-  TextEditingController _phoneController;
-  TextEditingController _altPhoneController;
+  TextEditingController _dueDateController;
+  TextEditingController _birthLocController;
 
   @override
   void initState() {
     currentUser = widget.user;
     key = widget.key;
+    _dueDateController = new TextEditingController();
+    _birthLocController = new TextEditingController();
     print(
         "currentUser initState client app state: \n${currentUser.toString()}");
-
-    _nameController = new TextEditingController();
-    _bdayController = new TextEditingController();
-    _phoneController = new TextEditingController();
-    _altPhoneController = new TextEditingController();
 
     super.initState();
   }
@@ -548,7 +549,7 @@ class _ClientAppCurrentBirthInfoPageState
             ),
             Container(
               width: 300.0,
-              child: TextField(
+              child: TextFormField(
                 autocorrect: false,
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
@@ -556,6 +557,13 @@ class _ClientAppCurrentBirthInfoPageState
                     labelText: 'Due Date (MM/DD/YYYY)',
                     prefixIcon: Icon(Icons.cake),
                     suffixIcon: Icon(Icons.calendar_today)),
+                controller: _dueDateController,
+                validator: (val) {
+                  if (val.isEmpty) {
+                    return "Please enter your due date.";
+                  }
+                  return null;
+                },
               ),
             ),
             Spacer(
@@ -564,13 +572,20 @@ class _ClientAppCurrentBirthInfoPageState
             Container(
               // TODO: change to a dropdown
               width: 300.0,
-              child: TextField(
+              child: TextFormField(
                 autocorrect: false,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Planned Birth Location',
                   prefixIcon: Icon(Icons.local_hospital),
                 ),
+                controller: _birthLocController,
+                validator: (val) {
+                  if (val.isEmpty) {
+                    return "Please enter where you plan to give birth.";
+                  }
+                  return null;
+                },
               ),
             ),
             Spacer(
@@ -618,12 +633,16 @@ class _ClientAppCurrentBirthInfoPageState
                       if (form.validate()) {
                         form.save();
 
+                        currentUser.dueDate =
+                            _dueDateController.text.toString().trim();
+                        currentUser.birthLocation =
+                            _birthLocController.text.toString().trim();
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    ClientAppPreviousBirthInfoPage(
-                                        key: key, user: currentUser)));
+                                builder: (context) => ClientAppConfirmationPage(
+                                    key: key, user: currentUser)));
                       }
                     },
                     color: themeColors['yellow'],
@@ -662,10 +681,6 @@ class _ClientAppPreviousBirthInfoPageState
   Key key;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // controllers
-  TextEditingController _nameController;
-  TextEditingController _bdayController;
-  TextEditingController _phoneController;
-  TextEditingController _altPhoneController;
 
   @override
   void initState() {
@@ -673,11 +688,6 @@ class _ClientAppPreviousBirthInfoPageState
     key = widget.key;
     print(
         "currentUser initState client app state: \n${currentUser.toString()}");
-
-    _nameController = new TextEditingController();
-    _bdayController = new TextEditingController();
-    _phoneController = new TextEditingController();
-    _altPhoneController = new TextEditingController();
 
     super.initState();
   }
@@ -788,10 +798,6 @@ class _ClientAppDoulaQuestionsPageState
   Key key;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // controllers
-  TextEditingController _nameController;
-  TextEditingController _bdayController;
-  TextEditingController _phoneController;
-  TextEditingController _altPhoneController;
 
   @override
   void initState() {
@@ -800,98 +806,94 @@ class _ClientAppDoulaQuestionsPageState
     print(
         "currentUser initState client app state: \n${currentUser.toString()}");
 
-    _nameController = new TextEditingController();
-    _bdayController = new TextEditingController();
-    _phoneController = new TextEditingController();
-    _altPhoneController = new TextEditingController();
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Request a Doula"),
-      ),
-      body: Center(
-          child: Form(
-        key: _formKey,
-        autovalidate: false,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Spacer(),
-            Text(
-              'Doula Questions',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['emoryBlue'],
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 250,
-              child: LinearProgressIndicator(
-                backgroundColor: themeColors['skyBlue'],
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
-                value: 0.8,
-              ),
-            ),
-            Spacer(),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(color: themeColors['lightBlue'])),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: themeColors['lightBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['lightBlue'],
-                    child: Text(
-                      "PREVIOUS",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(color: themeColors['yellow'])),
-                    onPressed: () {
-                      final form = _formKey.currentState;
-                      if (form.validate()) {
-                        form.save();
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClientAppPhotoReleasePage(
-                                    key: key, user: currentUser)));
-                      }
-                    },
-                    color: themeColors['yellow'],
-                    textColor: Colors.black,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['yellow'],
-                    child: Text(
-                      "NEXT",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                ]),
-            Spacer(),
-          ],
+        appBar: AppBar(
+          title: Text("Request a Doula"),
         ),
-      )),
-    );
+        body: Center(
+          child: Form(
+            key: _formKey,
+            autovalidate: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Spacer(),
+                Text(
+                  'Doula Questions',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['emoryBlue'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                ),
+                Spacer(),
+                Container(
+                  width: 250,
+                  child: LinearProgressIndicator(
+                    backgroundColor: themeColors['skyBlue'],
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        themeColors['mediumBlue']),
+                    value: 0.8,
+                  ),
+                ),
+                Spacer(),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            side: BorderSide(color: themeColors['lightBlue'])),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        color: themeColors['lightBlue'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['lightBlue'],
+                        child: Text(
+                          "PREVIOUS",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            side: BorderSide(color: themeColors['yellow'])),
+                        onPressed: () {
+                          final form = _formKey.currentState;
+                          if (form.validate()) {
+                            form.save();
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ClientAppPhotoReleasePage(
+                                            key: key, user: currentUser)));
+                          }
+                        },
+                        color: themeColors['yellow'],
+                        textColor: Colors.black,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['yellow'],
+                        child: Text(
+                          "NEXT",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                    ]),
+                Spacer(),
+              ],
+            ),
+          ),
+        ));
   }
 }
 
@@ -911,10 +913,6 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
   Key key;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // controllers
-  TextEditingController _nameController;
-  TextEditingController _bdayController;
-  TextEditingController _phoneController;
-  TextEditingController _altPhoneController;
 
   @override
   void initState() {
@@ -922,11 +920,6 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
     key = widget.key;
     print(
         "currentUser initState client app state: \n${currentUser.toString()}");
-
-    _nameController = new TextEditingController();
-    _bdayController = new TextEditingController();
-    _phoneController = new TextEditingController();
-    _altPhoneController = new TextEditingController();
 
     super.initState();
   }
@@ -1074,7 +1067,7 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
               textAlign: TextAlign.left,
             ),
             Text(
-              ' Name: ',
+              ' Name: ${currentUser.name}',
               style: TextStyle(
                   fontFamily: 'Roboto',
                   color: themeColors['black'],
@@ -1083,7 +1076,7 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
               textAlign: TextAlign.left,
             ),
             Text(
-              ' Birthday: ',
+              ' Birthday: ${currentUser.bday}',
               style: TextStyle(
                   fontFamily: 'Roboto',
                   color: themeColors['black'],
@@ -1092,7 +1085,7 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
               textAlign: TextAlign.left,
             ),
             Text(
-              ' Phone: ',
+              ' Phone: ${currentUser.phone}',
               style: TextStyle(
                   fontFamily: 'Roboto',
                   color: themeColors['black'],
@@ -1100,17 +1093,17 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
                   height: 1.5),
               textAlign: TextAlign.left,
             ),
+//            Text(
+//              ' Phone 2 (Optional): ',
+//              style: TextStyle(
+//                  fontFamily: 'Roboto',
+//                  color: themeColors['black'],
+//                  fontSize: 18,
+//                  height: 1.5),
+//              textAlign: TextAlign.left,
+//            ),
             Text(
-              ' Phone 2 (Optional): ',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
-            ),
-            Text(
-              ' Emergency Contacts',
+              ' Emergency Contacts:',
               style: TextStyle(
                   fontFamily: 'Roboto',
                   color: themeColors['black'],
@@ -1120,17 +1113,7 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
               textAlign: TextAlign.left,
             ),
             Text(
-              ' Emergency Contact 1: ',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
-            ),
-            Text(
-              ' Name: ',
+              ' ${currentUser.emergencyContacts[0].toString()}',
               style: TextStyle(
                   fontFamily: 'Roboto',
                   color: themeColors['black'],
@@ -1138,33 +1121,33 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
                   height: 1.5),
               textAlign: TextAlign.left,
             ),
-            Text(
-              ' Relationship: ',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
-            ),
-            Text(
-              ' Phone: ',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
-            ),
-            Text(
-              ' Phone 2 (Optional): ',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
-            ),
+//            Text(
+//              ' Name: ',
+//              style: TextStyle(
+//                  fontFamily: 'Roboto',
+//                  color: themeColors['black'],
+//                  fontSize: 18,
+//                  height: 1.5),
+//              textAlign: TextAlign.left,
+//            ),
+//            Text(
+//              ' Relationship: ',
+//              style: TextStyle(
+//                  fontFamily: 'Roboto',
+//                  color: themeColors['black'],
+//                  fontSize: 18,
+//                  height: 1.5),
+//              textAlign: TextAlign.left,
+//            ),
+//            Text(
+//              ' Phone: ',
+//              style: TextStyle(
+//                  fontFamily: 'Roboto',
+//                  color: themeColors['black'],
+//                  fontSize: 18,
+//                  height: 1.5),
+//              textAlign: TextAlign.left,
+//            ),
             Text(
               ' Current Birth Information',
               style: TextStyle(
@@ -1176,7 +1159,7 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
               textAlign: TextAlign.left,
             ),
             Text(
-              ' Due Date: ',
+              ' Due Date: ${currentUser.dueDate}',
               style: TextStyle(
                   fontFamily: 'Roboto',
                   color: themeColors['black'],
@@ -1185,7 +1168,7 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
               textAlign: TextAlign.left,
             ),
             Text(
-              ' Planned Birth Location: ',
+              ' Planned Birth Location: ${currentUser.birthLocation}',
               style: TextStyle(
                   fontFamily: 'Roboto',
                   color: themeColors['black'],
@@ -1193,33 +1176,33 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
                   height: 1.5),
               textAlign: TextAlign.left,
             ),
-            Text(
-              ' Birth type: ',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
-            ),
-            Text(
-              ' Are you planning to have/do you want to have an epidural? : ',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
-            ),
-            Text(
-              ' Are you expecting to have a cesarean section? (C-section)? : ',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
-            ),
+//            Text(
+//              ' Birth type: ',
+//              style: TextStyle(
+//                  fontFamily: 'Roboto',
+//                  color: themeColors['black'],
+//                  fontSize: 18,
+//                  height: 1.5),
+//              textAlign: TextAlign.left,
+//            ),
+//            Text(
+//              ' Are you planning to have an epidural? : ',
+//              style: TextStyle(
+//                  fontFamily: 'Roboto',
+//                  color: themeColors['black'],
+//                  fontSize: 18,
+//                  height: 1.5),
+//              textAlign: TextAlign.left,
+//            ),
+//            Text(
+//              ' Are you expecting to have a C-section? : ',
+//              style: TextStyle(
+//                  fontFamily: 'Roboto',
+//                  color: themeColors['black'],
+//                  fontSize: 18,
+//                  height: 1.5),
+//              textAlign: TextAlign.left,
+//            ),
             Spacer(),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1244,15 +1227,29 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(5.0),
                         side: BorderSide(color: themeColors['yellow'])),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/clientAppRequestSent');
+                    onPressed: () async {
+                      // add application document
+                      await Firestore.instance.collection("applications").add({
+                        "user_type": currentUser.userType,
+                        "name": currentUser.name,
+                        "email": currentUser.email,
+                        "phone": currentUser.phone,
+                        "due_date": currentUser.dueDate,
+                        "birth_location": currentUser.birthLocation
+                      });
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ClientAppRequestSentPage()),
+                      );
                     },
                     color: themeColors['yellow'],
                     textColor: Colors.black,
                     padding: EdgeInsets.all(15.0),
                     splashColor: themeColors['yellow'],
                     child: Text(
-                      "NEXT",
+                      "SUBMIT",
                       style: TextStyle(fontSize: 20.0),
                     ),
                   ),
@@ -1268,9 +1265,6 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
 class ClientAppRequestSentPage extends StatefulWidget {
   //todo change remove user from constructor
   Client user;
-  ClientAppRequestSentPage({Key key, @required this.user}) : super(key: key) {
-    print("currentUser constructor client app state: \n${user.toString()}");
-  }
 
   @override
   _ClientAppRequestSentPageState createState() =>
@@ -1278,15 +1272,8 @@ class ClientAppRequestSentPage extends StatefulWidget {
 }
 
 class _ClientAppRequestSentPageState extends State<ClientAppRequestSentPage> {
-  Client currentUser;
-  Key key;
-
   @override
   void initState() {
-    currentUser = widget.user;
-    key = widget.key;
-    print(
-        "currentUser initState client app state: \n${currentUser.toString()}");
     super.initState();
   }
 

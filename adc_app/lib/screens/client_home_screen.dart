@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -15,19 +16,22 @@ class _ClientHomeState extends State<ClientHome> {
           title: Text("Doula Application"),
         ),
         body: Center(
-          child: FlatButton(
-            color: Colors.blue,
-            textColor: Colors.white,
-            child: Text("LOG OUT"),
-            onPressed: () async {
-              try {
-                await FirebaseAuth.instance.signOut();
-                print("signout success");
-              } catch (e) {
-                print("sign out error $e");
-              }
-            },
-          ),
-        ));
+            child: Column(
+          children: <Widget>[
+            FlatButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              child: Text("LOG OUT"),
+              onPressed: () async {
+                try {
+                  await FirebaseAuth.instance.signOut();
+                  print("signout success");
+                } catch (e) {
+                  print("sign out error $e");
+                }
+              },
+            ),
+          ],
+        )));
   }
 }

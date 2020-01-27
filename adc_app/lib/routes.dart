@@ -34,8 +34,7 @@ final Map<String, WidgetBuilder> routesTable = <String, WidgetBuilder>{
 //      ClientAppPhotoReleasePage(title: 'Request a Doula'),
 //  "/clientAppConfirmation": (BuildContext context) =>
 //      ClientAppConfirmationPage(title: 'Request a Doula'),
-//  "/clientAppRequestSent": (BuildContext context) =>
-//      ClientAppRequestSentPage(title: 'Request a Doula'),
+  "/clientAppRequestSent": (BuildContext context) => ClientAppRequestSentPage(),
 //  "/doulaApp": (BuildContext context) => DoulaAppPage(),
 //  "/doulaAppPage2": (BuildContext context) => DoulaAppPage2(),
 //  "/doulaAppPage3": (BuildContext context) => DoulaAppPage3(),

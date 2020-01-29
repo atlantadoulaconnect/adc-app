@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:adc_app/routes.dart';
 import 'package:adc_app/theme/style.dart';
+//import 'package:adc_app/util/auth.dart';
+//import 'package:adc_app/screens/root_screen.dart';
 
 void main() => runApp(ADCApp());
 
@@ -9,10 +11,11 @@ class ADCApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Atlanta Doula Connect',
       theme: appTheme(),
-      initialRoute: '/',
-      routes: routes,
+      initialRoute: "/",
+      routes: routesTable,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

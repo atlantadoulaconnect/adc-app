@@ -37,8 +37,17 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(children: <Widget>[
               Text("Welcome to Atlanta Doula Connect"),
               _loginForm(),
+              SizedBox(
+                height: 20,
+              ),
               Text("Don't have an account?"),
-              FlatButton(
+              SizedBox(
+                height: 5,
+              ),
+              RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(50.0),
+                      side: BorderSide(color: themeColors['lightBlue'])),
                   color: themeColors["lightBlue"],
                   textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
@@ -75,7 +84,13 @@ class _LoginPageState extends State<LoginPage> {
             validator: (value) =>
                 value.isEmpty ? "Please enter password" : null,
           ),
-          FlatButton(
+          SizedBox(
+            height: 100,
+          ),
+          RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0),
+                  side: BorderSide(color: themeColors['yellow'])),
               color: themeColors["yellow"],
               textColor: Colors.black,
               padding: EdgeInsets.all(15.0),

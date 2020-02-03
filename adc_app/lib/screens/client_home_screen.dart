@@ -18,7 +18,10 @@ class _ClientHomeState extends State<ClientHome> {
         body: Center(
             child: Column(
           children: <Widget>[
-            FlatButton(
+            RaisedButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(50.0),
+              ),
               color: Colors.blue,
               textColor: Colors.white,
               child: Text("LOG OUT"),

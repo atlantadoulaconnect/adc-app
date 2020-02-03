@@ -49,8 +49,17 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
             children: <Widget>[
               Text("Sign Up"),
               _registerForm(),
+              SizedBox(
+                height: 20,
+              ),
               Text("Already have an account?"),
-              FlatButton(
+              SizedBox(
+                height: 5,
+              ),
+              RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(50.0),
+                      side: BorderSide(color: themeColors['lightBlue'])),
                   onPressed: () {
                     Navigator.pushNamed(context, "/login");
                   },
@@ -100,7 +109,13 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
                     return "Passwords do not match.";
                   return null;
                 }),
-            FlatButton(
+            SizedBox(
+              height: 100,
+            ),
+            RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0),
+                  side: BorderSide(color: themeColors['yellow'])),
               color: themeColors["yellow"],
               textColor: Colors.black,
               padding: EdgeInsets.all(15.0),

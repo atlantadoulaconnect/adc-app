@@ -22,6 +22,88 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(26.0),
         child: _createBody(context),
       ),
+      drawer: Drawer(
+        child: Container(
+          color: themeColors['mediumBlue'],
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: themeColors['yellow'],
+                ),
+//              child: Text(
+//                'Drawer Header',
+//                style: TextStyle(
+//                  color: Colors.white,
+//                  fontSize: 24,
+//                ),
+//              ),
+              ),
+              ListTile(
+                leading: Icon(
+                  IconData(59530, fontFamily: 'MaterialIcons'),
+                  color: Colors.white,
+                ),
+                title: Text('Home',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+              ListTile(
+                leading: Icon(
+                  IconData(59679, fontFamily: 'MaterialIcons'),
+                  color: Colors.white,
+                ),
+                title: Text('Request a Doula',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+              ListTile(
+                leading: Icon(
+                  IconData(57534, fontFamily: 'MaterialIcons'),
+                  color: Colors.white,
+                ),
+                title: Text('Apply as a Doula',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+              ListTile(
+                leading: Icon(
+                  IconData(59448, fontFamily: 'MaterialIcons'),
+                  color: Colors.white,
+                ),
+                title: Text('Frequently asked Questions',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+              ListTile(
+                leading: Icon(
+                  IconData(59534, fontFamily: 'MaterialIcons'),
+                  color: Colors.white,
+                ),
+                title: Text('About Atlanta Doula Connect',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+              ListTile(
+                leading: Icon(
+                  IconData(59513, fontFamily: 'MaterialIcons'),
+                  color: Colors.white,
+                ),
+                title: Text('Log In',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -32,14 +114,12 @@ class _HomePageState extends State<HomePage> {
           Spacer(
             flex: 1,
           ),
-          Text(
-              "Atlanta Doula Connect",
+          Text("Atlanta Doula Connect",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 50.0,
                 fontWeight: FontWeight.bold,
-              )
-          ),
+              )),
           Spacer(
             flex: 2,
           ),

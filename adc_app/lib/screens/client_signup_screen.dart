@@ -70,6 +70,9 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                   textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
                   child: Text("LOG IN")),
+              SizedBox(
+                height: 5,
+              ),
             ],
           )),
         ));

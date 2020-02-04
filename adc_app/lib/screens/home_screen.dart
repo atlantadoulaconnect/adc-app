@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                       color: Colors.white,
                     )),
+                onTap: () => Navigator.pushNamed(context, '/'),
               ),
               ListTile(
                 leading: Icon(
@@ -59,6 +60,7 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                       color: Colors.white,
                     )),
+                onTap: () => Navigator.pushNamed(context, '/clientSignup'),
               ),
               ListTile(
                 leading: Icon(
@@ -69,6 +71,7 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                       color: Colors.white,
                     )),
+                onTap: () => Navigator.pushNamed(context, '/doulaSignup'),
               ),
               ListTile(
                 leading: Icon(
@@ -99,6 +102,7 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                       color: Colors.white,
                     )),
+                onTap: () => Navigator.pushNamed(context, '/login'),
               ),
             ],
           ),

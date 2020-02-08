@@ -243,10 +243,12 @@
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-collection:17.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:protolite-well-known-types:17.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: io.grpc:grpc-android:1.21.0@aar" level="project" />
+    <orderEntry type="module" module-name="cloud_functions_web" />
     <orderEntry type="module" module-name="firebase_analytics" />
     <orderEntry type="module" module-name="firebase_auth" />
     <orderEntry type="module" module-name="firebase_core_web" />
     <orderEntry type="module" module-name="cloud_firestore" />
+    <orderEntry type="module" module-name="path_provider" />
     <orderEntry type="module" module-name="firebase_core" />
     <orderEntry type="module" module-name="cloud_functions" />
   </component>

@@ -1,5 +1,5 @@
-import 'package:adc_app/models/user.dart';
-import 'package:adc_app/models/client.dart';
+import './user.dart';
+import './client.dart';
 
 class Doula extends User {
   String bday;

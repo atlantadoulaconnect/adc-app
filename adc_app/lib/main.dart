@@ -1,21 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:adc_app/routes.dart';
-import 'package:adc_app/theme/style.dart';
-//import 'package:adc_app/util/auth.dart';
-//import 'package:adc_app/screens/root_screen.dart';
+import 'package:async_redux/async_redux.dart';
+import './backend/states/appState.dart';
 
-void main() => runApp(ADCApp());
+import './frontend/theme/style.dart';
+
+// general screens
+import './frontend/screens/homeScreen.dart';
+import './frontend/screens/loginScreen.dart';
+
+// application screens
+import './frontend/screens/application/client/clientSignupScreen.dart';
+
+import './frontend/screens/application/doula/doulaSignupScreen.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
+
+void main() async {
+  final AppState initState = AppState();
+  final Store<AppState> _store = Store<AppState>(initialState: initState);
+  NavigateAction.setNavigatorKey(navigatorKey);
+  runApp(new ADCApp(store: _store));
+}
 
 class ADCApp extends StatelessWidget {
-  // This widget is the root of the application.
+  final Store<AppState> store;
+
+  ADCApp({this.store});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Atlanta Doula Connect',
-      theme: appTheme(),
-      initialRoute: "/",
-      routes: routesTable,
-      debugShowCheckedModeBanner: false,
-    );
+    return StoreProvider<AppState>(
+        store: store,
+        child: MaterialApp(
+          title: "Atlanta Doula Connect",
+          theme: appTheme(),
+          debugShowCheckedModeBanner: false,
+          navigatorKey: navigatorKey,
+          initialRoute: "/",
+          routes: {
+            '/': (context) => HomeScreenConnector(),
+            '/login': (context) => LoginScreen(),
+            '/clientSignup': (context) => ClientSignupScreen(),
+            '/doulaSignup': (context) => DoulaSignupScreen()
+          },
+        ));
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:adc_app/theme/colors.dart';
+import './colors.dart';
 
 // example appTheme() https://github.com/ConProgramming/flutter-example/blob/master/lib/theme/style.dart
 

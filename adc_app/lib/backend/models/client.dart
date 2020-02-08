@@ -1,5 +1,5 @@
-import 'package:adc_app/models/contact.dart';
-import 'package:adc_app/models/user.dart';
+import './contact.dart';
+import './user.dart';
 
 class Client extends User {
   String phone;

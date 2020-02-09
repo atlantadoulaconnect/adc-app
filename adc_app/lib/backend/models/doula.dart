@@ -3,7 +3,7 @@ import './client.dart';
 
 class Doula extends User {
   String bday;
-  bool emailVerfied;
+  bool emailVerified;
 
   String bio;
   bool certified;
@@ -34,5 +34,40 @@ class Doula extends User {
 
   void removeCurrentClient(Client client) {
     this.currentClients.remove(client);
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      super == other &&
+          other is Doula &&
+          runtimeType == other.runtimeType &&
+          bday == other.bday &&
+          emailVerified == other.emailVerified &&
+          bio == other.bio &&
+          certified == other.certified &&
+          certInProgress == other.certInProgress &&
+          certProgram == other.certProgram &&
+          birthsNeeded == other.birthsNeeded &&
+          availableDates == other.availableDates &&
+          currentClients == other.currentClients;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      bday.hashCode ^
+      emailVerified.hashCode ^
+      bio.hashCode ^
+      certified.hashCode ^
+      certInProgress.hashCode ^
+      certProgram.hashCode ^
+      birthsNeeded.hashCode ^
+      availableDates.hashCode ^
+      currentClients.hashCode;
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return super.toString();
   }
 }

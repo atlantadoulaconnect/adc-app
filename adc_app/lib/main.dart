@@ -12,6 +12,7 @@ import './frontend/screens/loginScreen.dart';
 import './frontend/screens/application/client/clientSignupScreen.dart';
 
 import './frontend/screens/application/doula/doulaSignupScreen.dart';
+import './frontend/screens/application/doula/doulaAppPage1.dart';
 
 // client screens
 // doula screens
@@ -45,7 +46,8 @@ class ADCApp extends StatelessWidget {
             '/': (context) => HomeScreenConnector(),
             '/login': (context) => LoginScreen(),
             '/clientSignup': (context) => ClientSignupScreen(),
-            '/doulaSignup': (context) => DoulaSignupScreen()
+            '/doulaSignup': (context) => DoulaSignupScreen(),
+            '/doulaAppPage1': (context) => DoulaAppPage1(),
           },
         ));
   }

@@ -1,18 +1,19 @@
 import 'package:meta/meta.dart';
-import './userState.dart';
+import '../models/user.dart';
 
 @immutable
 class AppState {
-  final UserState userState;
+  final User currentUser;
 
-  AppState({this.userState});
+  AppState({this.currentUser});
 
   static AppState initialState() {
-    return AppState(userState: UserState.initialState());
+    // TODO try loading user from local state
+    return AppState(currentUser: null);
   }
 
-  AppState copy({UserState userState}) {
-    return AppState(userState: userState ?? this.userState);
+  AppState copy({User currentUser}) {
+    return AppState(currentUser: currentUser ?? this.currentUser);
   }
 
   @override
@@ -20,11 +21,11 @@ class AppState {
     return identical(this, other) ||
         other is AppState &&
             runtimeType == other.runtimeType &&
-            userState == other.userState;
+            currentUser == other.currentUser;
   }
 
   @override
   int get hashCode {
-    return userState.hashCode;
+    return currentUser.hashCode;
   }
 }

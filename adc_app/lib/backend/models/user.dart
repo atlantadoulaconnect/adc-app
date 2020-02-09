@@ -26,6 +26,27 @@ abstract class User {
   }
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is User &&
+          runtimeType == other.runtimeType &&
+          userid == other.userid &&
+          userType == other.userType &&
+          name == other.name &&
+          email == other.email &&
+          phoneVerified == other.phoneVerified &&
+          phones == other.phones;
+
+  @override
+  int get hashCode =>
+      userid.hashCode ^
+      userType.hashCode ^
+      name.hashCode ^
+      email.hashCode ^
+      phoneVerified.hashCode ^
+      phones.hashCode;
+
+  @override
   String toString() {
     return "$userid: $userType at $email";
   }

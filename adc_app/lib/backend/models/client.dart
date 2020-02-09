@@ -1,12 +1,13 @@
 import './contact.dart';
 import './user.dart';
+import './doula.dart';
 
 class Client extends User {
   String phone;
   String bday;
 
-  User primaryDoula;
-  User backupDoula;
+  Doula primaryDoula;
+  Doula backupDoula;
 
   String dueDate;
   String birthLocation;
@@ -48,7 +49,56 @@ class Client extends User {
     this.emergencyContacts.remove(contact);
   }
 
-  String applicantEmail() {
-    return "APPLICANT:\n\t${this.name}\n\t${this.email}\n\t${this.phone}\n\tBirth date: ${this.bday}\nPREGNANCY:\n\tDue date: ${this.dueDate}\n\tBirth location: ${this.birthLocation}";
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      super == other &&
+          other is Client &&
+          runtimeType == other.runtimeType &&
+          phone == other.phone &&
+          bday == other.bday &&
+          primaryDoula == other.primaryDoula &&
+          backupDoula == other.backupDoula &&
+          dueDate == other.dueDate &&
+          birthLocation == other.birthLocation &&
+          birthType == other.birthType &&
+          epidural == other.epidural &&
+          cesarean == other.cesarean &&
+          emergencyContacts == other.emergencyContacts &&
+          liveBirths == other.liveBirths &&
+          preterm == other.preterm &&
+          lowWeight == other.lowWeight &&
+          deliveryTypes == other.deliveryTypes &&
+          multiples == other.multiples &&
+          meetBefore == other.meetBefore &&
+          homeVisit == other.homeVisit &&
+          photoRelease == other.photoRelease;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      phone.hashCode ^
+      bday.hashCode ^
+      primaryDoula.hashCode ^
+      backupDoula.hashCode ^
+      dueDate.hashCode ^
+      birthLocation.hashCode ^
+      birthType.hashCode ^
+      epidural.hashCode ^
+      cesarean.hashCode ^
+      emergencyContacts.hashCode ^
+      liveBirths.hashCode ^
+      preterm.hashCode ^
+      lowWeight.hashCode ^
+      deliveryTypes.hashCode ^
+      multiples.hashCode ^
+      meetBefore.hashCode ^
+      homeVisit.hashCode ^
+      photoRelease.hashCode;
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return super.toString();
   }
 }

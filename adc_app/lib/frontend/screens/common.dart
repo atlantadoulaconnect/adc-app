@@ -16,4 +16,3 @@ export '../../backend/models/user.dart';
 
 // states
 export '../../backend/states/appState.dart';
-export '../../backend/states/userState.dart';

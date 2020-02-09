@@ -5,6 +5,8 @@ abstract class User {
   String name;
   String email;
 
+  bool phoneVerified;
+
   // for Sprint 1 demo
   List<String> phones; // List of phone.dart objects later
 

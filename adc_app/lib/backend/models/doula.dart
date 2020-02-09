@@ -3,6 +3,8 @@ import './client.dart';
 
 class Doula extends User {
   String bday;
+  bool emailVerfied;
+
   String bio;
   bool certified;
   bool certInProgress;

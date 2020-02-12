@@ -57,10 +57,9 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
           child: Form(
               key: _formKey,
               autovalidate: false,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: ListView(
+                //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Spacer(),
                   Text(
                     'Personal Information',
                     style: TextStyle(
@@ -70,7 +69,6 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
                       fontSize: 25,
                     ),
                   ),
-                  Spacer(),
                   Container(
                     width: 250,
                     child: LinearProgressIndicator(
@@ -79,9 +77,6 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
                           themeColors['mediumBlue']),
                       value: 0,
                     ),
-                  ),
-                  Spacer(
-                    flex: 2,
                   ),
                   Container(
                     width: 300.0,
@@ -97,9 +92,6 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
                       validator: nameValidator,
                     ),
                   ),
-                  Spacer(
-                    flex: 2,
-                  ),
                   Container(
                     width: 300.0,
                     child: TextFormField(
@@ -113,9 +105,6 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
                       controller: _bdayController,
                       validator: bdayValidator,
                     ),
-                  ),
-                  Spacer(
-                    flex: 2,
                   ),
                   Container(
                     width: 300.0,
@@ -131,9 +120,6 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
                       validator: phoneValidator,
                     ),
                   ),
-                  Spacer(
-                    flex: 2,
-                  ),
                   Container(
                     width: 300.0,
                     child: TextFormField(
@@ -147,9 +133,6 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
                       controller: _altPhoneController,
                       validator: altPhoneValidator,
                     ),
-                  ),
-                  Spacer(
-                    flex: 3,
                   ),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
@@ -198,7 +181,6 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
                       style: TextStyle(fontSize: 20.0),
                     ),
                   ),
-                  Spacer(),
                 ],
               ))),
     );
@@ -251,167 +233,201 @@ class _ClientAppContactPageState extends State<ClientAppContactPage> {
           child: Form(
             key: _formKey,
             autovalidate: false,
-            child: Column(
-              // TODO: Make screen scrollable
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: ListView(
+
               children: <Widget>[
-                Spacer(),
-                Text(
-                  'Emergency Contacts',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Emergency Contacts',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
                   ),
                 ),
-                Spacer(),
-                Container(
-                  width: 250,
-                  child: LinearProgressIndicator(
-                    backgroundColor: themeColors['skyBlue'],
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        themeColors['mediumBlue']),
-                    value: 0.2,
-                  ),
-                ),
-                Spacer(),
-                Text(
-                  'Emergency Contact 1',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                Spacer(),
-                Container(
-                  width: 300.0,
-                  child: TextFormField(
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Name',
-                        prefixIcon: Icon(Icons.person),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 250,
+                      child: LinearProgressIndicator(
+                        backgroundColor: themeColors['skyBlue'],
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            themeColors['mediumBlue']),
+                        value: 0.2,
                       ),
-                      controller: _nameController,
-                      validator: nameValidator),
-                ),
-                Spacer(),
-                Container(
-                  width: 300.0,
-                  child: TextFormField(
-                    autocorrect: false,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Relationship',
-                      prefixIcon: Icon(Icons.people),
                     ),
-                    controller: _relationshipController,
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return "Please enter how this contact is related to you.";
-                      }
-                      return null;
-                    },
-                  ),
                 ),
-                Spacer(),
-                Container(
-                  width: 300.0,
-                  child: TextFormField(
-                    autocorrect: false,
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Phone',
-                      prefixIcon: Icon(Icons.phone),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Emergency Contact 1',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: themeColors['black'],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
-                    controller: _phoneController,
-                    validator: phoneValidator,
-                  ),
                 ),
-                Spacer(),
-                Container(
-                  width: 300.0,
-                  child: TextFormField(
-                    autocorrect: false,
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Phone 2 (Optional)',
-                      prefixIcon: Icon(Icons.phone),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextFormField(
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Name',
+                            prefixIcon: Icon(Icons.person),
+                          ),
+                          controller: _nameController,
+                          validator: nameValidator),
                     ),
-                    controller: _altPhoneController,
-                    validator: altPhoneValidator,
-                  ),
                 ),
-//            Spacer(),
-//            Text(
-//              'Emergency Contact 2',
-//              style: TextStyle(
-//                fontFamily: 'Roboto',
-//                color: themeColors['black'],
-//                fontWeight: FontWeight.bold,
-//                fontSize: 20,
-//              ),
-//            ),
-//            Spacer(),
-//            Container(
-//              width: 300.0,
-//              child: TextField(
-//                autocorrect: false,
-//                textCapitalization: TextCapitalization.words,
-//                decoration: InputDecoration(
-//                  border: OutlineInputBorder(),
-//                  labelText: 'Name',
-//                  prefixIcon: Icon(Icons.person),
-//                ),
-//              ),
-//            ),
-//            Spacer(),
-//            Container(
-//              width: 300.0,
-//              child: TextField(
-//                autocorrect: false,
-//                textCapitalization: TextCapitalization.words,
-//                decoration: InputDecoration(
-//                  border: OutlineInputBorder(),
-//                  labelText: 'Relationship',
-//                  prefixIcon: Icon(Icons.people),
-//                ),
-//              ),
-//            ),
-//            Spacer(),
-//            Container(
-//              width: 300.0,
-//              child: TextField(
-//                autocorrect: false,
-//                keyboardType: TextInputType.phone,
-//                decoration: InputDecoration(
-//                  border: OutlineInputBorder(),
-//                  labelText: 'Phone',
-//                  prefixIcon: Icon(Icons.phone),
-//                ),
-//              ),
-//            ),
-//            Spacer(),
-//            Container(
-//              width: 300.0,
-//              child: TextField(
-//                autocorrect: false,
-//                keyboardType: TextInputType.phone,
-//                decoration: InputDecoration(
-//                  border: OutlineInputBorder(),
-//                  labelText: 'Phone 2 (Optional)',
-//                  prefixIcon: Icon(Icons.phone),
-//                ),
-//              ),
-//            ),
-                Spacer(),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextFormField(
+                        autocorrect: false,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Relationship',
+                          prefixIcon: Icon(Icons.people),
+                        ),
+                        controller: _relationshipController,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Please enter how this contact is related to you.";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                ),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextFormField(
+                        autocorrect: false,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Phone',
+                          prefixIcon: Icon(Icons.phone),
+                        ),
+                        controller: _phoneController,
+                        validator: phoneValidator,
+                      ),
+                    ),
+                ),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextFormField(
+                        autocorrect: false,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Phone 2 (Optional)',
+                          prefixIcon: Icon(Icons.phone),
+                        ),
+                        controller: _altPhoneController,
+                        validator: altPhoneValidator,
+                      ),
+                    ),
+                ),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Emergency Contact 2',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: themeColors['black'],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                ),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextField(
+                        autocorrect: false,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Name',
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                      ),
+                    ),
+                ),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextField(
+                        autocorrect: false,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Relationship',
+                          prefixIcon: Icon(Icons.people),
+                        ),
+                      ),
+                    ),
+                ),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextField(
+                        autocorrect: false,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Phone',
+                          prefixIcon: Icon(Icons.phone),
+                        ),
+                      ),
+                    ),
+                ),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextField(
+                        autocorrect: false,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Phone 2 (Optional)',
+                          prefixIcon: Icon(Icons.phone),
+                        ),
+                      ),
+                    ),
+                ),
+
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -470,7 +486,6 @@ class _ClientAppContactPageState extends State<ClientAppContactPage> {
                             }
                           }),
                     ]),
-                Spacer(),
               ],
             ),
           ),
@@ -545,28 +560,6 @@ class _ClientAppCurrentBirthInfoPageState
                         valueColor:
                         AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
                         value: 0.4,
-                      ),
-                    ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 300.0,
-                      child: TextFormField(
-                        autocorrect: false,
-                        keyboardType: TextInputType.datetime,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Due Date (MM/DD/YYYY)',
-                            prefixIcon: Icon(Icons.cake),
-                            suffixIcon: Icon(Icons.calendar_today)),
-                        controller: _dueDateController,
-                        validator: (val) {
-                          if (val.isEmpty) {
-                            return "Please enter your due date.";
-                          }
-                          return null;
-                        },
                       ),
                     ),
                 ),
@@ -705,7 +698,7 @@ class _ClientAppCurrentBirthInfoPageState
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ClientAppConfirmationPage(
+                                    builder: (context) => ClientAppPreviousBirthInfoPage(
                                         key: key, user: currentUser)));
                           }
                         },
@@ -765,8 +758,7 @@ class _ClientAppPreviousBirthInfoPageState
           child: Form(
             key: _formKey,
             autovalidate: false,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: ListView(
               children: <Widget>[
                 Spacer(),
                 Text(
@@ -778,7 +770,6 @@ class _ClientAppPreviousBirthInfoPageState
                     fontSize: 25,
                   ),
                 ),
-                Spacer(),
                 Container(
                   width: 250,
                   child: LinearProgressIndicator(
@@ -788,7 +779,6 @@ class _ClientAppPreviousBirthInfoPageState
                     value: 0.6,
                   ),
                 ),
-                Spacer(),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -835,7 +825,6 @@ class _ClientAppPreviousBirthInfoPageState
                         ),
                       ),
                     ]),
-                Spacer(),
               ],
             ),
           )),

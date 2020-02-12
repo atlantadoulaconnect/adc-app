@@ -760,25 +760,32 @@ class _ClientAppPreviousBirthInfoPageState
             autovalidate: false,
             child: ListView(
               children: <Widget>[
-                Spacer(),
-                Text(
-                  'Previous Birth Information',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Previous Birth Information',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: themeColors['emoryBlue'],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
+                    ),
                 ),
-                Container(
-                  width: 250,
-                  child: LinearProgressIndicator(
-                    backgroundColor: themeColors['skyBlue'],
-                    valueColor:
-                    AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
-                    value: 0.6,
-                  ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 250,
+                      child: LinearProgressIndicator(
+                        backgroundColor: themeColors['skyBlue'],
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                        value: 0.6,
+                      ),
+                    ),
                 ),
+                //TODO add the content
+
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -871,30 +878,32 @@ class _ClientAppDoulaQuestionsPageState
           child: Form(
             key: _formKey,
             autovalidate: false,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: ListView(
               children: <Widget>[
-                Spacer(),
-                Text(
-                  'Doula Questions',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Doula Questions',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
                   ),
                 ),
-                Spacer(),
-                Container(
-                  width: 250,
-                  child: LinearProgressIndicator(
-                    backgroundColor: themeColors['skyBlue'],
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        themeColors['mediumBlue']),
-                    value: 0.8,
-                  ),
-                ),
-                Spacer(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                      width: 250,
+                      child: LinearProgressIndicator(
+                        backgroundColor: themeColors['skyBlue'],
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            themeColors['mediumBlue']),
+                        value: 0.8,
+                      ),
+                    ),
+              ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -941,7 +950,6 @@ class _ClientAppDoulaQuestionsPageState
                         ),
                       ),
                     ]),
-                Spacer(),
               ],
             ),
           ),
@@ -986,30 +994,63 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
           child: Form(
             key: _formKey,
             autovalidate: false,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: ListView(
               children: <Widget>[
-                Spacer(),
-                Text(
-                  'Photo Release',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Photo Release',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
                   ),
                 ),
-                Spacer(),
-                Container(
-                  width: 250,
-                  child: LinearProgressIndicator(
-                    backgroundColor: themeColors['skyBlue'],
-                    valueColor:
-                    AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
-                    value: 1,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 250,
+                    child: LinearProgressIndicator(
+                      backgroundColor: themeColors['skyBlue'],
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                      value: 1,
+                    ),
                   ),
                 ),
-                Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Please read the following statements: '
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                      'I, grant the Urban Health Initiative of Emory Photo/Video '
+                          'permission to use any photographs in Emory’s own publications or in any other broadcast'
+                          ',print,  or  electronic  media,  including—without  limitation—newspaper, radio,  '
+                          'television,  magazine,  internet.  I  waive  any  right  to  inspect  or  approve  my  depictions'
+                          '  in  these  works.     '
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                      'I  agree  that  Emory  University  may  use  such  photographs  of  me  '
+                          'and my infant with  or  without  my  name  and  for  any  lawful  purpose,  '
+                          'including  for  example  such  purposes  as  publicity,  illustration,  '
+                          'advertising,  and  Web  content.  '
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text('CHECKBOX GOES HERE'
+                  ),
+                ),
+
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -1055,7 +1096,6 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
                         ),
                       ),
                     ]),
-                Spacer(),
               ],
             ),
           )),
@@ -1095,11 +1135,9 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
         title: Text("Request a Doula"),
       ),
       body: Center(
-        child: Column(
+        child: ListView(
           //mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Spacer(),
             Text('Confirmation',
                 style: TextStyle(
                     fontFamily: 'Roboto',
@@ -1228,6 +1266,17 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
                   height: 1.5),
               textAlign: TextAlign.left,
             ),
+            Text(
+              //TODO add the rest of the information
+              ' ADD THE REST OF THE INFO LATER!!!!',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  height: 1.5),
+              textAlign: TextAlign.left,
+            ),
 //            Text(
 //              ' Birth type: ',
 //              style: TextStyle(
@@ -1255,7 +1304,6 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
 //                  height: 1.5),
 //              textAlign: TextAlign.left,
 //            ),
-            Spacer(),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -1306,7 +1354,6 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
                     ),
                   ),
                 ]),
-            Spacer(),
           ],
         ),
       ),

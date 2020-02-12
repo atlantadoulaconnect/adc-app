@@ -519,146 +519,209 @@ class _ClientAppCurrentBirthInfoPageState
       ),
       body: Center(
           child: Form(
-        key: _formKey,
-        autovalidate: false,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Spacer(),
-            Text(
-              'Current Birth Information',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['emoryBlue'],
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 250,
-              child: LinearProgressIndicator(
-                backgroundColor: themeColors['skyBlue'],
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
-                value: 0.4,
-              ),
-            ),
-            Spacer(
-              flex: 2,
-            ),
-            Container(
-              width: 300.0,
-              child: TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.datetime,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Due Date (MM/DD/YYYY)',
-                    prefixIcon: Icon(Icons.cake),
-                    suffixIcon: Icon(Icons.calendar_today)),
-                controller: _dueDateController,
-                validator: (val) {
-                  if (val.isEmpty) {
-                    return "Please enter your due date.";
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Spacer(
-              flex: 2,
-            ),
-            Container(
-              // TODO: change to a dropdown
-              width: 300.0,
-              child: TextFormField(
-                autocorrect: false,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Planned Birth Location',
-                  prefixIcon: Icon(Icons.local_hospital),
-                ),
-                controller: _birthLocController,
-                validator: (val) {
-                  if (val.isEmpty) {
-                    return "Please enter where you plan to give birth.";
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Spacer(
-              flex: 2,
-            ),
-            Container(
-              width: 300.0,
-              child: TextField(
-                autocorrect: false,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'If other, name here',
-                  prefixIcon: Icon(Icons.local_hospital),
-                ),
-              ),
-            ),
-            Spacer(
-              flex: 3,
-            ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(color: themeColors['lightBlue'])),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: themeColors['lightBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['lightBlue'],
+            key: _formKey,
+            autovalidate: false,
+            child: ListView(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "PREVIOUS",
-                      style: TextStyle(fontSize: 20.0),
+                      'Current Birth Information',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: themeColors['emoryBlue'],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
                     ),
-                  ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(color: themeColors['yellow'])),
-                    onPressed: () {
-                      final form = _formKey.currentState;
-                      if (form.validate()) {
-                        form.save();
-
-                        currentUser.dueDate =
-                            _dueDateController.text.toString().trim();
-                        currentUser.birthLocation =
-                            _birthLocController.text.toString().trim();
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClientAppConfirmationPage(
-                                    key: key, user: currentUser)));
-                      }
-                    },
-                    color: themeColors['yellow'],
-                    textColor: Colors.black,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['yellow'],
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 250,
+                      child: LinearProgressIndicator(
+                        backgroundColor: themeColors['skyBlue'],
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                        value: 0.4,
+                      ),
+                    ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextFormField(
+                        autocorrect: false,
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Due Date (MM/DD/YYYY)',
+                            prefixIcon: Icon(Icons.cake),
+                            suffixIcon: Icon(Icons.calendar_today)),
+                        controller: _dueDateController,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Please enter your due date.";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextFormField(
+                        autocorrect: false,
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Due Date (MM/DD/YYYY)',
+                            prefixIcon: Icon(Icons.cake),
+                            suffixIcon: Icon(Icons.calendar_today)),
+                        controller: _dueDateController,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Please enter your due date.";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      // TODO: change to a dropdown
+                      width: 300.0,
+                      child: TextFormField(
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Planned Birth Location',
+                          prefixIcon: Icon(Icons.local_hospital),
+                        ),
+                        controller: _birthLocController,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Please enter where you plan to give birth.";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextField(
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Birth Type (Singleton, Twins, Triplets)',
+                          prefixIcon: Icon(Icons.local_hospital),
+                        ),
+                      ),
+                    ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "NEXT",
-                      style: TextStyle(fontSize: 20.0),
+                      'Are you planning on having an epidural?',
                     ),
-                  ),
-                ]),
-            Spacer(),
-          ],
-        ),
-      )),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextField(
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Yes/No',
+                          prefixIcon: Icon(Icons.local_hospital),
+                        ),
+                      ),
+                    ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Are you expecting to have a caesarean secction (C-Section)?',
+                    ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextField(
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Yes/No',
+                          prefixIcon: Icon(Icons.local_hospital),
+                        ),
+                      ),
+                    ),
+                ),
+
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            side: BorderSide(color: themeColors['lightBlue'])),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        color: themeColors['lightBlue'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['lightBlue'],
+                        child: Text(
+                          "PREVIOUS",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            side: BorderSide(color: themeColors['yellow'])),
+                        onPressed: () {
+                          final form = _formKey.currentState;
+                          if (form.validate()) {
+                            form.save();
+
+                            currentUser.dueDate =
+                                _dueDateController.text.toString().trim();
+                            currentUser.birthLocation =
+                                _birthLocController.text.toString().trim();
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ClientAppConfirmationPage(
+                                        key: key, user: currentUser)));
+                          }
+                        },
+                        color: themeColors['yellow'],
+                        textColor: Colors.black,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['yellow'],
+                        child: Text(
+                          "NEXT",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                    ]),
+              ],
+            ),
+          )),
     );
   }
 }
@@ -700,82 +763,82 @@ class _ClientAppPreviousBirthInfoPageState
       ),
       body: Center(
           child: Form(
-        key: _formKey,
-        autovalidate: false,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Spacer(),
-            Text(
-              'Previous Birth Information',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['emoryBlue'],
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 250,
-              child: LinearProgressIndicator(
-                backgroundColor: themeColors['skyBlue'],
-                valueColor:
+            key: _formKey,
+            autovalidate: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Spacer(),
+                Text(
+                  'Previous Birth Information',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['emoryBlue'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                ),
+                Spacer(),
+                Container(
+                  width: 250,
+                  child: LinearProgressIndicator(
+                    backgroundColor: themeColors['skyBlue'],
+                    valueColor:
                     AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
-                value: 0.6,
-              ),
-            ),
-            Spacer(),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(color: themeColors['lightBlue'])),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: themeColors['lightBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['lightBlue'],
-                    child: Text(
-                      "PREVIOUS",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
+                    value: 0.6,
                   ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(color: themeColors['yellow'])),
-                    onPressed: () {
-                      final form = _formKey.currentState;
-                      if (form.validate()) {
-                        form.save();
+                ),
+                Spacer(),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            side: BorderSide(color: themeColors['lightBlue'])),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        color: themeColors['lightBlue'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['lightBlue'],
+                        child: Text(
+                          "PREVIOUS",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            side: BorderSide(color: themeColors['yellow'])),
+                        onPressed: () {
+                          final form = _formKey.currentState;
+                          if (form.validate()) {
+                            form.save();
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ClientAppDoulaQuestionsPage(
-                                        key: key, user: currentUser)));
-                      }
-                    },
-                    color: themeColors['yellow'],
-                    textColor: Colors.black,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['yellow'],
-                    child: Text(
-                      "NEXT",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                ]),
-            Spacer(),
-          ],
-        ),
-      )),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ClientAppDoulaQuestionsPage(
+                                            key: key, user: currentUser)));
+                          }
+                        },
+                        color: themeColors['yellow'],
+                        textColor: Colors.black,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['yellow'],
+                        child: Text(
+                          "NEXT",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                    ]),
+                Spacer(),
+              ],
+            ),
+          )),
     );
   }
 }
@@ -932,81 +995,81 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
       ),
       body: Center(
           child: Form(
-        key: _formKey,
-        autovalidate: false,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Spacer(),
-            Text(
-              'Photo Release',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['emoryBlue'],
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
-            ),
-            Spacer(),
-            Container(
-              width: 250,
-              child: LinearProgressIndicator(
-                backgroundColor: themeColors['skyBlue'],
-                valueColor:
+            key: _formKey,
+            autovalidate: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Spacer(),
+                Text(
+                  'Photo Release',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['emoryBlue'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                ),
+                Spacer(),
+                Container(
+                  width: 250,
+                  child: LinearProgressIndicator(
+                    backgroundColor: themeColors['skyBlue'],
+                    valueColor:
                     AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
-                value: 1,
-              ),
-            ),
-            Spacer(),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(color: themeColors['lightBlue'])),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: themeColors['lightBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['lightBlue'],
-                    child: Text(
-                      "PREVIOUS",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
+                    value: 1,
                   ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(color: themeColors['yellow'])),
-                    onPressed: () {
-                      final form = _formKey.currentState;
-                      if (form.validate()) {
-                        form.save();
+                ),
+                Spacer(),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            side: BorderSide(color: themeColors['lightBlue'])),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        color: themeColors['lightBlue'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['lightBlue'],
+                        child: Text(
+                          "PREVIOUS",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            side: BorderSide(color: themeColors['yellow'])),
+                        onPressed: () {
+                          final form = _formKey.currentState;
+                          if (form.validate()) {
+                            form.save();
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClientAppConfirmationPage(
-                                    key: key, user: currentUser)));
-                      }
-                    },
-                    color: themeColors['yellow'],
-                    textColor: Colors.black,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['yellow'],
-                    child: Text(
-                      "NEXT",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                ]),
-            Spacer(),
-          ],
-        ),
-      )),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ClientAppConfirmationPage(
+                                        key: key, user: currentUser)));
+                          }
+                        },
+                        color: themeColors['yellow'],
+                        textColor: Colors.black,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['yellow'],
+                        child: Text(
+                          "NEXT",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                    ]),
+                Spacer(),
+              ],
+            ),
+          )),
     );
   }
 }

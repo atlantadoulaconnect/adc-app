@@ -58,81 +58,99 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
               key: _formKey,
               autovalidate: false,
               child: ListView(
-                //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    'Personal Information',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      color: themeColors['emoryBlue'],
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
-                  ),
-                  Container(
-                    width: 250,
-                    child: LinearProgressIndicator(
-                      backgroundColor: themeColors['skyBlue'],
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          themeColors['mediumBlue']),
-                      value: 0,
-                    ),
-                  ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Name',
-                        prefixIcon: Icon(Icons.person),
+
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Personal Information',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          color: themeColors['emoryBlue'],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                        ),
                       ),
-                      controller: _nameController,
-                      validator: nameValidator,
-                    ),
                   ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      keyboardType: TextInputType.datetime,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Birthday (MM/YYYY)',
-                          prefixIcon: Icon(Icons.cake),
-                          suffixIcon: Icon(Icons.calendar_today)),
-                      controller: _bdayController,
-                      validator: bdayValidator,
-                    ),
-                  ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Phone',
-                        prefixIcon: Icon(Icons.phone),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 250,
+                        child: LinearProgressIndicator(
+                          backgroundColor: themeColors['skyBlue'],
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              themeColors['mediumBlue']),
+                          value: 0,
+                        ),
                       ),
-                      controller: _phoneController,
-                      validator: phoneValidator,
-                    ),
                   ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Phone 2 (Optional)',
-                        prefixIcon: Icon(Icons.phone),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Name',
+                            prefixIcon: Icon(Icons.person),
+                          ),
+                          controller: _nameController,
+                          validator: nameValidator,
+                        ),
                       ),
-                      controller: _altPhoneController,
-                      validator: altPhoneValidator,
-                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          keyboardType: TextInputType.datetime,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Birthday (MM/YYYY)',
+                              prefixIcon: Icon(Icons.cake),
+                              suffixIcon: Icon(Icons.calendar_today)),
+                          controller: _bdayController,
+                          validator: bdayValidator,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Phone',
+                            prefixIcon: Icon(Icons.phone),
+                          ),
+                          controller: _phoneController,
+                          validator: phoneValidator,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Phone 2 (Optional)',
+                            prefixIcon: Icon(Icons.phone),
+                          ),
+                          controller: _altPhoneController,
+                          validator: altPhoneValidator,
+                        ),
+                      ),
                   ),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
@@ -747,9 +765,38 @@ class _ClientAppPreviousBirthInfoPageState
 
     super.initState();
   }
+  //drop down list
+  List<DropdownMenuItem<String>> birthCount = [];
+  String selectedBirthCount;
+  void loadData() {
+     birthCount = [];
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('0'),
+       value: 'Zero',
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('1'),
+       value: 'One',
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('2'),
+       value: 'Two',
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('3'),
+       value: 'Three',
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('4'),
+       value: 'Four',
+     ));
+
+   }
+
 
   @override
   Widget build(BuildContext context) {
+    loadData();
     return Scaffold(
       appBar: AppBar(
         title: Text("Request a Doula"),
@@ -784,7 +831,37 @@ class _ClientAppPreviousBirthInfoPageState
                       ),
                     ),
                 ),
-                //TODO add the content
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Number of previous live births:',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                // drop down menu for births
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButton(
+                      value: selectedBirthCount,
+                      items: birthCount,
+                      hint: new Text('Previous Births'),
+                      isExpanded: true,
+                      onChanged: (value) {
+                        selectedBirthCount = value;
+                        setState(() {
+
+                        });
+                      },
+                    ),
+
+                  )
+
+                ),
+
 
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

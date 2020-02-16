@@ -945,6 +945,7 @@ class _ClientAppPreviousBirthInfoPageState
 
    }
   int pretermValue = 1;
+  int previousTwinsOrTriplets = 1;
   int lowBirthWeightValue = 1;
   bool vaginalBirth = false, cesarean = false, vbac = false;
 
@@ -1186,6 +1187,50 @@ class _ClientAppPreviousBirthInfoPageState
                   ),
                 ),
 
+                //previous twins or triplets
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'Have you previously had twins or triplets? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: previousTwinsOrTriplets,
+                          onChanged: (T) {
+                            setState(() {
+                              previousTwinsOrTriplets = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: 2,
+                          groupValue: previousTwinsOrTriplets,
+                          onChanged: (T) {
+                            setState(() {
+                              previousTwinsOrTriplets = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
 
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1282,6 +1327,9 @@ class _ClientAppDoulaQuestionsPageState
     super.initState();
   }
 
+  int meetDoula = 1;
+  int doulaVisit = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1306,7 +1354,7 @@ class _ClientAppDoulaQuestionsPageState
                     ),
                   ),
                 ),
-              Padding(
+                Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                       width: 250,
@@ -1318,6 +1366,94 @@ class _ClientAppDoulaQuestionsPageState
                       ),
                     ),
               ),
+
+                //meet yor doula?
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'Would you like to meet your doula in person before delivery? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: meetDoula,
+                          onChanged: (T) {
+                            setState(() {
+                              meetDoula = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: 2,
+                          groupValue: meetDoula,
+                          onChanged: (T) {
+                            setState(() {
+                              meetDoula = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
+                //doula home visit?
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'Would you like your doula to make a home visit after delivery? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: doulaVisit,
+                          onChanged: (T) {
+                            setState(() {
+                              doulaVisit = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: 2,
+                          groupValue: doulaVisit,
+                          onChanged: (T) {
+                            setState(() {
+                              doulaVisit = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[

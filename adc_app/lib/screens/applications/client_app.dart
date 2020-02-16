@@ -853,9 +853,14 @@ class _ClientAppPreviousBirthInfoPageState
                       onChanged: (value) {
                         selectedBirthCount = value;
                         setState(() {
-
+//                          if (selectedBirthCount == '0') {
+//
+//                          }
                         });
                       },
+
+
+
                     ),
 
                   )

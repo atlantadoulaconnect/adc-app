@@ -34,13 +34,16 @@ class _LoginPageState extends State<LoginPage> {
         ),
         body: Container(
             padding: const EdgeInsets.all(20.0),
-            child: Column(children: <Widget>[
-              Text("Welcome to Atlanta Doula Connect"),
+            child: ListView(children: <Widget>[
+              Text("Welcome to Atlanta Doula Connect",
+                  textAlign: TextAlign.center),
               _loginForm(),
               SizedBox(
                 height: 20,
               ),
-              Text("Don't have an account?"),
+              Text("Don't have an account?",
+                  textAlign: TextAlign.center
+              ),
               SizedBox(
                 height: 5,
               ),

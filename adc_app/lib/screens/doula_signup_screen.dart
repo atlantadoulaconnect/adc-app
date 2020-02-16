@@ -19,6 +19,8 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
   TextEditingController _pwdInputController;
   TextEditingController _confirmPwdInputController;
 
+  bool _passwordVisible;
+
   String userId;
   Key key;
 
@@ -27,6 +29,8 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
     _emailInputController = new TextEditingController();
     _pwdInputController = new TextEditingController();
     _confirmPwdInputController = new TextEditingController();
+
+    _passwordVisible = false;
 
     key = widget.key;
     super.initState();
@@ -89,11 +93,29 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
             ),
             TextFormField(
               decoration: InputDecoration(
-                  labelText: "Password*",
-                  hintText: "********",
-                  icon: new Icon(Icons.lock, color: themeColors["coolGray5"])),
+                labelText: "Password*",
+                hintText: "********",
+                icon: new Icon(Icons.lock, color: themeColors["coolGray5"]),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                      _passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: _passwordVisible
+                          ? themeColors["black"]
+                          : themeColors["coolGray5"]
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisible = !_passwordVisible;
+                    });
+                  },
+                ),
+
+              ),
               controller: _pwdInputController,
-              obscureText: true,
+              obscureText: !_passwordVisible,
               validator: pwdValidator,
             ),
             TextFormField(

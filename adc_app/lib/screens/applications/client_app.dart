@@ -1367,7 +1367,7 @@ class _ClientAppDoulaQuestionsPageState
                     ),
               ),
 
-                //meet yor doula?
+                //meet your doula?
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: Text(
@@ -1534,6 +1534,8 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
     super.initState();
   }
 
+  bool statementAgree = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1596,9 +1598,20 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text('CHECKBOX GOES HERE'
-                  ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: <Widget>[
+                        Checkbox(
+                          value: statementAgree,
+                          onChanged: (bool value) {
+                            setState(() {
+                              statementAgree = value;
+                            });
+                          },
+                        ),
+                        Text("I agree to the statements above (optional) ")
+                      ],
+                    ),
                 ),
 
                 Row(

@@ -75,6 +75,17 @@ class _HomePageState extends State<HomePage> {
               ),
               ListTile(
                 leading: Icon(
+                  IconData(57545, fontFamily: 'MaterialIcons'),
+                  color: Colors.white,
+                ),
+                title: Text('Messages',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                onTap: () => Navigator.pushNamed(context, '/recentMessages'),
+              ),
+              ListTile(
+                leading: Icon(
                   IconData(59448, fontFamily: 'MaterialIcons'),
                   color: Colors.white,
                 ),

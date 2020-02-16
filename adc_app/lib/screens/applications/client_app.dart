@@ -829,8 +829,6 @@ class _ClientAppCurrentBirthInfoPageState
 
 
                 ),
-
-
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -921,6 +919,7 @@ class _ClientAppPreviousBirthInfoPageState
   //drop down list
   List<DropdownMenuItem<String>> birthCount = [];
   String selectedBirthCount;
+
   void loadData() {
      birthCount = [];
      birthCount.add(new DropdownMenuItem(
@@ -945,11 +944,15 @@ class _ClientAppPreviousBirthInfoPageState
      ));
 
    }
-
+  int pretermValue = 1;
+  int lowBirthWeightValue = 1;
+  bool vaginalBirth = false, cesarean = false, vbac = false;
 
   @override
   Widget build(BuildContext context) {
+
     loadData();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Request a Doula"),
@@ -1004,20 +1007,183 @@ class _ClientAppPreviousBirthInfoPageState
                       hint: new Text('Previous Births'),
                       isExpanded: true,
                       onChanged: (value) {
-                        selectedBirthCount = value;
+                        //print("value: $value");
                         setState(() {
-//                          if (selectedBirthCount == '0') {
-//
-//                          }
+                          selectedBirthCount = value;
+                          //print("birth count: " + selectedBirthCount);
+                          //if (selectedBirthCount.contains('1', 0)) {
+                            //DisplayPreviousBirthInfo();
+                          //}
+
                         });
                       },
-
-
 
                     ),
 
                   )
 
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Were any of your previous life births: ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+
+                //preterm
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+                  child: Text(
+                    'Preterm: ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: pretermValue,
+                          onChanged: (T) {
+                            setState(() {
+                              pretermValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: 2,
+                          groupValue: pretermValue,
+                          onChanged: (T) {
+                            setState(() {
+                              pretermValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
+                //low birth weight
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+                  child: Text(
+                    'Low Birth Weight (< 2,500g):',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: lowBirthWeightValue,
+                          onChanged: (T) {
+                            setState(() {
+                              lowBirthWeightValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: 2,
+                          groupValue: lowBirthWeightValue,
+                          onChanged: (T) {
+                            setState(() {
+                              lowBirthWeightValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
+                //Previous Birth Types
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Previous Birth Types (check all that apply): ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Vaginal Birth"),
+                          Checkbox(
+                            value: vaginalBirth,
+                            onChanged: (bool value) {
+                              setState(() {
+                                vaginalBirth = value;
+                              });
+                            },
+                          )
+                        ],
+                      ),
+
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Cesaerean"),
+                          Checkbox(
+                            value: cesarean,
+                            onChanged: (bool value) {
+                              setState(() {
+                                cesarean = value;
+                              });
+                            },
+                          )
+                        ],
+                      ),
+
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("VBAC"),
+                          Checkbox(
+                            value: vbac,
+                            onChanged: (bool value) {
+                              setState(() {
+                                vbac = value;
+                              });
+                            },
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
 
 
@@ -1070,6 +1236,19 @@ class _ClientAppPreviousBirthInfoPageState
               ],
             ),
           )),
+    );
+  }
+}
+
+//TODO figure out how to call this method in a loop for previous birth info
+class DisplayPreviousBirthInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+        padding: const EdgeInsets.all(8),
+        children: <Widget>[
+          Text("Trying This")
+    ],
     );
   }
 }

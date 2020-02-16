@@ -544,8 +544,65 @@ class _ClientAppCurrentBirthInfoPageState
     super.initState();
   }
 
+  //drop down list
+  List<DropdownMenuItem<String>> birthType = [];
+  String selectedBirthType;
+
+  List<DropdownMenuItem<String>> birthLocation = [];
+  String selectedBirthLocation;
+  void loadData() {
+    birthType = [];
+    birthType.add(new DropdownMenuItem(
+      child: new Text('Singleton'),
+      value: '1',
+    ));
+    birthType.add(new DropdownMenuItem(
+      child: new Text('Twins'),
+      value: '2',
+    ));
+    birthType.add(new DropdownMenuItem(
+      child: new Text('Triplets'),
+      value: '3',
+    ));
+
+    birthLocation = [];
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Northside'),
+      value: '0',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Emory Decatur'),
+      value: '1',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Grady'),
+      value: '2',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('A Birthing Center'),
+      value: '3',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('At Home'),
+      value: '4',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('No plans'),
+      value: '5',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Other (please specify below)'),
+      value: '6',
+    ));
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    birthType = [];
+    birthLocation = [];
+    loadData();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Request a Doula"),
@@ -555,7 +612,6 @@ class _ClientAppCurrentBirthInfoPageState
             key: _formKey,
             autovalidate: false,
             child: ListView(
-              //mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -569,6 +625,7 @@ class _ClientAppCurrentBirthInfoPageState
                       ),
                     ),
                 ),
+                // progress bar
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -581,6 +638,7 @@ class _ClientAppCurrentBirthInfoPageState
                       ),
                     ),
                 ),
+                // due date
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -604,40 +662,125 @@ class _ClientAppCurrentBirthInfoPageState
                     ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      // TODO: change to a dropdown
-                      width: 300.0,
-                      child: TextFormField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Planned Birth Location',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
-                        controller: _birthLocController,
-                        validator: (val) {
-                          if (val.isEmpty) {
-                            return "Please enter where you plan to give birth.";
-                          }
-                          return null;
-                        },
-                      ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Select your planned birth location:',
+                    style: TextStyle(
+                      fontSize: 16,
                     ),
+                  ),
                 ),
+                // drop down menu for birth location
                 Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 300.0,
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Birth Type (Singleton, Twins, Triplets)',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
+                    padding: const EdgeInsets.all(10),
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton(
+                        value: selectedBirthLocation,
+                        items: birthLocation,
+                        hint: new Text('Birth Location'),
+                        isExpanded: true,
+                        onChanged: (value) {
+                          selectedBirthLocation = value;
+                          setState(() {
+//                          if (selectedBirthCount == '0') {
+//
+//                          }
+                          });
+                        },
+
+
+
+                      ),
+
+                    )
+
+                ),
+                //if other, please specify
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 200.0,
+                    child: TextField(
+                      autocorrect: false,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'If other, please specify',
                       ),
                     ),
+                  ),
+                ),
+//                Padding(
+//                    padding: const EdgeInsets.all(8.0),
+//                    child: Container(
+//                      // TODO: change to a dropdown
+//                      width: 300.0,
+//                      child: TextFormField(
+//                        autocorrect: false,
+//                        decoration: InputDecoration(
+//                          border: OutlineInputBorder(),
+//                          labelText: 'Planned Birth Location',
+//                          prefixIcon: Icon(Icons.local_hospital),
+//                        ),
+//                        controller: _birthLocController,
+//                        validator: (val) {
+//                          if (val.isEmpty) {
+//                            return "Please enter where you plan to give birth.";
+//                          }
+//                          return null;
+//                        },
+//                      ),
+//                    ),
+//                ),
+//                Padding(
+//                    padding: const EdgeInsets.all(8.0),
+//                    child: Container(
+//                      width: 300.0,
+//                      child: TextField(
+//                        autocorrect: false,
+//                        decoration: InputDecoration(
+//                          border: OutlineInputBorder(),
+//                          labelText: 'Birth Type (Singleton, Twins, Triplets)',
+//                          prefixIcon: Icon(Icons.local_hospital),
+//                        ),
+//                      ),
+//                    ),
+//                ),
+//              birth type text
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Select your birth type:',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                // drop down menu for birth type
+                Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton(
+                        value: selectedBirthType,
+                        items: birthType,
+                        hint: new Text('Birth Type'),
+                        isExpanded: true,
+                        onChanged: (value) {
+                          selectedBirthType = value;
+                          setState(() {
+//                          if (selectedBirthCount == '0') {
+//
+//                          }
+                          });
+                        },
+
+
+
+                      ),
+
+                    )
+
                 ),
                 Padding(
                     padding: const EdgeInsets.all(8.0),

@@ -544,12 +544,15 @@ class _ClientAppCurrentBirthInfoPageState
     super.initState();
   }
 
+
   //drop down list
   List<DropdownMenuItem<String>> birthType = [];
   String selectedBirthType;
 
   List<DropdownMenuItem<String>> birthLocation = [];
   String selectedBirthLocation;
+  int epiduralValue = 1;
+  int cSectionValue = 1;
   void loadData() {
     birthType = [];
     birthType.add(new DropdownMenuItem(
@@ -596,6 +599,7 @@ class _ClientAppCurrentBirthInfoPageState
     ));
 
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -710,43 +714,6 @@ class _ClientAppCurrentBirthInfoPageState
                     ),
                   ),
                 ),
-//                Padding(
-//                    padding: const EdgeInsets.all(8.0),
-//                    child: Container(
-//                      // TODO: change to a dropdown
-//                      width: 300.0,
-//                      child: TextFormField(
-//                        autocorrect: false,
-//                        decoration: InputDecoration(
-//                          border: OutlineInputBorder(),
-//                          labelText: 'Planned Birth Location',
-//                          prefixIcon: Icon(Icons.local_hospital),
-//                        ),
-//                        controller: _birthLocController,
-//                        validator: (val) {
-//                          if (val.isEmpty) {
-//                            return "Please enter where you plan to give birth.";
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                    ),
-//                ),
-//                Padding(
-//                    padding: const EdgeInsets.all(8.0),
-//                    child: Container(
-//                      width: 300.0,
-//                      child: TextField(
-//                        autocorrect: false,
-//                        decoration: InputDecoration(
-//                          border: OutlineInputBorder(),
-//                          labelText: 'Birth Type (Singleton, Twins, Triplets)',
-//                          prefixIcon: Icon(Icons.local_hospital),
-//                        ),
-//                      ),
-//                    ),
-//                ),
-//              birth type text
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -786,42 +753,83 @@ class _ClientAppCurrentBirthInfoPageState
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Are you planning on having an epidural?',
-                    ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 300.0,
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Yes/No',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
+                ),
+                Row(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 1,
+                      groupValue: epiduralValue,
+                      onChanged: (T) {
+                        setState(() {
+                          epiduralValue = T;
+                        });
+                      },
+                    ),
+                    Text(
+                      'Yes'
+                    ),
+                    Radio(
+                      value: 2,
+                      groupValue: epiduralValue,
+                      onChanged: (T) {
+                        setState(() {
+                          epiduralValue = T;
+                        });
+                      },
+                    ),
+                    Text(
+                        'No'
+                    ),
+                    ]
+
+
                 ),
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Are you expecting to have a caesarean secction (C-Section)?',
-                    ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 300.0,
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Yes/No',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
+                      'Are you expecting to have a caesarean section (C-Section)?',
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
                 ),
+                Row(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Radio(
+                        value: 1,
+                        groupValue: cSectionValue,
+                        onChanged: (T) {
+                          setState(() {
+                            cSectionValue = T;
+                          });
+                        },
+                      ),
+                      Text(
+                          'Yes'
+                      ),
+                      Radio(
+                        value: 2,
+                        groupValue: cSectionValue,
+                        onChanged: (T) {
+                          setState(() {
+                            cSectionValue = T;
+                          });
+                        },
+                      ),
+                      Text(
+                          'No'
+                      ),
+                    ]
+
+
+                ),
+
 
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -878,6 +886,8 @@ class _ClientAppCurrentBirthInfoPageState
           )),
     );
   }
+
+
 }
 
 class ClientAppPreviousBirthInfoPage extends StatefulWidget {

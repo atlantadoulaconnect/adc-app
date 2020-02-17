@@ -21,10 +21,14 @@ class _DoulaAppHomePage extends State<DoulaAppPage> {
   Key key;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // controllers
+  TextEditingController _nameController;
+  TextEditingController _bdayController;
+  TextEditingController _phoneController;
 
   @override
   void initState() {
     currentUser = widget.user;
+    key = widget.key;
     print("currentUser initState doula app state: \n${currentUser.toString()}");
 
     super.initState();
@@ -76,6 +80,7 @@ class _DoulaAppHomePage extends State<DoulaAppPage> {
                     child: TextField(
                       autocorrect: false,
                       textCapitalization: TextCapitalization.words,
+                      controller: _nameController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Name',
@@ -90,6 +95,7 @@ class _DoulaAppHomePage extends State<DoulaAppPage> {
                     child: TextField(
                       autocorrect: false,
                       keyboardType: TextInputType.datetime,
+                      controller: _bdayController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Birthday (MM/DD/YYYY)',
@@ -104,6 +110,7 @@ class _DoulaAppHomePage extends State<DoulaAppPage> {
                     child: TextField(
                       autocorrect: false,
                       keyboardType: TextInputType.phone,
+                      controller: _phoneController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Phone',
@@ -149,10 +156,20 @@ class _DoulaAppHomePage extends State<DoulaAppPage> {
                         borderRadius: new BorderRadius.circular(10.0),
                         side: BorderSide(color: themeColors['yellow'])),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(
-                          builder: (context) => DoulaAppPage2(
-                              key: key, user: currentUser)));
+                      final form = _formKey.currentState;
+                      if (form.validate()) {
+                        form.save();
+
+                        currentUser.name = _nameController.toString().trim();
+                        currentUser.bday = _bdayController.toString().trim();
+                        currentUser.phone = _phoneController.toString().trim();
+
+                        Navigator.push(context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DoulaAppPage2(
+                                        key: key, user: currentUser)));
+                      }
                     },
                     color: themeColors['yellow'],
                     textColor: Colors.white,

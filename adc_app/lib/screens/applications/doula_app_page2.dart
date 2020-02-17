@@ -21,6 +21,7 @@ class _DoulaAppPage2 extends State<DoulaAppPage2> {
   @override
   void initState() {
     currentUser = widget.user;
+    key = widget.key;
     print("currentUser initState state: \n${currentUser.toString()}");
 
     super.initState();
@@ -36,6 +37,8 @@ class _DoulaAppPage2 extends State<DoulaAppPage2> {
       ),
       body: Center(
          child: Form(
+           key: _formKey,
+           autovalidate: false,
            child: ListView(
             children: <Widget>[
               Padding(
@@ -119,11 +122,10 @@ class _DoulaAppPage2 extends State<DoulaAppPage2> {
                       borderRadius: new BorderRadius.circular(10.0),
                       side: BorderSide(color: themeColors['yellow'])),
 
-                  //TODO form validation
                   onPressed: () {
-//                    final form = _formKey.currentState;
-//                    if (form.validate()) {
-//                      form.save();
+                    final form = _formKey.currentState;
+                    if (form.validate()) {
+                      form.save();
 
                       currentUser.bio = shortBio.toString().trim();
 
@@ -131,7 +133,7 @@ class _DoulaAppPage2 extends State<DoulaAppPage2> {
                           MaterialPageRoute(
                               builder: (context) => DoulaAppPage3(
                                   key: key, user: currentUser)));
-                    //}
+                    }
                   },
 
                   color: themeColors['yellow'],

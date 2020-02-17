@@ -1,3 +1,4 @@
+import 'package:adc_app/screens/applications/doula_app_confirmation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/models/doula.dart';
@@ -22,6 +23,7 @@ class _DoulaAppPage5 extends State<DoulaAppPage5> {
   @override
   void initState() {
     currentUser = widget.user;
+    key = widget.key;
     print("currentUser initState state: \n${currentUser.toString()}");
 
     super.initState();
@@ -128,7 +130,7 @@ class _DoulaAppPage5 extends State<DoulaAppPage5> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(
-                            builder: (context) => DoulaAppCompletionPage(
+                            builder: (context) => DoulaAppConfirmationPage(
                                 key: key, user: currentUser)));
                   },
                   color: themeColors['yellow'],
@@ -136,7 +138,7 @@ class _DoulaAppPage5 extends State<DoulaAppPage5> {
                   padding: EdgeInsets.all(15.0),
                   splashColor: themeColors['yellow'],
                   child: Text(
-                    "FINISH",
+                    "Next",
                     style: TextStyle(
                       fontSize: 20.0,
                       color: themeColors['black'],

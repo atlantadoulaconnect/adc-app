@@ -1,5 +1,7 @@
+import 'package:adc_app/screens/home_screen.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RecentMessagesPage extends StatefulWidget {
   @override
@@ -11,6 +13,8 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
   void initState() {
     super.initState();
   }
+
+  final MenuMaker _myMenuMaker = MenuMaker();
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +118,32 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
         ),
       );
     }
+    final number = "911";
+    contactCards.add(Spacer());
+    contactCards.add(
+      Padding(
+        padding: EdgeInsets.only(bottom: 35.0),
+        child: Container(
+          height: 60,
+          child: MaterialButton(
+            onPressed: () => launch("tel:$number"),
+            color: themeColors["yellow"],
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(10.0),
+                side: BorderSide(color: themeColors['yellow'])
+            ),
+            child: Text(
+              "CALL 911",
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: themeColors["emoryBlue"],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
     return Scaffold(
         appBar: AppBar(
           title: Text('Recent Messages'),
@@ -131,6 +161,7 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
             ),
           ],
         ),
+        drawer: _myMenuMaker.createMenu(context),
         body: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
             child: Column(

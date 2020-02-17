@@ -3,6 +3,8 @@ import 'package:adc_app/theme/colors.dart';
 import 'package:calendarro/calendarro.dart';
 import 'package:adc_app/models/doula.dart';
 
+import 'doula_app_page5.dart';
+
 class DoulaAppPage4 extends StatefulWidget {
   Doula user;
   DoulaAppPage4({Key key, @required this.user}) : super(key: key) {
@@ -14,6 +16,7 @@ class DoulaAppPage4 extends StatefulWidget {
 
 class _DoulaAppPage4 extends State<DoulaAppPage4> {
   Doula currentUser;
+  Key key;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String monthYear;
 
@@ -127,7 +130,10 @@ class _DoulaAppPage4 extends State<DoulaAppPage4> {
                       borderRadius: new BorderRadius.circular(10.0),
                       side: BorderSide(color: themeColors['yellow'])),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/doulaAppPage5');
+                    Navigator.push(context,
+                        MaterialPageRoute(
+                            builder: (context) => DoulaAppPage5(
+                                key: key, user: currentUser)));
                   },
                   color: themeColors['yellow'],
                   textColor: Colors.white,

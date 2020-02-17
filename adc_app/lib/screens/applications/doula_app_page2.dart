@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/models/doula.dart';
 
+import 'doula_app_page3.dart';
+
 class DoulaAppPage2 extends StatefulWidget {
   Doula user;
   DoulaAppPage2({Key key, @required this.user}) : super(key: key) {
@@ -13,6 +15,7 @@ class DoulaAppPage2 extends StatefulWidget {
 
 class _DoulaAppPage2 extends State<DoulaAppPage2> {
   Doula currentUser;
+  Key key;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -23,6 +26,8 @@ class _DoulaAppPage2 extends State<DoulaAppPage2> {
     super.initState();
   }
 
+  TextEditingController shortBio;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,65 +35,68 @@ class _DoulaAppPage2 extends State<DoulaAppPage2> {
         title: Text('Doula Application'),
       ),
       body: Center(
-          child: Form(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+         child: Form(
+           child: ListView(
             children: <Widget>[
-              Spacer(
-                flex: 2,
-              ),
-              Text(
-                'Short Bio',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['emoryBlue'],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
-              ),
-              Spacer(),
-              Container(
-                width: 250,
-                child: LinearProgressIndicator(
-                  backgroundColor: themeColors['skyBlue'],
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
-                  value: 0.4,
-                ),
-              ),
-              Spacer(
-                flex: 3,
-              ),
-              Text(
-                'Please enter a brief description that your \nclients will be able to see',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-              Spacer(),
-              Container(
-                width: 300.0,
-                height: 300.0,
-                child: TextField(
-                  minLines: 12,
-                  maxLines: 12,
-                  autocorrect: true,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '',
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Short Bio',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['emoryBlue'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
                   ),
                 ),
               ),
-              Spacer(
-                flex: 2,
+              Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 250,
+                    child: LinearProgressIndicator(
+                      backgroundColor: themeColors['skyBlue'],
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                      value: 0.4,
+                    ),
+                  ),
               ),
-              Row(children: <Widget>[
-                Spacer(
-                  flex: 2,
-                ),
+              Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Please enter a brief description that your \nclients will be able to see',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+              ),
+              Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 300.0,
+                    height: 300.0,
+                    child: TextField(
+                      minLines: 12,
+                      maxLines: 12,
+                      autocorrect: true,
+                      controller: shortBio,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: '',
+                      ),
+                    ),
+                  ),
+
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+
                 RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
@@ -105,16 +113,27 @@ class _DoulaAppPage2 extends State<DoulaAppPage2> {
                     style: TextStyle(fontSize: 20.0),
                   ),
                 ),
-                Spacer(
-                  flex: 2,
-                ),
+
                 RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
                       side: BorderSide(color: themeColors['yellow'])),
+
+                  //TODO form validation
                   onPressed: () {
-                    Navigator.pushNamed(context, '/doulaAppPage3');
+//                    final form = _formKey.currentState;
+//                    if (form.validate()) {
+//                      form.save();
+
+                      currentUser.bio = shortBio.toString().trim();
+
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => DoulaAppPage3(
+                                  key: key, user: currentUser)));
+                    //}
                   },
+
                   color: themeColors['yellow'],
                   textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
@@ -127,13 +146,7 @@ class _DoulaAppPage2 extends State<DoulaAppPage2> {
                     ),
                   ),
                 ),
-                Spacer(
-                  flex: 2,
-                ),
               ]),
-              Spacer(
-                flex: 3,
-              ),
             ]),
       )),
     );

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/models/doula.dart';
 
+import 'doula_app_completion_page.dart';
+
 class DoulaAppPage5 extends StatefulWidget {
   Doula user;
   DoulaAppPage5({Key key, @required this.user}) : super(key: key) {
@@ -13,6 +15,7 @@ class DoulaAppPage5 extends StatefulWidget {
 
 class _DoulaAppPage5 extends State<DoulaAppPage5> {
   Doula currentUser;
+  Key key;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool photoReleasePermission = false;
 
@@ -123,7 +126,10 @@ class _DoulaAppPage5 extends State<DoulaAppPage5> {
                       borderRadius: new BorderRadius.circular(10.0),
                       side: BorderSide(color: themeColors['yellow'])),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/doulaAppCompletionPage');
+                    Navigator.push(context,
+                        MaterialPageRoute(
+                            builder: (context) => DoulaAppCompletionPage(
+                                key: key, user: currentUser)));
                   },
                   color: themeColors['yellow'],
                   textColor: Colors.white,

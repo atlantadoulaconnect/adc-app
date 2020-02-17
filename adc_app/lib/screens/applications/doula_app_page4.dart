@@ -5,6 +5,8 @@ import 'package:adc_app/models/doula.dart';
 
 import 'doula_app_page5.dart';
 
+//Availability Page
+
 class DoulaAppPage4 extends StatefulWidget {
   Doula user;
   DoulaAppPage4({Key key, @required this.user}) : super(key: key) {
@@ -45,71 +47,72 @@ class _DoulaAppPage4 extends State<DoulaAppPage4> {
         child: Form(
         key: _formKey,
         autovalidate: false,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
               children: <Widget>[
-                Spacer(
-                  flex: 2,
-                ),
-                Text(
-                  'Availability',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Availability',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+
+                      fontSize: 25,
+                    ),
                   ),
                 ),
-                Spacer(),
-                Container(
-                  width: 250,
-                  child: LinearProgressIndicator(
-                    backgroundColor: themeColors['skyBlue'],
-                    valueColor:
+                Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 250,
+                      child: LinearProgressIndicator(
+                        backgroundColor: themeColors['skyBlue'],
+                        valueColor:
                         AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
-                    value: 0.8,
-                  ),
+                        value: 0.8,
+                      ),
+                    ),
                 ),
-                Spacer(
-                  flex: 2,
+                Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Please select the dates that you \nare available to serve as a doula:',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
                 ),
-                Text(
-                  'Please select the dates that you \nare available to serve as a doula:',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                Spacer(
-                  flex: 2,
-                ),
+
   //              Text(
   //                monthYear,
   //              ),
-                Container(
-                  height: 260,
-                  width: 300,
-                  child: Calendarro(
-                    displayMode: DisplayMode.MONTHS,
-                    selectionMode: SelectionMode.MULTI,
-                    startDate: DateTime.now()
-                        .subtract(Duration(days: DateTime.now().day - 1)),
-                    endDate: DateTime.now().add(Duration(days: 1000)),
-  //                  onTap: (date) {
-  //                    setState(() {
-  //                      monthYear = date.toString();
-  //                    });
-  //                  }
-                  ),
+                Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 260,
+                      width: 300,
+                      child: Calendarro(
+                        displayMode: DisplayMode.MONTHS,
+                        selectionMode: SelectionMode.MULTI,
+                        startDate: DateTime.now()
+                            .subtract(Duration(days: DateTime.now().day - 1)),
+                        endDate: DateTime.now().add(Duration(days: 1000)),
+                        //                  onTap: (date) {
+                        //                    setState(() {
+                        //                      monthYear = date.toString();
+                        //                    });
+                        //                  }
+                      ),
+                    ),
                 ),
-                Spacer(
-                  flex: 2,
-                ),
-                Row(children: <Widget>[
-                  Spacer(
-                    flex: 2,
-                  ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
                   RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(10.0),
@@ -125,9 +128,6 @@ class _DoulaAppPage4 extends State<DoulaAppPage4> {
                       "PREVIOUS",
                       style: TextStyle(fontSize: 20.0),
                     ),
-                  ),
-                  Spacer(
-                    flex: 2,
                   ),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
@@ -159,13 +159,7 @@ class _DoulaAppPage4 extends State<DoulaAppPage4> {
                       ),
                     ),
                   ),
-                  Spacer(
-                    flex: 2,
-                  ),
                 ]),
-                Spacer(
-                  flex: 2,
-                ),
               ]),
       ),
       ),

@@ -1,12 +1,12 @@
 import 'package:adc_app/theme/colors.dart';
 import 'package:flutter/material.dart';
 
-class RecentMessagesPage extends StatefulWidget {
+class ContactsPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _RecentMessagesPageState();
+  State<StatefulWidget> createState() => new _ContactsPageState();
 }
 
-class _RecentMessagesPageState extends State<RecentMessagesPage> {
+class _ContactsPageState extends State<ContactsPage> {
   @override
   void initState() {
     super.initState();
@@ -18,16 +18,19 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
     final contactCards = <Widget>[];
     for (var i = 0; i < recentContacts.length; i++) {
       contactCards.add(Padding(
-        padding: EdgeInsets.only(bottom: 10.0),
+        padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 15.0),
         child: Container(
           height: 100,
           decoration: BoxDecoration(
-              border: Border.all(
+            border: Border.all(
                 width: 2.0,
-              )
+              ),
+            borderRadius: BorderRadius.all(
+              const Radius.circular(20.0)
+            ),
           ),
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Padding(
@@ -51,7 +54,7 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: 12.0),
+                  padding: EdgeInsets.only(left: 12, right: 20.0),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,39 +72,16 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
                             fontSize: 20,
                           ),
                         ),
-                        Text(
-                          "Recent message will be shown here",
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: themeColors["coolGray5"]
-                          ),
-                        ),
                       ]
                   ),
                 ),
+                Spacer(),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        width: 2.0,
-                        color: themeColors["black"],
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "2",
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: themeColors["black"]
-                        ),
-                      ),
-                    ),
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Icon(
+                    IconData(57545, fontFamily: 'MaterialIcons'),
+                    color: Colors.black,
+                    size: 40,
                   ),
                 ),
               ]),
@@ -111,29 +91,13 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
     }
     return Scaffold(
         appBar: AppBar(
-          title: Text('Recent Messages'),
-          actions: <Widget>[
-            Container(
-              width: 55,
-              child: MaterialButton(
-                onPressed: () => Navigator.pushNamed(context, '/contacts'),
-                child: Text(
-                  "+",
-                  style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
-                  ),
-                ),
-              ),
-            ),
-          ],
+          title: Text('Contacts'),
         ),
         body: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: contactCards,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: contactCards,
             )
         )
     );

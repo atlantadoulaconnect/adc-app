@@ -851,7 +851,6 @@ class _ClientAppCurrentBirthInfoPageState
                           final form = _formKey.currentState;
                           if (form.validate()) {
                             form.save();
-
                             currentUser.dueDate =
                                 _dueDateController.text.toString().trim();
                             currentUser.birthLocation =

@@ -4,6 +4,7 @@ import 'package:adc_app/models/client.dart';
 class Doula extends User {
   String bday;
   String bio;
+  String phone;
   bool certified;
   bool certInProgress;
   String certProgram;
@@ -16,6 +17,15 @@ class Doula extends User {
       : super(userid, userType, email) {
     this.availableDates = new List<String>();
     this.currentClients = new List<Client>();
+  }
+
+  //for confirmation page
+  String getYesOrNoFromBool(bool yesOrNo) {
+    if (yesOrNo == true) {
+      return "Yes";
+    } else {
+      return "No";
+    }
   }
 
   void addAvailableDate(String date) {

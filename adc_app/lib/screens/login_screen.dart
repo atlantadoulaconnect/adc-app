@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:adc_app/util/auth.dart';
 import 'dart:async';
+import 'package:adc_app/screens/home_screen.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,6 +21,8 @@ class _LoginPageState extends State<LoginPage> {
   bool _passwordVisible;
 
   String userId;
+
+  final MenuMaker _myMenuMaker = MenuMaker();
 
   @override
   initState() {
@@ -36,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
         appBar: AppBar(
           title: Text("Log In"),
         ),
+        drawer: _myMenuMaker.createMenu(context),
         body: Container(
             padding: const EdgeInsets.all(20.0),
             child: ListView(children: <Widget>[

@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/util/auth.dart';
 import 'package:adc_app/models/doula.dart';
+import 'package:adc_app/screens/home_screen.dart';
+
 
 class DoulaSignupPage extends StatefulWidget {
   DoulaSignupPage({Key key}) : super(key: key);
@@ -23,6 +25,8 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
 
   String userId;
   Key key;
+
+  final MenuMaker _myMenuMaker = MenuMaker();
 
   @override
   void initState() {
@@ -46,6 +50,7 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
         appBar: AppBar(
           title: Text("Apply to be an ADC Doula"),
         ),
+        drawer: _myMenuMaker.createMenu(context),
         body: Container(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(

@@ -8,6 +8,7 @@ import 'package:adc_app/screens/applications/test_app.dart';
 import 'package:adc_app/models/client.dart';
 import 'package:adc_app/screens/applications/client_app.dart';
 
+
 class ClientSignupPage extends StatefulWidget {
   ClientSignupPage({Key key}) : super(key: key);
 
@@ -26,6 +27,9 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
 
   String userId;
   Key key;
+
+  final MenuMaker _myMenuMaker = MenuMaker();
+
 
   @override
   void initState() {
@@ -50,6 +54,7 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
         appBar: AppBar(
           title: Text("Request a Doula"),
         ),
+        drawer: _myMenuMaker.createMenu(context),
         body: Container(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(

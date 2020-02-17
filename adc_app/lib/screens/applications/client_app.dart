@@ -530,14 +530,12 @@ class _ClientAppCurrentBirthInfoPageState
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // controllers
   TextEditingController _dueDateController;
-  TextEditingController _birthLocController;
 
   @override
   void initState() {
     currentUser = widget.user;
     key = widget.key;
     _dueDateController = new TextEditingController();
-    _birthLocController = new TextEditingController();
     print(
         "currentUser initState client app state: \n${currentUser.toString()}");
 
@@ -551,51 +549,51 @@ class _ClientAppCurrentBirthInfoPageState
 
   List<DropdownMenuItem<String>> birthLocation = [];
   String selectedBirthLocation;
-  int epiduralValue = 1;
-  int cSectionValue = 1;
+  bool epiduralValue;
+  bool cSectionValue;
   void loadData() {
     birthType = [];
     birthType.add(new DropdownMenuItem(
       child: new Text('Singleton'),
-      value: '1',
+      value: 'Singleton',
     ));
     birthType.add(new DropdownMenuItem(
       child: new Text('Twins'),
-      value: '2',
+      value: 'Twins',
     ));
     birthType.add(new DropdownMenuItem(
       child: new Text('Triplets'),
-      value: '3',
+      value: 'Triplets',
     ));
 
     birthLocation = [];
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Northside'),
-      value: '0',
+      value: 'Northside',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Emory Decatur'),
-      value: '1',
+      value: 'Emory Decatur',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Grady'),
-      value: '2',
+      value: 'Grady',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('A Birthing Center'),
-      value: '3',
+      value: 'A Birthing Center',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('At Home'),
-      value: '4',
+      value: 'At Home',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('No plans'),
-      value: '5',
+      value: 'No plans',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Other (please specify below)'),
-      value: '6',
+      value: 'Other',
     ));
 
   }
@@ -685,11 +683,10 @@ class _ClientAppCurrentBirthInfoPageState
                         hint: new Text('Birth Location'),
                         isExpanded: true,
                         onChanged: (value) {
-                          selectedBirthLocation = value;
+
                           setState(() {
-//                          if (selectedBirthCount == '0') {
-//
-//                          }
+                            selectedBirthLocation = value;
+
                           });
                         },
 
@@ -734,11 +731,9 @@ class _ClientAppCurrentBirthInfoPageState
                         hint: new Text('Birth Type'),
                         isExpanded: true,
                         onChanged: (value) {
-                          selectedBirthType = value;
                           setState(() {
-//                          if (selectedBirthCount == '0') {
-//
-//                          }
+                            selectedBirthType = value;
+
                           });
                         },
 
@@ -762,7 +757,7 @@ class _ClientAppCurrentBirthInfoPageState
                   //mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Radio(
-                      value: 1,
+                      value: true,
                       groupValue: epiduralValue,
                       onChanged: (T) {
                         setState(() {
@@ -774,7 +769,7 @@ class _ClientAppCurrentBirthInfoPageState
                       'Yes'
                     ),
                     Radio(
-                      value: 2,
+                      value: false,
                       groupValue: epiduralValue,
                       onChanged: (T) {
                         setState(() {
@@ -802,7 +797,7 @@ class _ClientAppCurrentBirthInfoPageState
                   //mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Radio(
-                        value: 1,
+                        value: true,
                         groupValue: cSectionValue,
                         onChanged: (T) {
                           setState(() {
@@ -814,7 +809,7 @@ class _ClientAppCurrentBirthInfoPageState
                           'Yes'
                       ),
                       Radio(
-                        value: 2,
+                        value: false,
                         groupValue: cSectionValue,
                         onChanged: (T) {
                           setState(() {
@@ -860,7 +855,11 @@ class _ClientAppCurrentBirthInfoPageState
                             currentUser.dueDate =
                                 _dueDateController.text.toString().trim();
                             currentUser.birthLocation =
-                                _birthLocController.text.toString().trim();
+                                selectedBirthLocation.toString().trim();
+                            currentUser.birthType =
+                                selectedBirthType.toString().trim();
+                            currentUser.epidural = epiduralValue;
+                            currentUser.cesarean = cSectionValue;
 
                             Navigator.push(
                                 context,
@@ -1746,15 +1745,6 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
                   height: 1.5),
               textAlign: TextAlign.left,
             ),
-//            Text(
-//              ' Phone 2 (Optional): ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
             Text(
               ' Emergency Contacts:',
               style: TextStyle(
@@ -1774,33 +1764,6 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
                   height: 1.5),
               textAlign: TextAlign.left,
             ),
-//            Text(
-//              ' Name: ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
-//            Text(
-//              ' Relationship: ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
-//            Text(
-//              ' Phone: ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
             Text(
               ' Current Birth Information',
               style: TextStyle(
@@ -1830,6 +1793,33 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
               textAlign: TextAlign.left,
             ),
             Text(
+              ' Birth Type: ${currentUser.birthType}',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' Epidural:  ${currentUser.getYesOrNoFromBool(currentUser.epidural)}',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              ' C-Section:  ${currentUser.getYesOrNoFromBool(currentUser.cesarean)}',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['black'],
+                  fontSize: 18,
+                  height: 1.5),
+              textAlign: TextAlign.left,
+            ),
+            Text(
               //TODO add the rest of the information
               ' ADD THE REST OF THE INFO LATER!!!!',
               style: TextStyle(
@@ -1840,33 +1830,7 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
                   height: 1.5),
               textAlign: TextAlign.left,
             ),
-//            Text(
-//              ' Birth type: ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
-//            Text(
-//              ' Are you planning to have an epidural? : ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
-//            Text(
-//              ' Are you expecting to have a C-section? : ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
+
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[

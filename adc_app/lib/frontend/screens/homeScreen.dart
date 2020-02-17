@@ -2,12 +2,12 @@ import './common.dart';
 import 'package:async_redux/async_redux.dart';
 
 class HomeScreen extends StatelessWidget {
-  final VoidCallback toClientApp;
-  final VoidCallback toDoulaApp;
+  final VoidCallback toSignup;
   final VoidCallback toLogin;
+  final VoidCallback toInfo;
 
-  HomeScreen({this.toClientApp, this.toDoulaApp, this.toLogin})
-      : assert(toClientApp != null && toDoulaApp != null && toLogin != null);
+  HomeScreen({this.toSignup, this.toLogin, this.toInfo})
+      : assert(toSignup != null && toLogin != null && toInfo != null);
 
   @override
   Widget build(BuildContext context) {
@@ -25,34 +25,18 @@ class HomeScreen extends StatelessWidget {
                   fontSize: 50.0,
                   fontWeight: FontWeight.bold,
                 )),
-            Spacer(flex: 2),
-            RaisedButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(50.0),
-                side: BorderSide(color: themeColors['mediumBlue']),
-              ),
-              onPressed: toClientApp,
-              color: themeColors['mediumBlue'],
-              textColor: Colors.white,
-              padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['mediumBlue'],
-              child: Text(
-                "Request a Doula",
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-            Spacer(),
+            Spacer(flex: 1),
             RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(50.0),
                   side: BorderSide(color: themeColors['lightBlue'])),
-              onPressed: toDoulaApp,
+              onPressed: toSignup,
               color: themeColors['lightBlue'],
               textColor: Colors.white,
               padding: EdgeInsets.all(15.0),
               splashColor: themeColors['lightBlue'],
               child: Text(
-                "Apply as a Doula",
+                "Sign Up",
                 style: TextStyle(fontSize: 20.0),
               ),
             ),
@@ -71,6 +55,21 @@ class HomeScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 20.0),
               ),
             ),
+            Spacer(flex: 1),
+            RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0),
+                  side: BorderSide(color: themeColors['gold'])),
+              onPressed: toInfo,
+              color: themeColors['gold'],
+              textColor: Colors.black,
+              padding: EdgeInsets.all(15.0),
+              splashColor: themeColors['gold'],
+              child: Text(
+                "Learn More",
+                style: TextStyle(fontSize: 20.0),
+              ),
+            ),
             Spacer(),
           ]))),
     );
@@ -84,10 +83,7 @@ class HomeScreenConnector extends StatelessWidget {
         model: ViewModel(),
         builder: (BuildContext context, ViewModel vm) {
           return HomeScreen(
-            toClientApp: vm.toClientApp,
-            toDoulaApp: vm.toDoulaApp,
-            toLogin: vm.toLogin,
-          );
+              toSignup: vm.toSignup, toLogin: vm.toLogin, toInfo: vm.toInfo);
         });
   }
 }
@@ -95,20 +91,20 @@ class HomeScreenConnector extends StatelessWidget {
 class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
-  VoidCallback toClientApp;
-  VoidCallback toDoulaApp;
+  VoidCallback toSignup;
   VoidCallback toLogin;
+  VoidCallback toInfo;
 
   ViewModel.build(
-      {@required this.toClientApp,
-      @required this.toDoulaApp,
-      @required this.toLogin});
+      {@required this.toSignup, @required this.toLogin, @required this.toInfo})
+      : super(equals: []);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        toClientApp: () => dispatch(NavigateAction.pushNamed("/clientSignup")),
-        toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaSignup")),
-        toLogin: () => dispatch(NavigateAction.pushNamed("/login")));
+      toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
+      toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
+      toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
+    );
   }
 }

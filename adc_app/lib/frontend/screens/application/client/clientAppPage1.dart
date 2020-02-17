@@ -1,7 +1,7 @@
 import '../../common.dart';
 import 'package:async_redux/async_redux.dart';
 
-class DoulaSignupScreen extends StatelessWidget {
+class ClientAppPage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

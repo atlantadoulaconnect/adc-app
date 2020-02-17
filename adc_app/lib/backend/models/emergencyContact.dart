@@ -1,4 +1,4 @@
-class Contact {
+class EmergencyContact {
   String contact_id;
   String name;
   String relationship;
@@ -6,7 +6,7 @@ class Contact {
   // TODO list of phone.dart objects
   String phone;
 
-  Contact(String name, String relationship, String phone) {
+  EmergencyContact(String name, String relationship, String phone) {
     this.name = name;
     this.relationship = relationship;
     this.phone = phone;
@@ -15,7 +15,7 @@ class Contact {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Contact &&
+      other is EmergencyContact &&
           runtimeType == other.runtimeType &&
           contact_id == other.contact_id &&
           name == other.name &&

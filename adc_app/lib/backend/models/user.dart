@@ -1,27 +1,33 @@
-abstract class User {
+import 'package:flutter/foundation.dart';
+import './phone.dart';
+
+class User {
   String userid;
   String userType;
 
   String name;
   String email;
 
-  bool phoneVerified;
+  bool
+      phoneVerified; // if the primary phone used for the app is verified via SMS confirmation
 
   // for Sprint 1 demo
-  List<String> phones; // List of phone.dart objects later
+  List<Phone> phones; // List of phone.dart objects later
 
-  User(String userid, String userType, String email) {
+  User(String userid, String email) {
     this.userid = userid;
-    this.userType = userType;
     this.email = email;
-    this.phones = new List<String>();
+    this.phones = new List<Phone>();
   }
 
-  void addPhone(String phone) {
+  User.full(this.userid, this.userType, this.name, this.email,
+      this.phoneVerified, this.phones);
+
+  void addPhone(Phone phone) {
     this.phones.add(phone);
   }
 
-  void removePhone(String phone) {
+  void removePhone(Phone phone) {
     this.phones.remove(phone);
   }
 
@@ -35,7 +41,7 @@ abstract class User {
           name == other.name &&
           email == other.email &&
           phoneVerified == other.phoneVerified &&
-          phones == other.phones;
+          listEquals(phones, other.phones);
 
   @override
   int get hashCode =>
@@ -48,6 +54,6 @@ abstract class User {
 
   @override
   String toString() {
-    return "$userid: $userType at $email";
+    return "$userid: at $email";
   }
 }

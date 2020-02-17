@@ -1,9 +1,11 @@
-import './contact.dart';
+import 'package:flutter/foundation.dart';
+
+import './emergencyContact.dart';
 import './user.dart';
 import './doula.dart';
+import './phone.dart';
 
 class Client extends User {
-  String phone;
   String bday;
 
   Doula primaryDoula;
@@ -14,7 +16,7 @@ class Client extends User {
   String birthType;
   bool epidural;
   bool cesarean;
-  List<Contact> emergencyContacts = new List<Contact>();
+  List<EmergencyContact> emergencyContacts = new List<EmergencyContact>();
 
   int liveBirths;
   bool preterm;
@@ -27,10 +29,33 @@ class Client extends User {
 
   bool photoRelease;
 
-  Client(String userid, String userType, String email)
-      : super(userid, userType, email) {
+  Client(
+      {String userid,
+      String userType,
+      String name,
+      String email,
+      bool phoneVerified,
+      List<Phone> phones,
+      this.bday,
+      this.primaryDoula,
+      this.backupDoula,
+      this.dueDate,
+      this.birthLocation,
+      this.birthType,
+      this.epidural,
+      this.cesarean,
+      this.emergencyContacts,
+      this.liveBirths,
+      this.preterm,
+      this.lowWeight,
+      this.deliveryTypes,
+      this.multiples,
+      this.meetBefore,
+      this.homeVisit,
+      this.photoRelease})
+      : super.full(userid, userType, name, email, phoneVerified, phones) {
+    this.emergencyContacts = new List<EmergencyContact>();
     this.deliveryTypes = new List<String>();
-    this.emergencyContacts = new List<Contact>();
   }
 
   void addDeliveryType(String deliveryType) {
@@ -41,12 +66,62 @@ class Client extends User {
     this.deliveryTypes.remove(deliveryType);
   }
 
-  void addContact(Contact contact) {
+  void addContact(EmergencyContact contact) {
     this.emergencyContacts.add(contact);
   }
 
-  void removeContact(Contact contact) {
+  void removeContact(EmergencyContact contact) {
     this.emergencyContacts.remove(contact);
+  }
+
+  Client copy(
+      {String userid,
+      String userType,
+      String name,
+      List<Phone> phones,
+      String email,
+      bool phoneVerified,
+      String bday,
+      Doula primaryDoula,
+      Doula backupDoula,
+      String dueDate,
+      String birthLocation,
+      String birthType,
+      bool epidural,
+      bool cesarean,
+      List<EmergencyContact> emergencyContacts,
+      int liveBirths,
+      bool preterm,
+      bool lowWeight,
+      List<String> deliveryTypes,
+      bool multiples,
+      bool meetBefore,
+      bool homeVisit,
+      bool photoRelease}) {
+    return Client(
+        userid: userid ?? this.userid,
+        userType: userType ?? this.userType,
+        name: name ?? this.name,
+        phones: phones ?? this.phones,
+        email: email ?? this.email,
+        phoneVerified: phoneVerified ?? this.phoneVerified,
+        bday: bday ?? this.bday,
+        primaryDoula: primaryDoula ?? this.primaryDoula,
+        backupDoula: backupDoula ?? this.backupDoula,
+        dueDate: dueDate ?? this.dueDate,
+        birthLocation: birthLocation ?? this.birthLocation,
+        birthType: birthType ?? this.birthType,
+        epidural: epidural ?? this.epidural,
+        cesarean: cesarean ?? this.cesarean,
+        emergencyContacts: emergencyContacts ?? this.emergencyContacts,
+        liveBirths: liveBirths ?? this.liveBirths,
+        preterm: preterm ?? this.preterm,
+        lowWeight: lowWeight ?? this.lowWeight,
+        deliveryTypes: deliveryTypes ?? this.deliveryTypes,
+        multiples: multiples ?? this.multiples,
+        meetBefore: meetBefore ?? this.meetBefore,
+        homeVisit: homeVisit ?? this.homeVisit,
+        photoRelease: photoRelease ?? this.photoRelease);
   }
 
   @override
@@ -55,7 +130,7 @@ class Client extends User {
       super == other &&
           other is Client &&
           runtimeType == other.runtimeType &&
-          phone == other.phone &&
+          listEquals(phones, other.phones) &&
           bday == other.bday &&
           primaryDoula == other.primaryDoula &&
           backupDoula == other.backupDoula &&
@@ -64,11 +139,11 @@ class Client extends User {
           birthType == other.birthType &&
           epidural == other.epidural &&
           cesarean == other.cesarean &&
-          emergencyContacts == other.emergencyContacts &&
+          listEquals(emergencyContacts, other.emergencyContacts) &&
           liveBirths == other.liveBirths &&
           preterm == other.preterm &&
           lowWeight == other.lowWeight &&
-          deliveryTypes == other.deliveryTypes &&
+          listEquals(deliveryTypes, other.deliveryTypes) &&
           multiples == other.multiples &&
           meetBefore == other.meetBefore &&
           homeVisit == other.homeVisit &&
@@ -77,7 +152,6 @@ class Client extends User {
   @override
   int get hashCode =>
       super.hashCode ^
-      phone.hashCode ^
       bday.hashCode ^
       primaryDoula.hashCode ^
       backupDoula.hashCode ^

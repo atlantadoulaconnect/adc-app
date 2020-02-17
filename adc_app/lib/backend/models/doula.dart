@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
+
 import './user.dart';
 import './client.dart';
+import './phone.dart';
 
 class Doula extends User {
   String bday;
@@ -14,8 +17,23 @@ class Doula extends User {
 
   List<Client> currentClients;
 
-  Doula(String userid, String userType, String email)
-      : super(userid, userType, email) {
+  Doula(
+      {String userid,
+      String userType,
+      String name,
+      String email,
+      bool phoneVerified,
+      List<Phone> phones,
+      this.bday,
+      this.emailVerified,
+      this.bio,
+      this.certified,
+      this.certInProgress,
+      this.certProgram,
+      this.birthsNeeded,
+      this.availableDates,
+      this.currentClients})
+      : super.full(userid, userType, name, email, phoneVerified, phones) {
     this.availableDates = new List<String>();
     this.currentClients = new List<Client>();
   }
@@ -36,6 +54,40 @@ class Doula extends User {
     this.currentClients.remove(client);
   }
 
+  Doula copy(
+      {String userid,
+      String userType,
+      String name,
+      String email,
+      bool phoneVerified,
+      List<Phone> phones,
+      String bday,
+      bool emailVerified,
+      String bio,
+      bool certified,
+      bool certInProgress,
+      String certProgram,
+      int birthsNeeded,
+      List<String> availableDates,
+      List<Client> currentClients}) {
+    return Doula(
+        userid: userid ?? this.userid,
+        userType: userType ?? this.userType,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        phoneVerified: phoneVerified ?? this.phoneVerified,
+        phones: phones ?? this.phones,
+        bday: bday ?? this.bday,
+        emailVerified: emailVerified ?? this.emailVerified,
+        bio: bio ?? this.bio,
+        certified: certified ?? this.certified,
+        certInProgress: certInProgress ?? this.certInProgress,
+        certProgram: certProgram ?? this.certProgram,
+        birthsNeeded: birthsNeeded ?? this.birthsNeeded,
+        availableDates: availableDates ?? this.availableDates,
+        currentClients: currentClients ?? this.currentClients);
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -49,7 +101,7 @@ class Doula extends User {
           certInProgress == other.certInProgress &&
           certProgram == other.certProgram &&
           birthsNeeded == other.birthsNeeded &&
-          availableDates == other.availableDates &&
+          listEquals(availableDates, other.availableDates) &&
           currentClients == other.currentClients;
 
   @override

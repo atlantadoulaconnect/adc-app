@@ -33,7 +33,7 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
                 )
             ),
             child: MaterialButton(
-              onPressed: () => Navigator.pushNamed(context, '/'),
+              onPressed: () => Navigator.pushNamed(context, '/messages'),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,

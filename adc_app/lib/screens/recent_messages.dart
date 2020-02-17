@@ -70,7 +70,7 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
                           ),
                         ),
                         Text(
-                          "Recent message will be shown here",
+                          "Recent message will be ...",
                           style: TextStyle(
                               fontSize: 15,
                               color: themeColors["coolGray5"]
@@ -79,6 +79,7 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
                       ]
                   ),
                 ),
+                Spacer(),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Container(
@@ -114,16 +115,13 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
           title: Text('Recent Messages'),
           actions: <Widget>[
             Container(
-              width: 55,
+              width: 60,
               child: MaterialButton(
                 onPressed: () => Navigator.pushNamed(context, '/contacts'),
-                child: Text(
-                  "+",
-                  style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
-                  ),
+                child: Icon(
+                  IconData(0xe150, fontFamily: 'MaterialIcons'),
+                  color: Colors.white,
+                  size: 32,
                 ),
               ),
             ),

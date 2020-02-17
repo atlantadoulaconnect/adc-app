@@ -58,81 +58,99 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
               key: _formKey,
               autovalidate: false,
               child: ListView(
-                //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    'Personal Information',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      color: themeColors['emoryBlue'],
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
-                  ),
-                  Container(
-                    width: 250,
-                    child: LinearProgressIndicator(
-                      backgroundColor: themeColors['skyBlue'],
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          themeColors['mediumBlue']),
-                      value: 0,
-                    ),
-                  ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Name',
-                        prefixIcon: Icon(Icons.person),
+
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Personal Information',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          color: themeColors['emoryBlue'],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                        ),
                       ),
-                      controller: _nameController,
-                      validator: nameValidator,
-                    ),
                   ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      keyboardType: TextInputType.datetime,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Birthday (MM/YYYY)',
-                          prefixIcon: Icon(Icons.cake),
-                          suffixIcon: Icon(Icons.calendar_today)),
-                      controller: _bdayController,
-                      validator: bdayValidator,
-                    ),
-                  ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Phone',
-                        prefixIcon: Icon(Icons.phone),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 250,
+                        child: LinearProgressIndicator(
+                          backgroundColor: themeColors['skyBlue'],
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              themeColors['mediumBlue']),
+                          value: 0,
+                        ),
                       ),
-                      controller: _phoneController,
-                      validator: phoneValidator,
-                    ),
                   ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Phone 2 (Optional)',
-                        prefixIcon: Icon(Icons.phone),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Name',
+                            prefixIcon: Icon(Icons.person),
+                          ),
+                          controller: _nameController,
+                          validator: nameValidator,
+                        ),
                       ),
-                      controller: _altPhoneController,
-                      validator: altPhoneValidator,
-                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          keyboardType: TextInputType.datetime,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Birthday (MM/YYYY)',
+                              prefixIcon: Icon(Icons.cake),
+                              suffixIcon: Icon(Icons.calendar_today)),
+                          controller: _bdayController,
+                          validator: bdayValidator,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Phone',
+                            prefixIcon: Icon(Icons.phone),
+                          ),
+                          controller: _phoneController,
+                          validator: phoneValidator,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Phone 2 (Optional)',
+                            prefixIcon: Icon(Icons.phone),
+                          ),
+                          controller: _altPhoneController,
+                          validator: altPhoneValidator,
+                        ),
+                      ),
                   ),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
@@ -526,8 +544,69 @@ class _ClientAppCurrentBirthInfoPageState
     super.initState();
   }
 
+
+  //drop down list
+  List<DropdownMenuItem<String>> birthType = [];
+  String selectedBirthType;
+
+  List<DropdownMenuItem<String>> birthLocation = [];
+  String selectedBirthLocation;
+  int epiduralValue = 1;
+  int cSectionValue = 1;
+  void loadData() {
+    birthType = [];
+    birthType.add(new DropdownMenuItem(
+      child: new Text('Singleton'),
+      value: '1',
+    ));
+    birthType.add(new DropdownMenuItem(
+      child: new Text('Twins'),
+      value: '2',
+    ));
+    birthType.add(new DropdownMenuItem(
+      child: new Text('Triplets'),
+      value: '3',
+    ));
+
+    birthLocation = [];
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Northside'),
+      value: '0',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Emory Decatur'),
+      value: '1',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Grady'),
+      value: '2',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('A Birthing Center'),
+      value: '3',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('At Home'),
+      value: '4',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('No plans'),
+      value: '5',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Other (please specify below)'),
+      value: '6',
+    ));
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    birthType = [];
+    birthLocation = [];
+    loadData();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Request a Doula"),
@@ -537,7 +616,6 @@ class _ClientAppCurrentBirthInfoPageState
             key: _formKey,
             autovalidate: false,
             child: ListView(
-              //mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -551,6 +629,7 @@ class _ClientAppCurrentBirthInfoPageState
                       ),
                     ),
                 ),
+                // progress bar
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -563,6 +642,7 @@ class _ClientAppCurrentBirthInfoPageState
                       ),
                     ),
                 ),
+                // due date
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -586,82 +666,169 @@ class _ClientAppCurrentBirthInfoPageState
                     ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      // TODO: change to a dropdown
-                      width: 300.0,
-                      child: TextFormField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Planned Birth Location',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
-                        controller: _birthLocController,
-                        validator: (val) {
-                          if (val.isEmpty) {
-                            return "Please enter where you plan to give birth.";
-                          }
-                          return null;
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Select your planned birth location:',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                // drop down menu for birth location
+                Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton(
+                        value: selectedBirthLocation,
+                        items: birthLocation,
+                        hint: new Text('Birth Location'),
+                        isExpanded: true,
+                        onChanged: (value) {
+                          selectedBirthLocation = value;
+                          setState(() {
+//                          if (selectedBirthCount == '0') {
+//
+//                          }
+                          });
                         },
+
+
+
+                      ),
+
+                    )
+
+                ),
+                //if other, please specify
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 200.0,
+                    child: TextField(
+                      autocorrect: false,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'If other, please specify',
                       ),
                     ),
+                  ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 300.0,
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Birth Type (Singleton, Twins, Triplets)',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
-                      ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Select your birth type:',
+                    style: TextStyle(
+                      fontSize: 16,
                     ),
+                  ),
+                ),
+                // drop down menu for birth type
+                Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton(
+                        value: selectedBirthType,
+                        items: birthType,
+                        hint: new Text('Birth Type'),
+                        isExpanded: true,
+                        onChanged: (value) {
+                          selectedBirthType = value;
+                          setState(() {
+//                          if (selectedBirthCount == '0') {
+//
+//                          }
+                          });
+                        },
+
+
+
+                      ),
+
+                    )
+
                 ),
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Are you planning on having an epidural?',
-                    ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 300.0,
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Yes/No',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
+                ),
+                Row(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 1,
+                      groupValue: epiduralValue,
+                      onChanged: (T) {
+                        setState(() {
+                          epiduralValue = T;
+                        });
+                      },
+                    ),
+                    Text(
+                      'Yes'
+                    ),
+                    Radio(
+                      value: 2,
+                      groupValue: epiduralValue,
+                      onChanged: (T) {
+                        setState(() {
+                          epiduralValue = T;
+                        });
+                      },
+                    ),
+                    Text(
+                        'No'
+                    ),
+                    ]
+
+
                 ),
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Are you expecting to have a caesarean secction (C-Section)?',
-                    ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 300.0,
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Yes/No',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
+                      'Are you expecting to have a caesarean section (C-Section)?',
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
                 ),
+                Row(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Radio(
+                        value: 1,
+                        groupValue: cSectionValue,
+                        onChanged: (T) {
+                          setState(() {
+                            cSectionValue = T;
+                          });
+                        },
+                      ),
+                      Text(
+                          'Yes'
+                      ),
+                      Radio(
+                        value: 2,
+                        groupValue: cSectionValue,
+                        onChanged: (T) {
+                          setState(() {
+                            cSectionValue = T;
+                          });
+                        },
+                      ),
+                      Text(
+                          'No'
+                      ),
+                    ]
 
+
+                ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -717,6 +884,8 @@ class _ClientAppCurrentBirthInfoPageState
           )),
     );
   }
+
+
 }
 
 class ClientAppPreviousBirthInfoPage extends StatefulWidget {
@@ -747,9 +916,44 @@ class _ClientAppPreviousBirthInfoPageState
 
     super.initState();
   }
+  //drop down list
+  List<DropdownMenuItem<String>> birthCount = [];
+  String selectedBirthCount;
+
+  void loadData() {
+     birthCount = [];
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('0'),
+       value: 'Zero',
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('1'),
+       value: 'One',
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('2'),
+       value: 'Two',
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('3'),
+       value: 'Three',
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('4'),
+       value: 'Four',
+     ));
+
+   }
+  int pretermValue = 1;
+  int previousTwinsOrTriplets = 1;
+  int lowBirthWeightValue = 1;
+  bool vaginalBirth = false, cesarean = false, vbac = false;
 
   @override
   Widget build(BuildContext context) {
+
+    loadData();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Request a Doula"),
@@ -784,7 +988,249 @@ class _ClientAppPreviousBirthInfoPageState
                       ),
                     ),
                 ),
-                //TODO add the content
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Number of previous live births:',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                // drop down menu for births
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButton(
+                      value: selectedBirthCount,
+                      items: birthCount,
+                      hint: new Text('Previous Births'),
+                      isExpanded: true,
+                      onChanged: (value) {
+                        //print("value: $value");
+                        setState(() {
+                          selectedBirthCount = value;
+                          //print("birth count: " + selectedBirthCount);
+                          //if (selectedBirthCount.contains('1', 0)) {
+                            //DisplayPreviousBirthInfo();
+                          //}
+
+                        });
+                      },
+
+                    ),
+
+                  )
+
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Were any of your previous life births: ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+
+                //preterm
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+                  child: Text(
+                    'Preterm: ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: pretermValue,
+                          onChanged: (T) {
+                            setState(() {
+                              pretermValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: 2,
+                          groupValue: pretermValue,
+                          onChanged: (T) {
+                            setState(() {
+                              pretermValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
+                //low birth weight
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+                  child: Text(
+                    'Low Birth Weight (< 2,500g):',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: lowBirthWeightValue,
+                          onChanged: (T) {
+                            setState(() {
+                              lowBirthWeightValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: 2,
+                          groupValue: lowBirthWeightValue,
+                          onChanged: (T) {
+                            setState(() {
+                              lowBirthWeightValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
+                //Previous Birth Types
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Previous Birth Types (check all that apply): ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Vaginal Birth"),
+                          Checkbox(
+                            value: vaginalBirth,
+                            onChanged: (bool value) {
+                              setState(() {
+                                vaginalBirth = value;
+                              });
+                            },
+                          )
+                        ],
+                      ),
+
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Cesaerean"),
+                          Checkbox(
+                            value: cesarean,
+                            onChanged: (bool value) {
+                              setState(() {
+                                cesarean = value;
+                              });
+                            },
+                          )
+                        ],
+                      ),
+
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("VBAC"),
+                          Checkbox(
+                            value: vbac,
+                            onChanged: (bool value) {
+                              setState(() {
+                                vbac = value;
+                              });
+                            },
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+
+                //previous twins or triplets
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'Have you previously had twins or triplets? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: previousTwinsOrTriplets,
+                          onChanged: (T) {
+                            setState(() {
+                              previousTwinsOrTriplets = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: 2,
+                          groupValue: previousTwinsOrTriplets,
+                          onChanged: (T) {
+                            setState(() {
+                              previousTwinsOrTriplets = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
 
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -839,6 +1285,19 @@ class _ClientAppPreviousBirthInfoPageState
   }
 }
 
+//TODO figure out how to call this method in a loop for previous birth info
+class DisplayPreviousBirthInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+        padding: const EdgeInsets.all(8),
+        children: <Widget>[
+          Text("Trying This")
+    ],
+    );
+  }
+}
+
 class ClientAppDoulaQuestionsPage extends StatefulWidget {
   Client user;
   ClientAppDoulaQuestionsPage({Key key, @required this.user})
@@ -868,6 +1327,9 @@ class _ClientAppDoulaQuestionsPageState
     super.initState();
   }
 
+  int meetDoula = 1;
+  int doulaVisit = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -892,7 +1354,7 @@ class _ClientAppDoulaQuestionsPageState
                     ),
                   ),
                 ),
-              Padding(
+                Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                       width: 250,
@@ -904,6 +1366,94 @@ class _ClientAppDoulaQuestionsPageState
                       ),
                     ),
               ),
+
+                //meet your doula?
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'Would you like to meet your doula in person before delivery? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: meetDoula,
+                          onChanged: (T) {
+                            setState(() {
+                              meetDoula = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: 2,
+                          groupValue: meetDoula,
+                          onChanged: (T) {
+                            setState(() {
+                              meetDoula = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
+                //doula home visit?
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'Would you like your doula to make a home visit after delivery? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: doulaVisit,
+                          onChanged: (T) {
+                            setState(() {
+                              doulaVisit = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: 2,
+                          groupValue: doulaVisit,
+                          onChanged: (T) {
+                            setState(() {
+                              doulaVisit = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -984,6 +1534,8 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
     super.initState();
   }
 
+  bool statementAgree = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1046,9 +1598,20 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text('CHECKBOX GOES HERE'
-                  ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: <Widget>[
+                        Checkbox(
+                          value: statementAgree,
+                          onChanged: (bool value) {
+                            setState(() {
+                              statementAgree = value;
+                            });
+                          },
+                        ),
+                        Text("I agree to the statements above (optional) ")
+                      ],
+                    ),
                 ),
 
                 Row(

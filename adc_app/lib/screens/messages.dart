@@ -1,5 +1,7 @@
 import 'package:adc_app/models/message.dart';
 import 'package:adc_app/theme/colors.dart';
+import 'package:adc_app/util/time_conversion.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +43,7 @@ class _MessagesPageState extends State<MessagesPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget> [
               Text(
-                message.timeSent.format(context),
+                formatTimeHSS(message.timeSent),
                 style: TextStyle(
                   color: isMe ? themeColors["white"] : themeColors["emoryBlue"],
                   fontSize: 16.0,
@@ -92,7 +94,7 @@ class _MessagesPageState extends State<MessagesPage> {
             iconSize: 25.0,
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              messages.add(new Message(textController.text, myId, new TimeOfDay.now()));
+              messages.add(new Message(textController.text, myId, new Timestamp.now()));
               textController.clear();
             },
           ),
@@ -106,11 +108,11 @@ class _MessagesPageState extends State<MessagesPage> {
   final String otherUser = "Debbie";
   final String myId = "0";
   List<Message> messages = [
-    new Message("Hello! My name is Debbie. I am your doula!", "1", new TimeOfDay.now()),
-    new Message("Hi Debbie! I'm Jane!", "0", new TimeOfDay.now()),
-    new Message("How long have you been a doula?", "0", new TimeOfDay.now()),
-    new Message("I've been a doula for 3 years!", "1", new TimeOfDay.now()),
-    new Message("What do you think of the Atlanta Doula Connect app?", "1", new TimeOfDay.now())
+    new Message("Hello! My name is Debbie. I am your doula!", "1", new Timestamp.now()),
+    new Message("Hi Debbie! I'm Jane!", "0", new Timestamp.now()),
+    new Message("How long have you been a doula?", "0", new Timestamp.now()),
+    new Message("I've been a doula for 3 years!", "1", new Timestamp.now()),
+    new Message("What do you think of the Atlanta Doula Connect app?", "1", new Timestamp.now())
   ];
 
   @override

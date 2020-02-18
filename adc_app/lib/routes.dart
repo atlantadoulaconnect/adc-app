@@ -21,6 +21,10 @@ import 'package:adc_app/screens/recent_messages.dart';
 import 'package:adc_app/screens/messages.dart';
 import 'package:adc_app/screens/contacts_screen.dart';
 
+import 'package:adc_app/screens/admin_home_screen.dart';
+import 'package:adc_app/screens/registered_doulas_screen.dart';
+
+
 
 final Map<String, WidgetBuilder> routesTable = <String, WidgetBuilder>{
   "/": (BuildContext context) => HomePage(),
@@ -54,4 +58,6 @@ final Map<String, WidgetBuilder> routesTable = <String, WidgetBuilder>{
   "/messages": (BuildContext context) => MessagesPage(),
   "/recentMessages": (BuildContext context) => RecentMessagesPage(),
   "/contacts": (BuildContext context) => ContactsPage(),
+  "/adminHome": (BuildContext context) => AdminHomePage(),
+  "/registeredDoulas": (BuildContext context) => RegisteredDoulasPage(),
 };

@@ -31,7 +31,7 @@ class _ContactsPageState extends State<ContactsPage> {
               ),
             ),
             child: MaterialButton(
-              onPressed: () => Navigator.pushNamed(context, '/'),
+              onPressed: () => Navigator.pushNamed(context, '/messages'),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,

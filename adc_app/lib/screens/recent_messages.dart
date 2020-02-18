@@ -19,7 +19,7 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final recentContacts = ["Debbie D.", "Jane D.", "Sarah S."];
+    final recentContacts = ["Debbie D.", "Jane D.", "Contact Support"];
     final contactCards = <Widget>[];
     for (var i = 0; i < recentContacts.length; i++) {
       contactCards.add(
@@ -72,7 +72,7 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
                               ),
                             ),
                             Text(
-                              "Doula",
+                              recentContacts[i] == "Contact Support" ? "Admin" : "Doula",
                               style: TextStyle(
                                 fontSize: 20,
                               ),

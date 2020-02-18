@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:adc_app/screens/home_screen.dart';
 import 'package:adc_app/theme/colors.dart';
@@ -22,6 +23,7 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
   TextEditingController _emailInputController;
   TextEditingController _pwdInputController;
   TextEditingController _confirmPwdInputController;
+  String _emailTakenError;
 
   bool _passwordVisible;
 
@@ -38,6 +40,7 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
     _confirmPwdInputController = new TextEditingController();
 
     _passwordVisible = false;
+    _emailTakenError = null;
 
     key = widget.key;
     super.initState();
@@ -100,6 +103,7 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
             TextFormField(
               decoration: InputDecoration(
                   labelText: "Email*",
+                  errorText: _emailTakenError,
                   hintText: "jane.doe@gmail.com",
                   icon: new Icon(Icons.mail, color: themeColors["coolGray5"])),
               controller: _emailInputController,
@@ -185,7 +189,13 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                                 key: key, user: clientApplicant)),
                       );
                     }
-                  } catch (e) {
+                  }
+                  catch (e) {
+                    if (e is PlatformException && e.code == "ERROR_EMAIL_ALREADY_IN_USE") {
+                      setState(() {
+                        _emailTakenError = e.message;
+                      });
+                    }
                     print("Client account sign up error: $e");
                     form.reset();
                   }

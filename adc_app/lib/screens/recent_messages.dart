@@ -19,7 +19,8 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final recentContacts = ["Debbie D.", "Jane D.", "Contact Support"];
+    final recentContacts = ["Debbie D.", "Sandra D.", "Contact Support"];
+    final recentMessage = ["What do you think of the...", "", ""];
     final contactCards = <Widget>[];
     for (var i = 0; i < recentContacts.length; i++) {
       contactCards.add(
@@ -78,7 +79,7 @@ class _RecentMessagesPageState extends State<RecentMessagesPage> {
                               ),
                             ),
                             Text(
-                              "Recent message will be ...",
+                              recentMessage[i],
                               style: TextStyle(
                                   fontSize: 15,
                                   color: themeColors["coolGray5"]

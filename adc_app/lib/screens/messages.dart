@@ -108,11 +108,11 @@ class _MessagesPageState extends State<MessagesPage> {
   final String otherUser = "Debbie";
   final String myId = "0";
   List<Message> messages = [
-    new Message("Hello! My name is Debbie. I am your doula!", "1", new Timestamp.now()),
-    new Message("Hi Debbie! I'm Jane!", "0", new Timestamp.now()),
-    new Message("How long have you been a doula?", "0", new Timestamp.now()),
-    new Message("I've been a doula for 3 years!", "1", new Timestamp.now()),
-    new Message("What do you think of the Atlanta Doula Connect app?", "1", new Timestamp.now())
+    new Message("Hello! My name is Debbie. I am your doula!", "1", new Timestamp.fromDate(new DateTime(2020, 2, 17, 21, 50))),
+    new Message("Hi Debbie! I'm Jane!", "0", new Timestamp.fromDate(new DateTime(2020, 2, 17, 21, 51))),
+    new Message("How long have you been a doula?", "0", new Timestamp.fromDate(new DateTime(2020, 2, 17, 21, 51))),
+    new Message("I've been a doula for 3 years!", "1", new Timestamp.fromDate(new DateTime(2020, 2, 17, 21, 53))),
+    new Message("What do you think of the Atlanta Doula Connect app?", "1", new Timestamp.fromDate(new DateTime(2020, 2, 17, 21, 53)))
   ];
 
   @override

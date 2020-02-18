@@ -160,6 +160,9 @@ class _DoulaAppHomePage extends State<DoulaAppPage> {
                       if (form.validate()) {
                         form.save();
 
+                        print("_nameController.toString().trim(): " +
+                            _nameController.toString().trim());
+
                         currentUser.name = _nameController.toString().trim();
                         currentUser.bday = _bdayController.toString().trim();
                         currentUser.phone = _phoneController.toString().trim();

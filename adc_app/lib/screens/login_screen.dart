@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                     print("successful login of userid: $userId");
 
                     if (userId.length > 0 && userId != null) {
-                      Navigator.pushNamed(context, '/clientHome');
+                      Navigator.pushNamed(context, '/adminHome');
                     }
                   } catch (e) {
                     print("Login error: $e");

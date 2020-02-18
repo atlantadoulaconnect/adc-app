@@ -19,7 +19,7 @@ class _DoulaAppPage3 extends State<DoulaAppPage3> {
   Key key;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<bool> isSelected = [false, true];
-  List<bool> isSelected2 = [false, true];
+  List<bool> isSelected2 = [true, false];
   bool certifiedDoula = false;
   bool workingToBecomeCertified = false;
   String certificationProgram;
@@ -122,7 +122,7 @@ class _DoulaAppPage3 extends State<DoulaAppPage3> {
                 Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      'Are you working towards becoming a \ncertified doula?',
+                      'Are you working towards becoming a certified doula?',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.bold,
@@ -257,10 +257,11 @@ class _DoulaAppPage3 extends State<DoulaAppPage3> {
                           if (form.validate()) {
                             form.save();
 
-                            currentUser.certified = certifiedDoula;
-                            currentUser.certInProgress = workingToBecomeCertified;
+                            currentUser.certified = !certifiedDoula;
+                            currentUser.certInProgress = !workingToBecomeCertified;
                             currentUser.certProgram = certificationProgram;
-                            currentUser.birthsNeeded = numOfBirths as int;
+//                            int intNumOfBirths = int.parse(numOfBirths.toString().trim());
+//                            currentUser.birthsNeeded = intNumOfBirths;
 
                             Navigator.push(context,
                                 MaterialPageRoute(

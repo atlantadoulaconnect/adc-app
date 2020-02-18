@@ -64,7 +64,8 @@ class _DoulaAppConfirmationPage extends State<DoulaAppConfirmationPage> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      ' Name: ${currentUser.name}',
+                      ' Name: Debbie Doula',
+                      //' Name: ${currentUser.name}',
                       style: TextStyle(
                           fontFamily: 'Roboto',
                           color: themeColors['black'],
@@ -76,7 +77,8 @@ class _DoulaAppConfirmationPage extends State<DoulaAppConfirmationPage> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      ' Birthday: ${currentUser.bday}',
+                      ' Birthday: 01/09/1997',
+                      //' Birthday: ${currentUser.bday}',
                       style: TextStyle(
                           fontFamily: 'Roboto',
                           color: themeColors['black'],
@@ -88,7 +90,8 @@ class _DoulaAppConfirmationPage extends State<DoulaAppConfirmationPage> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      ' Phone: ${currentUser.phone}',
+                      //' Phone: ${currentUser.phone}',
+                      ' Phone: 770-334-2341',
                       style: TextStyle(
                           fontFamily: 'Roboto',
                           color: themeColors['black'],
@@ -100,7 +103,8 @@ class _DoulaAppConfirmationPage extends State<DoulaAppConfirmationPage> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      ' Bio: ${currentUser.bio}',
+                      ' Bio: This is an example bio for a doula',
+                      //' Bio: ${currentUser.bio}',
                       style: TextStyle(
                           fontFamily: 'Roboto',
                           color: themeColors['black'],
@@ -161,7 +165,7 @@ class _DoulaAppConfirmationPage extends State<DoulaAppConfirmationPage> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      ' Births Needed: ${currentUser.birthsNeeded}',
+                      ' Births Needed: 2',
                       style: TextStyle(
                           fontFamily: 'Roboto',
                           color: themeColors['black'],
@@ -173,7 +177,7 @@ class _DoulaAppConfirmationPage extends State<DoulaAppConfirmationPage> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      ' Availability:  ',
+                      ' Availability: Feb 18, 21, 25 - 27 ',
                       style: TextStyle(
                           fontFamily: 'Roboto',
                           color: themeColors['black'],
@@ -185,7 +189,7 @@ class _DoulaAppConfirmationPage extends State<DoulaAppConfirmationPage> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      ' Photo Release: ',
+                      ' Photo Release: Yes',
                       style: TextStyle(
                           fontFamily: 'Roboto',
                           color: themeColors['black'],

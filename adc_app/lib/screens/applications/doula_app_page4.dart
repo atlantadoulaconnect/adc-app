@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:calendarro/calendarro.dart';
 import 'package:adc_app/models/doula.dart';
+import 'package:adc_app/util/time_conversion.dart';
 
 import 'doula_app_page5.dart';
 
@@ -91,6 +92,18 @@ class _DoulaAppPage4 extends State<DoulaAppPage4> {
   //              Text(
   //                monthYear,
   //              ),
+                Padding(
+                  padding: EdgeInsets.only(top: 5.0, bottom: 15.0),
+                  child: Center(
+                    child: Text(
+                      formatDateMonthYYYY(DateTime.now()),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ),
                 Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Container(

@@ -1,3 +1,4 @@
+import 'package:adc_app/screens/text_bank.dart';
 import 'package:flutter/widgets.dart';
 import 'package:adc_app/util/auth.dart';
 
@@ -54,4 +55,5 @@ final Map<String, WidgetBuilder> routesTable = <String, WidgetBuilder>{
   "/messages": (BuildContext context) => MessagesPage(),
   "/recentMessages": (BuildContext context) => RecentMessagesPage(),
   "/contacts": (BuildContext context) => ContactsPage(),
+  "/textBank": (BuildContext context) => TextBankPage(),
 };

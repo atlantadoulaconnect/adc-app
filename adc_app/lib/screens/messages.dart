@@ -124,7 +124,7 @@ class _MessagesPageState extends State<MessagesPage> {
             Container(
               width: 55,
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () => Navigator.pushNamed(context, '/textBank'),
                 child: Icon(Icons.search,
                   color: Colors.white,
                   size: 30,

@@ -114,6 +114,7 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
   final String certProgram;
   final int birthsNeeded;
   final List<String> availableDates;
+  final bool photoRelease;
 
   final List<Client> currentClients;
 
@@ -132,6 +133,7 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
       this.certProgram,
       this.birthsNeeded,
       this.availableDates,
+      this.photoRelease,
       this.currentClients});
 
   @override
@@ -151,6 +153,7 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
         certProgram: certProgram ?? this.certProgram,
         birthsNeeded: birthsNeeded ?? this.birthsNeeded,
         availableDates: availableDates ?? this.availableDates,
+        photoRelease: photoRelease ?? this.photoRelease,
         currentClients: currentClients ?? this.currentClients);
 
     return state.copy(currentUser: updated);

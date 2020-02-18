@@ -7,12 +7,8 @@ class AppTypeScreen extends StatelessWidget {
   final VoidCallback toClientApp;
   final VoidCallback toDoulaApp;
 
-  AppTypeScreen(
-      {this.currentUser,
-      this.updateClient,
-      this.updateDoula,
-      this.toClientApp,
-      this.toDoulaApp})
+  AppTypeScreen(this.currentUser, this.updateClient, this.updateDoula,
+      this.toClientApp, this.toDoulaApp)
       : assert(currentUser != null &&
             updateClient != null &&
             updateDoula != null &&
@@ -91,11 +87,8 @@ class AppTypeScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
         model: ViewModel(),
         builder: (BuildContext context, ViewModel vm) {
-          return AppTypeScreen(
-              currentUser: vm.currentUser,
-              updateClient: vm.updateClient,
-              toClientApp: vm.toClientApp,
-              toDoulaApp: vm.toDoulaApp);
+          return AppTypeScreen(vm.currentUser, vm.updateClient, vm.updateDoula,
+              vm.toClientApp, vm.toDoulaApp);
         });
   }
 }
@@ -121,87 +114,10 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        toClientApp: () => dispatch(NavigateAction.pushNamed("/clientSignup")),
-        toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaSignup")),
-        updateClient: (Client user,
-                {String userid,
-                String userType,
-                String name,
-                List<Phone> phones,
-                String email,
-                bool phoneVerified,
-                String bday,
-                Doula primaryDoula,
-                Doula backupDoula,
-                String dueDate,
-                String birthLocation,
-                String birthType,
-                bool epidural,
-                bool cesarean,
-                List<EmergencyContact> emergencyContacts,
-                int liveBirths,
-                bool preterm,
-                bool lowWeight,
-                List<String> deliveryTypes,
-                bool multiples,
-                bool meetBefore,
-                bool homeVisit,
-                bool photoRelease}) =>
-            dispatch(UpdateClientUserAction(user,
-                userid: userid,
-                userType: userType,
-                name: name,
-                phones: phones,
-                email: email,
-                phoneVerified: phoneVerified,
-                bday: bday,
-                primaryDoula: primaryDoula,
-                backupDoula: backupDoula,
-                dueDate: dueDate,
-                birthLocation: birthLocation,
-                birthType: birthType,
-                epidural: epidural,
-                cesarean: cesarean,
-                emergencyContacts: emergencyContacts,
-                liveBirths: liveBirths,
-                preterm: preterm,
-                lowWeight: lowWeight,
-                deliveryTypes: deliveryTypes,
-                multiples: multiples,
-                meetBefore: meetBefore,
-                homeVisit: homeVisit,
-                photoRelease: photoRelease)),
-        updateDoula: (Doula user,
-                {String userid,
-                String userType,
-                String name,
-                String email,
-                bool phoneVerified,
-                List<Phone> phones,
-                String bday,
-                bool emailVerified,
-                String bio,
-                bool certified,
-                bool certInProgress,
-                String certProgram,
-                int birthsNeeded,
-                List<String> availableDates,
-                List<Client> currentClients}) =>
-            dispatch(UpdateDoulaUserAction(user,
-                userid: userid,
-                userType: userType,
-                name: name,
-                email: email,
-                phones: phones,
-                phoneVerified: phoneVerified,
-                bday: bday,
-                emailVerified: emailVerified,
-                bio: bio,
-                certified: certified,
-                certInProgress: certInProgress,
-                certProgram: certProgram,
-                birthsNeeded: birthsNeeded,
-                availableDates: availableDates,
-                currentClients: currentClients)));
+        toClientApp: () =>
+            dispatch(NavigateAction.pushNamed("/clientAppPage1")),
+        toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
+        updateClient: (Client user) => dispatch(UpdateClientUserAction(user)),
+        updateDoula: (Doula user) => dispatch(UpdateDoulaUserAction(user)));
   }
 }

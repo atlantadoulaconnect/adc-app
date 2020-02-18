@@ -12,6 +12,30 @@ String nameValidator(String value) {
   return null;
 }
 
+String singleLetterValidator(String value) {
+  Pattern pattern = r'[a-zA-Z]';
+  RegExp regex = RegExp(pattern);
+  if (value.length != 1) {
+    return "Type the first letter of your last name.";
+  }
+  if (!regex.hasMatch(value)) {
+    return "Type the first letter of your last name.";
+  }
+  return null;
+}
+
+String bioValidator(String value) {
+  Pattern pattern = r'[a-zA-Z]+';
+  RegExp regex = RegExp(pattern);
+  if (value.isEmpty) {
+    return "Please enter text.";
+  }
+  if (!regex.hasMatch(value)) {
+    return "Enter words.";
+  }
+  return null;
+}
+
 String bdayValidator(String value) {
   // TODO regex validator
   if (value.isEmpty) {

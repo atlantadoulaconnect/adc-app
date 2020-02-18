@@ -14,6 +14,7 @@ class Doula extends User {
   String certProgram;
   int birthsNeeded;
   List<String> availableDates;
+  bool photoRelease;
 
   List<Client> currentClients;
 
@@ -32,6 +33,7 @@ class Doula extends User {
       this.certProgram,
       this.birthsNeeded,
       this.availableDates,
+      this.photoRelease,
       this.currentClients})
       : super.full(userid, userType, name, email, phoneVerified, phones) {
     this.availableDates = new List<String>();
@@ -69,6 +71,7 @@ class Doula extends User {
       String certProgram,
       int birthsNeeded,
       List<String> availableDates,
+      bool photoRelease,
       List<Client> currentClients}) {
     return Doula(
         userid: userid ?? this.userid,
@@ -85,6 +88,7 @@ class Doula extends User {
         certProgram: certProgram ?? this.certProgram,
         birthsNeeded: birthsNeeded ?? this.birthsNeeded,
         availableDates: availableDates ?? this.availableDates,
+        photoRelease: photoRelease ?? this.photoRelease,
         currentClients: currentClients ?? this.currentClients);
   }
 
@@ -102,6 +106,7 @@ class Doula extends User {
           certProgram == other.certProgram &&
           birthsNeeded == other.birthsNeeded &&
           listEquals(availableDates, other.availableDates) &&
+          photoRelease == other.photoRelease &&
           currentClients == other.currentClients;
 
   @override
@@ -115,6 +120,7 @@ class Doula extends User {
       certProgram.hashCode ^
       birthsNeeded.hashCode ^
       availableDates.hashCode ^
+      photoRelease.hashCode ^
       currentClients.hashCode;
 
   @override

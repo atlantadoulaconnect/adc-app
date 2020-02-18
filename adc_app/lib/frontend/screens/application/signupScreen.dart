@@ -7,9 +7,7 @@ class SignupScreen extends StatefulWidget {
   final VoidCallback toAppType;
   final bool isWaiting;
 
-  SignupScreen(
-      {Key key, this.signUp, this.toLogin, this.toAppType, this.isWaiting})
-      : super(key: key);
+  SignupScreen(this.signUp, this.toLogin, this.toAppType, this.isWaiting);
 
   @override
   State<StatefulWidget> createState() {
@@ -22,7 +20,7 @@ class SignupScreenState extends State<SignupScreen> {
   bool isWaiting;
   Future<void> Function(String, String) signUp;
   VoidCallback toAppType;
-  Key key;
+  VoidCallback toLogin;
 
   TextEditingController _emailCtrl;
   TextEditingController _passCtrl;
@@ -30,14 +28,14 @@ class SignupScreenState extends State<SignupScreen> {
 
   @override
   void initState() {
-    super.initState();
     isWaiting = widget.isWaiting;
     signUp = widget.signUp;
     toAppType = widget.toAppType;
-    key = widget.key;
+    toLogin = widget.toLogin;
     _emailCtrl = TextEditingController();
     _passCtrl = TextEditingController();
     _confirmPassCtrl = TextEditingController();
+    super.initState();
   }
 
   @override
@@ -127,7 +125,7 @@ class SignupScreenState extends State<SignupScreen> {
                     borderRadius: new BorderRadius.circular(50.0),
                     side: BorderSide(color: themeColors['lightBlue'])),
                 onPressed: () {
-                  Navigator.pushNamed(context, "/login");
+                  toLogin();
                 },
                 color: themeColors["lightBlue"],
                 textColor: Colors.white,
@@ -139,17 +137,15 @@ class SignupScreenState extends State<SignupScreen> {
 }
 
 class SignupScreenConnector extends StatelessWidget {
-  SignupScreenConnector({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) => SignupScreen(
-        signUp: vm.signUp,
-        toLogin: vm.toLogin,
-        toAppType: vm.toAppType,
-        isWaiting: vm.isWaiting,
+        vm.signUp,
+        vm.toLogin,
+        vm.toAppType,
+        vm.isWaiting,
       ),
     );
   }

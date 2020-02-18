@@ -39,7 +39,7 @@ class AppState {
   @override
   String toString() {
     String type = "none";
-    if (currentUser != null) {
+    if (currentUser != null && currentUser.userType != null) {
       type = currentUser.userType;
     }
     return "\nAppState:\n\tCurrent User (type: $type): ${this.currentUser.toString()}\n\twaiting: ${this.waiting}";

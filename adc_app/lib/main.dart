@@ -12,6 +12,7 @@ import './frontend/screens/infoScreen.dart';
 // application screens
 import './frontend/screens/application/signupScreen.dart';
 import './frontend/screens/application/appTypeScreen.dart';
+import 'package:adc_app/frontend/screens/application/requestSentScreen.dart';
 
 import './frontend/screens/application/client/clientAppPage1.dart';
 
@@ -20,6 +21,7 @@ import './frontend/screens/application/doula/doulaAppPage2.dart';
 import './frontend/screens/application/doula/doulaAppPage3.dart';
 import './frontend/screens/application/doula/doulaAppPage4.dart';
 import './frontend/screens/application/doula/doulaAppPage5.dart';
+import './frontend/screens/application/doula/doulaAppConfirmationPage.dart';
 
 // client screens
 // doula screens
@@ -60,10 +62,13 @@ class ADCApp extends StatelessWidget {
             '/appType': (context) => AppTypeScreenConnector(),
             '/clientAppPage1': (context) => ClientAppPage1(),
             '/doulaAppPage1': (context) => DoulaAppPage1Connector(),
-//            '/doulaAppPage2': (context) => DoulaAppPage2Connector(),
-//            '/doulaAppPage3': (context) => DoulaAppPage3Connector(),
-//            '/doulaAppPage4': (context) => DoulaAppPage4Connector(),
-//            '/doulaAppPage5': (context) => DoulaAppPage5Connector(),
+            '/doulaAppPage2': (context) => DoulaAppPage2Connector(),
+            '/doulaAppPage3': (context) => DoulaAppPage3Connector(),
+            '/doulaAppPage4': (context) => DoulaAppPage4Connector(),
+            '/doulaAppPage5': (context) => DoulaAppPage5Connector(),
+            '/doulaAppConfirmation': (context) =>
+                DoulaAppConfirmationPageConnector(),
+            '/requestSent': (context) => RequestSentScreen()
           },
         ));
   }

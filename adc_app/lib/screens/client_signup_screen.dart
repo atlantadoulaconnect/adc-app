@@ -4,8 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:adc_app/screens/home_screen.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/util/auth.dart';
+import 'package:adc_app/screens/applications/test_app.dart';
+import 'package:adc_app/models/client.dart';
+import 'package:adc_app/screens/applications/client_app.dart';
 
 class ClientSignupPage extends StatefulWidget {
+  ClientSignupPage({Key key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _ClientSignupPageState();
 }
@@ -13,26 +18,31 @@ class ClientSignupPage extends StatefulWidget {
 class _ClientSignupPageState extends State<ClientSignupPage> {
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
   bool _autoValidate = false;
-  TextEditingController _nameInputController;
   TextEditingController _emailInputController;
   TextEditingController _pwdInputController;
   TextEditingController _confirmPwdInputController;
 
+  bool _passwordVisible;
+
   String userId;
+  Key key;
 
   @override
-  initState() {
-    _nameInputController = new TextEditingController();
+  void initState() {
     _emailInputController = new TextEditingController();
     _pwdInputController = new TextEditingController();
     _confirmPwdInputController = new TextEditingController();
 
+    _passwordVisible = false;
+
+    key = widget.key;
     super.initState();
   }
 
   void resetForm() {
     _registerFormKey.currentState.reset();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +57,17 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
             children: <Widget>[
               Text("Sign Up"),
               _registerForm(),
+              SizedBox(
+                height: 20,
+              ),
               Text("Already have an account?"),
-              FlatButton(
+              SizedBox(
+                height: 5,
+              ),
+              RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(50.0),
+                      side: BorderSide(color: themeColors['lightBlue'])),
                   onPressed: () {
                     Navigator.pushNamed(context, "/login");
                   },
@@ -56,31 +75,23 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                   textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
                   child: Text("LOG IN")),
+              SizedBox(
+                height: 5,
+              ),
             ],
           )),
         ));
   }
 
   Widget _registerForm() {
+
+
+
     return Form(
         key: _registerFormKey,
         autovalidate: _autoValidate,
         child: Column(
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(
-                  labelText: "Name*",
-                  hintText: "Jane D.",
-                  icon:
-                      new Icon(Icons.person, color: themeColors["coolGray5"])),
-              controller: _nameInputController,
-              validator: (val) {
-                if (val.length < 3) {
-                  return "Please enter a valid name.";
-                }
-                return null;
-              },
-            ),
             TextFormField(
               decoration: InputDecoration(
                   labelText: "Email*",
@@ -92,11 +103,29 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
             ),
             TextFormField(
               decoration: InputDecoration(
-                  labelText: "Password*",
-                  hintText: "********",
-                  icon: new Icon(Icons.lock, color: themeColors["coolGray5"])),
+                labelText: "Password*",
+                hintText: "********",
+                icon: new Icon(Icons.lock, color: themeColors["coolGray5"]),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                    _passwordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: _passwordVisible
+                        ? themeColors["black"]
+                        : themeColors["coolGray5"]
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisible = !_passwordVisible;
+                    });
+                  },
+                ),
+
+              ),
               controller: _pwdInputController,
-              obscureText: true,
+              obscureText: !_passwordVisible,
               validator: pwdValidator,
             ),
             TextFormField(
@@ -112,7 +141,13 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                     return "Passwords do not match.";
                   return null;
                 }),
-            FlatButton(
+            SizedBox(
+              height: 100,
+            ),
+            RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0),
+                  side: BorderSide(color: themeColors['yellow'])),
               color: themeColors["yellow"],
               textColor: Colors.black,
               padding: EdgeInsets.all(15.0),
@@ -135,7 +170,15 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                     print("sign up returned user id: $userId");
 
                     if (userId.length > 0 && userId != null) {
-                      Navigator.pushNamed(context, '/clientAppPersonalInfo');
+                      Client clientApplicant = new Client(userId, "client",
+                          _emailInputController.text.toString().trim());
+                      print("new client: ${clientApplicant.toString()}");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ClientAppPersonalInfoPage(
+                                key: key, user: clientApplicant)),
+                      );
                     }
                   } catch (e) {
                     print("Client account sign up error: $e");

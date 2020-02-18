@@ -1,0 +1,4 @@
+firebase function project files:
+- functions/
+- .gitignore (edited)
+- firebase.json

@@ -12,8 +12,8 @@ class Doula extends User {
 
   List<Client> currentClients;
 
-  Doula(String userid, String userType, String name, String email)
-      : super(userid, userType, name, email) {
+  Doula(String userid, String userType, String email)
+      : super(userid, userType, email) {
     this.availableDates = new List<String>();
     this.currentClients = new List<Client>();
   }

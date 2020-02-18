@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:adc_app/theme/colors.dart';
+import 'package:adc_app/models/doula.dart';
 
 class DoulaAppPage3 extends StatefulWidget {
+  Doula user;
+  DoulaAppPage3({Key key, @required this.user}) : super(key: key) {
+    print("currentUser constructor doula app: \n${user.toString()}");
+  }
+
   @override
   _DoulaAppPage3 createState() => _DoulaAppPage3();
 }
 
 class _DoulaAppPage3 extends State<DoulaAppPage3> {
+  Doula currentUser;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<bool> isSelected = [false, true];
   String dropdownValue = "";
+
+  @override
+  void initState() {
+    currentUser = widget.user;
+    print("currentUser initState state: \n${currentUser.toString()}");
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +36,15 @@ class _DoulaAppPage3 extends State<DoulaAppPage3> {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Spacer(flex: 2,),
+              Spacer(
+                flex: 2,
+              ),
               Text(
                 'Questions',
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   color: themeColors['emoryBlue'],
                   fontWeight: FontWeight.bold,
-
                   fontSize: 25,
                 ),
               ),
@@ -36,11 +53,14 @@ class _DoulaAppPage3 extends State<DoulaAppPage3> {
                 width: 250,
                 child: LinearProgressIndicator(
                   backgroundColor: themeColors['skyBlue'],
-                  valueColor: AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
                   value: 0.6,
                 ),
               ),
-              Spacer(flex: 2,),
+              Spacer(
+                flex: 2,
+              ),
               Text(
                 'Are you a certified doula?',
                 style: TextStyle(
@@ -68,7 +88,9 @@ class _DoulaAppPage3 extends State<DoulaAppPage3> {
                 ),
                 onPressed: (int index) {
                   setState(() {
-                    for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
+                    for (int buttonIndex = 0;
+                        buttonIndex < isSelected.length;
+                        buttonIndex++) {
                       if (buttonIndex == index) {
                         isSelected[buttonIndex] = true;
                       } else {
@@ -107,7 +129,9 @@ class _DoulaAppPage3 extends State<DoulaAppPage3> {
                 ),
                 onPressed: (int index) {
                   setState(() {
-                    for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
+                    for (int buttonIndex = 0;
+                        buttonIndex < isSelected.length;
+                        buttonIndex++) {
                       if (buttonIndex == index) {
                         isSelected[buttonIndex] = true;
                       } else {
@@ -146,7 +170,7 @@ class _DoulaAppPage3 extends State<DoulaAppPage3> {
                             dropdownValue = newValue;
                           });
                         },
-                        items: <String>['','DONA', 'CAPPA', 'ICEA', 'Other']
+                        items: <String>['', 'DONA', 'CAPPA', 'ICEA', 'Other']
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -155,9 +179,10 @@ class _DoulaAppPage3 extends State<DoulaAppPage3> {
                         }).toList(),
                       ),
                     ),
-                    Spacer(flex: 2,),
-                  ]
-              ),
+                    Spacer(
+                      flex: 2,
+                    ),
+                  ]),
               Spacer(),
               Container(
                 width: 205.0,
@@ -170,53 +195,59 @@ class _DoulaAppPage3 extends State<DoulaAppPage3> {
                   ),
                 ),
               ),
-              Spacer(flex: 2,),
-              Row (
-                  children: <Widget>[
-                    Spacer(flex: 2,),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          side: BorderSide(color: themeColors['mediumBlue'])
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/doulaAppPage2');
-                      },
-                      color: themeColors['mediumBlue'],
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['mediumBlue'],
-                      child: Text(
-                        "Back",
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                    Spacer(flex: 2,),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          side: BorderSide(color: themeColors['yellow'])),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/doulaAppPage4');
-                      },
-                      color: themeColors['yellow'],
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['yellow'],
-                      child: Text(
-                        "Next",
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: themeColors['black'],
-                        ),
-                      ),
-                    ),
-                    Spacer(flex: 2,),
-                  ]
+              Spacer(
+                flex: 2,
               ),
-              Spacer(flex: 2,),
-            ]
-        ),
+              Row(children: <Widget>[
+                Spacer(
+                  flex: 2,
+                ),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: themeColors['mediumBlue'])),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  color: themeColors['mediumBlue'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  splashColor: themeColors['mediumBlue'],
+                  child: Text(
+                    "PREVIOUS",
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ),
+                Spacer(
+                  flex: 2,
+                ),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: themeColors['yellow'])),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/doulaAppPage4');
+                  },
+                  color: themeColors['yellow'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  splashColor: themeColors['yellow'],
+                  child: Text(
+                    "NEXT",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: themeColors['black'],
+                    ),
+                  ),
+                ),
+                Spacer(
+                  flex: 2,
+                ),
+              ]),
+              Spacer(
+                flex: 2,
+              ),
+            ]),
       ),
     );
   }

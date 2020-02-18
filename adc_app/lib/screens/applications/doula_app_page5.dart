@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:adc_app/theme/colors.dart';
-
+import 'package:adc_app/models/doula.dart';
 
 class DoulaAppPage5 extends StatefulWidget {
+  Doula user;
+  DoulaAppPage5({Key key, @required this.user}) : super(key: key) {
+    print("currentUser constructor doula app: \n${user.toString()}");
+  }
   @override
   _DoulaAppPage5 createState() => _DoulaAppPage5();
 }
 
 class _DoulaAppPage5 extends State<DoulaAppPage5> {
+  Doula currentUser;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool photoReleasePermission = false;
+
+  @override
+  void initState() {
+    currentUser = widget.user;
+    print("currentUser initState state: \n${currentUser.toString()}");
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +34,15 @@ class _DoulaAppPage5 extends State<DoulaAppPage5> {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Spacer(flex: 2,),
+              Spacer(
+                flex: 2,
+              ),
               Text(
                 'Photo Release',
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   color: themeColors['emoryBlue'],
                   fontWeight: FontWeight.bold,
-
                   fontSize: 25,
                 ),
               ),
@@ -36,11 +51,14 @@ class _DoulaAppPage5 extends State<DoulaAppPage5> {
                 width: 250,
                 child: LinearProgressIndicator(
                   backgroundColor: themeColors['skyBlue'],
-                  valueColor: AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
                   value: 1.0,
                 ),
               ),
-              Spacer(flex: 2,),
+              Spacer(
+                flex: 2,
+              ),
               Container(
                 width: 330,
                 child: Text(
@@ -52,7 +70,9 @@ class _DoulaAppPage5 extends State<DoulaAppPage5> {
                   ),
                 ),
               ),
-              Spacer(flex: 2,),
+              Spacer(
+                flex: 2,
+              ),
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -71,55 +91,60 @@ class _DoulaAppPage5 extends State<DoulaAppPage5> {
                         fontSize: 20,
                       ),
                     ),
-                  ]
+                  ]),
+              Spacer(
+                flex: 3,
               ),
-              Spacer(flex: 3,),
-              Row (
-                  children: <Widget>[
-                    Spacer(flex: 2,),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          side: BorderSide(color: themeColors['mediumBlue'])
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/doulaAppPage4');
-                      },
-                      color: themeColors['mediumBlue'],
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['mediumBlue'],
-                      child: Text(
-                        "Back",
-                        style: TextStyle(fontSize: 20.0),
-                      ),
+              Row(children: <Widget>[
+                Spacer(
+                  flex: 2,
+                ),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: themeColors['mediumBlue'])),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  color: themeColors['mediumBlue'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  splashColor: themeColors['mediumBlue'],
+                  child: Text(
+                    "PREVIOUS",
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ),
+                Spacer(
+                  flex: 2,
+                ),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: themeColors['yellow'])),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/doulaAppCompletionPage');
+                  },
+                  color: themeColors['yellow'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  splashColor: themeColors['yellow'],
+                  child: Text(
+                    "FINISH",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: themeColors['black'],
                     ),
-                    Spacer(flex: 2,),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          side: BorderSide(color: themeColors['yellow'])),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/doulaAppCompletionPage');
-                      },
-                      color: themeColors['yellow'],
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['yellow'],
-                      child: Text(
-                        "Next",
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: themeColors['black'],
-                        ),
-                      ),
-                    ),
-                    Spacer(flex: 2,),
-                  ]
+                  ),
+                ),
+                Spacer(
+                  flex: 2,
+                ),
+              ]),
+              Spacer(
+                flex: 2,
               ),
-              Spacer(flex: 2,),
-            ]
-        ),
+            ]),
       ),
     );
   }

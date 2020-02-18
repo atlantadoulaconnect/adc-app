@@ -16,12 +16,16 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _emailInputController;
   TextEditingController _pwdInputController;
 
+  bool _passwordVisible;
+
   String userId;
 
   @override
   initState() {
     _emailInputController = new TextEditingController();
     _pwdInputController = new TextEditingController();
+
+    _passwordVisible = false;
 
     super.initState();
   }
@@ -37,8 +41,17 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(children: <Widget>[
               Text("Welcome to Atlanta Doula Connect"),
               _loginForm(),
+              SizedBox(
+                height: 20,
+              ),
               Text("Don't have an account?"),
-              FlatButton(
+              SizedBox(
+                height: 5,
+              ),
+              RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(50.0),
+                      side: BorderSide(color: themeColors['lightBlue'])),
                   color: themeColors["lightBlue"],
                   textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
@@ -64,18 +77,42 @@ class _LoginPageState extends State<LoginPage> {
             keyboardType: TextInputType.emailAddress,
             validator: (value) => value.isEmpty ? "Please enter email" : null,
           ),
+
           TextFormField(
             decoration: InputDecoration(
-                labelText: "Password",
-                hintText: "********",
-                icon: new Icon(Icons.lock, color: themeColors["coolGray5"])),
+              labelText: "Password",
+              hintText: "********",
+              icon: new Icon(Icons.lock, color: themeColors["coolGray5"]),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  // Based on passwordVisible state choose the icon
+                    _passwordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: _passwordVisible
+                        ? themeColors["black"]
+                        : themeColors["coolGray5"]
+                ),
+                onPressed: () {
+                  setState(() {
+                    _passwordVisible = !_passwordVisible;
+                  });
+                },
+              ),
+            ),
             controller: _pwdInputController,
             maxLines: 1,
-            obscureText: true,
+            obscureText: !_passwordVisible,
             validator: (value) =>
                 value.isEmpty ? "Please enter password" : null,
           ),
-          FlatButton(
+          SizedBox(
+            height: 100,
+          ),
+          RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0),
+                  side: BorderSide(color: themeColors['yellow'])),
               color: themeColors["yellow"],
               textColor: Colors.black,
               padding: EdgeInsets.all(15.0),
@@ -97,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                     print("successful login of userid: $userId");
 
                     if (userId.length > 0 && userId != null) {
-                      // TODO navigate to user specific home screen
+                      Navigator.pushNamed(context, '/clientHome');
                     }
                   } catch (e) {
                     print("Login error: $e");

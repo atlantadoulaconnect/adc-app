@@ -1,11 +1,13 @@
+import 'package:adc_app/screens/applications/doula_app.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:adc_app/screens/home_screen.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/util/auth.dart';
+import 'package:adc_app/models/doula.dart';
 
 class DoulaSignupPage extends StatefulWidget {
+  DoulaSignupPage({Key key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _DoulaSignupPageState();
 }
@@ -13,20 +15,24 @@ class DoulaSignupPage extends StatefulWidget {
 class _DoulaSignupPageState extends State<DoulaSignupPage> {
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
   bool _autoValidate = false;
-  TextEditingController _nameInputController;
   TextEditingController _emailInputController;
   TextEditingController _pwdInputController;
   TextEditingController _confirmPwdInputController;
 
+  bool _passwordVisible;
+
   String userId;
+  Key key;
 
   @override
-  initState() {
-    _nameInputController = new TextEditingController();
+  void initState() {
     _emailInputController = new TextEditingController();
     _pwdInputController = new TextEditingController();
     _confirmPwdInputController = new TextEditingController();
 
+    _passwordVisible = false;
+
+    key = widget.key;
     super.initState();
   }
 
@@ -47,8 +53,17 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
             children: <Widget>[
               Text("Sign Up"),
               _registerForm(),
+              SizedBox(
+                height: 20,
+              ),
               Text("Already have an account?"),
-              FlatButton(
+              SizedBox(
+                height: 5,
+              ),
+              RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(50.0),
+                      side: BorderSide(color: themeColors['lightBlue'])),
                   onPressed: () {
                     Navigator.pushNamed(context, "/login");
                   },
@@ -69,20 +84,6 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
           children: <Widget>[
             TextFormField(
               decoration: InputDecoration(
-                  labelText: "Name*",
-                  hintText: "Jane D.",
-                  icon:
-                      new Icon(Icons.person, color: themeColors["coolGray5"])),
-              controller: _nameInputController,
-              validator: (val) {
-                if (val.length < 3) {
-                  return "Please enter a valid name.";
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(
                   labelText: "Email*",
                   hintText: "jane.doe@gmail.com",
                   icon: new Icon(Icons.mail, color: themeColors["coolGray5"])),
@@ -92,11 +93,29 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
             ),
             TextFormField(
               decoration: InputDecoration(
-                  labelText: "Password*",
-                  hintText: "********",
-                  icon: new Icon(Icons.lock, color: themeColors["coolGray5"])),
+                labelText: "Password*",
+                hintText: "********",
+                icon: new Icon(Icons.lock, color: themeColors["coolGray5"]),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                      _passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: _passwordVisible
+                          ? themeColors["black"]
+                          : themeColors["coolGray5"]
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisible = !_passwordVisible;
+                    });
+                  },
+                ),
+
+              ),
               controller: _pwdInputController,
-              obscureText: true,
+              obscureText: !_passwordVisible,
               validator: pwdValidator,
             ),
             TextFormField(
@@ -112,7 +131,13 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
                     return "Passwords do not match.";
                   return null;
                 }),
-            FlatButton(
+            SizedBox(
+              height: 100,
+            ),
+            RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0),
+                  side: BorderSide(color: themeColors['yellow'])),
               color: themeColors["yellow"],
               textColor: Colors.black,
               padding: EdgeInsets.all(15.0),
@@ -122,9 +147,6 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
                 if (form.validate()) {
                   form.save();
                   try {
-//                    userId = await widget.auth.signUp(
-//                        _emailInputController.text, _pwdInputController.text);
-
                     AuthResult result = await FirebaseAuth.instance
                         .createUserWithEmailAndPassword(
                             email: _emailInputController.text.toString().trim(),
@@ -135,10 +157,19 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
                     print("sign up returned user id: $userId");
 
                     if (userId.length > 0 && userId != null) {
-                      Navigator.pushNamed(context, '/doulaApp');
+                      Doula doulaApplicant = new Doula(userId, "doula",
+                          _emailInputController.text.toString().trim());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                DoulaAppPage(key: key, user: doulaApplicant)),
+                      );
+                    } else {
+                      print("invalid user id returned from firebase");
                     }
                   } catch (e) {
-                    print("Client account sign up error: $e");
+                    print("Doula account sign up error: $e");
                     form.reset();
                   }
                 }

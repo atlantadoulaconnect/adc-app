@@ -1,4 +1,5 @@
-import 'package:adc_app/screens/text_bank.dart';
+import 'package:adc_app/screens/messaging/contacts_screen.dart';
+import 'package:adc_app/screens/messaging/text_bank.dart';
 import 'package:flutter/widgets.dart';
 import 'package:adc_app/util/auth.dart';
 
@@ -6,24 +7,23 @@ import 'package:adc_app/util/auth.dart';
 //import 'package:adc_app/screens/root_screen.dart';
 import 'package:adc_app/screens/home_screen.dart';
 import 'package:adc_app/screens/login_screen.dart';
-import 'package:adc_app/screens/applications/doula_app.dart';
-import 'package:adc_app/screens/applications/client_app.dart';
-import 'package:adc_app/screens/client_signup_screen.dart';
-import 'package:adc_app/screens/doula_signup_screen.dart';
-import 'package:adc_app/screens/client_home_screen.dart';
-import 'package:adc_app/screens/doula_home_screen.dart';
-import 'package:adc_app/screens/applications/doula_app_completion_page.dart';
-import 'package:adc_app/screens/applications/doula_app_page2.dart';
-import 'package:adc_app/screens/applications/doula_app_page3.dart';
-import 'package:adc_app/screens/applications/doula_app_page4.dart';
-import 'package:adc_app/screens/applications/doula_app_page5.dart';
+import 'package:adc_app/screens/applications/doula/doula_app.dart';
+import 'package:adc_app/screens/applications/client/client_app.dart';
+import 'package:adc_app/screens/client/client_signup_screen.dart';
+import 'package:adc_app/screens/doula/doula_signup_screen.dart';
+import 'package:adc_app/screens/client/client_home_screen.dart';
+import 'package:adc_app/screens/doula/doula_home_screen.dart';
+import 'package:adc_app/screens/applications/doula/doula_app_completion_page.dart';
+import 'package:adc_app/screens/applications/doula/doula_app_page2.dart';
+import 'package:adc_app/screens/applications/doula/doula_app_page3.dart';
+import 'package:adc_app/screens/applications/doula/doula_app_page4.dart';
+import 'package:adc_app/screens/applications/doula/doula_app_page5.dart';
 
-import 'package:adc_app/screens/recent_messages.dart';
-import 'package:adc_app/screens/messages.dart';
-import 'package:adc_app/screens/contacts_screen.dart';
+import 'package:adc_app/screens/messaging/recent_messages.dart';
+import 'package:adc_app/screens/messaging/messages.dart';
 
-import 'package:adc_app/screens/admin_home_screen.dart';
-import 'package:adc_app/screens/registered_doulas_screen.dart';
+import 'package:adc_app/screens/admin/admin_home_screen.dart';
+import 'package:adc_app/screens/admin/registered_doulas_screen.dart';
 
 
 

@@ -1,37 +1,34 @@
+import 'package:adc_app/screens/applications/doula/doula_app.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:adc_app/screens/home_screen.dart';
 import 'package:adc_app/theme/colors.dart';
+import 'package:flutter/services.dart';
 import 'package:adc_app/util/auth.dart';
-import 'package:adc_app/screens/applications/test_app.dart';
-import 'package:adc_app/models/client.dart';
-import 'package:adc_app/screens/applications/client_app.dart';
+import 'package:adc_app/models/doula.dart';
+import 'package:adc_app/screens/home_screen.dart';
 
 
-class ClientSignupPage extends StatefulWidget {
-  ClientSignupPage({Key key}) : super(key: key);
+class DoulaSignupPage extends StatefulWidget {
+  DoulaSignupPage({Key key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ClientSignupPageState();
+  State<StatefulWidget> createState() => _DoulaSignupPageState();
 }
 
-class _ClientSignupPageState extends State<ClientSignupPage> {
+class _DoulaSignupPageState extends State<DoulaSignupPage> {
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   TextEditingController _emailInputController;
   TextEditingController _pwdInputController;
   TextEditingController _confirmPwdInputController;
-  String _emailTakenError;
 
   bool _passwordVisible;
+  String _emailTakenError;
 
   String userId;
   Key key;
 
   final MenuMaker _myMenuMaker = MenuMaker();
-
 
   @override
   void initState() {
@@ -50,12 +47,11 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
     _registerFormKey.currentState.reset();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Request a Doula"),
+          title: Text("Apply to be an ADC Doula"),
         ),
         drawer: _myMenuMaker.createMenu(context),
         body: Container(
@@ -83,18 +79,12 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                   textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
                   child: Text("LOG IN")),
-              SizedBox(
-                height: 5,
-              ),
             ],
           )),
         ));
   }
 
   Widget _registerForm() {
-
-
-
     return Form(
         key: _registerFormKey,
         autovalidate: _autoValidate,
@@ -118,12 +108,12 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                 suffixIcon: IconButton(
                   icon: Icon(
                     // Based on passwordVisible state choose the icon
-                    _passwordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off,
-                    color: _passwordVisible
-                        ? themeColors["black"]
-                        : themeColors["coolGray5"]
+                      _passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: _passwordVisible
+                          ? themeColors["black"]
+                          : themeColors["coolGray5"]
                   ),
                   onPressed: () {
                     setState(() {
@@ -166,9 +156,6 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                 if (form.validate()) {
                   form.save();
                   try {
-//                    userId = await widget.auth.signUp(
-//                        _emailInputController.text, _pwdInputController.text);
-
                     AuthResult result = await FirebaseAuth.instance
                         .createUserWithEmailAndPassword(
                             email: _emailInputController.text.toString().trim(),
@@ -179,24 +166,24 @@ class _ClientSignupPageState extends State<ClientSignupPage> {
                     print("sign up returned user id: $userId");
 
                     if (userId.length > 0 && userId != null) {
-                      Client clientApplicant = new Client(userId, "client",
+                      Doula doulaApplicant = new Doula(userId, "doula",
                           _emailInputController.text.toString().trim());
-                      print("new client: ${clientApplicant.toString()}");
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ClientAppPersonalInfoPage(
-                                key: key, user: clientApplicant)),
+                            builder: (context) =>
+                                DoulaAppPage(key: key, user: doulaApplicant)),
                       );
+                    } else {
+                      print("invalid user id returned from firebase");
                     }
-                  }
-                  catch (e) {
+                  } catch (e) {
                     if (e is PlatformException && e.code == "ERROR_EMAIL_ALREADY_IN_USE") {
                       setState(() {
                         _emailTakenError = e.message;
                       });
                     }
-                    print("Client account sign up error: $e");
+                    print("Doula account sign up error: $e");
                     form.reset();
                   }
                 }

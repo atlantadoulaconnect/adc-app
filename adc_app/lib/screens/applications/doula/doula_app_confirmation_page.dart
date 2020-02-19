@@ -1,4 +1,4 @@
-import 'package:adc_app/screens/applications/doula_app_completion_page.dart';
+import 'package:adc_app/screens/applications/doula/doula_app_completion_page.dart';
 import 'package:flutter/material.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/models/doula.dart';

@@ -57,7 +57,35 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
       "name": user.name,
       "userType": user.userType,
     });
+
+    await dbRef
+        .collection("users")
+        .document(user.userid)
+        .collection("userData")
+        .document("specifics")
+        .setData({
+      "phones": user.phones.join(", "),
+      "bday": user.bday,
+      "email": user.email,
+      "dueDate": user.dueDate,
+      "birthLocation": user.birthLocation,
+      "birthType": user.birthType,
+      "epidural": user.epidural,
+      "cesarean": user.cesarean,
+      "liveBirths": user.liveBirths,
+      "preterm": user.preterm,
+      "lowWeight": user.lowWeight,
+      "deliveryTypes": user.deliveryTypes.join(", "),
+      "multiples": user.multiples,
+      "meetBefore": user.meetBefore,
+      "homeVisit": user.homeVisit,
+      "photoRelease": user.photoRelease
+    });
   }
+
+  void before() => dispatch(WaitAction(true));
+
+  void after() => dispatch(WaitAction(false));
 }
 
 class CreateDoulaUserDocument extends ReduxAction<AppState> {
@@ -99,4 +127,8 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
 
     return null;
   }
+
+  void before() => dispatch(WaitAction(true));
+
+  void after() => dispatch(WaitAction(false));
 }

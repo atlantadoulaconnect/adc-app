@@ -4,6 +4,9 @@ class ClientAppConfirmationPage extends StatelessWidget {
   final Client currentUser;
   final VoidCallback toRequestSent;
   final Future<void> Function(Client) userToDB;
+  String phonesString;
+  String deliveryTypes;
+  String photoPermission;
 
   ClientAppConfirmationPage(this.currentUser, this.toRequestSent, this.userToDB)
       : assert(currentUser != null &&

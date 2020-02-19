@@ -15,6 +15,12 @@ import './frontend/screens/application/appTypeScreen.dart';
 import 'package:adc_app/frontend/screens/application/requestSentScreen.dart';
 
 import './frontend/screens/application/client/clientAppPage1.dart';
+import './frontend/screens/application/client/clientAppPage2.dart';
+import './frontend/screens/application/client/clientAppPage3.dart';
+import './frontend/screens/application/client/clientAppPage4.dart';
+import './frontend/screens/application/client/clientAppPage5.dart';
+import './frontend/screens/application/client/clientAppPage6.dart';
+import './frontend/screens/application/client/clientAppConfirmationPage.dart';
 
 import './frontend/screens/application/doula/doulaAppPage1.dart';
 import './frontend/screens/application/doula/doulaAppPage2.dart';
@@ -60,7 +66,14 @@ class ADCApp extends StatelessWidget {
             '/appType': (context) => AppTypeScreenConnector(),
             '/info': (context) => InfoScreen(),
             '/appType': (context) => AppTypeScreenConnector(),
-            '/clientAppPage1': (context) => ClientAppPage1(),
+            '/clientAppPage1': (context) => ClientAppPage1Connector(),
+            '/clientAppPage2': (context) => ClientAppPage2Connector(),
+            '/clientAppPage3': (context) => ClientAppPage3Connector(),
+            '/clientAppPage4': (context) => ClientAppPage4Connector(),
+            '/clientAppPage5': (context) => ClientAppPage5Connector(),
+            '/clientAppPage6': (context) => ClientAppPage6Connector(),
+            '/clientAppConfirmation': (context) =>
+                ClientAppConfirmationPageConnector(),
             '/doulaAppPage1': (context) => DoulaAppPage1Connector(),
             '/doulaAppPage2': (context) => DoulaAppPage2Connector(),
             '/doulaAppPage3': (context) => DoulaAppPage3Connector(),

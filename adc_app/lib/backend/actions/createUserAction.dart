@@ -40,10 +40,31 @@ class CreateUserAction extends ReduxAction<AppState> {
   void after() => dispatch(WaitAction(false));
 }
 
+class CreateClientUserDocument extends ReduxAction<AppState> {
+  final Client user;
+
+  CreateClientUserDocument(this.user)
+      : assert(user != null && user.userType == "client");
+
+  @override
+  Future<AppState> reduce() async {
+    print(
+        "Attempting to add this client ${user.toString()} to the users collection");
+
+    final dbRef = Firestore.instance;
+    await dbRef.collection("users").document(user.userid).setData({
+      "userid": user.userid,
+      "name": user.name,
+      "userType": user.userType,
+    });
+  }
+}
+
 class CreateDoulaUserDocument extends ReduxAction<AppState> {
   final Doula user;
 
-  CreateDoulaUserDocument(this.user) : assert(user != null);
+  CreateDoulaUserDocument(this.user)
+      : assert(user != null && user.userType == "doula");
 
   @override
   Future<AppState> reduce() async {
@@ -61,8 +82,9 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
     await dbRef
         .collection("users")
         .document(user.userid)
-        .collection("specifics")
-        .add({
+        .collection("userData")
+        .document("specifics")
+        .setData({
       "phones": user.phones.join(", "),
       "bday": user.bday,
       "email": user.email,

@@ -253,7 +253,7 @@ class ViewModel extends BaseModel<AppState> {
       {@required this.currentUser,
       @required this.userToDB,
       @required this.toRequestSent})
-      : super(equals: []);
+      : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {

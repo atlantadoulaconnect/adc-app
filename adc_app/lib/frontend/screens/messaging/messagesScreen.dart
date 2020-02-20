@@ -1,6 +1,17 @@
 import '../common.dart';
 
-class ClientHomeScreen extends StatelessWidget {
+class MessagesScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _MessagesScreenState();
+}
+
+class _MessagesScreenState extends State<MessagesScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -8,7 +19,7 @@ class ClientHomeScreen extends StatelessWidget {
   }
 }
 
-class ClientHomeScreenConnector extends StatelessWidget {
+class MessagesScreenConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>();
@@ -16,8 +27,6 @@ class ClientHomeScreenConnector extends StatelessWidget {
 }
 
 class ViewModel extends BaseModel<AppState> {
-  ViewModel();
-
   ViewModel.build();
 
   @override

@@ -1,6 +1,6 @@
-import './common.dart';
+import '../common.dart';
 
-class RootScreen extends StatelessWidget {
+class RecentMessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -8,7 +8,7 @@ class RootScreen extends StatelessWidget {
   }
 }
 
-class RootScreenConnector extends StatelessWidget {
+class RecentMessagesScreenConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>();
@@ -16,7 +16,9 @@ class RootScreenConnector extends StatelessWidget {
 }
 
 class ViewModel extends BaseModel<AppState> {
-  ViewModel.build() : super(equals: []);
+  ViewModel();
+
+  ViewModel.build();
 
   @override
   ViewModel fromStore() {

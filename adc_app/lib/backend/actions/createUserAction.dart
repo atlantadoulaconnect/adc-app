@@ -81,6 +81,16 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
       "homeVisit": user.homeVisit,
       "photoRelease": user.photoRelease
     });
+
+    DateTime now = new DateTime.now();
+
+    await dbRef.collection("applications").document(user.userid).setData({
+      "userid": user.userid,
+      "name": user.name,
+      "type": user.userType,
+      "status": "submitted",
+      "dateSubmitted": "${DateTime(now.month, now.day, now.year)}"
+    });
   }
 
   void before() => dispatch(WaitAction(true));
@@ -121,6 +131,16 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
       "certInProgress": user.certInProgress,
       "certProgram": user.certProgram,
       "birthsNeeded": user.birthsNeeded
+    });
+
+    DateTime now = new DateTime.now();
+
+    await dbRef.collection("applications").document(user.userid).setData({
+      "userid": user.userid,
+      "name": user.name,
+      "type": user.userType,
+      "status": "submitted",
+      "dateSubmitted": "${DateTime(now.month, now.day, now.year)}"
     });
 
     // TODO applicationState, update application state to submitted

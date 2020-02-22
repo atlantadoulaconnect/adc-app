@@ -16,7 +16,7 @@ class Client extends User {
   String birthType;
   bool epidural;
   bool cesarean;
-  List<EmergencyContact> emergencyContacts = new List<EmergencyContact>();
+  List<EmergencyContact> emergencyContacts;
 
   int liveBirths;
   bool preterm;
@@ -53,10 +53,7 @@ class Client extends User {
       this.meetBefore,
       this.homeVisit,
       this.photoRelease})
-      : super.full(userid, userType, name, email, phoneVerified, phones) {
-    this.emergencyContacts = new List<EmergencyContact>();
-    this.deliveryTypes = new List<String>();
-  }
+      : super.full(userid, userType, name, email, phoneVerified, phones);
 
   void addDeliveryType(String deliveryType) {
     this.deliveryTypes.add(deliveryType);
@@ -130,7 +127,6 @@ class Client extends User {
       super == other &&
           other is Client &&
           runtimeType == other.runtimeType &&
-          listEquals(phones, other.phones) &&
           bday == other.bday &&
           primaryDoula == other.primaryDoula &&
           backupDoula == other.backupDoula &&
@@ -173,6 +169,6 @@ class Client extends User {
   @override
   String toString() {
     // TODO: implement toString
-    return super.toString();
+    return "$userid: at $email\nname: $name\n contacts: $emergencyContacts";
   }
 }

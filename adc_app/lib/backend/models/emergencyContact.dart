@@ -1,15 +1,17 @@
+import 'package:flutter/foundation.dart';
+import './phone.dart';
+
 class EmergencyContact {
-  String contact_id;
   String name;
   String relationship;
 
   // TODO list of phone.dart objects
-  String phone;
+  List<Phone> phones;
 
-  EmergencyContact(String name, String relationship, String phone) {
+  EmergencyContact(String name, String relationship, List<Phone> phones) {
     this.name = name;
     this.relationship = relationship;
-    this.phone = phone;
+    this.phones = phones;
   }
 
   @override
@@ -17,20 +19,15 @@ class EmergencyContact {
       identical(this, other) ||
       other is EmergencyContact &&
           runtimeType == other.runtimeType &&
-          contact_id == other.contact_id &&
           name == other.name &&
           relationship == other.relationship &&
-          phone == other.phone;
+          listEquals(phones, other.phones);
 
   @override
-  int get hashCode =>
-      contact_id.hashCode ^
-      name.hashCode ^
-      relationship.hashCode ^
-      phone.hashCode;
+  int get hashCode => name.hashCode ^ relationship.hashCode ^ phones.hashCode;
 
   @override
   String toString() {
-    return "${this.relationship}: ${this.name} at ${this.phone}";
+    return "${this.relationship}: ${this.name} at ${this.phones.join(", ")}";
   }
 }

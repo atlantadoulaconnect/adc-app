@@ -23,16 +23,16 @@ class ClientAppPage3State extends State<ClientAppPage3> {
   void Function(Client, String, String, String, bool, bool) updateClient;
   VoidCallback toClientAppPage4;
 
-  TextEditingController _dueDateController;
-  TextEditingController _birthLocController;
+  TextEditingController _dueDateCtrl;
+  TextEditingController _birthLocCtrl;
 
   @override
   void initState() {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
     toClientAppPage4 = widget.toClientAppPage4;
-    _dueDateController = TextEditingController();
-    _birthLocController = TextEditingController();
+    _dueDateCtrl = TextEditingController();
+    _birthLocCtrl = TextEditingController();
     super.initState();
   }
 
@@ -49,52 +49,299 @@ class ClientAppPage3State extends State<ClientAppPage3> {
     birthType = [];
     birthType.add(new DropdownMenuItem(
       child: new Text('Singleton'),
-      value: '1',
+      value: 'singleton',
     ));
     birthType.add(new DropdownMenuItem(
       child: new Text('Twins'),
-      value: '2',
+      value: 'twins',
     ));
     birthType.add(new DropdownMenuItem(
       child: new Text('Triplets'),
-      value: '3',
+      value: 'triplets',
+    ));
+    birthType.add(new DropdownMenuItem(
+      child: new Text('4 or More'),
+      value: 'more',
     ));
 
     birthLocation = [];
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Grady'),
-      value: '0',
+      value: 'Grady',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Emory Decatur'),
-      value: '1',
+      value: 'Emory Decatur',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Northside'),
-      value: '2',
+      value: 'Northside',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('A Birthing Center'),
-      value: '3',
+      value: 'A Birthing Center',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('At Home'),
-      value: '4',
+      value: 'At Home',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('No plans'),
-      value: '5',
+      value: 'No plans',
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Other (please specify below)'),
-      value: '6',
+      value: 'other',
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return null;
+    birthType = [];
+    birthLocation = [];
+    loadData();
+
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Request a Doula"),
+        ),
+        body: Center(
+            child: Form(
+                key: _c3formKey,
+                autovalidate: false,
+                child: ListView(children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Current Pregnancy Details',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: themeColors['emoryBlue'],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                  // progress bar
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                          width: 250,
+                          child: LinearProgressIndicator(
+                              backgroundColor: themeColors['skyBlue'],
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  themeColors['mediumBlue']),
+                              value: 0.4))),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300.0,
+                      child: TextFormField(
+                        autocorrect: false,
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Due Date (MM/DD/YYYY)',
+                            prefixIcon: Icon(Icons.cake),
+                            suffixIcon: Icon(Icons.calendar_today)),
+                        controller: _dueDateCtrl,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Please enter your due date.";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Select your planned birth location:',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  // drop down menu for birth location
+                  Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ButtonTheme(
+                        alignedDropdown: true,
+                        child: DropdownButton(
+                          value: selectedBirthLocation,
+                          items: birthLocation,
+                          hint: new Text('Birth Location'),
+                          isExpanded: true,
+                          onChanged: (value) {
+                            selectedBirthLocation = value;
+                            setState(() {});
+                          },
+                        ),
+                      )),
+                  //if other, please specify
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 200.0,
+                      child: TextField(
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'If other, please specify',
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Select your birth type:',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  // drop down menu for birth type
+                  Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ButtonTheme(
+                        alignedDropdown: true,
+                        child: DropdownButton(
+                          value: selectedBirthType,
+                          items: birthType,
+                          hint: new Text('Birth Type'),
+                          isExpanded: true,
+                          onChanged: (value) {
+                            selectedBirthType = value;
+                            setState(() {
+//                          if (selectedBirthCount == '0') {
+//
+//                          }
+                            });
+                          },
+                        ),
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Are you planning on having an epidural?',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  Row(
+                      //mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: epiduralValue,
+                          onChanged: (T) {
+                            setState(() {
+                              epiduralValue = T;
+                            });
+                          },
+                        ),
+                        Text('Yes'),
+                        Radio(
+                          value: 2,
+                          groupValue: epiduralValue,
+                          onChanged: (T) {
+                            setState(() {
+                              epiduralValue = T;
+                            });
+                          },
+                        ),
+                        Text('No'),
+                      ]),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Are you expecting to have a caesarean section (C-Section)?',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  Row(
+                      //mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: cSectionValue,
+                          onChanged: (T) {
+                            setState(() {
+                              cSectionValue = T;
+                            });
+                          },
+                        ),
+                        Text('Yes'),
+                        Radio(
+                          value: 2,
+                          groupValue: cSectionValue,
+                          onChanged: (T) {
+                            setState(() {
+                              cSectionValue = T;
+                            });
+                          },
+                        ),
+                        Text('No'),
+                      ]),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                              side:
+                                  BorderSide(color: themeColors['lightBlue'])),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          color: themeColors['lightBlue'],
+                          textColor: Colors.white,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['lightBlue'],
+                          child: Text(
+                            "PREVIOUS",
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                        ),
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () {
+                            final form = _c3formKey.currentState;
+                            if (form.validate()) {
+                              form.save();
+
+                              // TODO capture and check input from dropdowns. Error messages if nothing is chosen
+                              // TODO check other text controller if 'other' is chosen from dropdown
+
+                              updateClient(
+                                  currentUser,
+                                  _dueDateCtrl.text.toString().trim(),
+                                  selectedBirthLocation,
+                                  selectedBirthType,
+                                  epiduralValue == 1,
+                                  cSectionValue == 1);
+                            }
+
+                            toClientAppPage4();
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.black,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "NEXT",
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                        ),
+                      ])
+                ]))));
   }
 }
 

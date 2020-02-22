@@ -12,7 +12,7 @@ import './frontend/screens/infoScreen.dart';
 // application screens
 import './frontend/screens/application/signupScreen.dart';
 import './frontend/screens/application/appTypeScreen.dart';
-import 'package:adc_app/frontend/screens/application/requestSentScreen.dart';
+import './frontend/screens/application/requestSentScreen.dart';
 
 import './frontend/screens/application/client/clientAppPage1.dart';
 import './frontend/screens/application/client/clientAppPage2.dart';
@@ -30,8 +30,19 @@ import './frontend/screens/application/doula/doulaAppPage5.dart';
 import './frontend/screens/application/doula/doulaAppConfirmationPage.dart';
 
 // client screens
+import './frontend/screens/client/clientHomeScreen.dart';
+
 // doula screens
+import './frontend/screens/doula/doulaHomeScreen.dart';
+
 // admin screens
+import './frontend/screens/admin/adminHomeScreen.dart';
+
+// messaging screens
+import './frontend/screens/messaging/contactsScreen.dart';
+import './frontend/screens/messaging/messagesScreen.dart';
+import './frontend/screens/messaging/recentMessagesScreen.dart';
+import './frontend/screens/messaging/textBankScreen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -64,7 +75,7 @@ class ADCApp extends StatelessWidget {
             '/login': (context) => LoginScreen(),
             '/signup': (context) => SignupScreenConnector(),
             '/appType': (context) => AppTypeScreenConnector(),
-            '/info': (context) => InfoScreen(),
+            '/info': (context) => InfoScreenConnector(),
             '/appType': (context) => AppTypeScreenConnector(),
             '/clientAppPage1': (context) => ClientAppPage1Connector(),
             '/clientAppPage2': (context) => ClientAppPage2Connector(),
@@ -81,7 +92,14 @@ class ADCApp extends StatelessWidget {
             '/doulaAppPage5': (context) => DoulaAppPage5Connector(),
             '/doulaAppConfirmation': (context) =>
                 DoulaAppConfirmationPageConnector(),
-            '/requestSent': (context) => RequestSentScreen()
+            '/requestSent': (context) => RequestSentScreenConnector(),
+            '/clientHome': (context) => ClientHomeScreenConnector(),
+            '/doulaHome': (context) => DoulaHomeScreenConnector(),
+            '/adminHome': (context) => AdminHomeScreenConnector(),
+            '/contacts': (context) => ContactsScreenConnector(),
+            '/messages': (context) => MessagesScreenConnector(),
+            '/recentMessages': (context) => RecentMessagesScreenConnector(),
+            '/textBank': (context) => TextBankScreenConnector(),
           },
         ));
   }

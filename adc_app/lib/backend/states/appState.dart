@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:meta/meta.dart';
 import '../models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AppState {
   final User currentUser;
   final bool waiting;
+  // TODO State object for all the errors
 
   AppState({this.currentUser, this.waiting});
 
@@ -16,7 +19,7 @@ class AppState {
     return AppState(currentUser: null, waiting: false);
   }
 
-  AppState copy({User currentUser, bool waiting}) {
+  AppState copy({User currentUser, bool waiting, String loginError}) {
     return AppState(
         currentUser: currentUser ?? this.currentUser,
         waiting: waiting ?? this.waiting);

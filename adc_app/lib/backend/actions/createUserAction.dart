@@ -1,6 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
 import '../models/user.dart';
 import '../models/client.dart';
@@ -19,19 +20,25 @@ class CreateUserAction extends ReduxAction<AppState> {
   Future<AppState> reduce() async {
     print("Attempting to create user with email: $email");
 
-    AuthResult result = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
-    FirebaseUser user = result.user;
-    String userId = user.uid;
-    print("User created with id: $userId");
+    try {
+      AuthResult result = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      FirebaseUser user = result.user;
+      String userId = user.uid;
+      print("User created with id: $userId");
 
-    if (userId != null && userId.length > 0) {
-      User applicant = new User(userId, email);
-      print("new client: ${applicant.toString()}");
-      return state.copy(currentUser: applicant);
+      if (userId != null && userId.length > 0) {
+        User applicant = new User(userId, email);
+        print("new client: ${applicant.toString()}");
+        return state.copy(currentUser: applicant);
+      }
+    } on PlatformException catch (e) {
+      if (e.code == "ERROR_EMAIL_ALREADY_IN_USE") {
+        // TODO set sign up error
+        print("email already in use");
+      }
     }
 
-    print("error: user id returned from firebase: $userId");
     return null;
   }
 

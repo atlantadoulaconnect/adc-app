@@ -168,8 +168,6 @@ class ViewModel extends BaseModel<AppState> {
 
   @override
   ViewModel fromStore() {
-    print(
-        "signup viewmodel from store: state of appstate: ${state.toString()}");
     return ViewModel.build(
         signUp: (String email, String password) =>
             dispatchFuture(CreateUserAction(email, password)),

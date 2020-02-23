@@ -1,10 +1,15 @@
 import '../common.dart';
 
 class RegisteredDoulasScreen extends StatelessWidget {
+  final VoidCallback toMessages;
+
+  RegisteredDoulasScreen(this.toMessages);
+
   @override
   Widget build(BuildContext context) {
     final recentContacts = ["Debbie D.", "Jane D.", "Sarah S."];
     final contactCards = <Widget>[];
+
     for (var i = 0; i < recentContacts.length; i++) {
       contactCards.add(
         Padding(
@@ -18,7 +23,7 @@ class RegisteredDoulasScreen extends StatelessWidget {
                 borderRadius: BorderRadius.all(const Radius.circular(20.0)),
               ),
               child: MaterialButton(
-                onPressed: () => Navigator.pushNamed(context, '/messages'),
+                onPressed: () => toMessages(),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
@@ -78,6 +83,7 @@ class RegisteredDoulasScreen extends StatelessWidget {
         ),
       );
     }
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Registered Doulas'),
@@ -94,15 +100,24 @@ class RegisteredDoulasScreen extends StatelessWidget {
 class RegisteredDoulasScreenConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, ViewModel>();
+    return StoreConnector<AppState, ViewModel>(
+      model: ViewModel(),
+      builder: (BuildContext context, ViewModel vm) =>
+          RegisteredDoulasScreen(vm.toMessages),
+    );
   }
 }
 
 class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
-  ViewModel.build();
+  VoidCallback toMessages;
+
+  ViewModel.build({@required this.toMessages});
 
   @override
-  ViewModel fromStore() {}
+  ViewModel fromStore() {
+    return ViewModel.build(
+        toMessages: () => dispatch(NavigateAction.pushNamed("/messages")));
+  }
 }

@@ -14,7 +14,6 @@ class AppTypeScreen extends StatelessWidget {
             updateDoula != null &&
             toClientApp != null &&
             toDoulaApp != null);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

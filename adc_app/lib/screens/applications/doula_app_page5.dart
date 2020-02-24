@@ -1,6 +1,9 @@
+import 'package:adc_app/screens/applications/doula_app_confirmation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:adc_app/theme/colors.dart';
 import 'package:adc_app/models/doula.dart';
+
+import 'doula_app_completion_page.dart';
 
 class DoulaAppPage5 extends StatefulWidget {
   Doula user;
@@ -13,12 +16,14 @@ class DoulaAppPage5 extends StatefulWidget {
 
 class _DoulaAppPage5 extends State<DoulaAppPage5> {
   Doula currentUser;
+  Key key;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool photoReleasePermission = false;
 
   @override
   void initState() {
     currentUser = widget.user;
+    key = widget.key;
     print("currentUser initState state: \n${currentUser.toString()}");
 
     super.initState();
@@ -123,14 +128,17 @@ class _DoulaAppPage5 extends State<DoulaAppPage5> {
                       borderRadius: new BorderRadius.circular(10.0),
                       side: BorderSide(color: themeColors['yellow'])),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/doulaAppCompletionPage');
+                    Navigator.push(context,
+                        MaterialPageRoute(
+                            builder: (context) => DoulaAppConfirmationPage(
+                                key: key, user: currentUser)));
                   },
                   color: themeColors['yellow'],
                   textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
                   splashColor: themeColors['yellow'],
                   child: Text(
-                    "FINISH",
+                    "Next",
                     style: TextStyle(
                       fontSize: 20.0,
                       color: themeColors['black'],

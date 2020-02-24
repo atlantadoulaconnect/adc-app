@@ -2,8 +2,11 @@ import 'package:adc_app/screens/applications/doula_app.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:adc_app/theme/colors.dart';
+import 'package:flutter/services.dart';
 import 'package:adc_app/util/auth.dart';
 import 'package:adc_app/models/doula.dart';
+import 'package:adc_app/screens/home_screen.dart';
+
 
 class DoulaSignupPage extends StatefulWidget {
   DoulaSignupPage({Key key}) : super(key: key);
@@ -20,9 +23,12 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
   TextEditingController _confirmPwdInputController;
 
   bool _passwordVisible;
+  String _emailTakenError;
 
   String userId;
   Key key;
+
+  final MenuMaker _myMenuMaker = MenuMaker();
 
   @override
   void initState() {
@@ -31,6 +37,7 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
     _confirmPwdInputController = new TextEditingController();
 
     _passwordVisible = false;
+    _emailTakenError = null;
 
     key = widget.key;
     super.initState();
@@ -46,6 +53,7 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
         appBar: AppBar(
           title: Text("Apply to be an ADC Doula"),
         ),
+        drawer: _myMenuMaker.createMenu(context),
         body: Container(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
@@ -85,6 +93,7 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
             TextFormField(
               decoration: InputDecoration(
                   labelText: "Email*",
+                  errorText: _emailTakenError,
                   hintText: "jane.doe@gmail.com",
                   icon: new Icon(Icons.mail, color: themeColors["coolGray5"])),
               controller: _emailInputController,
@@ -169,6 +178,11 @@ class _DoulaSignupPageState extends State<DoulaSignupPage> {
                       print("invalid user id returned from firebase");
                     }
                   } catch (e) {
+                    if (e is PlatformException && e.code == "ERROR_EMAIL_ALREADY_IN_USE") {
+                      setState(() {
+                        _emailTakenError = e.message;
+                      });
+                    }
                     print("Doula account sign up error: $e");
                     form.reset();
                   }

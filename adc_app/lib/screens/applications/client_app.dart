@@ -58,81 +58,99 @@ class _ClientAppPersonalInfoPageState extends State<ClientAppPersonalInfoPage> {
               key: _formKey,
               autovalidate: false,
               child: ListView(
-                //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    'Personal Information',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      color: themeColors['emoryBlue'],
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
-                  ),
-                  Container(
-                    width: 250,
-                    child: LinearProgressIndicator(
-                      backgroundColor: themeColors['skyBlue'],
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          themeColors['mediumBlue']),
-                      value: 0,
-                    ),
-                  ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Name',
-                        prefixIcon: Icon(Icons.person),
+
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Personal Information',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          color: themeColors['emoryBlue'],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                        ),
                       ),
-                      controller: _nameController,
-                      validator: nameValidator,
-                    ),
                   ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      keyboardType: TextInputType.datetime,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Birthday (MM/YYYY)',
-                          prefixIcon: Icon(Icons.cake),
-                          suffixIcon: Icon(Icons.calendar_today)),
-                      controller: _bdayController,
-                      validator: bdayValidator,
-                    ),
-                  ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Phone',
-                        prefixIcon: Icon(Icons.phone),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 250,
+                        child: LinearProgressIndicator(
+                          backgroundColor: themeColors['skyBlue'],
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              themeColors['mediumBlue']),
+                          value: 0,
+                        ),
                       ),
-                      controller: _phoneController,
-                      validator: phoneValidator,
-                    ),
                   ),
-                  Container(
-                    width: 300.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Phone 2 (Optional)',
-                        prefixIcon: Icon(Icons.phone),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Name',
+                            prefixIcon: Icon(Icons.person),
+                          ),
+                          controller: _nameController,
+                          validator: nameValidator,
+                        ),
                       ),
-                      controller: _altPhoneController,
-                      validator: altPhoneValidator,
-                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          keyboardType: TextInputType.datetime,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Birthday (MM/YYYY)',
+                              prefixIcon: Icon(Icons.cake),
+                              suffixIcon: Icon(Icons.calendar_today)),
+                          controller: _bdayController,
+                          validator: bdayValidator,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Phone',
+                            prefixIcon: Icon(Icons.phone),
+                          ),
+                          controller: _phoneController,
+                          validator: phoneValidator,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 300.0,
+                        child: TextFormField(
+                          autocorrect: false,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Phone 2 (Optional)',
+                            prefixIcon: Icon(Icons.phone),
+                          ),
+                          controller: _altPhoneController,
+                          validator: altPhoneValidator,
+                        ),
+                      ),
                   ),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
@@ -512,22 +530,81 @@ class _ClientAppCurrentBirthInfoPageState
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // controllers
   TextEditingController _dueDateController;
-  TextEditingController _birthLocController;
 
   @override
   void initState() {
     currentUser = widget.user;
     key = widget.key;
     _dueDateController = new TextEditingController();
-    _birthLocController = new TextEditingController();
     print(
         "currentUser initState client app state: \n${currentUser.toString()}");
 
     super.initState();
   }
 
+
+  //drop down list
+  List<DropdownMenuItem<String>> birthType = [];
+  String selectedBirthType;
+
+  List<DropdownMenuItem<String>> birthLocation = [];
+  String selectedBirthLocation;
+  bool epiduralValue;
+  bool cSectionValue;
+  void loadData() {
+    birthType = [];
+    birthType.add(new DropdownMenuItem(
+      child: new Text('Singleton'),
+      value: 'Singleton',
+    ));
+    birthType.add(new DropdownMenuItem(
+      child: new Text('Twins'),
+      value: 'Twins',
+    ));
+    birthType.add(new DropdownMenuItem(
+      child: new Text('Triplets'),
+      value: 'Triplets',
+    ));
+
+    birthLocation = [];
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Northside'),
+      value: 'Northside',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Emory Decatur'),
+      value: 'Emory Decatur',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Grady'),
+      value: 'Grady',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('A Birthing Center'),
+      value: 'A Birthing Center',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('At Home'),
+      value: 'At Home',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('No plans'),
+      value: 'No plans',
+    ));
+    birthLocation.add(new DropdownMenuItem(
+      child: new Text('Other (please specify below)'),
+      value: 'Other',
+    ));
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    birthType = [];
+    birthLocation = [];
+    loadData();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Request a Doula"),
@@ -537,7 +614,6 @@ class _ClientAppCurrentBirthInfoPageState
             key: _formKey,
             autovalidate: false,
             child: ListView(
-              //mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -551,6 +627,7 @@ class _ClientAppCurrentBirthInfoPageState
                       ),
                     ),
                 ),
+                // progress bar
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -563,6 +640,7 @@ class _ClientAppCurrentBirthInfoPageState
                       ),
                     ),
                 ),
+                // due date
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -586,82 +664,166 @@ class _ClientAppCurrentBirthInfoPageState
                     ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      // TODO: change to a dropdown
-                      width: 300.0,
-                      child: TextFormField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Planned Birth Location',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
-                        controller: _birthLocController,
-                        validator: (val) {
-                          if (val.isEmpty) {
-                            return "Please enter where you plan to give birth.";
-                          }
-                          return null;
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Select your planned birth location:',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                // drop down menu for birth location
+                Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton(
+                        value: selectedBirthLocation,
+                        items: birthLocation,
+                        hint: new Text('Birth Location'),
+                        isExpanded: true,
+                        onChanged: (value) {
+
+                          setState(() {
+                            selectedBirthLocation = value;
+
+                          });
                         },
+
+
+
+                      ),
+
+                    )
+
+                ),
+                //if other, please specify
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 200.0,
+                    child: TextField(
+                      autocorrect: false,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'If other, please specify',
                       ),
                     ),
+                  ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 300.0,
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Birth Type (Singleton, Twins, Triplets)',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
-                      ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Select your birth type:',
+                    style: TextStyle(
+                      fontSize: 16,
                     ),
+                  ),
+                ),
+                // drop down menu for birth type
+                Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton(
+                        value: selectedBirthType,
+                        items: birthType,
+                        hint: new Text('Birth Type'),
+                        isExpanded: true,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedBirthType = value;
+
+                          });
+                        },
+
+
+
+                      ),
+
+                    )
+
                 ),
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Are you planning on having an epidural?',
-                    ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 300.0,
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Yes/No',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
+                ),
+                Row(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: true,
+                      groupValue: epiduralValue,
+                      onChanged: (T) {
+                        setState(() {
+                          epiduralValue = T;
+                        });
+                      },
+                    ),
+                    Text(
+                      'Yes'
+                    ),
+                    Radio(
+                      value: false,
+                      groupValue: epiduralValue,
+                      onChanged: (T) {
+                        setState(() {
+                          epiduralValue = T;
+                        });
+                      },
+                    ),
+                    Text(
+                        'No'
+                    ),
+                    ]
+
+
                 ),
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Are you expecting to have a caesarean secction (C-Section)?',
-                    ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 300.0,
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Yes/No',
-                          prefixIcon: Icon(Icons.local_hospital),
-                        ),
+                      'Are you expecting to have a caesarean section (C-Section)?',
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
                 ),
+                Row(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Radio(
+                        value: true,
+                        groupValue: cSectionValue,
+                        onChanged: (T) {
+                          setState(() {
+                            cSectionValue = T;
+                          });
+                        },
+                      ),
+                      Text(
+                          'Yes'
+                      ),
+                      Radio(
+                        value: false,
+                        groupValue: cSectionValue,
+                        onChanged: (T) {
+                          setState(() {
+                            cSectionValue = T;
+                          });
+                        },
+                      ),
+                      Text(
+                          'No'
+                      ),
+                    ]
 
+
+                ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -689,11 +851,14 @@ class _ClientAppCurrentBirthInfoPageState
                           final form = _formKey.currentState;
                           if (form.validate()) {
                             form.save();
-
                             currentUser.dueDate =
                                 _dueDateController.text.toString().trim();
                             currentUser.birthLocation =
-                                _birthLocController.text.toString().trim();
+                                selectedBirthLocation.toString().trim();
+                            currentUser.birthType =
+                                selectedBirthType.toString().trim();
+                            currentUser.epidural = epiduralValue;
+                            currentUser.cesarean = cSectionValue;
 
                             Navigator.push(
                                 context,
@@ -717,6 +882,8 @@ class _ClientAppCurrentBirthInfoPageState
           )),
     );
   }
+
+
 }
 
 class ClientAppPreviousBirthInfoPage extends StatefulWidget {
@@ -747,9 +914,45 @@ class _ClientAppPreviousBirthInfoPageState
 
     super.initState();
   }
+  //drop down list
+  List<DropdownMenuItem<int>> birthCount = [];
+  int selectedBirthCount;
+
+  void loadData() {
+     birthCount = [];
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('0'),
+       value: 0,
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('1'),
+       value: 1,
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('2'),
+       value: 2,
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('3'),
+       value: 3,
+     ));
+     birthCount.add(new DropdownMenuItem(
+       child: new Text('4'),
+       value: 4,
+     ));
+
+   }
+  bool pretermValue;
+  bool previousTwinsOrTriplets;
+  bool lowBirthWeightValue;
+  bool vaginalBirth = false, cesarean = false, vbac = false;
+  List<String> deliveryTypesList = new List<String>();
 
   @override
   Widget build(BuildContext context) {
+
+    loadData();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Request a Doula"),
@@ -784,7 +987,249 @@ class _ClientAppPreviousBirthInfoPageState
                       ),
                     ),
                 ),
-                //TODO add the content
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Number of previous live births:',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                // drop down menu for births
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButton(
+                      value: selectedBirthCount,
+                      items: birthCount,
+                      hint: new Text('Previous Births'),
+                      isExpanded: true,
+                      onChanged: (value) {
+                        //print("value: $value");
+                        setState(() {
+                          selectedBirthCount = value;
+
+
+                        });
+                      },
+
+                    ),
+
+                  )
+
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Were any of your previous life births: ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+
+                //preterm
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+                  child: Text(
+                    'Preterm: ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: true,
+                          groupValue: pretermValue,
+                          onChanged: (T) {
+                            setState(() {
+                              pretermValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: false,
+                          groupValue: pretermValue,
+                          onChanged: (T) {
+                            setState(() {
+                              pretermValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
+                //low birth weight
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+                  child: Text(
+                    'Low Birth Weight (< 2,500g):',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: true,
+                          groupValue: lowBirthWeightValue,
+                          onChanged: (T) {
+                            setState(() {
+                              lowBirthWeightValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: false,
+                          groupValue: lowBirthWeightValue,
+                          onChanged: (T) {
+                            setState(() {
+                              lowBirthWeightValue = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
+                //Previous Birth Types
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Previous Birth Types (check all that apply): ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Vaginal Birth"),
+                          Checkbox(
+                            value: vaginalBirth,
+                            onChanged: (bool value) {
+                              setState(() {
+                                vaginalBirth = value;
+                                deliveryTypesList.add("Vaginal Birth");
+                              });
+                            },
+                          )
+                        ],
+                      ),
+
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Cesaerean"),
+                          Checkbox(
+                            value: cesarean,
+                            onChanged: (bool value) {
+                              setState(() {
+                                cesarean = value;
+                                deliveryTypesList.add("Cesaerean");
+                              });
+                            },
+                          )
+                        ],
+                      ),
+
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("VBAC"),
+                          Checkbox(
+                            value: vbac,
+                            onChanged: (bool value) {
+                              setState(() {
+                                vbac = value;
+                                deliveryTypesList.add("VBAC");
+                              });
+                            },
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+
+                //previous twins or triplets
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'Have you previously had twins or triplets? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: true,
+                          groupValue: previousTwinsOrTriplets,
+                          onChanged: (T) {
+                            setState(() {
+                              previousTwinsOrTriplets = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: false,
+                          groupValue: previousTwinsOrTriplets,
+                          onChanged: (T) {
+                            setState(() {
+                              previousTwinsOrTriplets = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
 
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -814,6 +1259,12 @@ class _ClientAppPreviousBirthInfoPageState
                           if (form.validate()) {
                             form.save();
 
+                            currentUser.liveBirths = selectedBirthCount;
+                            currentUser.preterm = pretermValue;
+                            currentUser.lowWeight = lowBirthWeightValue;
+                            currentUser.deliveryTypes = deliveryTypesList;
+                            currentUser.multiples = previousTwinsOrTriplets;
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -835,6 +1286,19 @@ class _ClientAppPreviousBirthInfoPageState
               ],
             ),
           )),
+    );
+  }
+}
+
+//TODO figure out how to call this method in a loop for previous birth info
+class DisplayPreviousBirthInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+        padding: const EdgeInsets.all(8),
+        children: <Widget>[
+          Text("Trying This")
+    ],
     );
   }
 }
@@ -868,6 +1332,9 @@ class _ClientAppDoulaQuestionsPageState
     super.initState();
   }
 
+  bool meetDoula;
+  bool doulaVisit;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -892,7 +1359,7 @@ class _ClientAppDoulaQuestionsPageState
                     ),
                   ),
                 ),
-              Padding(
+                Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                       width: 250,
@@ -904,6 +1371,94 @@ class _ClientAppDoulaQuestionsPageState
                       ),
                     ),
               ),
+
+                //meet your doula?
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'Would you like to meet your doula in person before delivery? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: true,
+                          groupValue: meetDoula,
+                          onChanged: (T) {
+                            setState(() {
+                              meetDoula = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: false,
+                          groupValue: meetDoula,
+                          onChanged: (T) {
+                            setState(() {
+                              meetDoula = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
+
+                //doula home visit?
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'Would you like your doula to make a home visit after delivery? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                  child: Row(
+                      children: <Widget>[
+                        Radio(
+                          value: true,
+                          groupValue: doulaVisit,
+                          onChanged: (T) {
+                            setState(() {
+                              doulaVisit = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'Yes'
+                        ),
+                        Radio(
+                          value: false,
+                          groupValue: doulaVisit,
+                          onChanged: (T) {
+                            setState(() {
+                              doulaVisit = T;
+                            });
+                          },
+                        ),
+                        Text(
+                            'No'
+                        ),
+                      ]
+
+
+                  ),
+                ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -931,6 +1486,9 @@ class _ClientAppDoulaQuestionsPageState
                           final form = _formKey.currentState;
                           if (form.validate()) {
                             form.save();
+
+                            currentUser.meetBefore = meetDoula;
+                            currentUser.homeVisit = doulaVisit;
 
                             Navigator.push(
                                 context,
@@ -983,6 +1541,8 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
 
     super.initState();
   }
+
+  bool statementAgree = false;
 
   @override
   Widget build(BuildContext context) {
@@ -1046,9 +1606,20 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text('CHECKBOX GOES HERE'
-                  ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: <Widget>[
+                        Checkbox(
+                          value: statementAgree,
+                          onChanged: (bool value) {
+                            setState(() {
+                              statementAgree = value;
+                            });
+                          },
+                        ),
+                        Text("I agree to the statements above (optional) ")
+                      ],
+                    ),
                 ),
 
                 Row(
@@ -1078,6 +1649,8 @@ class _ClientAppPhotoReleasePageState extends State<ClientAppPhotoReleasePage> {
                           final form = _formKey.currentState;
                           if (form.validate()) {
                             form.save();
+
+                            currentUser.photoRelease = statementAgree;
 
                             Navigator.push(
                                 context,
@@ -1138,172 +1711,290 @@ class _ClientAppConfirmationPageState extends State<ClientAppConfirmationPage> {
         child: ListView(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Confirmation',
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Confirmation',
+                    style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: themeColors['emoryBlue'],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                        height: 1.5),
+                    textAlign: TextAlign.center),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Personal Information',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Name: ${currentUser.name}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Birthday: ${currentUser.bday}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Phone: ${currentUser.phone}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Emergency Contacts:',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      height: 2),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' ${currentUser.emergencyContacts[0].toString()}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Current Birth Information',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Due Date: ${currentUser.dueDate}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Planned Birth Location: ${currentUser.birthLocation}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Birth Type: ${currentUser.birthType}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Epidural:  ${currentUser.getYesOrNoFromBool(currentUser.epidural)}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' C-Section:  ${currentUser.getYesOrNoFromBool(currentUser.cesarean)}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Previous Birth Information',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                ' Number of Previous Births:  ${currentUser.liveBirths}',
                 style: TextStyle(
                     fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
+                    color: themeColors['black'],
+                    fontSize: 18,
                     height: 1.5),
-                textAlign: TextAlign.center),
-            Text(
-              ' Personal Information',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  height: 1.5),
-              textAlign: TextAlign.left,
+                textAlign: TextAlign.left,
+              ),
             ),
-            Text(
-              ' Name: ${currentUser.name}',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Any preterm births?  ${currentUser.getYesOrNoFromBool(currentUser.preterm)}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
             ),
-            Text(
-              ' Birthday: ${currentUser.bday}',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  ' Any low birth weight babies?  ${currentUser.getYesOrNoFromBool(currentUser.lowWeight)}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
             ),
-            Text(
-              ' Phone: ${currentUser.phone}',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
+            Padding(
+              padding: EdgeInsets.fromLTRB(12, 4, 8, 4),
+              child: Text(
+                'Birth Types: ${currentUser.deliveryTypes.toString()}',
+                style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['black'],
+                    fontSize: 18,
+                    height: 1.5),
+                textAlign: TextAlign.left,
+              ),
             ),
-//            Text(
-//              ' Phone 2 (Optional): ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
-            Text(
-              ' Emergency Contacts:',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  height: 2),
-              textAlign: TextAlign.left,
+            Padding(
+              padding: EdgeInsets.fromLTRB(12, 8, 8, 8),
+              child: Text(
+                'Previous Twins or Triplets: ${currentUser.getYesOrNoFromBool(currentUser.multiples)}',
+                style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['black'],
+                    fontSize: 18,
+                    height: 1.5),
+                textAlign: TextAlign.left,
+              ),
             ),
-            Text(
-              ' ${currentUser.emergencyContacts[0].toString()}',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                ' Doula Questions',
+                style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['black'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    height: 1.5),
+                textAlign: TextAlign.left,
+              ),
             ),
-//            Text(
-//              ' Name: ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
-//            Text(
-//              ' Relationship: ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
-//            Text(
-//              ' Phone: ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
-            Text(
-              ' Current Birth Information',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  height: 1.5),
-              textAlign: TextAlign.left,
+            Padding(
+              padding: EdgeInsets.fromLTRB(12, 8, 8, 8),
+              child: Text(
+                'Would you like to meet your doula in person before delivery? '
+                    '\n ${currentUser.getYesOrNoFromBool(currentUser.meetBefore)}',
+                style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['black'],
+                    fontSize: 18,
+                    height: 1.5),
+                textAlign: TextAlign.left,
+              ),
             ),
-            Text(
-              ' Due Date: ${currentUser.dueDate}',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
+            Padding(
+              padding: EdgeInsets.fromLTRB(12, 8, 8, 8),
+              child: Text(
+                'Would you like your doula to make a home visit after delivery? '
+                    '\n ${currentUser.getYesOrNoFromBool(currentUser.homeVisit)}',
+                style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['black'],
+                    fontSize: 18,
+                    height: 1.5),
+                textAlign: TextAlign.left,
+              ),
             ),
-            Text(
-              ' Planned Birth Location: ${currentUser.birthLocation}',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                ' Agree to Photo Release? ${currentUser.getYesOrNoFromBool(currentUser.photoRelease)}',
+                style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['black'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    height: 1.5),
+                textAlign: TextAlign.left,
+              ),
             ),
-            Text(
-              //TODO add the rest of the information
-              ' ADD THE REST OF THE INFO LATER!!!!',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['black'],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  height: 1.5),
-              textAlign: TextAlign.left,
-            ),
-//            Text(
-//              ' Birth type: ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
-//            Text(
-//              ' Are you planning to have an epidural? : ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
-//            Text(
-//              ' Are you expecting to have a C-section? : ',
-//              style: TextStyle(
-//                  fontFamily: 'Roboto',
-//                  color: themeColors['black'],
-//                  fontSize: 18,
-//                  height: 1.5),
-//              textAlign: TextAlign.left,
-//            ),
+
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[

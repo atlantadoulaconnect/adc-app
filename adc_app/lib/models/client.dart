@@ -36,6 +36,15 @@ class Client extends User {
     this.deliveryTypes.add(deliveryType);
   }
 
+  //for confirmation page
+  String getYesOrNoFromBool(bool yesOrNo) {
+    if (yesOrNo == true) {
+      return "Yes";
+    } else {
+      return "No";
+    }
+  }
+
   void removeDeliveryType(String deliveryType) {
     this.deliveryTypes.remove(deliveryType);
   }

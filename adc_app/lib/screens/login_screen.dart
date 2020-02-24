@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:adc_app/util/auth.dart';
 import 'dart:async';
+import 'package:adc_app/screens/home_screen.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,6 +21,8 @@ class _LoginPageState extends State<LoginPage> {
   bool _passwordVisible;
 
   String userId;
+
+  final MenuMaker _myMenuMaker = MenuMaker();
 
   @override
   initState() {
@@ -36,15 +40,19 @@ class _LoginPageState extends State<LoginPage> {
         appBar: AppBar(
           title: Text("Log In"),
         ),
+        drawer: _myMenuMaker.createMenu(context),
         body: Container(
             padding: const EdgeInsets.all(20.0),
-            child: Column(children: <Widget>[
-              Text("Welcome to Atlanta Doula Connect"),
+            child: ListView(children: <Widget>[
+              Text("Welcome to Atlanta Doula Connect",
+                  textAlign: TextAlign.center),
               _loginForm(),
               SizedBox(
                 height: 20,
               ),
-              Text("Don't have an account?"),
+              Text("Don't have an account?",
+                  textAlign: TextAlign.center
+              ),
               SizedBox(
                 height: 5,
               ),
@@ -134,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                     print("successful login of userid: $userId");
 
                     if (userId.length > 0 && userId != null) {
-                      Navigator.pushNamed(context, '/clientHome');
+                      Navigator.pushNamed(context, '/adminHome');
                     }
                   } catch (e) {
                     print("Login error: $e");

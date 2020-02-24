@@ -18,6 +18,12 @@ import 'package:adc_app/screens/applications/doula_app_page4.dart';
 import 'package:adc_app/screens/applications/doula_app_page5.dart';
 
 import 'package:adc_app/screens/recent_messages.dart';
+import 'package:adc_app/screens/messages.dart';
+import 'package:adc_app/screens/contacts_screen.dart';
+
+import 'package:adc_app/screens/admin_home_screen.dart';
+import 'package:adc_app/screens/registered_doulas_screen.dart';
+
 
 
 final Map<String, WidgetBuilder> routesTable = <String, WidgetBuilder>{
@@ -49,5 +55,9 @@ final Map<String, WidgetBuilder> routesTable = <String, WidgetBuilder>{
   "/clientHome": (BuildContext context) => ClientHome(),
   "/doulaHome": (BuildContext context) => DoulaHome(),
 
-  "/recentMessages": (BuildContext context) => RecentMessagesPage()
+  "/messages": (BuildContext context) => MessagesPage(),
+  "/recentMessages": (BuildContext context) => RecentMessagesPage(),
+  "/contacts": (BuildContext context) => ContactsPage(),
+  "/adminHome": (BuildContext context) => AdminHomePage(),
+  "/registeredDoulas": (BuildContext context) => RegisteredDoulasPage(),
 };

@@ -169,6 +169,6 @@ class Client extends User {
   @override
   String toString() {
     // TODO: implement toString
-    return "$userid: at $email\nname: $name\n contacts: $emergencyContacts";
+    return "client $userid: at $email\nname: $name";
   }
 }

@@ -16,6 +16,23 @@ class LoginUserAction extends ReduxAction<AppState> {
   LoginUserAction(this.email, this.password)
       : assert(email != null && password != null);
 
+  Admin populateAdmin(String userId, DocumentSnapshot ds) {
+    Admin user = Admin(userid: userId, userType: "admin", name: ds["name"]);
+    return user;
+  }
+
+  Client populateClient(String userId, DocumentSnapshot ds) {
+    Client user = Client(userid: userId, userType: "client", name: ds["name"]);
+
+    return user;
+  }
+
+  Doula populateDoula(String userId, DocumentSnapshot ds) {
+    Doula user = Doula(userid: userId, userType: "doula", name: ds["name"]);
+
+    return user;
+  }
+
   @override
   Future<AppState> reduce() async {
     print("Attempting to login user with email: $email");
@@ -28,9 +45,49 @@ class LoginUserAction extends ReduxAction<AppState> {
       String userId = user.uid;
 
       if (userId.length > 0 && userId != null) {
+        print("received valid user id: $userId");
+        print("populating AppState currentUser");
+
+        User current;
+
+        await Firestore.instance
+            .collection("users")
+            .document(userId)
+            .get()
+            .then((DocumentSnapshot ds) {
+          String userType = ds["userType"];
+
+          switch (userType) {
+            case "admin":
+              {
+                current = populateAdmin(userId, ds);
+              }
+              break;
+            case "client":
+              {
+                current = populateClient(userId, ds);
+              }
+              break;
+            case "doula":
+              {
+                current = populateDoula(userId, ds);
+              }
+              break;
+            default:
+              {
+                // user logged out before selecting user type
+                current = User(userId, email);
+              }
+              break;
+          }
+        });
+
+        print("update AppState with current user: ${current.toString()}");
+        return state.copy(currentUser: current);
       } else {
         // invalid user id
-        return state.copy(loginError: "Invalid response from database");
+        print("invalid user id returned");
+        return null;
       }
     } catch (e) {
       // TODO set login error

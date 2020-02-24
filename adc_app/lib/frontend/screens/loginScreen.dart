@@ -61,7 +61,11 @@ class LoginScreenState extends State<LoginScreen> {
                   autovalidate: false,
                   child: Column(children: <Widget>[
                     TextFormField(
-                      decoration: InputDecoration(),
+                      decoration: InputDecoration(
+                          labelText: "Email",
+                          hintText: "jane.doe@gmail.com",
+                          icon: new Icon(Icons.mail,
+                              color: themeColors["coolGray5"])),
                       controller: _emailInputCtrl,
                       maxLines: 1,
                       keyboardType: TextInputType.emailAddress,
@@ -114,6 +118,7 @@ class LoginScreenState extends State<LoginScreen> {
                           await login(_emailInputCtrl.text.toString().trim(),
                               _pwdInputCtrl.text.toString().trim());
 
+                          print("exited await login going toHome");
                           toHome();
                         }
                       },
@@ -172,8 +177,8 @@ class ViewModel extends BaseModel<AppState> {
     return ViewModel.build(
         login: (String email, String password) =>
             dispatchFuture(LoginUserAction(email, password)),
-        toHome: () => NavigateAction.pushNamed("/home"),
-        toSignup: () => NavigateAction.pushNamed("/signup"),
+        toHome: () => dispatch(NavigateAction.pushNamed("/")),
+        toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
         isWaiting: state.waiting);
   }
 }

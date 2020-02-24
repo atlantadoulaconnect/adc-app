@@ -10,10 +10,17 @@ class CurrentMenu extends StatelessWidget {
   final VoidCallback toSignup;
   final VoidCallback toLogin;
   final VoidCallback toInfo;
+  final VoidCallback toRecentMessages;
+  final VoidCallback toDoulas;
 
   CurrentMenu(
-      {this.userType, this.toHome, this.toSignup, this.toLogin, this.toInfo})
-      : assert(userType != null);
+      {this.userType,
+      this.toHome,
+      this.toSignup,
+      this.toLogin,
+      this.toInfo,
+      this.toRecentMessages,
+      this.toDoulas});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +62,7 @@ class CurrentMenu extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: themeColors['yellow'],
                     ),
-                    child: Text("Welcome")),
+                    child: Text("Welcome, Admin")),
                 ListTile(
                   leading: Icon(
                     IconData(59530, fontFamily: 'MaterialIcons'),
@@ -65,29 +72,29 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: () => toHome,
+                  onTap: toHome,
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59679, fontFamily: 'MaterialIcons'),
+                    IconData(57545, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
-                  title: Text('Request a Doula',
+                  title: Text('Messages',
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: () {},
+                  onTap: toRecentMessages,
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59485, fontFamily: 'MaterialIcons'),
+                    IconData(57545, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
-                  title: Text('Apply as a Doula',
+                  title: Text('Doulas',
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: () {},
+                  onTap: toDoulas,
                 ),
                 ListTile(
                   leading: Icon(
@@ -109,17 +116,6 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toInfo,
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Log In',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toLogin,
                 ),
               ],
             )));
@@ -136,7 +132,7 @@ class CurrentMenu extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: themeColors['yellow'],
                     ),
-                    child: Text("Welcome")),
+                    child: Text("Welcome, Client")),
                 ListTile(
                   leading: Icon(
                     IconData(59530, fontFamily: 'MaterialIcons'),
@@ -146,29 +142,18 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: () => toHome,
+                  onTap: toHome,
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59679, fontFamily: 'MaterialIcons'),
+                    IconData(57545, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
-                  title: Text('Request a Doula',
+                  title: Text('Messages',
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59485, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Apply as a Doula',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: () {},
+                  onTap: toRecentMessages,
                 ),
                 ListTile(
                   leading: Icon(
@@ -190,17 +175,6 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toInfo,
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Log In',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toLogin,
                 ),
               ],
             )));
@@ -217,7 +191,7 @@ class CurrentMenu extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: themeColors['yellow'],
                     ),
-                    child: Text("Welcome")),
+                    child: Text("Welcome, Doula")),
                 ListTile(
                   leading: Icon(
                     IconData(59530, fontFamily: 'MaterialIcons'),
@@ -227,29 +201,18 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: () => toHome,
+                  onTap: toHome,
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59679, fontFamily: 'MaterialIcons'),
+                    IconData(57545, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
-                  title: Text('Request a Doula',
+                  title: Text('Messages',
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59485, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Apply as a Doula',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: () {},
+                  onTap: toRecentMessages,
                 ),
                 ListTile(
                   leading: Icon(
@@ -271,17 +234,6 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toInfo,
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Log In',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toLogin,
                 ),
               ],
             )));
@@ -312,28 +264,6 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59679, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Request a Doula',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59485, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Apply as a Doula',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: Icon(
                     IconData(59448, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
@@ -352,6 +282,17 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toInfo,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59485, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Signup',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {},
                 ),
                 ListTile(
                   leading: Icon(
@@ -378,6 +319,12 @@ class Menu extends StatelessWidget {
         builder: (BuildContext context, ViewModel vm) {
           return CurrentMenu(
             userType: vm.userType,
+            toHome: vm.toHome,
+            toSignup: vm.toSignup,
+            toLogin: vm.toLogin,
+            toInfo: vm.toInfo,
+            toRecentMessages: vm.toRecentMessages,
+            toDoulas: vm.toDoulas,
           );
         });
   }
@@ -392,13 +339,17 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toSignup;
   VoidCallback toLogin;
   VoidCallback toInfo;
+  VoidCallback toRecentMessages;
+  VoidCallback toDoulas;
 
   ViewModel.build(
       {@required this.userType,
       this.toHome,
       this.toSignup,
       this.toLogin,
-      this.toInfo})
+      this.toInfo,
+      this.toRecentMessages,
+      this.toDoulas})
       : super(equals: [userType]);
 
   @override
@@ -413,7 +364,11 @@ class ViewModel extends BaseModel<AppState> {
         userType: currentUserType,
         toHome: () => dispatch(NavigateAction.pushNamed("/")),
         toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
-        toLogin: () => dispatch(NavigateAction.pushNamed("/toLogin")),
-        toInfo: () => dispatch(NavigateAction.pushNamed("/toInfo")));
+        toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
+        toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
+        toRecentMessages: () =>
+            dispatch(NavigateAction.pushNamed("/recentMessages")),
+        toDoulas: () =>
+            dispatch(NavigateAction.pushNamed("/registeredDoulas")));
   }
 }

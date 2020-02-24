@@ -54,6 +54,6 @@ class User {
 
   @override
   String toString() {
-    return "$userid: at $email\nname: $name";
+    return "$userType $userid: at $email\nname: $name";
   }
 }

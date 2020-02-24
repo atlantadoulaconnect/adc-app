@@ -2,6 +2,8 @@ import './common.dart';
 import 'package:async_redux/async_redux.dart';
 
 class InfoScreen extends StatelessWidget {
+  InfoScreen();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +23,12 @@ class InfoScreen extends StatelessWidget {
 class InfoScreenConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, ViewModel>();
+    return StoreConnector<AppState, ViewModel>(
+      model: ViewModel(),
+      builder: (BuildContext context, ViewModel vm) {
+        return InfoScreen();
+      },
+    );
   }
 }
 

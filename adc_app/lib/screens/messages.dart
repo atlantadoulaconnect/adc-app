@@ -30,7 +30,7 @@ class _MessagesPageState extends State<MessagesPage> {
               : EdgeInsets.only(
                   top: 8.0,
                   bottom: 8.0,
-                  right: 80.0,
+                  right: 60.0,
                   left: 20.0
                 ),
           padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),

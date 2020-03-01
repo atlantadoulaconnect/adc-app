@@ -12,6 +12,7 @@ export '../../backend/models/doula.dart';
 export '../../backend/models/phone.dart';
 export '../../backend/models/user.dart';
 export '../../backend/models/message.dart';
+export '../../backend/models/contact.dart';
 
 // actions
 export '../../backend/actions/createUserAction.dart';
@@ -23,4 +24,4 @@ export '../../backend/actions/loginUserAction.dart';
 export '../../backend/states/appState.dart';
 
 // util
-export '../../backend/util/time_conversion.dart';
+export '../../backend/util/timeConversion.dart';

@@ -1,24 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Message {
-  String messageId;
-  String senderId = "sender";
+  //String messageId;
+  String senderId;
   String type;
   String content;
-  Timestamp timeSent;
+  String threadId;
+  int timeSent;
   Timestamp timeRead;
 
-  Message.now(String content, String senderId) {
-    Message(content, senderId, new Timestamp.now());
+  Message.now(this.content, this.senderId, this.type, this.threadId) {
+    this.timeSent = DateTime.now().millisecondsSinceEpoch;
   }
 
-  Message(String content, String senderId, Timestamp timeSent) {
-    this.content = content;
-    this.senderId = senderId;
-    this.timeSent = timeSent;
-  }
+  Message(this.content, this.senderId, this.timeSent, this.type, this.threadId);
 
-  String getSenderId() {
-    return this.senderId;
+  Message.fromJson(Map<dynamic, dynamic> json) {
+    // messageid, threadid, timeRead
+    senderId = json["senderId"];
+    type = json["type"];
+    content = json["content"];
+    timeSent = json["timeSent"];
   }
 }

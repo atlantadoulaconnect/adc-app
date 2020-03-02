@@ -1,5 +1,5 @@
 import '../common.dart';
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 
 class RecentMessagesScreen extends StatelessWidget {
   final User currentUser;
@@ -118,7 +118,8 @@ class RecentMessagesScreen extends StatelessWidget {
         child: Container(
           height: 60,
           child: MaterialButton(
-            onPressed: () => launch("tel:$number"),
+            //onPressed: () => launch("tel:$number"),
+            onPressed: () {},
             color: themeColors["yellow"],
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(10.0),

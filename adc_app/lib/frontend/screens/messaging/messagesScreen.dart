@@ -1,12 +1,20 @@
+import 'package:adc_app/backend/actions/messageAction.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import '../common.dart';
 
 class MessagesScreen extends StatefulWidget {
   final User currentUser;
   final VoidCallback toTextBank;
+  final Contact peer;
+  final Future<void> Function(Message) sendMsg;
 
-  MessagesScreen(this.currentUser, this.toTextBank);
+  MessagesScreen(this.currentUser, this.toTextBank, this.peer, this.sendMsg)
+      : assert(currentUser != null &&
+            toTextBank != null &&
+            peer != null &&
+            sendMsg != null);
 
   @override
   State<StatefulWidget> createState() => _MessagesScreenState();
@@ -15,15 +23,20 @@ class MessagesScreen extends StatefulWidget {
 class _MessagesScreenState extends State<MessagesScreen> {
   User currentUser;
   VoidCallback toTextBank;
+  Contact peer;
+  Future<void> Function(Message) sendMsg;
 
   @override
   void initState() {
     currentUser = widget.currentUser;
     toTextBank = widget.toTextBank;
+    peer = widget.peer;
+    sendMsg = widget.sendMsg;
     super.initState();
   }
 
-  _buildMessage(Message message, bool isMe) {
+  _buildMessage(BuildContext context, Message msg) {
+    bool isMe = msg.senderId == currentUser.userid;
     return Row(
       children: <Widget>[
         Container(
@@ -39,17 +52,17 @@ class _MessagesScreenState extends State<MessagesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                formatTimeHSS(message.timeSent),
-                style: TextStyle(
-                  color: isMe ? themeColors["white"] : themeColors["emoryBlue"],
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+//              Text(
+//                formatTimeHSS(msg.timeSent),
+//                style: TextStyle(
+//                  color: isMe ? themeColors["white"] : themeColors["emoryBlue"],
+//                  fontSize: 16.0,
+//                  fontWeight: FontWeight.w600,
+//                ),
+//              ),
               SizedBox(height: 8.0),
               Text(
-                message.content,
+                msg.content,
                 style: TextStyle(
                   color: isMe ? themeColors["white"] : themeColors["emoryBlue"],
                   fontSize: 16.0,
@@ -89,9 +102,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
             icon: Icon(Icons.send),
             iconSize: 25.0,
             color: Theme.of(context).primaryColor,
-            onPressed: () {
-              messages.add(
-                  new Message(textController.text, myId, new Timestamp.now()));
+            onPressed: () async {
+              // todo handle difference context, validate user input
+              print(
+                  "message: ${textController.text.toString()}\nme: ${currentUser.userid}\nthread: ${peer.threadId}");
+              await sendMsg(Message.now(textController.text.toString(),
+                  currentUser.userid, "text", peer.threadId));
               textController.clear();
             },
           ),
@@ -102,26 +118,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
 
   TextEditingController textController = new TextEditingController();
 
-  final String otherUser = "Debbie";
-  final String myId = "0";
-  List<Message> messages = [
-    Message("Hello! My name is Debbie. I am your doula!", "1",
-        Timestamp.fromDate(DateTime(2020, 2, 17, 21, 50))),
-    Message("Hi Debbie! I'm Jane!", "0",
-        Timestamp.fromDate(DateTime(2020, 2, 17, 21, 51))),
-    Message("How long have you been a doula?", "0",
-        Timestamp.fromDate(DateTime(2020, 2, 17, 21, 51))),
-    Message("I've been a doula for 3 years!", "1",
-        Timestamp.fromDate(DateTime(2020, 2, 17, 21, 53))),
-    Message("What do you think of the Atlanta Doula Connect app?", "1",
-        Timestamp.fromDate(DateTime(2020, 2, 17, 21, 53)))
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Center(child: Text(otherUser)),
+          title: Center(child: Text(peer.name)),
           actions: <Widget>[
             Container(
               width: 55,
@@ -141,17 +142,38 @@ class _MessagesScreenState extends State<MessagesScreen> {
           children: <Widget>[
             Expanded(
               child: Container(
-                child: ListView.builder(
-                  padding: EdgeInsets.only(top: 15.0),
-                  itemCount: messages.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final Message message = messages[index];
-                    final bool isMe = message.getSenderId() == myId;
-                    return _buildMessage(message, isMe);
-//                    return Text(index.toString());
-                  },
-                ),
-              ),
+                  child: StreamBuilder(
+                stream: FirebaseDatabase.instance
+                    .reference()
+                    .child("chats/${peer.threadId}/messages")
+                    .orderByChild("timeSent")
+                    .limitToFirst(10)
+                    .onValue,
+                builder: (BuildContext ontext, ds) {
+                  if (ds.hasData &&
+                      !ds.hasError &&
+                      ds.data.snapshot.value != null) {
+                    Map data = ds.data.snapshot.value;
+                    List<Message> messages = List<Message>();
+                    data.forEach(
+                        (key, value) => messages.add(Message.fromJson(value)));
+
+                    return ListView.builder(
+                      padding: EdgeInsets.only(top: 15.0),
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) =>
+                          _buildMessage(context, messages[index]),
+                      reverse: true,
+                    );
+                  }
+//                  return Center(
+//                      child: CircularProgressIndicator(
+//                    valueColor:
+//                        AlwaysStoppedAnimation<Color>(themeColors["lightBlue"]),
+//                  ));
+                  return Container();
+                },
+              )),
             ),
             _buildMessageComposer()
           ],
@@ -165,7 +187,7 @@ class MessagesScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) =>
-          MessagesScreen(vm.currentUser, vm.toTextBank),
+          MessagesScreen(vm.currentUser, vm.toTextBank, vm.peer, vm.sendMsg),
     );
   }
 }
@@ -175,15 +197,24 @@ class ViewModel extends BaseModel<AppState> {
 
   User currentUser;
   VoidCallback toTextBank;
+  Contact peer;
+  Future<void> Function(Message) sendMsg;
 
-  ViewModel.build({@required currentUser, @required toTextBank})
-      : super(equals: []);
+  ViewModel.build(
+      {@required this.currentUser,
+      @required this.toTextBank,
+      @required this.peer,
+      @required this.sendMsg})
+      : super(equals: [currentUser, peer]);
 
   @override
   ViewModel fromStore() {
+    print("vm from store peer: ${state.peer}");
     return ViewModel.build(
         currentUser: state.currentUser,
         toTextBank: () =>
-            dispatch(NavigateAction.pushNamed("/textBankConnector")));
+            dispatch(NavigateAction.pushNamed("/textBankConnector")),
+        peer: state.peer,
+        sendMsg: (Message msg) => dispatchFuture(SendMessageAction(msg)));
   }
 }

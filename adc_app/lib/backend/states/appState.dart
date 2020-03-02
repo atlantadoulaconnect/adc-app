@@ -1,28 +1,34 @@
-import 'dart:math';
-
 import 'package:meta/meta.dart';
 import '../models/user.dart';
+import '../models/contact.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 @immutable
 class AppState {
   final User currentUser;
   final bool waiting;
+  final Contact peer;
+
   // TODO State object for all the errors
 
-  AppState({this.currentUser, this.waiting});
+  AppState({this.currentUser, this.waiting, this.peer}) {
+    print(
+        "AppState\n\tcurrent user: $currentUser\n\twaiting: $waiting\n\tpeer: $peer");
+  }
 
   static AppState initialState() {
     // TODO check if user is signed in
 //    FirebaseUser curr = FirebaseAuth.getInstance().
 //    print("current user: $curr");
-    return AppState(currentUser: null, waiting: false);
+    return AppState(currentUser: null, waiting: false, peer: null);
   }
 
-  AppState copy({User currentUser, bool waiting, String loginError}) {
+  AppState copy(
+      {User currentUser, bool waiting, String loginError, Contact peer}) {
     return AppState(
         currentUser: currentUser ?? this.currentUser,
-        waiting: waiting ?? this.waiting);
+        waiting: waiting ?? this.waiting,
+        peer: peer ?? this.peer);
   }
 
   @override
@@ -31,12 +37,13 @@ class AppState {
         other is AppState &&
             runtimeType == other.runtimeType &&
             currentUser == other.currentUser &&
-            waiting == other.waiting;
+            waiting == other.waiting &&
+            peer == other.peer;
   }
 
   @override
   int get hashCode {
-    return currentUser.hashCode ^ waiting.hashCode;
+    return currentUser.hashCode ^ waiting.hashCode ^ peer.hashCode;
   }
 
   @override

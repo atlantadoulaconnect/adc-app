@@ -32,7 +32,7 @@ class RecentMessagesScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15.0),
+                        padding: EdgeInsets.symmetric(horizontal: 5.0),
                         child: Container(
                           width: 65,
                           height: 65,
@@ -52,7 +52,7 @@ class RecentMessagesScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(right: 12.0),
+                        padding: EdgeInsets.only(left: 14.0, right: 12.0),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,

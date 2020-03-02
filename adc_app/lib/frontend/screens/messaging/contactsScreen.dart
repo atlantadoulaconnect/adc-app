@@ -22,7 +22,7 @@ class ContactsScreen extends StatelessWidget {
       return Container();
     } else {
       return Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: EdgeInsets.all(6.0),
         child: Container(
           height: 100,
           decoration: BoxDecoration(
@@ -40,11 +40,11 @@ class ContactsScreen extends StatelessWidget {
                 toMessages();
               },
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Container(
                         width: 65,
                         height: 65,
@@ -61,8 +61,7 @@ class ContactsScreen extends StatelessWidget {
                         ),
                       )),
                   Padding(
-                    //padding: EdgeInsets.only(left: 12, right: 20.0),
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.only(left: 16.0, right: 20.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,11 +75,14 @@ class ContactsScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  //Spacer(),
-                  Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
-                    color: Colors.black,
-                    size: 40,
+                  Spacer(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Icon(
+                      IconData(57545, fontFamily: 'MaterialIcons'),
+                      color: Colors.black,
+                      size: 40,
+                    ),
                   ),
                 ],
               )),

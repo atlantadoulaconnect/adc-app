@@ -65,7 +65,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
             child: ListView(
               children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top: 15.0, bottom: 8.0),
                 child: Text(
                   'Personal Information',
                   style: TextStyle(
@@ -93,28 +93,38 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: "First Name",
-                          hintText: "Jane",
+                    Padding(
+                      padding: EdgeInsets.only(right: 10.0,),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        child: TextFormField(
+                          autocorrect: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(
+                              IconData(0xe7fd, fontFamily: 'MaterialIcons'),
+                            ),
+                            labelText: "First Name",
+                            hintText: "Jane",
+                          ),
+                          controller: _firstNameCtrl,
+                          validator: nameValidator,
                         ),
-                        controller: _firstNameCtrl,
-                        validator: nameValidator,
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.33,
                       child: TextFormField(
+                        autocorrect: false,
                         decoration: InputDecoration(
+                          border: OutlineInputBorder(),
                           labelText: "Last Initial",
                           hintText: "D",
                         ),
                         controller: _lastInitCtrl,
                         validator: singleLetterValidator,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -169,6 +179,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                   ),
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -234,7 +245,9 @@ class ClientAppPage1State extends State<ClientAppPage1> {
               ),
             ],
           ),
-        )));
+        )
+        )
+    );
   }
 }
 

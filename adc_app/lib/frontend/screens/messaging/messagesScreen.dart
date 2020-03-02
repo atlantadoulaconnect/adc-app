@@ -212,8 +212,7 @@ class ViewModel extends BaseModel<AppState> {
     print("vm from store peer: ${state.peer}");
     return ViewModel.build(
         currentUser: state.currentUser,
-        toTextBank: () =>
-            dispatch(NavigateAction.pushNamed("/textBankConnector")),
+        toTextBank: () => dispatch(NavigateAction.pushNamed("/textBank")),
         peer: state.peer,
         sendMsg: (Message msg) => dispatchFuture(SendMessageAction(msg)));
   }

@@ -39,91 +39,122 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
           title: Text("Doula Application"),
         ),
         body: Container(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            child: ListView(
+                //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-              Text(
-                'Availability',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['emoryBlue'],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Availability',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                  ),
                 ),
               ),
-              Container(
-                width: 250,
-                child: LinearProgressIndicator(
-                  backgroundColor: themeColors['skyBlue'],
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
-                  value: 0.8,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: 250,
+                  child: LinearProgressIndicator(
+                    backgroundColor: themeColors['skyBlue'],
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                    value: 0.8,
+                  ),
                 ),
               ),
-              Text(
-                'Please select the dates that you \nare available to serve as a doula:',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Please select the dates that you \nare available to serve as a doula:',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               ),
-              Container(
-                height: 260,
-                width: 300,
-                child: Calendarro(
-                  displayMode: DisplayMode.MONTHS,
-                  selectionMode: SelectionMode.MULTI,
-                  startDate: DateTime.now()
-                      .subtract(Duration(days: DateTime.now().day - 1)),
-                  endDate: DateTime.now().add(Duration(days: 1000)),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 260,
+                    width: 300,
+                    child: Calendarro(
+                      displayMode: DisplayMode.MONTHS,
+                      selectionMode: SelectionMode.MULTI,
+                      startDate: DateTime.now()
+                          .subtract(Duration(days: DateTime.now().day - 1)),
+                      endDate: DateTime.now().add(Duration(days: 1000)),
 
 //                  onTap: (date) {
 //                    setState(() {
 //                      monthYear = date.toString();
 //                    });
 //                  }
-                ),
-              ),
-              Row(children: <Widget>[
-                RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
-                      side: BorderSide(color: themeColors['mediumBlue'])),
-                  onPressed: () {
-                    // info will be lost
-                    Navigator.pop(context);
-                  },
-                  color: themeColors['mediumBlue'],
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(15.0),
-                  splashColor: themeColors['mediumBlue'],
-                  child: Text(
-                    "PREVIOUS",
-                    style: TextStyle(fontSize: 20.0),
-                  ),
-                ),
-                RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
-                      side: BorderSide(color: themeColors['yellow'])),
-                  onPressed: () {
-                    // TODO
-                    toDoulaAppPage5();
-                  },
-                  color: themeColors['yellow'],
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(15.0),
-                  splashColor: themeColors['yellow'],
-                  child: Text(
-                    "NEXT",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: themeColors['black'],
                     ),
                   ),
                 ),
-              ]),
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(10.0),
+                            side: BorderSide(color: themeColors['mediumBlue'])),
+                        onPressed: () {
+                          // info will be lost
+                          Navigator.pop(context);
+                        },
+                        color: themeColors['mediumBlue'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['mediumBlue'],
+                        child: Text(
+                          "PREVIOUS",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(10.0),
+                            side: BorderSide(color: themeColors['yellow'])),
+                        onPressed: () {
+                          // TODO
+                          toDoulaAppPage5();
+                        },
+                        color: themeColors['yellow'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['yellow'],
+                        child: Text(
+                          "NEXT",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: themeColors['black'],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
             ])));
   }
 }

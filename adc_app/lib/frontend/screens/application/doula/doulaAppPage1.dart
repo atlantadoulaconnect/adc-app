@@ -147,7 +147,9 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                             }
                             return null;
                           }),
-                      Row(children: <Widget>[
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: RaisedButton(

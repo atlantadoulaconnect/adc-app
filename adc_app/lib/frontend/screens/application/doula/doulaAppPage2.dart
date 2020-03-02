@@ -105,7 +105,9 @@ class DoulaAppPage2State extends State<DoulaAppPage2> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(children: <Widget>[
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: RaisedButton(

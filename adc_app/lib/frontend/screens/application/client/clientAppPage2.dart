@@ -89,6 +89,7 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
                       ),
+                      textAlign: TextAlign.center
                     ),
                   ),
                   Padding(

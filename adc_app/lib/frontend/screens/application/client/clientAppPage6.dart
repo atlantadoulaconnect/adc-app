@@ -52,6 +52,7 @@ class ClientAppPage6State extends State<ClientAppPage6> {
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
                 ),
+                textAlign: TextAlign.center
               ),
             ),
             Padding(
@@ -68,7 +69,13 @@ class ClientAppPage6State extends State<ClientAppPage6> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Please read the following statements: '),
+              child: Text(
+                  'Please read the following statements: ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),

@@ -261,45 +261,48 @@ class ClientAppConfirmationPage extends StatelessWidget {
                     height: 1.5),
                 textAlign: TextAlign.left,
               ),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(5.0),
-                          side: BorderSide(color: themeColors['lightBlue'])),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      color: themeColors['lightBlue'],
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['lightBlue'],
-                      child: Text(
-                        "PREVIOUS",
-                        style: TextStyle(fontSize: 20.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            side: BorderSide(color: themeColors['lightBlue'])),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        color: themeColors['lightBlue'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['lightBlue'],
+                        child: Text(
+                          "PREVIOUS",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
                       ),
-                    ),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(5.0),
-                          side: BorderSide(color: themeColors['yellow'])),
-                      onPressed: () async {
-                        // add application document
-                        // add user to users collection
-                        userToDB(currentUser);
-                        toRequestSent();
-                      },
-                      color: themeColors['yellow'],
-                      textColor: Colors.black,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['yellow'],
-                      child: Text(
-                        "SUBMIT",
-                        style: TextStyle(fontSize: 20.0),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            side: BorderSide(color: themeColors['yellow'])),
+                        onPressed: () async {
+                          // add application document
+                          // add user to users collection
+                          userToDB(currentUser);
+                          toRequestSent();
+                        },
+                        color: themeColors['yellow'],
+                        textColor: Colors.black,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['yellow'],
+                        child: Text(
+                          "SUBMIT",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
                       ),
-                    ),
-                  ])
+                    ]),
+              )
             ],
           ),
         ),

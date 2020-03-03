@@ -37,6 +37,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
 
   _buildMessage(BuildContext context, Message msg) {
     bool isMe = msg.senderId == currentUser.userid;
+    Timestamp timeSent = new Timestamp.fromMillisecondsSinceEpoch(msg.timeSent);
     return Row(
       children: <Widget>[
         Container(
@@ -52,14 +53,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-//              Text(
-//                formatTimeHSS(msg.timeSent),
-//                style: TextStyle(
-//                  color: isMe ? themeColors["white"] : themeColors["emoryBlue"],
-//                  fontSize: 16.0,
-//                  fontWeight: FontWeight.w600,
-//                ),
-//              ),
+              Text(
+                formatTimeHSS(timeSent),
+                style: TextStyle(
+                  color: isMe ? themeColors["white"] : themeColors["emoryBlue"],
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               SizedBox(height: 8.0),
               Text(
                 msg.content,

@@ -37,7 +37,7 @@ String bioValidator(String value) {
 }
 
 String bdayValidator(String value) {
-  // TODO regex validator
+  // TODO regex validator, no input too far back
   if (value.isEmpty) {
     return 'Please enter the month and year of your birth';
   }

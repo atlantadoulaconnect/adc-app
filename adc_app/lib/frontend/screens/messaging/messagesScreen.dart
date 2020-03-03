@@ -147,7 +147,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     .reference()
                     .child("chats/${peer.threadId}/messages")
                     .orderByChild("timeSent")
-                    .limitToFirst(10)
+                    .limitToLast(10)
                     .onValue,
                 builder: (BuildContext ontext, ds) {
                   if (ds.hasData &&
@@ -156,7 +156,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     Map data = ds.data.snapshot.value;
                     List<Message> messages = List<Message>();
                     data.forEach(
-                        (key, value) => messages.add(Message.fromJson(value)));
+                        (key, value) => messages.add(Message.fromJson(value))
+                    );
+                    messages.sort((a, b) => b.timeSent.compareTo(a.timeSent));
+                    for (Message m in messages) {
+                      print(m);
+                    }
 
                     return ListView.builder(
                       padding: EdgeInsets.only(top: 15.0),

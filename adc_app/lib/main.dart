@@ -101,7 +101,7 @@ class ADCApp extends StatelessWidget {
             '/messages': (context) => MessagesScreenConnector(),
             '/recentMessages': (context) => RecentMessagesScreenConnector(),
             '/textBank': (context) => TextBankScreen(),
-            'registeredDoulas': (context) => RegisteredDoulasScreenConnector()
+            '/registeredDoulas': (context) => RegisteredDoulasScreenConnector()
           },
         ));
   }

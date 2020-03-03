@@ -30,200 +30,203 @@ class DoulaAppConfirmationPage extends StatelessWidget {
         title: Text('Doula Application'),
       ),
       body: Center(
-          child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: ListView(
-            //mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Text('Confirm Your Doula Application',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.center),
-              // PERSONAL INFORMATION
-              Text('Personal Information',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.left),
-              Text(
-                'Name: ${currentUser.name}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Email: ${currentUser.email}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Phone(s): $phonesString',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Birthday (MM/YYYY): ${currentUser.bday}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              // SHORT BIO
-              Text('Short Bio',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.left),
-              Text(
-                '${currentUser.bio}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              // CERTIFICATION STATUS
-              Text('Certification Status',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.left),
-              Text(
-                'Are you a certified doula? ${boolStr(currentUser.certified)}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Are you working towards becomming a certified doula? ${boolStr(currentUser.certInProgress)}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Certification Program: ${currentUser.certProgram}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Number of documented births needed until you are certified: ${currentUser.birthsNeeded}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              // AVAILABLE DATES
-//              Text('Availability',
-//                  style: TextStyle(
-//                    fontFamily: 'Roboto',
-//                    color: themeColors['emoryBlue'],
-//                    fontWeight: FontWeight.bold,
-//                    fontSize: 25,
-//                    height: 2,
-//                  ),
-//                  textAlign: TextAlign.left),
-//              // PHOTO RELEASE
-              Text('Photo Release',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.left),
-              Text(
-                '$photoPermission',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(5.0),
-                          side: BorderSide(color: themeColors['lightBlue'])),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      color: themeColors['lightBlue'],
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['lightBlue'],
-                      child: Text(
-                        "PREVIOUS",
-                        style: TextStyle(fontSize: 20.0),
-                      ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: ListView(
+              //mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text('Confirm Your Doula Application',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
                     ),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(5.0),
-                          side: BorderSide(color: themeColors['yellow'])),
-                      onPressed: () async {
-                        // add application document
-                        // add user to users collection
-                        userToDB(currentUser);
-                        toRequestSent();
-                      },
-                      color: themeColors['yellow'],
-                      textColor: Colors.black,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['yellow'],
-                      child: Text(
-                        "SUBMIT",
-                        style: TextStyle(fontSize: 20.0),
-                      ),
+                    textAlign: TextAlign.center),
+                // PERSONAL INFORMATION
+                Text('Personal Information',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
                     ),
-                  ])
-            ]),
+                    textAlign: TextAlign.left),
+                Text(
+                  'Name: ${currentUser.name}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Email: ${currentUser.email}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Phone(s): $phonesString',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Birthday (MM/YYYY): ${currentUser.bday}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                // SHORT BIO
+                Text('Short Bio',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  '${currentUser.bio}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                // CERTIFICATION STATUS
+                Text('Certification Status',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  'Are you a certified doula? ${boolStr(currentUser.certified)}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Are you working towards becomming a certified doula? ${boolStr(currentUser.certInProgress)}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Certification Program: ${currentUser.certProgram}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Number of documented births needed until you are certified: ${currentUser.birthsNeeded}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                // AVAILABLE DATES
+  //              Text('Availability',
+  //                  style: TextStyle(
+  //                    fontFamily: 'Roboto',
+  //                    color: themeColors['emoryBlue'],
+  //                    fontWeight: FontWeight.bold,
+  //                    fontSize: 25,
+  //                    height: 2,
+  //                  ),
+  //                  textAlign: TextAlign.left),
+  //              // PHOTO RELEASE
+                Text('Photo Release',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  '$photoPermission',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                              side: BorderSide(color: themeColors['lightBlue'])),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          color: themeColors['lightBlue'],
+                          textColor: Colors.white,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['lightBlue'],
+                          child: Text(
+                            "PREVIOUS",
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                        ),
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () async {
+                            // add application document
+                            // add user to users collection
+                            userToDB(currentUser);
+                            toRequestSent();
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.black,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "SUBMIT",
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                        ),
+                      ]),
+                )
+              ]),
       )),
     );
   }

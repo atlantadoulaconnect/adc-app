@@ -22,59 +22,72 @@ class AppTypeScreen extends StatelessWidget {
         body: Padding(
             padding: const EdgeInsets.all(26.0),
             child: Center(
-                child: Column(
+                child: ListView(
               children: <Widget>[
-                Spacer(flex: 1),
-                Text("Atlanta Doula Connect",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 50.0,
-                      fontWeight: FontWeight.bold,
-                    )),
-                Spacer(flex: 2),
-                RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(50.0),
-                      side: BorderSide(color: themeColors['mediumBlue']),
-                    ),
-                    color: themeColors['mediumBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['mediumBlue'],
-                    child: Text(
-                      "Request a Doula",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                    onPressed: () {
-                      // replace current User with a Client in AppState
-                      Client user = Client(
-                          userType: "client",
-                          userid: currentUser.userid,
-                          email: currentUser.email);
-                      updateClient(user);
-                      toClientApp();
-                    }),
-                RaisedButton(
-                    shape: RoundedRectangleBorder(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Atlanta Doula Connect",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 50.0,
+                        fontWeight: FontWeight.bold,
+                      )),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 70, 8, 8),
+                  child: RaisedButton(
+                      shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(50.0),
-                        side: BorderSide(color: themeColors['lightBlue'])),
-                    color: themeColors['lightBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['lightBlue'],
-                    child: Text(
-                      "Apply as a Doula",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                    onPressed: () {
-                      Doula user = Doula(
-                          userType: "doula",
-                          userid: currentUser.userid,
-                          email: currentUser.email);
-                      updateDoula(user);
-                      toDoulaApp();
-                    }),
-                Spacer(flex: 1),
+                        side: BorderSide(color: themeColors['mediumBlue']),
+                      ),
+                      color: themeColors['mediumBlue'],
+                      textColor: Colors.white,
+                      padding: EdgeInsets.all(15.0),
+                      splashColor: themeColors['mediumBlue'],
+                      child: Text(
+                        "Request a Doula",
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                      onPressed: () {
+                        // replace current User with a Client in AppState
+                        Client user = Client(
+                            userType: "client",
+                            userid: currentUser.userid,
+                            email: currentUser.email);
+                        updateClient(user);
+                        toClientApp();
+                      }),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(50.0),
+                          side: BorderSide(color: themeColors['lightBlue'])),
+                      color: themeColors['lightBlue'],
+                      textColor: Colors.white,
+                      padding: EdgeInsets.all(15.0),
+                      splashColor: themeColors['lightBlue'],
+                      child: Text(
+                        "Apply as a Doula",
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                      onPressed: () {
+                        Doula user = Doula(
+                            userType: "doula",
+                            userid: currentUser.userid,
+                            email: currentUser.email);
+                        updateDoula(user);
+                        toDoulaApp();
+                      }),
+                ),
+
+
+
+
+
               ],
             ))));
   }

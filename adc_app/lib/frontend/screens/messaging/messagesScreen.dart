@@ -37,6 +37,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
 
   _buildMessage(BuildContext context, Message msg) {
     bool isMe = msg.senderId == currentUser.userid;
+    Timestamp timeSent = new Timestamp.fromMillisecondsSinceEpoch(msg.timeSent);
     return Row(
       children: <Widget>[
         Container(
@@ -52,14 +53,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-//              Text(
-//                formatTimeHSS(msg.timeSent),
-//                style: TextStyle(
-//                  color: isMe ? themeColors["white"] : themeColors["emoryBlue"],
-//                  fontSize: 16.0,
-//                  fontWeight: FontWeight.w600,
-//                ),
-//              ),
+              Text(
+                formatTimeHSS(timeSent),
+                style: TextStyle(
+                  color: isMe ? themeColors["white"] : themeColors["emoryBlue"],
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               SizedBox(height: 8.0),
               Text(
                 msg.content,
@@ -147,7 +148,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     .reference()
                     .child("chats/${peer.threadId}/messages")
                     .orderByChild("timeSent")
-                    .limitToFirst(10)
+                    .limitToLast(10)
                     .onValue,
                 builder: (BuildContext ontext, ds) {
                   if (ds.hasData &&
@@ -156,7 +157,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     Map data = ds.data.snapshot.value;
                     List<Message> messages = List<Message>();
                     data.forEach(
-                        (key, value) => messages.add(Message.fromJson(value)));
+                        (key, value) => messages.add(Message.fromJson(value))
+                    );
+                    messages.sort((a, b) => b.timeSent.compareTo(a.timeSent));
+                    for (Message m in messages) {
+                      print(m);
+                    }
 
                     return ListView.builder(
                       padding: EdgeInsets.only(top: 15.0),
@@ -212,7 +218,8 @@ class ViewModel extends BaseModel<AppState> {
     print("vm from store peer: ${state.peer}");
     return ViewModel.build(
         currentUser: state.currentUser,
-        toTextBank: () => dispatch(NavigateAction.pushNamed("/textBank")),
+        toTextBank: () =>
+            dispatch(NavigateAction.pushNamed("/textBank")),
         peer: state.peer,
         sendMsg: (Message msg) => dispatchFuture(SendMessageAction(msg)));
   }

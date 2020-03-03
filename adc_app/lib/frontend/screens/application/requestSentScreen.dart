@@ -21,13 +21,16 @@ class RequestSentScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Spacer(),
-              Text(
-                message,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['emoryBlue'],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(
+                  message,
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['emoryBlue'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
                 ),
               ),
               Spacer(),

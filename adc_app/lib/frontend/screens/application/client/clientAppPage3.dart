@@ -120,6 +120,7 @@ class ClientAppPage3State extends State<ClientAppPage3> {
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
                       ),
+                      textAlign: TextAlign.center
                     ),
                   ),
                   // progress bar

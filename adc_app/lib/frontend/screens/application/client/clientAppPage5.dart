@@ -54,6 +54,7 @@ class ClientAppPage5State extends State<ClientAppPage5> {
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
                       ),
+                      textAlign: TextAlign.center
                     ),
                   ),
                   Padding(

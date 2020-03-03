@@ -45,91 +45,114 @@ class DoulaAppPage2State extends State<DoulaAppPage2> {
     return Scaffold(
         appBar: AppBar(title: Text("Doula Application")),
         body: Container(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Short Bio',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: themeColors['emoryBlue'],
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
-            ),
-            Container(
-              width: 250,
-              child: LinearProgressIndicator(
-                backgroundColor: themeColors['skyBlue'],
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
-                value: 0.4,
-              ),
-            ),
-            Text(
-              'Please enter a brief description that your \nclients will be able to see',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
-            Container(
-              width: 300.0,
-              height: 250.0,
-              child: TextField(
-                // TODO validate this user input, show error message
-                minLines: 12,
-                maxLines: 12,
-                autocorrect: true,
-                keyboardType: TextInputType.text,
-                controller: _bioCtrl,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText:
-                      'What do you want your clients \nto know about you?',
+          child: ListView(
+          //mainAxisAlignment: MainAxisAlignment.center,
+           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Short Bio',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['emoryBlue'],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
                 ),
               ),
             ),
-            Row(children: <Widget>[
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['mediumBlue'])),
-                onPressed: () {
-                  // inputted information is lost when previous is pressed
-                  Navigator.pop(context);
-                },
-                color: themeColors['mediumBlue'],
-                textColor: Colors.white,
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['mediumBlue'],
-                child: Text(
-                  "PREVIOUS",
-                  style: TextStyle(fontSize: 20.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: 250,
+                child: LinearProgressIndicator(
+                  backgroundColor: themeColors['skyBlue'],
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                  value: 0.4,
                 ),
               ),
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['yellow'])),
-                onPressed: () {
-                  updateDoula(currentUser, _bioCtrl.text.toString().trim());
-                  toDoulaAppPage3();
-                },
-                color: themeColors['yellow'],
-                textColor: Colors.white,
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['yellow'],
-                child: Text(
-                  "NEXT",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: themeColors['black'],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Please enter a brief description that your \nclients will be able to see',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: 300.0,
+                height: 250.0,
+                child: TextField(
+                  // TODO validate this user input, show error message
+                  minLines: 12,
+                  maxLines: 12,
+                  autocorrect: true,
+                  keyboardType: TextInputType.text,
+                  controller: _bioCtrl,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText:
+                        'What do you want your clients \nto know about you?',
                   ),
                 ),
               ),
-            ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        side: BorderSide(color: themeColors['mediumBlue'])),
+                    onPressed: () {
+                      // inputted information is lost when previous is pressed
+                      Navigator.pop(context);
+                    },
+                    color: themeColors['mediumBlue'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['mediumBlue'],
+                    child: Text(
+                      "PREVIOUS",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        side: BorderSide(color: themeColors['yellow'])),
+                    onPressed: () {
+                      updateDoula(currentUser, _bioCtrl.text.toString().trim());
+                      toDoulaAppPage3();
+                    },
+                    color: themeColors['yellow'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['yellow'],
+                    child: Text(
+                      "NEXT",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: themeColors['black'],
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
+            ),
           ],
         )));
   }

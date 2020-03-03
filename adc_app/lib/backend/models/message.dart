@@ -22,4 +22,11 @@ class Message {
     content = json["content"];
     timeSent = json["timeSent"];
   }
+  
+  @override
+  String toString() {
+    return content;
+  }
+
+
 }

@@ -2,11 +2,11 @@
 
 String nameValidator(String value) {
   if (value.isEmpty) {
-    return 'Please enter name.';
+    return 'Please enter name';
   }
 
   if (value.length < 3) {
-    return 'Please enter a valid name.';
+    return 'Please enter a valid name';
   }
 
   return null;
@@ -16,10 +16,10 @@ String singleLetterValidator(String value) {
   Pattern pattern = r'[a-zA-Z]';
   RegExp regex = RegExp(pattern);
   if (value.length != 1) {
-    return "Type the first letter of your last name.";
+    return "Enter last initial";
   }
   if (!regex.hasMatch(value)) {
-    return "Type the first letter of your last name.";
+    return "Enter last initial";
   }
   return null;
 }
@@ -28,16 +28,16 @@ String bioValidator(String value) {
   Pattern pattern = r'[a-zA-Z]+';
   RegExp regex = RegExp(pattern);
   if (value.isEmpty) {
-    return "Please enter text.";
+    return "Please enter text";
   }
   if (!regex.hasMatch(value)) {
-    return "Enter words.";
+    return "Enter word";
   }
   return null;
 }
 
 String bdayValidator(String value) {
-  // TODO regex validator
+  // TODO regex validator, no input too far back
   if (value.isEmpty) {
     return 'Please enter the month and year of your birth';
   }
@@ -49,7 +49,7 @@ String phoneValidator(String value) {
   Pattern pattern = r'\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*';
   RegExp regex = new RegExp(pattern);
   if (!regex.hasMatch(value)) {
-    return 'Please enter a valid phone number.';
+    return 'Please enter a valid phone number';
   } else {
     return null;
   }
@@ -63,7 +63,7 @@ String altPhoneValidator(String value) {
   Pattern pattern = r'\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*';
   RegExp regex = new RegExp(pattern);
   if (!regex.hasMatch(value)) {
-    return 'Please enter a valid phone number.';
+    return 'Please enter a valid phone number';
   } else {
     return null;
   }
@@ -74,7 +74,7 @@ String emailValidator(String value) {
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
   RegExp regex = new RegExp(pattern);
   if (!regex.hasMatch(value)) {
-    return 'Please enter a valid email.';
+    return 'Please enter a valid email';
   } else {
     return null;
   }

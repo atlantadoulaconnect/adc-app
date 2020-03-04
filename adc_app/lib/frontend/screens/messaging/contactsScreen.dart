@@ -8,9 +8,14 @@ class ContactsScreen extends StatelessWidget {
   final User currentUser;
   final VoidCallback toMessages;
   final void Function(Contact) setPeer;
+  final void Function(String) addThread;
 
-  ContactsScreen(this.currentUser, this.toMessages, this.setPeer)
-      : assert(currentUser != null && toMessages != null);
+  ContactsScreen(
+      this.currentUser, this.toMessages, this.setPeer, this.addThread)
+      : assert(currentUser != null &&
+            toMessages != null &&
+            setPeer != null &&
+            addThread != null);
 
   String calcThreadId(String current, String peer) {
     if (current.compareTo(peer) < 0) return "$peer-$current";
@@ -31,11 +36,11 @@ class ContactsScreen extends StatelessWidget {
           child: MaterialButton(
               onPressed: () {
                 // set peer to selected user
+                String threadId =
+                    calcThreadId(currentUser.userid, doc["userid"]);
                 Contact peer = Contact(
-                    doc["name"],
-                    doc["userid"],
-                    doc["userType"],
-                    calcThreadId(currentUser.userid, doc["userid"]));
+                    doc["name"], doc["userid"], doc["userType"], threadId);
+                addThread(threadId);
                 setPeer(peer);
                 toMessages();
               },
@@ -128,7 +133,8 @@ class ContactsScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) {
-        return ContactsScreen(vm.currentUser, vm.toMessages, vm.setPeer);
+        return ContactsScreen(
+            vm.currentUser, vm.toMessages, vm.setPeer, vm.addThread);
       },
     );
   }
@@ -140,18 +146,49 @@ class ViewModel extends BaseModel<AppState> {
   User currentUser;
   VoidCallback toMessages;
   void Function(Contact) setPeer;
+  void Function(String) addThread;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.toMessages,
-      @required this.setPeer})
+      @required this.setPeer,
+      @required this.addThread})
       : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        currentUser: state.currentUser,
-        toMessages: () => dispatch(NavigateAction.pushNamed("/messages")),
-        setPeer: (Contact peer) => dispatch(SetPeer(peer)));
+      currentUser: state.currentUser,
+      toMessages: () => dispatch(NavigateAction.pushNamed("/messages")),
+      setPeer: (Contact peer) => dispatch(SetPeer(peer)),
+      addThread: (String threadId) {
+        User current = state.currentUser;
+        switch (current.userType) {
+          case "admin":
+            {
+              dispatch(UpdateAdminUserAction(current,
+                  chats: current.addChat(threadId)));
+            }
+            break;
+          case "client":
+            {
+              dispatch(UpdateClientUserAction(current,
+                  chats: current.addChat(threadId)));
+            }
+            break;
+          case "doula":
+            {
+              dispatch(UpdateDoulaUserAction(current,
+                  chats: current.addChat(threadId)));
+            }
+            break;
+          default:
+            {
+              print("error unknown user type");
+            }
+            break;
+        }
+      },
+    );
   }
 }

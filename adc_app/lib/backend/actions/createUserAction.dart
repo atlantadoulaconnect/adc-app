@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 
 import '../models/user.dart';
+import '../models/admin.dart';
 import '../models/client.dart';
 import '../models/doula.dart';
 import '../states/appState.dart';
@@ -29,7 +30,7 @@ class CreateUserAction extends ReduxAction<AppState> {
 
       if (userId != null && userId.length > 0) {
         User applicant = new User(userId, email);
-        print("new client: ${applicant.toString()}");
+        print("new user: ${applicant.toString()}");
         return state.copy(currentUser: applicant);
       }
     } on PlatformException catch (e) {
@@ -38,6 +39,30 @@ class CreateUserAction extends ReduxAction<AppState> {
         print("email already in use");
       }
     }
+
+    return null;
+  }
+
+  void before() => dispatch(WaitAction(true));
+
+  void after() => dispatch(WaitAction(false));
+}
+
+class CreateAdminUserDocument extends ReduxAction<AppState> {
+  final Admin user;
+
+  CreateAdminUserDocument(this.user)
+      : assert(user != null && user.userType == "admin");
+
+  @override
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+    await dbRef.collection("users").document(user.userid).setData({
+      "userid": user.userid,
+      "name": user.name,
+      "userType": user.userType,
+      "email": user.email
+    });
 
     return null;
   }

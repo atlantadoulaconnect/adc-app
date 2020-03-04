@@ -146,19 +146,24 @@ class ViewModel extends BaseModel<AppState> {
   Admin currentUser;
   Future<void> Function() logout;
   VoidCallback toRegisteredDoulas;
+  VoidCallback toRegisteredClients;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.logout,
-      @required this.toRegisteredDoulas})
+      @required this.toRegisteredDoulas,
+      @required this.toRegisteredClients})
       : super(equals: []);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        currentUser: state.currentUser,
-        logout: () => dispatchFuture(LogoutUserAction()),
-        toRegisteredDoulas: () =>
-            dispatch(NavigateAction.pushNamed("/registeredDoulas")));
+      currentUser: state.currentUser,
+      logout: () => dispatchFuture(LogoutUserAction()),
+      toRegisteredDoulas: () =>
+          dispatch(NavigateAction.pushNamed("/registeredDoulas")),
+      toRegisteredClients: () =>
+          dispatch(NavigateAction.pushNamed("/registeredClients")),
+    );
   }
 }

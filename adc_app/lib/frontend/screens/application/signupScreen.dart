@@ -169,10 +169,11 @@ class ViewModel extends BaseModel<AppState> {
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        signUp: (String email, String password) =>
-            dispatchFuture(CreateUserAction(email, password)),
-        toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
-        toAppType: () => dispatch(NavigateAction.pushNamed("/appType")),
-        isWaiting: state.waiting);
+      signUp: (String email, String password) =>
+          dispatchFuture(CreateUserAction(email, password)),
+      toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
+      toAppType: () => dispatch(NavigateAction.pushNamed("/appType")),
+      isWaiting: state.waiting,
+    );
   }
 }

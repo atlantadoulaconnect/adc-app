@@ -14,6 +14,7 @@ class AppTypeScreen extends StatelessWidget {
             updateDoula != null &&
             toClientApp != null &&
             toDoulaApp != null);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,6 @@ class AppTypeScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       )),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 70, 8, 8),
                   child: RaisedButton(
@@ -59,7 +59,6 @@ class AppTypeScreen extends StatelessWidget {
                         toClientApp();
                       }),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: RaisedButton(
@@ -83,11 +82,6 @@ class AppTypeScreen extends StatelessWidget {
                         toDoulaApp();
                       }),
                 ),
-
-
-
-
-
               ],
             ))));
   }

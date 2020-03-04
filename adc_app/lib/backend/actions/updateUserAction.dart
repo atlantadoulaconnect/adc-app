@@ -1,5 +1,6 @@
 import 'package:async_redux/async_redux.dart';
 
+import '../models/admin.dart';
 import '../models/client.dart';
 import '../models/doula.dart';
 import '../models/emergencyContact.dart';
@@ -13,6 +14,7 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
   final String userType;
   final String name;
   final List<Phone> phones;
+  final Set<String> chats;
   final String email;
   final bool phoneVerified;
 
@@ -41,6 +43,7 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
       this.userType,
       this.name,
       this.phones,
+      this.chats,
       this.email,
       this.phoneVerified,
       this.bday,
@@ -68,6 +71,7 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
         userType: this.userType,
         name: this.name,
         phones: this.phones,
+        chats: this.chats,
         email: this.email,
         phoneVerified: this.phoneVerified,
         bday: this.bday,
@@ -102,6 +106,7 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
   final String email;
 
   final List<Phone> phones;
+  final Set<String> chats;
 
   final bool phoneVerified;
 
@@ -124,6 +129,7 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
       this.name,
       this.email,
       this.phones,
+      this.chats,
       this.phoneVerified,
       this.bday,
       this.emailVerified,
@@ -144,6 +150,7 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
         name: name ?? this.name,
         email: email ?? this.email,
         phones: phones ?? this.phones,
+        chats: chats ?? this.chats,
         phoneVerified: phoneVerified ?? this.phoneVerified,
         bday: bday ?? this.bday,
         emailVerified: emailVerified ?? this.emailVerified,
@@ -155,6 +162,51 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
         availableDates: availableDates ?? this.availableDates,
         photoRelease: photoRelease ?? this.photoRelease,
         currentClients: currentClients ?? this.currentClients);
+
+    return state.copy(currentUser: updated);
+  }
+}
+
+class UpdateAdminUserAction extends ReduxAction<AppState> {
+  final Admin current;
+
+  final String userid;
+  final String userType;
+
+  final String name;
+  final String email;
+
+  final List<Phone> phones;
+  final Set<String> chats;
+
+  final bool phoneVerified;
+
+  final String role;
+  List<String> privileges;
+
+  UpdateAdminUserAction(this.current,
+      {this.userid,
+      this.userType,
+      this.name,
+      this.email,
+      this.phones,
+      this.chats,
+      this.phoneVerified,
+      this.role,
+      this.privileges});
+
+  @override
+  AppState reduce() {
+    Admin updated = current.copy(
+        userid: userid ?? this.userid,
+        userType: userType ?? this.userType,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        phones: phones ?? this.phones,
+        chats: chats ?? this.chats,
+        phoneVerified: phoneVerified ?? this.phoneVerified,
+        role: role ?? this.role,
+        privileges: privileges ?? this.privileges);
 
     return state.copy(currentUser: updated);
   }

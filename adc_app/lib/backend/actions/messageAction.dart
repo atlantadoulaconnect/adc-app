@@ -52,38 +52,3 @@ class SetPeer extends ReduxAction<AppState> {
     return state.copy(peer: peer);
   }
 }
-
-// when the messages screen opens, creates a thread object in rtdb if dne
-// TODO check local storage is thread has already been established
-class SetThread extends ReduxAction<AppState> {
-  final User currentUser;
-  final Contact peer;
-
-  SetThread(this.currentUser, this.peer)
-      : assert(currentUser != null && peer != null);
-
-  @override
-  Future<AppState> reduce() async {
-    var ref = FirebaseDatabase.instance.reference();
-    await ref
-        .child("chats/${peer.threadId}")
-        .once()
-        .then((DataSnapshot ds) async {
-      if (ds.value == null) {
-        print("creating thread: ${peer.threadId}");
-        // create thread node
-        await ref
-            .child("chats/${peer.threadId}")
-            .set({"threadId": peer.threadId});
-        await ref
-            .child("chats/${peer.threadId}/members/${currentUser.userid}")
-            .set({"username": currentUser.name});
-        await ref
-            .child("chats/${peer.threadId}/members/${peer.userId}")
-            .set({"username": peer.name});
-      }
-    });
-
-    return null;
-  }
-}

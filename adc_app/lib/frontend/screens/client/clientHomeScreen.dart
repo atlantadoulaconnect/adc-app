@@ -63,6 +63,6 @@ class ViewModel extends BaseModel<AppState> {
     return ViewModel.build(
         currentUser: state.currentUser,
         logout: () => dispatchFuture(LogoutUserAction()),
-        toHome: () => dispatch(NavigateAction.pushNamed("/home")));
+        toHome: () => dispatch(NavigateAction.pushNamed("/")));
   }
 }

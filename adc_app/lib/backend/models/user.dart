@@ -4,20 +4,17 @@ import './phone.dart';
 class User {
   String userid;
   String userType;
-
   String name;
   String email;
+  List<Phone> phones; // List of phone.dart objects later
+  Set<String> chats;
 
   bool
       phoneVerified; // if the primary phone used for the app is verified via SMS confirmation
 
-  // for Sprint 1 demo
-  List<Phone> phones; // List of phone.dart objects later
-
   User(String userid, String email) {
     this.userid = userid;
     this.email = email;
-    this.phones = new List<Phone>();
   }
 
   User.full(this.userid, this.userType, this.name, this.email,
@@ -31,6 +28,14 @@ class User {
     this.phones.remove(phone);
   }
 
+  Set<String> addChat(String threadId) {
+    if (this.chats == null) {
+      this.chats = Set<String>();
+    }
+    this.chats.add(threadId);
+    return this.chats;
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -41,7 +46,8 @@ class User {
           name == other.name &&
           email == other.email &&
           phoneVerified == other.phoneVerified &&
-          listEquals(phones, other.phones);
+          listEquals(phones, other.phones) &&
+          setEquals(chats, other.chats);
 
   @override
   int get hashCode =>
@@ -50,7 +56,8 @@ class User {
       name.hashCode ^
       email.hashCode ^
       phoneVerified.hashCode ^
-      phones.hashCode;
+      phones.hashCode ^
+      chats.hashCode;
 
   @override
   String toString() {

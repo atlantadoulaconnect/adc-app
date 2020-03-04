@@ -38,6 +38,7 @@ import './frontend/screens/doula/doulaHomeScreen.dart';
 // admin screens
 import './frontend/screens/admin/adminHomeScreen.dart';
 import './frontend/screens/admin/registeredDoulasScreen.dart';
+import './frontend/screens/admin/registeredClientsScreen.dart';
 
 // messaging screens
 import './frontend/screens/messaging/contactsScreen.dart';
@@ -101,7 +102,9 @@ class ADCApp extends StatelessWidget {
             '/messages': (context) => MessagesScreenConnector(),
             '/recentMessages': (context) => RecentMessagesScreenConnector(),
             '/textBank': (context) => TextBankScreen(),
-            '/registeredDoulas': (context) => RegisteredDoulasScreenConnector()
+            '/registeredDoulas': (context) => RegisteredDoulasScreenConnector(),
+            '/registeredClients': (context) =>
+                RegisteredDoulasScreenConnector(),
           },
         ));
   }

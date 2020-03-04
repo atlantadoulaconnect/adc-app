@@ -3,9 +3,6 @@ import './phone.dart';
 import './user.dart';
 
 class Admin extends User {
-  String role;
-  List<String> privileges;
-
   Admin(
       {String userid,
       String userType,
@@ -13,17 +10,8 @@ class Admin extends User {
       String email,
       bool phoneVerified,
       List<Phone> phones,
-      this.role,
-      this.privileges})
+      Set<String> chats})
       : super.full(userid, userType, name, email, phoneVerified, phones);
-
-  void addPrivilege(String privilege) {
-    this.privileges.add(privilege);
-  }
-
-  void removeDeliveryType(String privilege) {
-    this.privileges.remove(privilege);
-  }
 
   Admin copy(
       {String userid,
@@ -32,6 +20,7 @@ class Admin extends User {
       List<Phone> phones,
       String email,
       bool phoneVerified,
+      Set<String> chats,
       String role,
       List<String> privileges}) {
     return Admin(
@@ -41,21 +30,16 @@ class Admin extends User {
         phones: phones ?? this.phones,
         email: email ?? this.email,
         phoneVerified: phoneVerified ?? this.phoneVerified,
-        role: role ?? this.role,
-        privileges: privileges ?? this.privileges);
+        chats: chats ?? this.chats);
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      super == other &&
-          other is Admin &&
-          runtimeType == other.runtimeType &&
-          role == other.role &&
-          listEquals(privileges, other.privileges);
+      super == other && other is Admin && runtimeType == other.runtimeType;
 
   @override
-  int get hashCode => super.hashCode ^ role.hashCode ^ privileges.hashCode;
+  int get hashCode => super.hashCode;
 
   @override
   String toString() {

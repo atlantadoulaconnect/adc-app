@@ -177,7 +177,31 @@ class ViewModel extends BaseModel<AppState> {
     return ViewModel.build(
         login: (String email, String password) =>
             dispatchFuture(LoginUserAction(email, password)),
-        toHome: () => dispatch(NavigateAction.pushNamed("/")),
+        toHome: () {
+          switch (state.currentUser.userType) {
+            case "admin":
+              {
+                dispatch(NavigateAction.pushNamed("/adminHome"));
+              }
+              break;
+            case "client":
+              {
+                dispatch(NavigateAction.pushNamed("/clientHome"));
+              }
+              break;
+            case "doula":
+              {
+                dispatch(NavigateAction.pushNamed("/doulaHome"));
+              }
+              break;
+            default:
+              {
+                // unknown user type, user may not have chosen an application yet
+                dispatch(NavigateAction.pushNamed("/"));
+              }
+              break;
+          }
+        },
         toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
         isWaiting: state.waiting);
   }

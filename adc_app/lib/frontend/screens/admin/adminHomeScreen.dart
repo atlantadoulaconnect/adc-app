@@ -1,15 +1,24 @@
+import 'dart:math';
+
 import '../common.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   final Admin currentUser;
   final Future<void> Function() logout;
   final VoidCallback toRegisteredDoulas;
+  final VoidCallback toRegisteredClients;
+  final VoidCallback toHome;
 
-  AdminHomeScreen(this.currentUser, this.logout, this.toRegisteredDoulas);
+  AdminHomeScreen(this.currentUser, this.logout, this.toRegisteredDoulas,
+      this.toRegisteredClients, this.toHome)
+      : assert(currentUser != null &&
+            logout != null &&
+            toRegisteredDoulas != null &&
+            toRegisteredClients != null &&
+            toHome != null);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: sprint 1 'your application has been submitted. you will be notified when ADC has finished their review'
     return Scaffold(
         appBar: AppBar(
           title: Text("Admin Home Page"),
@@ -72,7 +81,7 @@ class AdminHomeScreen extends StatelessWidget {
                     borderRadius: new BorderRadius.circular(10.0),
                     side: BorderSide(color: themeColors['mediumBlue'])),
                 onPressed: () {
-                  // TODO show registered clients
+                  toRegisteredClients();
                 },
                 color: themeColors['mediumBlue'],
                 textColor: Colors.white,
@@ -120,6 +129,7 @@ class AdminHomeScreen extends StatelessWidget {
               ),
               onPressed: () async {
                 logout();
+                toHome();
               },
             ),
           ],
@@ -133,8 +143,8 @@ class AdminHomeScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) {
-        return AdminHomeScreen(
-            vm.currentUser, vm.logout, vm.toRegisteredDoulas);
+        return AdminHomeScreen(vm.currentUser, vm.logout, vm.toRegisteredDoulas,
+            vm.toRegisteredClients, vm.toHome);
       },
     );
   }
@@ -147,12 +157,14 @@ class ViewModel extends BaseModel<AppState> {
   Future<void> Function() logout;
   VoidCallback toRegisteredDoulas;
   VoidCallback toRegisteredClients;
+  VoidCallback toHome;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.logout,
       @required this.toRegisteredDoulas,
-      @required this.toRegisteredClients})
+      @required this.toRegisteredClients,
+      @required this.toHome})
       : super(equals: []);
 
   @override
@@ -164,6 +176,7 @@ class ViewModel extends BaseModel<AppState> {
           dispatch(NavigateAction.pushNamed("/registeredDoulas")),
       toRegisteredClients: () =>
           dispatch(NavigateAction.pushNamed("/registeredClients")),
+      toHome: () => dispatch(NavigateAction.pushNamed("/")),
     );
   }
 }

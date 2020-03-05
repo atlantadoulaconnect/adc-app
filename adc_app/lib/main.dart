@@ -104,7 +104,7 @@ class ADCApp extends StatelessWidget {
             '/textBank': (context) => TextBankScreen(),
             '/registeredDoulas': (context) => RegisteredDoulasScreenConnector(),
             '/registeredClients': (context) =>
-                RegisteredDoulasScreenConnector(),
+                RegisteredClientsScreenConnector(),
           },
         ));
   }

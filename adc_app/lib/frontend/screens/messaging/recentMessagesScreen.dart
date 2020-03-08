@@ -13,7 +13,7 @@ class RecentMessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final recentContacts = ["Debbie D.", "Sandra D.", "Contact Support"];
-    final recentMessage = ["What do you think of the...", "", ""];
+    final recentMessage = ["What do you think abo...", "", ""];
     final contactCards = <Widget>[];
     for (var i = 0; i < recentContacts.length; i++) {
       contactCards.add(
@@ -34,8 +34,8 @@ class RecentMessagesScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 5.0),
                         child: Container(
-                          width: 65,
-                          height: 65,
+                          width: 45,
+                          height: 45,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
@@ -47,7 +47,7 @@ class RecentMessagesScreen extends StatelessWidget {
                           child: Icon(
                             IconData(0xe7fd, fontFamily: 'MaterialIcons'),
                             color: Colors.black,
-                            size: 50,
+                            size: 35,
                           ),
                         ),
                       ),
@@ -60,7 +60,7 @@ class RecentMessagesScreen extends StatelessWidget {
                               Text(
                                 recentContacts[i],
                                 style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 22,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

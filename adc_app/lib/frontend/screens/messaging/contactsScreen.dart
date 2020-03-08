@@ -25,6 +25,7 @@ class ContactsScreen extends StatelessWidget {
         padding: EdgeInsets.all(6.0),
         child: Container(
           height: 100,
+          //width: MediaQuery.of(context).size.width * .6,
           decoration: BoxDecoration(
               border: Border.all(width: 2.0),
               borderRadius: BorderRadius.all(const Radius.circular(20.0))),
@@ -44,10 +45,10 @@ class ContactsScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
                       child: Container(
-                        width: 65,
-                        height: 65,
+                        width: MediaQuery.of(context).size.width * .15,
+                        height: MediaQuery.of(context).size.width * .15,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
@@ -57,11 +58,11 @@ class ContactsScreen extends StatelessWidget {
                           // TODO replace with user profile picture
                           IconData(0xe7fd, fontFamily: 'MaterialIcons'),
                           color: Colors.black,
-                          size: 50,
+                          size: MediaQuery.of(context).size.width * .1,
                         ),
                       )),
                   Padding(
-                    padding: EdgeInsets.only(left: 16.0, right: 20.0),
+                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * .05),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +82,7 @@ class ContactsScreen extends StatelessWidget {
                     child: Icon(
                       IconData(57545, fontFamily: 'MaterialIcons'),
                       color: Colors.black,
-                      size: 40,
+                      size: MediaQuery.of(context).size.width * .1,
                     ),
                   ),
                 ],

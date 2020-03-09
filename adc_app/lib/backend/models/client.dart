@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
+import './common.dart';
 
-import './emergencyContact.dart';
-import './user.dart';
-import './doula.dart';
-import './phone.dart';
+part 'client.g.dart';
 
+@JsonSerializable(explicitToJson: true)
 class Client extends User {
   String bday;
 
@@ -174,4 +172,10 @@ class Client extends User {
     // TODO: implement toString
     return "client $userid: at $email\nname: $name";
   }
+
+  // creates this class instance from a map
+  factory Client.fromJson(Map<String, dynamic> json) => _$ClientFromJson(json);
+
+  // declares support for serialization
+  Map<String, dynamic> toJson() => _$ClientToJson(this);
 }

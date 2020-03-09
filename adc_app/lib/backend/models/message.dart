@@ -1,5 +1,9 @@
+import './common.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+part 'message.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class Message {
   //String messageId;
   String senderId;
@@ -7,7 +11,7 @@ class Message {
   String content;
   String threadId;
   int timeSent;
-  Timestamp timeRead;
+  //Timestamp timeRead;
 
   Message.now(this.content, this.senderId, this.type, this.threadId) {
     this.timeSent = DateTime.now().millisecondsSinceEpoch;
@@ -15,18 +19,15 @@ class Message {
 
   Message(this.content, this.senderId, this.timeSent, this.type, this.threadId);
 
-  Message.fromJson(Map<dynamic, dynamic> json) {
-    // messageid, threadid, timeRead
-    senderId = json["senderId"];
-    type = json["type"];
-    content = json["content"];
-    timeSent = json["timeSent"];
-  }
-  
   @override
   String toString() {
     return content;
   }
 
+  // creates this class instance from a map
+  factory Message.fromJson(Map<String, dynamic> json) =>
+      _$MessageFromJson(json);
 
+  // declares support for serialization
+  Map<String, dynamic> toJson() => _$MessageToJson(this);
 }

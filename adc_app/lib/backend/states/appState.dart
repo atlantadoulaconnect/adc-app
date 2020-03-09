@@ -1,8 +1,11 @@
 import 'package:meta/meta.dart';
 import '../models/user.dart';
 import '../models/contact.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'appState.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 @immutable
 class AppState {
   final User currentUser;
@@ -54,4 +57,11 @@ class AppState {
     }
     return "\nAppState:\n\tCurrent User (type: $type): ${this.currentUser.toString()}\n\twaiting: ${this.waiting}";
   }
+
+  // creates this class instance from a map
+  factory AppState.fromJson(Map<String, dynamic> json) =>
+      _$AppStateFromJson(json);
+
+  // declares support for serialization
+  Map<String, dynamic> toJson() => _$AppStateToJson(this);
 }

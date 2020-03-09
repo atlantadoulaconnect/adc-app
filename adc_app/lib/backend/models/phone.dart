@@ -1,3 +1,8 @@
+import './common.dart';
+
+part 'phone.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class Phone {
   String number;
   bool isPrimary;
@@ -29,4 +34,10 @@ class Phone {
     // TODO: implement toString
     return this.number;
   }
+
+  // creates this class instance from a map
+  factory Phone.fromJson(Map<String, dynamic> json) => _$PhoneFromJson(json);
+
+  // declares support for serialization
+  Map<String, dynamic> toJson() => _$PhoneToJson(this);
 }

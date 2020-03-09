@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
+import './common.dart';
 
-import './user.dart';
-import './client.dart';
-import './phone.dart';
+part 'doula.g.dart';
 
+@JsonSerializable(explicitToJson: true)
 class Doula extends User {
   String bday;
   bool emailVerified;
@@ -131,4 +130,10 @@ class Doula extends User {
     // TODO: implement toString
     return super.toString();
   }
+
+  // creates this class instance from a map
+  factory Doula.fromJson(Map<String, dynamic> json) => _$DoulaFromJson(json);
+
+  // declares support for serialization
+  Map<String, dynamic> toJson() => _$DoulaToJson(this);
 }

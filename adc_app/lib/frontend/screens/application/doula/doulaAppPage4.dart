@@ -62,8 +62,8 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
                   width: 250,
                   child: LinearProgressIndicator(
                     backgroundColor: themeColors['skyBlue'],
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        themeColors['mediumBlue']),
                     value: 0.8,
                   ),
                 ),
@@ -109,50 +109,51 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(10.0),
-                            side: BorderSide(color: themeColors['mediumBlue'])),
-                        onPressed: () {
-                          // info will be lost
-                          Navigator.pop(context);
-                        },
-                        color: themeColors['mediumBlue'],
-                        textColor: Colors.white,
-                        padding: EdgeInsets.all(15.0),
-                        splashColor: themeColors['mediumBlue'],
-                        child: Text(
-                          "PREVIOUS",
-                          style: TextStyle(fontSize: 20.0),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(10.0),
-                            side: BorderSide(color: themeColors['yellow'])),
-                        onPressed: () {
-                          // TODO
-                          toDoulaAppPage5();
-                        },
-                        color: themeColors['yellow'],
-                        textColor: Colors.white,
-                        padding: EdgeInsets.all(15.0),
-                        splashColor: themeColors['yellow'],
-                        child: Text(
-                          "NEXT",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: themeColors['black'],
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(10.0),
+                                side: BorderSide(
+                                    color: themeColors['mediumBlue'])),
+                            onPressed: () {
+                              // info will be lost
+                              Navigator.pop(context);
+                            },
+                            color: themeColors['mediumBlue'],
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(15.0),
+                            splashColor: themeColors['mediumBlue'],
+                            child: Text(
+                              "PREVIOUS",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ]),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(10.0),
+                                side: BorderSide(color: themeColors['yellow'])),
+                            onPressed: () {
+                              // TODO selecting calendar dates and adding to Doula
+                              toDoulaAppPage5();
+                            },
+                            color: themeColors['yellow'],
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(15.0),
+                            splashColor: themeColors['yellow'],
+                            child: Text(
+                              "NEXT",
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                color: themeColors['black'],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
                 ),
               ),
             ])));

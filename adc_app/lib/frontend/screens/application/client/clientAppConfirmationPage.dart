@@ -340,10 +340,9 @@ class ViewModel extends BaseModel<AppState> {
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        currentUser: state.currentUser,
-        userToDB: (Client user) =>
-            dispatchFuture(CreateClientUserDocument(user)),
-        toRequestSent: () =>
-            dispatch(NavigateAction.pushNamed("/requestSent")));
+      currentUser: state.currentUser,
+      userToDB: (Client user) => dispatchFuture(CreateClientUserDocument(user)),
+      toRequestSent: () => dispatch(NavigateAction.pushNamed("/requestSent")),
+    );
   }
 }

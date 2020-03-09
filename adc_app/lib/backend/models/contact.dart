@@ -1,6 +1,14 @@
+import './common.dart';
+
+part 'contact.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class Contact {
   String name;
+
+  @JsonKey(required: true)
   String userId;
+
   String title;
   String threadId;
 
@@ -32,4 +40,11 @@ class Contact {
   String toString() {
     return "$title $name $userId";
   }
+
+  // creates this class instance from a map
+  factory Contact.fromJson(Map<String, dynamic> json) =>
+      _$ContactFromJson(json);
+
+  // declares support for serialization
+  Map<String, dynamic> toJson() => _$ContactToJson(this);
 }

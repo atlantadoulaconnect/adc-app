@@ -1,8 +1,12 @@
-import 'package:flutter/foundation.dart';
-import './phone.dart';
+import './common.dart';
 
+part 'user.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class User {
+  @JsonKey(required: true)
   String userid;
+
   String userType;
   String name;
   String email;
@@ -63,4 +67,28 @@ class User {
   String toString() {
     return "$userType $userid: at $email\nname: $name";
   }
+
+  // creates this class instance from a map
+  factory User.fromJson(Map<String, dynamic> json) {
+    switch (json["userType"]) {
+      case "admin":
+        {
+          return Admin.fromJson(json);
+        }
+        break;
+      case "client":
+        {
+          return Client.fromJson(json);
+        }
+        break;
+      case "doula":
+        {
+          return Doula.fromJson(json);
+        }
+    }
+    return _$UserFromJson(json);
+  }
+
+  // declares support for serialization
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }

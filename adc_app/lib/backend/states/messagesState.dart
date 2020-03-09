@@ -2,5 +2,7 @@ import '../../frontend/screens/common.dart';
 
 @immutable
 class MessagesState {
-  Contact peer;
+//  final Contact peer;
+//  final bool sendingMessage;
+//  final bool sendFail;
 }

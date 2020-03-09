@@ -1,6 +1,8 @@
-import 'package:flutter/foundation.dart';
-import './phone.dart';
+import './common.dart';
 
+part 'emergencyContact.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class EmergencyContact {
   String name;
   String relationship;
@@ -30,4 +32,11 @@ class EmergencyContact {
   String toString() {
     return "${this.relationship}: ${this.name} at ${this.phones.join(", ")}";
   }
+
+  // creates this class instance from a map
+  factory EmergencyContact.fromJson(Map<String, dynamic> json) =>
+      _$EmergencyContactFromJson(json);
+
+  // declares support for serialization
+  Map<String, dynamic> toJson() => _$EmergencyContactToJson(this);
 }

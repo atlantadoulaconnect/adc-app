@@ -9,6 +9,10 @@ import '../models/doula.dart';
 import '../states/appState.dart';
 import '../actions/waitAction.dart';
 
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'dart:convert';
+
 class LoginUserAction extends ReduxAction<AppState> {
   final String email;
   final String password;
@@ -82,6 +86,13 @@ class LoginUserAction extends ReduxAction<AppState> {
           }
         });
 
+        Map<String, dynamic> init = {"lastUser": userId, "loggedIn": true};
+
+        getApplicationDocumentsDirectory().then((Directory dir) {
+          File initializer = File("${dir.path}/initializer.json");
+          initializer.writeAsStringSync(jsonEncode(init));
+        });
+
         print("update AppState with current user: ${current.toString()}");
         return state.copy(currentUser: current);
       } else {
@@ -110,6 +121,17 @@ class LogoutUserAction extends ReduxAction<AppState> {
     try {
       await FirebaseAuth.instance.signOut();
       print("signout success");
+
+      Map<String, dynamic> init = {
+        "lastUser": state.currentUser.userid,
+        "loggedIn": false
+      };
+
+      getApplicationDocumentsDirectory().then((Directory dir) {
+        File initializer = File("${dir.path}/initializer.json");
+        initializer.writeAsStringSync(jsonEncode(init));
+      });
+
       // clearing state object
       return state.copy(currentUser: null, waiting: false);
     } catch (e) {

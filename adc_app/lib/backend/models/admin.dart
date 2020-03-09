@@ -1,7 +1,8 @@
-import 'package:flutter/foundation.dart';
-import './phone.dart';
-import './user.dart';
+import './common.dart';
 
+part 'admin.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class Admin extends User {
   Admin(
       {String userid,
@@ -45,4 +46,10 @@ class Admin extends User {
   String toString() {
     return super.toString();
   }
+
+  // creates this class instance from a map
+  factory Admin.fromJson(Map<String, dynamic> json) => _$AdminFromJson(json);
+
+  // declares support for serialization
+  Map<String, dynamic> toJson() => _$AdminToJson(this);
 }

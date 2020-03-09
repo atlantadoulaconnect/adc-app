@@ -1,6 +1,6 @@
 import './common.dart';
 
-class RootScreen extends StatelessWidget {
+class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -8,7 +8,7 @@ class RootScreen extends StatelessWidget {
   }
 }
 
-class RootScreenConnector extends StatelessWidget {
+class SplashScreenConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>();

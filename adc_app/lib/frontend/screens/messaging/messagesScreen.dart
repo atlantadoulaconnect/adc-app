@@ -157,8 +157,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     Map data = ds.data.snapshot.value;
                     List<Message> messages = List<Message>();
                     data.forEach(
-                        (key, value) => messages.add(Message.fromJson(value))
-                    );
+                        (key, value) => messages.add(Message.fromJson(value)));
                     messages.sort((a, b) => b.timeSent.compareTo(a.timeSent));
                     for (Message m in messages) {
                       print(m);
@@ -218,8 +217,7 @@ class ViewModel extends BaseModel<AppState> {
     print("vm from store peer: ${state.peer}");
     return ViewModel.build(
         currentUser: state.currentUser,
-        toTextBank: () =>
-            dispatch(NavigateAction.pushNamed("/textBank")),
+        toTextBank: () => dispatch(NavigateAction.pushNamed("/textBank")),
         peer: state.peer,
         sendMsg: (Message msg) => dispatchFuture(SendMessageAction(msg)));
   }

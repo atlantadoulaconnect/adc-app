@@ -13,7 +13,6 @@ class DoulaAppPage5 extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return DoulaAppPage5State();
   }
 }
@@ -63,8 +62,8 @@ class DoulaAppPage5State extends State<DoulaAppPage5> {
                   width: 250,
                   child: LinearProgressIndicator(
                     backgroundColor: themeColors['skyBlue'],
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        themeColors['mediumBlue']),
                     value: 1.0,
                   ),
                 ),
@@ -112,50 +111,51 @@ class DoulaAppPage5State extends State<DoulaAppPage5> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          side: BorderSide(color: themeColors['mediumBlue'])),
-                      onPressed: () {
-                        // information will be lost
-                        Navigator.pop(context);
-                      },
-                      color: themeColors['mediumBlue'],
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['mediumBlue'],
-                      child: Text(
-                        "PREVIOUS",
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          side: BorderSide(color: themeColors['yellow'])),
-                      onPressed: () {
-                        updatedoula(currentUser, photoReleasePermission);
-                        toDoulaAppConfirmation();
-                      },
-                      color: themeColors['yellow'],
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['yellow'],
-                      child: Text(
-                        "FINISH",
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: themeColors['black'],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              side:
+                                  BorderSide(color: themeColors['mediumBlue'])),
+                          onPressed: () {
+                            // information will be lost
+                            Navigator.pop(context);
+                          },
+                          color: themeColors['mediumBlue'],
+                          textColor: Colors.white,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['mediumBlue'],
+                          child: Text(
+                            "PREVIOUS",
+                            style: TextStyle(fontSize: 20.0),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ]),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () {
+                            updatedoula(currentUser, photoReleasePermission);
+                            toDoulaAppConfirmation();
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.white,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "FINISH",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: themeColors['black'],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
               ),
             ]),
       ),

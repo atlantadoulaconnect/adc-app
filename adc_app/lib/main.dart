@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:async_redux/async_redux.dart';
 import './backend/states/appState.dart';
+import './backend/states/errorsState.dart';
+import 'backend/util/persistence.dart';
 
 import './frontend/theme/style.dart';
 
@@ -31,14 +33,18 @@ import './frontend/screens/application/doula/doulaAppConfirmationPage.dart';
 
 // client screens
 import './frontend/screens/client/clientHomeScreen.dart';
+import './frontend/screens/client/clientProfileScreen.dart';
 
 // doula screens
 import './frontend/screens/doula/doulaHomeScreen.dart';
+import './frontend/screens/doula/doulaProfileScreen.dart';
 
 // admin screens
 import './frontend/screens/admin/adminHomeScreen.dart';
 import './frontend/screens/admin/registeredDoulasScreen.dart';
 import './frontend/screens/admin/registeredClientsScreen.dart';
+import './frontend/screens/admin/approveClientScreen.dart';
+import './frontend/screens/admin/approveDoulaScreen.dart';
 
 // messaging screens
 import './frontend/screens/messaging/contactsScreen.dart';
@@ -48,9 +54,16 @@ import './frontend/screens/messaging/textBankScreen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
-  final AppState state = AppState.initialState();
-  final Store<AppState> _store = Store<AppState>(initialState: state);
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Persistence persistor = Persistence(
+      throttle: Duration(seconds: 2),
+      saveDuration: Duration(milliseconds: 400));
+  final AppState state = await persistor.readInitialState();
+  await persistor.saveInitialState(state);
+
+  final Store<AppState> _store =
+      Store<AppState>(initialState: state, persistor: persistor);
   print("main: state of appstate: ${state.toString()}");
   NavigateAction.setNavigatorKey(navigatorKey);
   runApp(new ADCApp(store: _store));
@@ -73,7 +86,8 @@ class ADCApp extends StatelessWidget {
           navigatorKey: navigatorKey,
           initialRoute: "/",
           routes: {
-            '/': (context) => HomeScreenConnector(),
+            '/': (context) =>
+                HomeScreenConnector(), // replace with splash screen, home -> /defaultHome
             '/login': (context) => LoginScreenConnector(),
             '/signup': (context) => SignupScreenConnector(),
             '/appType': (context) => AppTypeScreenConnector(),
@@ -105,6 +119,8 @@ class ADCApp extends StatelessWidget {
             '/registeredDoulas': (context) => RegisteredDoulasScreenConnector(),
             '/registeredClients': (context) =>
                 RegisteredClientsScreenConnector(),
+            '/approveClient': (context) => ApproveClientScreen(),
+            '/approveDoula': (context) => ApproveDoulaScreen(),
           },
         ));
   }

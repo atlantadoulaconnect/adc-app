@@ -1,20 +1,20 @@
-import 'dart:math';
-
 import '../common.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   final Admin currentUser;
   final Future<void> Function() logout;
   final VoidCallback toRegisteredDoulas;
+  final VoidCallback toPendingApps;
   final VoidCallback toRegisteredClients;
   final VoidCallback toHome;
 
   AdminHomeScreen(this.currentUser, this.logout, this.toRegisteredDoulas,
-      this.toRegisteredClients, this.toHome)
+      this.toRegisteredClients, this.toPendingApps, this.toHome)
       : assert(currentUser != null &&
             logout != null &&
             toRegisteredDoulas != null &&
             toRegisteredClients != null &&
+            toPendingApps != null &&
             toHome != null);
 
   @override
@@ -63,13 +63,14 @@ class AdminHomeScreen extends StatelessWidget {
                     side: BorderSide(color: themeColors['mediumBlue'])),
                 onPressed: () {
                   // TODO active matches screen
+                  toPendingApps();
                 },
                 color: themeColors['mediumBlue'],
                 textColor: Colors.white,
                 padding: EdgeInsets.all(15.0),
                 splashColor: themeColors['mediumBlue'],
                 child: Text(
-                  "Active Matches",
+                  "Pending Matches",
                   style: TextStyle(fontSize: 20.0),
                 ),
               ),
@@ -144,7 +145,7 @@ class AdminHomeScreenConnector extends StatelessWidget {
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) {
         return AdminHomeScreen(vm.currentUser, vm.logout, vm.toRegisteredDoulas,
-            vm.toRegisteredClients, vm.toHome);
+            vm.toRegisteredClients, vm.toPendingApps, vm.toHome);
       },
     );
   }
@@ -156,6 +157,7 @@ class ViewModel extends BaseModel<AppState> {
   Admin currentUser;
   Future<void> Function() logout;
   VoidCallback toRegisteredDoulas;
+  VoidCallback toPendingApps;
   VoidCallback toRegisteredClients;
   VoidCallback toHome;
 
@@ -164,19 +166,21 @@ class ViewModel extends BaseModel<AppState> {
       @required this.logout,
       @required this.toRegisteredDoulas,
       @required this.toRegisteredClients,
-      @required this.toHome})
+      @required this.toHome,
+      @required this.toPendingApps})
       : super(equals: []);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-      currentUser: state.currentUser,
-      logout: () => dispatchFuture(LogoutUserAction()),
-      toRegisteredDoulas: () =>
-          dispatch(NavigateAction.pushNamed("/registeredDoulas")),
-      toRegisteredClients: () =>
-          dispatch(NavigateAction.pushNamed("/registeredClients")),
-      toHome: () => dispatch(NavigateAction.pushNamed("/")),
-    );
+        currentUser: state.currentUser,
+        logout: () => dispatchFuture(LogoutUserAction()),
+        toRegisteredDoulas: () =>
+            dispatch(NavigateAction.pushNamed("/registeredDoulas")),
+        toRegisteredClients: () =>
+            dispatch(NavigateAction.pushNamed("/registeredClients")),
+        toHome: () => dispatch(NavigateAction.pushNamed("/")),
+        toPendingApps: () =>
+            dispatch(NavigateAction.pushNamed("/pendingApps")));
   }
 }

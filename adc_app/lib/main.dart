@@ -51,6 +51,7 @@ import './frontend/screens/messaging/contactsScreen.dart';
 import './frontend/screens/messaging/messagesScreen.dart';
 import './frontend/screens/messaging/recentMessagesScreen.dart';
 import './frontend/screens/messaging/textBankScreen.dart';
+import 'frontend/screens/admin/pendingApplications.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -121,6 +122,7 @@ class ADCApp extends StatelessWidget {
                 RegisteredClientsScreenConnector(),
             '/approveClient': (context) => ApproveClientScreen(),
             '/approveDoula': (context) => ApproveDoulaScreen(),
+            '/pendingApps': (context) => PendingApplicationsConnector()
           },
         ));
   }

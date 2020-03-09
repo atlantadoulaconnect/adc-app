@@ -178,6 +178,9 @@ class ViewModel extends BaseModel<AppState> {
         login: (String email, String password) =>
             dispatchFuture(LoginUserAction(email, password)),
         toHome: () {
+          if (state.currentUser == null) {
+            dispatch(NavigateAction.pushNamed("/"));
+          }
           switch (state.currentUser.userType) {
             case "admin":
               {
@@ -196,7 +199,6 @@ class ViewModel extends BaseModel<AppState> {
               break;
             default:
               {
-                // unknown user type, user may not have chosen an application yet
                 dispatch(NavigateAction.pushNamed("/"));
               }
               break;

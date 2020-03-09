@@ -42,10 +42,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
       children: <Widget>[
         Container(
           margin: isMe
-              ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: 80.0)
-              : EdgeInsets.only(top: 8.0, bottom: 8.0, right: 80.0, left: 20.0),
+              ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: (MediaQuery.of(context).size.width * .25))
+              : EdgeInsets.only(top: 8.0, bottom: 8.0, left: 20.0),
           padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
-          width: MediaQuery.of(context).size.width * 0.75,
+          width: MediaQuery.of(context).size.width * 0.70,
           decoration: BoxDecoration(
             color: isMe ? themeColors["mediumBlue"] : themeColors["coolGray1"],
             borderRadius: BorderRadius.all(Radius.circular(15.0)),

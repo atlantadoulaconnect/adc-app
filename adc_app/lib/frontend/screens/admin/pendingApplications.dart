@@ -79,8 +79,6 @@ class PendingApplications extends StatelessWidget {
             )));
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final _Tabs = <Tab>[Tab(text: 'Doula'), Tab(text: 'Client')];

@@ -1,7 +1,8 @@
-import 'package:meta/meta.dart';
-import '../models/user.dart';
-import '../models/contact.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'common.dart';
+import 'applicationState.dart';
+import 'connectionsState.dart';
+import 'errorsState.dart';
+import 'messagesState.dart';
 
 part 'appState.g.dart';
 
@@ -12,26 +13,38 @@ class AppState {
   final bool waiting;
   final Contact peer;
 
+  //final messagesState;
+  final ApplicationState formState;
+
+//  @JsonKey(ignore: true)
+//  final ErrorsState;
+//
+//  @JsonKey(ignore: true)
+//  final ConnectionsState;
+
   // TODO State object for all the errors
 
-  AppState({this.currentUser, this.waiting, this.peer}) {
+  AppState({this.currentUser, this.waiting, this.peer, this.formState}) {
     print(
         "AppState\n\tcurrent user: $currentUser\n\twaiting: $waiting\n\tpeer: $peer");
   }
 
   static AppState initialState() {
-    // TODO check if user is signed in
-//    FirebaseUser curr = FirebaseAuth.getInstance().
-//    print("current user: $curr");
-    return AppState(currentUser: null, waiting: false, peer: null);
+    return AppState(
+        currentUser: null, waiting: false, peer: null, formState: null);
   }
 
   AppState copy(
-      {User currentUser, bool waiting, String loginError, Contact peer}) {
+      {User currentUser,
+      bool waiting,
+      String loginError,
+      Contact peer,
+      ApplicationState formState}) {
     return AppState(
         currentUser: currentUser ?? this.currentUser,
         waiting: waiting ?? this.waiting,
-        peer: peer ?? this.peer);
+        peer: peer ?? this.peer,
+        formState: formState ?? this.formState);
   }
 
   @override
@@ -41,12 +54,16 @@ class AppState {
             runtimeType == other.runtimeType &&
             currentUser == other.currentUser &&
             waiting == other.waiting &&
-            peer == other.peer;
+            peer == other.peer &&
+            formState == other.formState;
   }
 
   @override
   int get hashCode {
-    return currentUser.hashCode ^ waiting.hashCode ^ peer.hashCode;
+    return currentUser.hashCode ^
+        waiting.hashCode ^
+        peer.hashCode ^
+        formState.hashCode;
   }
 
   @override

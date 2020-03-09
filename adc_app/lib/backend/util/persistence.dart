@@ -68,7 +68,8 @@ class Persistence implements Persistor<AppState> {
             jsonDecode(initJSON.readAsStringSync());
 
         String jsonUserId = initializer["lastUser"].toString();
-        print("last user id: $jsonUserId");
+        print(
+            "last user id: $jsonUserId logged in: ${initializer["loggedIn"].toString()}");
 
         if (jsonUserId != null && jsonUserId.length > 4) {
           if (initializer["loggedIn"] == true) {

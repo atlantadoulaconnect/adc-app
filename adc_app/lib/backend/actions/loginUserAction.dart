@@ -102,6 +102,7 @@ class LoginUserAction extends ReduxAction<AppState> {
       }
     } catch (e) {
       // TODO set login error
+      print("login error: $e");
       return null;
     }
   }

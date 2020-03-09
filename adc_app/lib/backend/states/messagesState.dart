@@ -1,4 +1,4 @@
-import '../../frontend/screens/common.dart';
+import 'common.dart';
 
 @immutable
 class MessagesState {

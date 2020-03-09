@@ -15,6 +15,9 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) {
     peer: json['peer'] == null
         ? null
         : Contact.fromJson(json['peer'] as Map<String, dynamic>),
+    formState: json['formState'] == null
+        ? null
+        : ApplicationState.fromJson(json['formState'] as Map<String, dynamic>),
   );
 }
 
@@ -22,4 +25,5 @@ Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'currentUser': instance.currentUser?.toJson(),
       'waiting': instance.waiting,
       'peer': instance.peer?.toJson(),
+      'formState': instance.formState?.toJson(),
     };

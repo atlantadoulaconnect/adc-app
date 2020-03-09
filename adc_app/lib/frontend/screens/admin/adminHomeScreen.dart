@@ -4,8 +4,10 @@ class AdminHomeScreen extends StatelessWidget {
   final Admin currentUser;
   final Future<void> Function() logout;
   final VoidCallback toRegisteredDoulas;
+  final VoidCallback toPendingApps;
 
-  AdminHomeScreen(this.currentUser, this.logout, this.toRegisteredDoulas);
+  AdminHomeScreen(this.currentUser, this.logout, this.toRegisteredDoulas,
+      this.toPendingApps);
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +56,14 @@ class AdminHomeScreen extends StatelessWidget {
                     side: BorderSide(color: themeColors['mediumBlue'])),
                 onPressed: () {
                   // TODO active matches screen
+                  toPendingApps();
                 },
                 color: themeColors['mediumBlue'],
                 textColor: Colors.white,
                 padding: EdgeInsets.all(15.0),
                 splashColor: themeColors['mediumBlue'],
                 child: Text(
-                  "Active Matches",
+                  "Pending Matches",
                   style: TextStyle(fontSize: 20.0),
                 ),
               ),
@@ -134,7 +137,7 @@ class AdminHomeScreenConnector extends StatelessWidget {
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) {
         return AdminHomeScreen(
-            vm.currentUser, vm.logout, vm.toRegisteredDoulas);
+            vm.currentUser, vm.logout, vm.toRegisteredDoulas, vm.toPendingApps);
       },
     );
   }
@@ -146,11 +149,13 @@ class ViewModel extends BaseModel<AppState> {
   Admin currentUser;
   Future<void> Function() logout;
   VoidCallback toRegisteredDoulas;
+  VoidCallback toPendingApps;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.logout,
-      @required this.toRegisteredDoulas})
+      @required this.toRegisteredDoulas,
+      @required this.toPendingApps})
       : super(equals: []);
 
   @override
@@ -159,6 +164,8 @@ class ViewModel extends BaseModel<AppState> {
         currentUser: state.currentUser,
         logout: () => dispatchFuture(LogoutUserAction()),
         toRegisteredDoulas: () =>
-            dispatch(NavigateAction.pushNamed("/registeredDoulas")));
+            dispatch(NavigateAction.pushNamed("/registeredDoulas")),
+        toPendingApps: () =>
+            dispatch(NavigateAction.pushNamed("/pendingApps")));
   }
 }

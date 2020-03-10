@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:async_redux/async_redux.dart';
 import './backend/states/appState.dart';
-import './backend/states/errorsState.dart';
 import 'backend/util/persistence.dart';
 
 import './frontend/theme/style.dart';
@@ -45,13 +44,13 @@ import './frontend/screens/admin/registeredDoulasScreen.dart';
 import './frontend/screens/admin/registeredClientsScreen.dart';
 import './frontend/screens/admin/approveClientScreen.dart';
 import './frontend/screens/admin/approveDoulaScreen.dart';
+import './frontend/screens/admin/pendingApplicationsScreen.dart';
 
 // messaging screens
 import './frontend/screens/messaging/contactsScreen.dart';
 import './frontend/screens/messaging/messagesScreen.dart';
 import './frontend/screens/messaging/recentMessagesScreen.dart';
 import './frontend/screens/messaging/textBankScreen.dart';
-import 'frontend/screens/admin/pendingApplications.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -122,7 +121,7 @@ class ADCApp extends StatelessWidget {
                 RegisteredClientsScreenConnector(),
             '/approveClient': (context) => ApproveClientScreen(),
             '/approveDoula': (context) => ApproveDoulaScreen(),
-            '/pendingApps': (context) => PendingApplicationsConnector()
+            '/pendingApps': (context) => PendingApplicationsScreenConnector()
           },
         ));
   }

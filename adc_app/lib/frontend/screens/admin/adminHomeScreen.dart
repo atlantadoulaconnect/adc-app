@@ -75,6 +75,23 @@ class AdminHomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+//            Padding(
+//              padding: const EdgeInsets.all(8.0),
+//              child: RaisedButton(
+//                shape: RoundedRectangleBorder(
+//                    borderRadius: new BorderRadius.circular(50.0),
+//                    side: BorderSide(color: themeColors['gold'])),
+//                onPressed: TODO: list all active matches,
+//                color: themeColors['gold'],
+//                textColor: Colors.black,
+//                padding: EdgeInsets.all(15.0),
+//                splashColor: themeColors['gold'],
+//                child: Text(
+//                  "See Active Matches",
+//                  style: TextStyle(fontSize: 20.0),
+//                ),
+//              ),
+//            ),
             Padding(
               padding: EdgeInsets.only(bottom: 25.0),
               child: RaisedButton(

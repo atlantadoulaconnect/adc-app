@@ -1,16 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/rendering.dart';
-
 import '../common.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PendingApplicationsScreen extends StatelessWidget {
-  final VoidCallback toClientProfile;
-  final VoidCallback toDoulaProfile;
+  final Admin currentUser;
+  final VoidCallback toProfile;
 
-  PendingApplicationsScreen(this.toClientProfile, this.toDoulaProfile);
+  PendingApplicationsScreen(this.currentUser, this.toProfile)
+      : assert(currentUser != null && toProfile != null);
 
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
-    String userType = doc["userType"].toString();
     return Padding(
         padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 15.0),
         child: Container(
@@ -22,23 +20,16 @@ class PendingApplicationsScreen extends StatelessWidget {
               borderRadius: BorderRadius.all(const Radius.circular(20.0)),
             ),
             child: MaterialButton(
-              // TODO takes you to that user's profile
-              onPressed: () {
-                if (doc["userType"] == "doula") {
-                  toDoulaProfile();
-                } else {
-                  toClientProfile();
-                }
-              },
+              onPressed: () {}, // TODO takes you to that doula's profile
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
                       child: Container(
-                        width: 65,
-                        height: 65,
+                        width: 50,
+                        height: 50,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
@@ -50,7 +41,7 @@ class PendingApplicationsScreen extends StatelessWidget {
                         child: Icon(
                           IconData(0xe7fd, fontFamily: 'MaterialIcons'),
                           color: Colors.black,
-                          size: 50,
+                          size: 40,
                         ),
                       )),
                   Padding(
@@ -65,13 +56,14 @@ class PendingApplicationsScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               )),
                           Text(
-                            "${userType[0].toUpperCase()}${userType.substring(1)}",
+                            doc["userType"],
                             style: TextStyle(
                               fontSize: 20,
                             ),
                           ),
                         ]),
                   ),
+                  Spacer(),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Icon(
@@ -87,34 +79,68 @@ class PendingApplicationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Pending Applications'),
-        ),
-        body: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
-            child: Container(
-                child: StreamBuilder<QuerySnapshot>(
-                    stream: Firestore.instance
-                        .collection("applications")
-                        .where("status", isEqualTo: "submitted")
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(
-                            child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              themeColors["lightBlue"]),
-                        ));
-                      }
-                      return ListView.builder(
-                        padding: EdgeInsets.all(10.0),
-                        itemBuilder: (context, index) =>
-                            buildItem(context, snapshot.data.documents[index]),
-                        itemCount: snapshot.data.documents.length,
-                      );
-                    }))));
+    final _Tabs = <Tab>[Tab(text: 'Doula'), Tab(text: 'Client')];
+    return DefaultTabController(
+      length: _Tabs.length,
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text("Pending Applications"),
+            bottom: TabBar(
+              tabs: _Tabs,
+            ),
+          ),
+          body: TabBarView(
+//          Padding(
+//              padding: const EdgeInsets.symmetric(vertical: 20.0),
+            children: [
+              Container(
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: Firestore.instance
+                          .collection("users")
+                          .where("userType", isEqualTo: "doula")
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                              child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                themeColors["lightBlue"]),
+                          ));
+                        }
+                        return ListView.builder(
+                          padding: EdgeInsets.all(10.0),
+                          itemBuilder: (context, index) => buildItem(
+                              context, snapshot.data.documents[index]),
+                          itemCount: snapshot.data.documents.length,
+                        );
+                      })),
+              Container(
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: Firestore.instance
+                          .collection("users")
+                          .where("userType", isEqualTo: "client")
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                              child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                themeColors["lightBlue"]),
+                          ));
+                        }
+                        return ListView.builder(
+                          padding: EdgeInsets.all(10.0),
+                          itemBuilder: (context, index) => buildItem(
+                              context, snapshot.data.documents[index]),
+                          itemCount: snapshot.data.documents.length,
+                        );
+                      }))
+            ],
+//          )
+          )),
+    );
   }
 }
 
@@ -123,8 +149,9 @@ class PendingApplicationsScreenConnector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) =>
-          PendingApplicationsScreen(vm.toClientProfile, vm.toDoulaProfile),
+      builder: (BuildContext context, ViewModel vm) {
+        return PendingApplicationsScreen(vm.currentUser, vm.toProfile);
+      },
     );
   }
 }
@@ -132,18 +159,18 @@ class PendingApplicationsScreenConnector extends StatelessWidget {
 class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
-  VoidCallback toClientProfile;
-  VoidCallback toDoulaProfile;
+  User currentUser;
+  VoidCallback toProfile;
 
-  ViewModel.build(
-      {@required this.toClientProfile, @required this.toDoulaProfile});
+  ViewModel.build({@required this.currentUser, @required this.toProfile})
+      : super(equals: []);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-      toClientProfile: () =>
-          dispatch(NavigateAction.pushNamed("/clientProfile")),
-      toDoulaProfile: () => dispatch(NavigateAction.pushNamed("/doulaProfile")),
+      currentUser: state.currentUser,
+      toProfile: () => dispatch(NavigateAction.pushNamed("/profile")),
+      //setPeer: (Contact peer) => dispatch(SetPeer(peer))
     );
   }
 }

@@ -5,27 +5,43 @@ import 'package:async_redux/async_redux.dart';
 // If no user is logged in then it will return the New User menu
 
 class CurrentMenu extends StatelessWidget {
-  final String userType;
+  final User currentUser;
   final VoidCallback toHome;
   final VoidCallback toSignup;
   final VoidCallback toLogin;
   final VoidCallback toInfo;
   final VoidCallback toRecentMessages;
   final VoidCallback toDoulas;
+  final VoidCallback logout;
+  final VoidCallback toAdminHome;
+  final VoidCallback toClientHome;
+  final VoidCallback toDoulaHome;
 
   CurrentMenu(
-      {this.userType,
+      {this.currentUser,
       this.toHome,
       this.toSignup,
       this.toLogin,
       this.toInfo,
       this.toRecentMessages,
-      this.toDoulas});
+      this.toDoulas,
+      this.logout,
+      this.toAdminHome,
+      this.toClientHome,
+      this.toDoulaHome});
 
   @override
   Widget build(BuildContext context) {
     Drawer userMenu;
-    switch (userType) {
+
+    String currentUserType;
+    if (currentUser == null) {
+      currentUserType = "none";
+    } else {
+      currentUserType = currentUser.userType;
+    }
+
+    switch (currentUserType) {
       case "admin":
         {
           userMenu = adminMenu();
@@ -72,7 +88,7 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: toHome,
+                  onTap: toAdminHome,
                 ),
                 ListTile(
                   leading: Icon(
@@ -117,6 +133,17 @@ class CurrentMenu extends StatelessWidget {
                       )),
                   onTap: toInfo,
                 ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Log Out',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: logout,
+                ),
               ],
             )));
   }
@@ -142,7 +169,7 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: toHome,
+                  onTap: toClientHome,
                 ),
                 ListTile(
                   leading: Icon(
@@ -175,6 +202,17 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toInfo,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Log Out',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: logout,
                 ),
               ],
             )));
@@ -201,7 +239,7 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: toHome,
+                  onTap: toDoulaHome,
                 ),
                 ListTile(
                   leading: Icon(
@@ -234,6 +272,17 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toInfo,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Log Out',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: logout,
                 ),
               ],
             )));
@@ -318,13 +367,17 @@ class Menu extends StatelessWidget {
         model: ViewModel(),
         builder: (BuildContext context, ViewModel vm) {
           return CurrentMenu(
-            userType: vm.userType,
+            currentUser: vm.currentUser,
             toHome: vm.toHome,
             toSignup: vm.toSignup,
             toLogin: vm.toLogin,
             toInfo: vm.toInfo,
             toRecentMessages: vm.toRecentMessages,
             toDoulas: vm.toDoulas,
+            logout: vm.logout,
+            toAdminHome: vm.toAdminHome,
+            toClientHome: vm.toClientHome,
+            toDoulaHome: vm.toDoulaHome,
           );
         });
   }
@@ -333,42 +386,46 @@ class Menu extends StatelessWidget {
 class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
-  String userType;
-
+  User currentUser;
   VoidCallback toHome;
   VoidCallback toSignup;
   VoidCallback toLogin;
   VoidCallback toInfo;
   VoidCallback toRecentMessages;
   VoidCallback toDoulas;
+  VoidCallback logout;
+  VoidCallback toAdminHome;
+  VoidCallback toClientHome;
+  VoidCallback toDoulaHome;
 
   ViewModel.build(
-      {@required this.userType,
+      {@required this.currentUser,
       this.toHome,
       this.toSignup,
       this.toLogin,
       this.toInfo,
       this.toRecentMessages,
-      this.toDoulas})
-      : super(equals: [userType]);
+      this.toDoulas,
+      this.logout,
+      this.toAdminHome,
+      this.toClientHome,
+      this.toDoulaHome})
+      : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
-    String currentUserType;
-    if (state.currentUser == null) {
-      currentUserType = "none";
-    } else {
-      currentUserType = state.currentUser.userType;
-    }
     return ViewModel.build(
-        userType: currentUserType,
+        currentUser: state.currentUser,
         toHome: () => dispatch(NavigateAction.pushNamed("/")),
         toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
         toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
         toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
         toRecentMessages: () =>
             dispatch(NavigateAction.pushNamed("/recentMessages")),
-        toDoulas: () =>
-            dispatch(NavigateAction.pushNamed("/registeredDoulas")));
+        toDoulas: () => dispatch(NavigateAction.pushNamed("/registeredDoulas")),
+        logout: () => dispatch(LogoutUserAction()),
+        toAdminHome: () => dispatch(NavigateAction.pushNamed("/adminHome")),
+        toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),
+        toDoulaHome: () => dispatch(NavigateAction.pushNamed("/doulaHome")));
   }
 }

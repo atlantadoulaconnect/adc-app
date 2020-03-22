@@ -79,14 +79,14 @@ class Persistence implements Persistor<AppState> {
                   return AppState.fromJson(
                       jsonDecode(currUserFile.readAsStringSync()));
                 }
-                return AppState(currentUser: null, waiting: false, peer: null);
+                return AppState.initialState();
               });
             });
           }
         }
       }
 
-      return AppState(currentUser: null, waiting: false, peer: null);
+      return AppState.initialState();
     });
   }
 

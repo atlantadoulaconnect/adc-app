@@ -1,13 +1,9 @@
-import 'package:async_redux/async_redux.dart';
+import 'common.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 
-import '../models/user.dart';
-import '../models/admin.dart';
-import '../models/client.dart';
-import '../models/doula.dart';
-import '../states/appState.dart';
 import '../actions/waitAction.dart';
 
 class CreateUserAction extends ReduxAction<AppState> {
@@ -113,16 +109,6 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
       "homeVisit": user.homeVisit,
       "photoRelease": user.photoRelease
     });
-
-    DateTime now = new DateTime.now();
-
-    await dbRef.collection("applications").document(user.userid).setData({
-      "userid": user.userid,
-      "name": user.name,
-      "type": user.userType,
-      "status": "submitted",
-      "dateSubmitted": "${DateTime(now.month, now.day, now.year)}"
-    });
   }
 
   void before() => dispatch(WaitAction(true));
@@ -165,14 +151,12 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
       "birthsNeeded": user.birthsNeeded
     });
 
-    DateTime now = new DateTime.now();
-
     await dbRef.collection("applications").document(user.userid).setData({
       "userid": user.userid,
       "name": user.name,
       "type": user.userType,
       "status": "submitted",
-      "dateSubmitted": "${DateTime(now.month, now.day, now.year)}"
+      "dateSubmitted": "${currentUnixTime()}"
     });
 
     // TODO applicationState, update application state to submitted

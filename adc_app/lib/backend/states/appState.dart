@@ -11,9 +11,8 @@ part 'appState.g.dart';
 class AppState {
   final User currentUser;
   final bool waiting;
-  final Contact peer;
 
-  //final messagesState;
+  final MessagesState messagesState;
   final ApplicationState formState;
 
 //  @JsonKey(ignore: true)
@@ -24,26 +23,29 @@ class AppState {
 
   // TODO State object for all the errors
 
-  AppState({this.currentUser, this.waiting, this.peer, this.formState}) {
-    print(
-        "AppState\n\tcurrent user: $currentUser\n\twaiting: $waiting\n\tpeer: $peer");
+  AppState(
+      {this.currentUser, this.waiting, this.formState, this.messagesState}) {
+    print("AppState\n\tcurrent user: $currentUser\n\twaiting: $waiting");
   }
 
   static AppState initialState() {
     return AppState(
-        currentUser: null, waiting: false, peer: null, formState: null);
+        currentUser: null,
+        waiting: false,
+        formState: ApplicationState.initialState(),
+        messagesState: MessagesState.initialState());
   }
 
   AppState copy(
       {User currentUser,
       bool waiting,
       String loginError,
-      Contact peer,
+      MessagesState messagesState,
       ApplicationState formState}) {
     return AppState(
         currentUser: currentUser ?? this.currentUser,
         waiting: waiting ?? this.waiting,
-        peer: peer ?? this.peer,
+        messagesState: messagesState ?? this.messagesState,
         formState: formState ?? this.formState);
   }
 
@@ -54,7 +56,7 @@ class AppState {
             runtimeType == other.runtimeType &&
             currentUser == other.currentUser &&
             waiting == other.waiting &&
-            peer == other.peer &&
+            messagesState == other.messagesState &&
             formState == other.formState;
   }
 
@@ -62,7 +64,7 @@ class AppState {
   int get hashCode {
     return currentUser.hashCode ^
         waiting.hashCode ^
-        peer.hashCode ^
+        messagesState.hashCode ^
         formState.hashCode;
   }
 

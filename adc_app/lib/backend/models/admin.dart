@@ -21,9 +21,7 @@ class Admin extends User {
       List<Phone> phones,
       String email,
       bool phoneVerified,
-      Set<String> chats,
-      String role,
-      List<String> privileges}) {
+      Set<String> chats}) {
     return Admin(
         userid: userid ?? this.userid,
         userType: userType ?? this.userType,

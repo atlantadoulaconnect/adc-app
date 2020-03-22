@@ -22,6 +22,7 @@ export '../../backend/actions/loginUserAction.dart';
 
 // states
 export '../../backend/states/appState.dart';
+export '../../backend/states/applicationState.dart';
 
 // util
 export '../../backend/util/timeConversion.dart';

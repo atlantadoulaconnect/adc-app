@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
+int currentUnixTime() {
+  return DateTime.now().toUtc().millisecondsSinceEpoch;
+}
 
 // Returns time as 5:30 PM
 String formatTimeHSS(Timestamp timestamp) {
@@ -23,7 +26,7 @@ String formatDateRelative(Timestamp timestamp) {
   final DateTime now = new DateTime.now();
   final DateTime today = new DateTime(now.year, now.month, now.day);
   final DateTime yesterday = new DateTime(now.year, now.month, now.day - 1);
-  final DateTime oneWeekAgo = new DateTime (now.year, now.month, now.day - 7);
+  final DateTime oneWeekAgo = new DateTime(now.year, now.month, now.day - 7);
 
   // Removes hour/minutes/seconds from the given date for comparisons
   DateTime dateDay = new DateTime(date.year, date.month, date.day);

@@ -204,9 +204,7 @@ class UpdateAdminUserAction extends ReduxAction<AppState> {
         email: email ?? this.email,
         phones: phones ?? this.phones,
         chats: chats ?? this.chats,
-        phoneVerified: phoneVerified ?? this.phoneVerified,
-        role: role ?? this.role,
-        privileges: privileges ?? this.privileges);
+        phoneVerified: phoneVerified ?? this.phoneVerified);
 
     return state.copy(currentUser: updated);
   }

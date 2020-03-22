@@ -1,16 +1,7 @@
-import 'package:async_redux/async_redux.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'common.dart';
+
 import 'package:firebase_database/firebase_database.dart';
 
-import '../models/user.dart';
-import '../models/admin.dart';
-import '../models/client.dart';
-import '../models/doula.dart';
-import '../models/contact.dart';
-import '../models/message.dart';
-import '../states/appState.dart';
 import '../actions/waitAction.dart';
 
 class SendMessageAction extends ReduxAction<AppState> {
@@ -49,6 +40,6 @@ class SetPeer extends ReduxAction<AppState> {
 
   @override
   AppState reduce() {
-    return state.copy(peer: peer);
+    return state.copy(messagesState: state.messagesState.copy(peer: peer));
   }
 }

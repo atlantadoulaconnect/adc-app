@@ -55,17 +55,24 @@ import './frontend/screens/messaging/textBankScreen.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding
+      .ensureInitialized(); // run this so file reader package can run before runApp is called
+
   Persistence persistor = Persistence(
       throttle: Duration(seconds: 2),
       saveDuration: Duration(milliseconds: 400));
-  final AppState state = await persistor.readInitialState();
+
+  final AppState state = await persistor
+      .readInitialState(); // initialize app state according to local storage
+
   await persistor.saveInitialState(state);
 
   final Store<AppState> _store =
       Store<AppState>(initialState: state, persistor: persistor);
   print("main: state of appstate: ${state.toString()}");
+
   NavigateAction.setNavigatorKey(navigatorKey);
+
   runApp(new ADCApp(store: _store));
 }
 

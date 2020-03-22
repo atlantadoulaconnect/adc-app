@@ -42,7 +42,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
       children: <Widget>[
         Container(
           margin: isMe
-              ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: (MediaQuery.of(context).size.width * .25))
+              ? EdgeInsets.only(
+                  top: 8.0,
+                  bottom: 8.0,
+                  left: (MediaQuery.of(context).size.width * .25))
               : EdgeInsets.only(top: 8.0, bottom: 8.0, left: 20.0),
           padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
           width: MediaQuery.of(context).size.width * 0.70,
@@ -214,11 +217,11 @@ class ViewModel extends BaseModel<AppState> {
 
   @override
   ViewModel fromStore() {
-    print("vm from store peer: ${state.peer}");
+    print("vm from store peer: ${state.messagesState.peer}");
     return ViewModel.build(
         currentUser: state.currentUser,
         toTextBank: () => dispatch(NavigateAction.pushNamed("/textBank")),
-        peer: state.peer,
+        peer: state.messagesState.peer,
         sendMsg: (Message msg) => dispatchFuture(SendMessageAction(msg)));
   }
 }

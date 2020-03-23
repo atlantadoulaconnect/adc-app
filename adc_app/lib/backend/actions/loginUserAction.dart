@@ -14,6 +14,7 @@ class LoginUserAction extends ReduxAction<AppState> {
 
   Admin populateAdmin(String userId, DocumentSnapshot ds) {
     Admin user = Admin(userid: userId, userType: "admin", name: ds["name"]);
+    // print("pop admin: ${ds["aa"]}");
     return user;
   }
 
@@ -126,7 +127,7 @@ class LogoutUserAction extends ReduxAction<AppState> {
       });
 
       // clearing state object
-      return state.copy(currentUser: null, waiting: false);
+      return AppState.initialState();
     } catch (e) {
       print("sign out error $e");
       return null;

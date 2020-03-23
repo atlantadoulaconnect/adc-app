@@ -142,7 +142,10 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: logout,
+                  onTap: () {
+                    logout();
+                    toHome();
+                  },
                 ),
               ],
             )));
@@ -212,7 +215,10 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: logout,
+                  onTap: () {
+                    logout();
+                    toHome();
+                  },
                 ),
               ],
             )));
@@ -282,7 +288,10 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: logout,
+                  onTap: () {
+                    logout();
+                    toHome();
+                  },
                 ),
               ],
             )));
@@ -416,14 +425,20 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        toHome: () => dispatch(NavigateAction.pushNamed("/")),
+        toHome: () {
+          print("menu to home pressed. app state: ${state.toString()}");
+          dispatch(NavigateAction.pushNamed("/"));
+        },
         toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
         toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
         toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
         toRecentMessages: () =>
             dispatch(NavigateAction.pushNamed("/recentMessages")),
         toDoulas: () => dispatch(NavigateAction.pushNamed("/registeredDoulas")),
-        logout: () => dispatch(LogoutUserAction()),
+        logout: () {
+          print("logging out from menu");
+          dispatch(LogoutUserAction());
+        },
         toAdminHome: () => dispatch(NavigateAction.pushNamed("/adminHome")),
         toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),
         toDoulaHome: () => dispatch(NavigateAction.pushNamed("/doulaHome")));

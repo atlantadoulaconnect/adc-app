@@ -10,6 +10,8 @@ part 'appState.g.dart';
 @immutable
 class AppState {
   final User currentUser;
+
+  @JsonKey(ignore: true)
   final bool waiting;
 
   final MessagesState messagesState;

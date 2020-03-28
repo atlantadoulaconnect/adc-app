@@ -21,6 +21,7 @@ class ClientHomeScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text("Home"),
         ),
+        drawer: Menu(),
         body: Center(
             child: Column(
           children: <Widget>[

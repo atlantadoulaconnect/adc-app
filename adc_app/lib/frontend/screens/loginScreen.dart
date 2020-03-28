@@ -180,28 +180,29 @@ class ViewModel extends BaseModel<AppState> {
         toHome: () {
           if (state.currentUser == null) {
             dispatch(NavigateAction.pushNamed("/"));
-          }
-          switch (state.currentUser.userType) {
-            case "admin":
-              {
-                dispatch(NavigateAction.pushNamed("/adminHome"));
-              }
-              break;
-            case "client":
-              {
-                dispatch(NavigateAction.pushNamed("/clientHome"));
-              }
-              break;
-            case "doula":
-              {
-                dispatch(NavigateAction.pushNamed("/doulaHome"));
-              }
-              break;
-            default:
-              {
-                dispatch(NavigateAction.pushNamed("/"));
-              }
-              break;
+          } else {
+            switch (state.currentUser.userType) {
+              case "admin":
+                {
+                  dispatch(NavigateAction.pushNamed("/adminHome"));
+                }
+                break;
+              case "client":
+                {
+                  dispatch(NavigateAction.pushNamed("/clientHome"));
+                }
+                break;
+              case "doula":
+                {
+                  dispatch(NavigateAction.pushNamed("/doulaHome"));
+                }
+                break;
+              default:
+                {
+                  dispatch(NavigateAction.pushNamed("/"));
+                }
+                break;
+            }
           }
         },
         toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),

@@ -5,27 +5,25 @@ part 'client.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Client extends User {
   String bday;
-
-  Doula primaryDoula;
-  Doula backupDoula;
-
-  String dueDate;
   String birthLocation;
   String birthType;
-  bool epidural;
   bool cesarean;
-  List<EmergencyContact> emergencyContacts;
-
-  int liveBirths;
-  bool preterm;
-  bool lowWeight;
   List<String> deliveryTypes;
+  String dueDate;
+
+  bool epidural;
+  bool homeVisit;
+  int liveBirths;
+  bool lowWeight;
+  bool meetBefore;
   bool multiples;
 
-  bool meetBefore;
-  bool homeVisit;
-
   bool photoRelease;
+  bool preterm;
+
+  List<EmergencyContact> emergencyContacts;
+  Doula primaryDoula;
+  Doula backupDoula;
 
   Client(
       {String userid,

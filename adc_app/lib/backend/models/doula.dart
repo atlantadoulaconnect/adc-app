@@ -4,14 +4,15 @@ part 'doula.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Doula extends User {
-  String bday;
   bool emailVerified;
 
+  String bday;
   String bio;
-  bool certified;
+  int birthsNeeded;
   bool certInProgress;
   String certProgram;
-  int birthsNeeded;
+  bool certified;
+
   List<String> availableDates;
   bool photoRelease;
 

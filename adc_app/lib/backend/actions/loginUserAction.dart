@@ -1,4 +1,5 @@
 import 'common.dart';
+import '../util/persistence.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,27 +13,153 @@ class LoginUserAction extends ReduxAction<AppState> {
   LoginUserAction(this.email, this.password)
       : assert(email != null && password != null);
 
-  Admin populateAdmin(String userId, DocumentSnapshot ds) {
-    Admin user = Admin(userid: userId, userType: "admin", name: ds["name"]);
-    // print("pop admin: ${ds["aa"]}");
-    return user;
+  Set<String> convertChats(String chatList) {
+    if (chatList != null) {
+      return chatList.split(", ").toSet();
+    }
+    return null;
   }
 
-  Client populateClient(String userId, DocumentSnapshot ds) {
-    Client user = Client(userid: userId, userType: "client", name: ds["name"]);
+  List<Phone> convertPhones(List<dynamic> phoneList) {
+    List<Phone> phones = List<Phone>();
 
-    return user;
+    if (phoneList != null) {
+      if (phoneList.length > 0) {
+        phoneList.forEach((element) {
+          phones.add(Phone(element["number"].toString(), element["isPrimary"]));
+        });
+      }
+    }
+
+    return phones;
   }
 
-  Doula populateDoula(String userId, DocumentSnapshot ds) {
-    Doula user = Doula(userid: userId, userType: "doula", name: ds["name"]);
+  List<String> convertStringArray(List<dynamic> array) {
+    if (array != null) {
+      List<String> list = List<String>();
+      array.forEach((element) => list.add(element.toString()));
+      return list;
+    }
+    return null;
+  }
 
-    return user;
+  AppState populateAdmin(
+      String userId, DocumentSnapshot basics, DocumentSnapshot specifics) {
+    Admin user = Admin();
+    AppState currState = AppState.initialState();
+
+    Persistence.loadUserFile(userId).then((File userFile) {
+      if (userFile != null) {
+        currState = AppState.fromJson(jsonDecode(userFile.readAsStringSync()));
+        user = currState.currentUser;
+      }
+    });
+
+    // overwrite local info with server info
+    user.userid = userId;
+    user.userType = "admin";
+
+    // copy ensures that local values will not be overwritten by nulls
+    user = user.copy(name: basics["name"]);
+
+    if (specifics != null) {
+      user.email = specifics["email"];
+    }
+
+    return currState.copy(
+        currentUser: user,
+        messagesState: currState.messagesState
+            .copy(chats: convertChats(specifics["chats"])));
+  }
+
+  AppState populateClient(
+      String userId, DocumentSnapshot basics, DocumentSnapshot specifics) {
+    Client user = Client();
+    AppState currState = AppState.initialState();
+
+    Persistence.loadUserFile(userId).then((File userFile) {
+      if (userFile != null) {
+        currState = AppState.fromJson(jsonDecode(userFile.readAsStringSync()));
+        user = currState.currentUser;
+      }
+    });
+
+    // overwrite local info with guaranteed server info
+    user.userid = userId;
+    user.userType = "client";
+
+    // copy ensures that local values will not be overwritten by nulls
+    if (specifics != null) {
+      // userData/specifics doc is created when application has been submitted
+      user = user.copy(
+          name: basics["name"],
+          bday: specifics["bday"],
+          birthLocation: specifics["birthLocation"],
+          birthType: specifics["birthType"],
+          deliveryTypes: convertStringArray(specifics["deliveryTypes"]),
+          dueDate: specifics["dueDate"],
+          email: specifics["email"],
+          epidural: specifics["epidural"],
+          homeVisit: specifics["homeVisit"],
+          liveBirths: specifics["liveBirths"],
+          lowWeight: specifics["lowWeight"],
+          meetBefore: specifics["meetBefore"],
+          multiples: specifics["multiples"],
+          phones: convertPhones(specifics["phones"]),
+          photoRelease: specifics["photoRelease"]
+          // emergency contacts
+          // primary and backup doulas
+          );
+    }
+
+    return currState.copy(
+        currentUser: user,
+        messagesState: currState.messagesState
+            .copy(chats: convertChats(specifics["chats"])));
+  }
+
+  AppState populateDoula(
+      String userId, DocumentSnapshot basics, DocumentSnapshot specifics) {
+    Doula user = Doula();
+    AppState currState = AppState.initialState();
+
+    Persistence.loadUserFile(userId).then((File userFile) {
+      if (userFile != null) {
+        currState = AppState.fromJson(jsonDecode(userFile.readAsStringSync()));
+        user = currState.currentUser;
+      }
+    });
+
+    // overwrite local info with guaranteed server info
+    print("user obj is null: ${user == null}");
+    user.userid = userId;
+    user.userType = "doula";
+
+    // copy ensures that local values will not be overwritten by nulls
+    if (specifics != null) {
+      // userData/specifics doc is created when application has been submitted
+      user = user.copy(
+          name: basics["name"],
+          bday: specifics["bday"],
+          bio: specifics["bio"],
+          birthsNeeded: specifics["birthsNeeded"],
+          certInProgress: specifics["certInProgress"],
+          certProgram: specifics["certProgram"],
+          certified: specifics["certified"],
+          email: specifics["email"],
+          phones: convertPhones(specifics["phones"]));
+    }
+
+    return currState.copy(
+        currentUser: user,
+        messagesState: currState.messagesState
+            .copy(chats: convertChats(specifics["chats"])));
   }
 
   @override
   Future<AppState> reduce() async {
     print("Attempting to login user with email: $email");
+    Firestore fs = Firestore.instance;
 
     try {
       AuthResult result = await FirebaseAuth.instance
@@ -43,59 +170,74 @@ class LoginUserAction extends ReduxAction<AppState> {
 
       if (userId.length > 0 && userId != null) {
         print("received valid user id: $userId");
-        print("populating AppState currentUser");
+        //print("populating AppState currentUser");
 
-        User current;
+        AppState current;
 
-        await Firestore.instance
-            .collection("users")
-            .document(userId)
-            .get()
-            .then((DocumentSnapshot ds) {
-          String userType = ds["userType"];
+        DocumentSnapshot basics =
+            await fs.collection("users").document(userId).get();
 
-          switch (userType) {
-            case "admin":
-              {
-                current = populateAdmin(userId, ds);
-              }
-              break;
-            case "client":
-              {
-                current = populateClient(userId, ds);
-              }
-              break;
-            case "doula":
-              {
-                current = populateDoula(userId, ds);
-              }
-              break;
-            default:
-              {
-                // user logged out before selecting user type
-                current = User(userId, email);
-              }
-              break;
-          }
-        });
+        DocumentSnapshot specifics = await fs
+            .collection("users/$userId/userData")
+            .document("specifics")
+            .get();
+
+        String userType;
+        if (basics != null) {
+          // in case user logged out before choosing user type
+          userType = basics["userType"];
+        }
+
+        switch (userType) {
+          case "admin":
+            {
+              current = populateAdmin(userId, basics, specifics);
+            }
+            break;
+          case "client":
+            {
+              current = populateClient(userId, basics, specifics);
+            }
+            break;
+          case "doula":
+            {
+              current = populateDoula(userId, basics, specifics);
+            }
+            break;
+          default:
+            {
+              // user logged out before selecting user type
+              current = AppState(
+                  currentUser: User(userId, email),
+                  waiting: false,
+                  formState: ApplicationState.initialState(),
+                  messagesState: MessagesState.initialState());
+            }
+            break;
+        }
 
         Map<String, dynamic> init = {"lastUser": userId, "loggedIn": true};
 
         getApplicationDocumentsDirectory().then((Directory dir) {
+          // mark user as logged in
           File initializer = File("${dir.path}/initializer.json");
           initializer.writeAsStringSync(jsonEncode(init));
+
+          // automatically save what was synced
+          File userFile = File("${dir.path}/$userId.json");
+          userFile.writeAsStringSync(jsonEncode(current.toJson()));
         });
 
-        print("update AppState with current user: ${current.toString()}");
-        return state.copy(currentUser: current);
+        return current;
       } else {
         // invalid user id
         print("invalid user id returned");
+        // TODO set login error
         return null;
       }
-    } catch (e) {
-      // TODO set login error
-      print("login error: $e");
+    } catch (e, stacktrace) {
+      // TODO set login error in error state
+      print("LOGIN ERROR: $e\n$stacktrace");
       return null;
     }
   }
@@ -106,7 +248,6 @@ class LoginUserAction extends ReduxAction<AppState> {
 }
 
 class LogoutUserAction extends ReduxAction<AppState> {
-  // TODO persist everything to local storage
   LogoutUserAction();
 
   @override
@@ -124,6 +265,10 @@ class LogoutUserAction extends ReduxAction<AppState> {
       getApplicationDocumentsDirectory().then((Directory dir) {
         File initializer = File("${dir.path}/initializer.json");
         initializer.writeAsStringSync(jsonEncode(init));
+
+        // save to local storage
+        File userFile = File("${dir.path}/${state.currentUser.userid}.json");
+        userFile.writeAsStringSync(jsonEncode(state.toJson()));
       });
 
       // clearing state object

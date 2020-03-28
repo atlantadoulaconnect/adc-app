@@ -42,8 +42,8 @@ import './frontend/screens/doula/doulaProfileScreen.dart';
 import './frontend/screens/admin/adminHomeScreen.dart';
 import './frontend/screens/admin/registeredDoulasScreen.dart';
 import './frontend/screens/admin/registeredClientsScreen.dart';
-import './frontend/screens/admin/approveClientScreen.dart';
-import './frontend/screens/admin/approveDoulaScreen.dart';
+import './frontend/screens/admin/clientProfileScreen.dart';
+import './frontend/screens/admin/doulaProfileScreen.dart';
 import './frontend/screens/admin/pendingApplicationsScreen.dart';
 
 // messaging screens

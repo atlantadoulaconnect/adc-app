@@ -5,11 +5,6 @@ import 'package:async_redux/async_redux.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-import '../models/admin.dart';
-import '../models/client.dart';
-import '../models/doula.dart';
-import '../models/user.dart';
-
 // Singleton class that handles persisting to/loading from local disk
 
 class Persistence implements Persistor<AppState> {
@@ -27,14 +22,14 @@ class Persistence implements Persistor<AppState> {
   Duration get throttle => _throttle;
   Duration get saveDuration => _saveDuration;
 
-  Future<String> loadDirectory() async {
+  static Future<String> loadDirectory() async {
     Directory dir = await getApplicationDocumentsDirectory();
 
     return dir.path;
   }
 
   // returns null if the file for that user wasn't previously saved
-  Future<File> loadUserFile(String userid) async {
+  static Future<File> loadUserFile(String userid) async {
     print("load user file called");
     String localDir = await loadDirectory();
     File saved = File("$localDir/$userid.json");
@@ -44,8 +39,8 @@ class Persistence implements Persistor<AppState> {
     });
   }
 
-  Future<File> loadAppFile() async {
-    print("load app file called");
+  static Future<File> loadAppFile() async {
+    print("loading initializer file");
     String localDir = await loadDirectory();
     File saved = File("$localDir/initializer.json");
     return saved.exists().then((bool exists) {
@@ -120,7 +115,7 @@ class Persistence implements Persistor<AppState> {
   }
 
   // TODO: methods to read from json file and write to json file
-  // Map<String, dynamic> readFile (String filePath)
-  // void writeFile (Map<String, dynamic> json)
+  // static Map<String, dynamic> readFile (String filePath)
+  // static void writeFile (Map<String, dynamic> json)
 
 }

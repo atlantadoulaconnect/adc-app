@@ -158,9 +158,19 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       !ds.hasError &&
                       ds.data.snapshot.value != null) {
                     Map data = ds.data.snapshot.value;
+                    print("map runtime type: ${data.runtimeType}");
                     List<Message> messages = List<Message>();
-                    data.forEach(
-                        (key, value) => messages.add(Message.fromJson(value)));
+                    data.forEach((key, value) {
+                      print("key: $key");
+                      print("value: $value");
+                      messages.add(Message(
+                        value["content"],
+                        value["senderId"],
+                        value["timeSent"],
+                        value["type"],
+                        peer.threadId,
+                      ));
+                    });
                     messages.sort((a, b) => b.timeSent.compareTo(a.timeSent));
                     for (Message m in messages) {
                       print(m);

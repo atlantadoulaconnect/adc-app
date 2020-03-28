@@ -144,7 +144,7 @@ class CurrentMenu extends StatelessWidget {
                       )),
                   onTap: () {
                     logout();
-                    toHome();
+                    //toHome();
                   },
                 ),
               ],
@@ -217,7 +217,7 @@ class CurrentMenu extends StatelessWidget {
                       )),
                   onTap: () {
                     logout();
-                    toHome();
+                    //toHome();
                   },
                 ),
               ],
@@ -290,7 +290,7 @@ class CurrentMenu extends StatelessWidget {
                       )),
                   onTap: () {
                     logout();
-                    toHome();
+                    //toHome();
                   },
                 ),
               ],
@@ -438,6 +438,7 @@ class ViewModel extends BaseModel<AppState> {
         logout: () {
           print("logging out from menu");
           dispatch(LogoutUserAction());
+          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         },
         toAdminHome: () => dispatch(NavigateAction.pushNamed("/adminHome")),
         toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),

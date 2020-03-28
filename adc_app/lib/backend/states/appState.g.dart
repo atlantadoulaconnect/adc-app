@@ -11,7 +11,6 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) {
     currentUser: json['currentUser'] == null
         ? null
         : User.fromJson(json['currentUser'] as Map<String, dynamic>),
-    waiting: json['waiting'] as bool,
     formState: json['formState'] == null
         ? null
         : ApplicationState.fromJson(json['formState'] as Map<String, dynamic>),
@@ -23,7 +22,6 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'currentUser': instance.currentUser?.toJson(),
-      'waiting': instance.waiting,
       'messagesState': instance.messagesState?.toJson(),
       'formState': instance.formState?.toJson(),
     };

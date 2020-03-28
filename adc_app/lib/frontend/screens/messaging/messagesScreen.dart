@@ -158,11 +158,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       !ds.hasError &&
                       ds.data.snapshot.value != null) {
                     Map data = ds.data.snapshot.value;
-                    print("map runtime type: ${data.runtimeType}");
                     List<Message> messages = List<Message>();
                     data.forEach((key, value) {
-                      print("key: $key");
-                      print("value: $value");
                       messages.add(Message(
                         value["content"],
                         value["senderId"],

@@ -23,12 +23,8 @@ class AppState {
 //  @JsonKey(ignore: true)
 //  final ConnectionsState;
 
-  // TODO State object for all the errors
-
   AppState(
-      {this.currentUser, this.waiting, this.formState, this.messagesState}) {
-    print("AppState\n\tcurrent user: $currentUser\n\twaiting: $waiting");
-  }
+      {this.currentUser, this.waiting, this.formState, this.messagesState});
 
   static AppState initialState() {
     return AppState(

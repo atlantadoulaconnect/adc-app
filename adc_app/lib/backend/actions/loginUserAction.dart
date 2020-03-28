@@ -252,30 +252,42 @@ class LogoutUserAction extends ReduxAction<AppState> {
 
   @override
   Future<AppState> reduce() async {
+    String userid = state.currentUser.userid;
     print("Attempting to logout user with email: ${state.currentUser.email}");
+    print("state bf fb auth signout: ${state.toString()}");
     try {
       await FirebaseAuth.instance.signOut();
-      print("signout success");
+      print("FirebaseAuth signout success");
 
-      Map<String, dynamic> init = {
-        "lastUser": state.currentUser.userid,
-        "loggedIn": false
-      };
+      Map<String, dynamic> init = {"lastUser": userid, "loggedIn": false};
 
       getApplicationDocumentsDirectory().then((Directory dir) {
         File initializer = File("${dir.path}/initializer.json");
         initializer.writeAsStringSync(jsonEncode(init));
 
         // save to local storage
-        File userFile = File("${dir.path}/${state.currentUser.userid}.json");
+        File userFile = File("${dir.path}/$userid.json");
         userFile.writeAsStringSync(jsonEncode(state.toJson()));
       });
 
-      // clearing state object
-      return AppState.initialState();
-    } catch (e) {
-      print("sign out error $e");
+      return null;
+    } catch (e, stacktrace) {
+      print("SIGN OUT ERROR: $e\n$stacktrace");
       return null;
     }
+  }
+
+  void before() => dispatch(WaitAction(true));
+
+  void after() => dispatch(WaitAction(false));
+}
+
+class ClearAppStateAction extends ReduxAction<AppState> {
+  ClearAppStateAction();
+
+  @override
+  AppState reduce() {
+    // clearing state object
+    return AppState.initialState();
   }
 }

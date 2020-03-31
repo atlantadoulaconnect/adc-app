@@ -9,6 +9,9 @@ import './frontend/theme/style.dart';
 import './frontend/screens/homeScreen.dart';
 import './frontend/screens/loginScreen.dart';
 import './frontend/screens/infoScreen.dart';
+import './frontend/screens/myProfileScreen.dart';
+import './frontend/screens/settingsScreen.dart';
+import './frontend/screens/userProfileScreen.dart';
 
 // application screens
 import './frontend/screens/application/signupScreen.dart';
@@ -32,18 +35,15 @@ import './frontend/screens/application/doula/doulaAppConfirmationPage.dart';
 
 // client screens
 import './frontend/screens/client/clientHomeScreen.dart';
-import './frontend/screens/client/clientProfileScreen.dart';
 
 // doula screens
 import './frontend/screens/doula/doulaHomeScreen.dart';
-import './frontend/screens/doula/doulaProfileScreen.dart';
 
 // admin screens
 import './frontend/screens/admin/adminHomeScreen.dart';
 import './frontend/screens/admin/registeredDoulasScreen.dart';
 import './frontend/screens/admin/registeredClientsScreen.dart';
-import './frontend/screens/admin/clientProfileScreen.dart';
-import './frontend/screens/admin/doulaProfileScreen.dart';
+import 'frontend/screens/userProfileScreen.dart';
 import './frontend/screens/admin/pendingApplicationsScreen.dart';
 
 // messaging screens
@@ -94,7 +94,7 @@ class ADCApp extends StatelessWidget {
           initialRoute: "/",
           routes: {
             '/': (context) =>
-                HomeScreenConnector(), // replace with splash screen, home -> /defaultHome
+                HomeScreenConnector(), // TODO replace with splash screen, home -> /defaultHome
             '/login': (context) => LoginScreenConnector(),
             '/signup': (context) => SignupScreenConnector(),
             '/appType': (context) => AppTypeScreenConnector(),
@@ -104,6 +104,7 @@ class ADCApp extends StatelessWidget {
             '/clientAppPage2': (context) => ClientAppPage2Connector(),
             '/clientAppPage3': (context) => ClientAppPage3Connector(),
             '/clientAppPage4': (context) => ClientAppPage4Connector(),
+
             '/clientAppPage5': (context) => ClientAppPage5Connector(),
             '/clientAppPage6': (context) => ClientAppPage6Connector(),
             '/clientAppConfirmation': (context) =>
@@ -126,9 +127,9 @@ class ADCApp extends StatelessWidget {
             '/registeredDoulas': (context) => RegisteredDoulasScreenConnector(),
             '/registeredClients': (context) =>
                 RegisteredClientsScreenConnector(),
-            '/approveClient': (context) => ApproveClientScreen(),
-            '/approveDoula': (context) => ApproveDoulaScreen(),
-            '/pendingApps': (context) => PendingApplicationsScreenConnector()
+            '/userProfile': (context) => UserProfileScreenConnector(),
+            '/pendingApps': (context) => PendingApplicationsScreenConnector(),
+            '/settings': (context) => SettingsScreenConnector()
           },
         ));
   }

@@ -98,6 +98,7 @@ class PendingApplicationsScreen extends StatelessWidget {
                       stream: Firestore.instance
                           .collection("users")
                           .where("userType", isEqualTo: "doula")
+                          .where("status", isEqualTo: "submitted")
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -120,6 +121,7 @@ class PendingApplicationsScreen extends StatelessWidget {
                       stream: Firestore.instance
                           .collection("users")
                           .where("userType", isEqualTo: "client")
+                          .where("status", isEqualTo: "submitted")
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {

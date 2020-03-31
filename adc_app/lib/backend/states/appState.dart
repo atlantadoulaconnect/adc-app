@@ -17,6 +17,9 @@ class AppState {
   final MessagesState messagesState;
   final ApplicationState formState;
 
+  @JsonKey(ignore: true)
+  final User profileUser; // User object of profile current user may be viewing
+
 //  @JsonKey(ignore: true)
 //  final ErrorsState;
 //
@@ -24,14 +27,19 @@ class AppState {
 //  final ConnectionsState;
 
   AppState(
-      {this.currentUser, this.waiting, this.formState, this.messagesState});
+      {this.currentUser,
+      this.waiting,
+      this.formState,
+      this.messagesState,
+      this.profileUser});
 
   static AppState initialState() {
     return AppState(
         currentUser: null,
         waiting: false,
         formState: ApplicationState.initialState(),
-        messagesState: MessagesState.initialState());
+        messagesState: MessagesState.initialState(),
+        profileUser: null);
   }
 
   AppState copy(
@@ -39,12 +47,14 @@ class AppState {
       bool waiting,
       String loginError,
       MessagesState messagesState,
-      ApplicationState formState}) {
+      ApplicationState formState,
+      User profileUser}) {
     return AppState(
         currentUser: currentUser ?? this.currentUser,
         waiting: waiting ?? this.waiting,
         messagesState: messagesState ?? this.messagesState,
-        formState: formState ?? this.formState);
+        formState: formState ?? this.formState,
+        profileUser: profileUser ?? this.profileUser);
   }
 
   @override
@@ -55,7 +65,8 @@ class AppState {
             currentUser == other.currentUser &&
             waiting == other.waiting &&
             messagesState == other.messagesState &&
-            formState == other.formState;
+            formState == other.formState &&
+            profileUser == other.profileUser;
   }
 
   @override
@@ -63,7 +74,8 @@ class AppState {
     return currentUser.hashCode ^
         waiting.hashCode ^
         messagesState.hashCode ^
-        formState.hashCode;
+        formState.hashCode ^
+        profileUser.hashCode;
   }
 
   @override

@@ -36,6 +36,9 @@ class CurrentMenu extends StatelessWidget {
 
     String currentUserType;
     if (currentUser == null) {
+      // user not logged in
+      currentUserType = "null";
+    } else if (currentUser.userType == null) {
       currentUserType = "none";
     } else {
       currentUserType = currentUser.userType;
@@ -57,9 +60,14 @@ class CurrentMenu extends StatelessWidget {
           userMenu = doulaMenu();
         }
         break;
+      case "none":
+        {
+          userMenu = noTypeMenu();
+        }
+        break;
       default:
         {
-          userMenu = newUserMenu();
+          userMenu = unloggedMenu();
         }
         break;
     }
@@ -297,7 +305,80 @@ class CurrentMenu extends StatelessWidget {
             )));
   }
 
-  Drawer newUserMenu() {
+  Drawer noTypeMenu() {
+    return Drawer(
+        child: Container(
+            color: themeColors["mediumBlue"],
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: themeColors['yellow'],
+                    ),
+                    child: Text("Welcome, Client")),
+                ListTile(
+                  leading: Icon(
+                    IconData(59530, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Home',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: toClientHome,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(57545, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Messages',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: toRecentMessages,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59448, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Frequently asked Questions',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59534, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('About Atlanta Doula Connect',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: toInfo,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Log Out',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {
+                    logout();
+                    //toHome();
+                  },
+                ),
+              ],
+            )));
+  }
+
+  Drawer unloggedMenu() {
     return Drawer(
         child: Container(
             color: themeColors["mediumBlue"],
@@ -409,16 +490,16 @@ class ViewModel extends BaseModel<AppState> {
 
   ViewModel.build(
       {@required this.currentUser,
-      this.toHome,
-      this.toSignup,
-      this.toLogin,
-      this.toInfo,
-      this.toRecentMessages,
-      this.toDoulas,
-      this.logout,
-      this.toAdminHome,
-      this.toClientHome,
-      this.toDoulaHome})
+      @required this.toHome,
+      @required this.toSignup,
+      @required this.toLogin,
+      @required this.toInfo,
+      @required this.toRecentMessages,
+      @required this.toDoulas,
+      @required this.logout,
+      @required this.toAdminHome,
+      @required this.toClientHome,
+      @required this.toDoulaHome})
       : super(equals: [currentUser]);
 
   @override

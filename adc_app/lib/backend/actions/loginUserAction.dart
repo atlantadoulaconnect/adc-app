@@ -270,7 +270,7 @@ class LogoutUserAction extends ReduxAction<AppState> {
         userFile.writeAsStringSync(jsonEncode(state.toJson()));
       });
 
-      return null;
+      return AppState.initialState();
     } catch (e, stacktrace) {
       print("SIGN OUT ERROR: $e\n$stacktrace");
       return null;

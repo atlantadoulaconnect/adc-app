@@ -2,7 +2,7 @@ import '../common.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   final Admin currentUser;
-  final Future<void> Function() logout;
+  final VoidCallback logout;
   final VoidCallback toRegisteredDoulas;
   final VoidCallback toPendingApps;
   final VoidCallback toRegisteredClients;
@@ -10,8 +10,7 @@ class AdminHomeScreen extends StatelessWidget {
 
   AdminHomeScreen(this.currentUser, this.logout, this.toRegisteredDoulas,
       this.toRegisteredClients, this.toPendingApps, this.toHome)
-      : assert(currentUser != null &&
-            logout != null &&
+      : assert(logout != null &&
             toRegisteredDoulas != null &&
             toRegisteredClients != null &&
             toPendingApps != null &&
@@ -172,7 +171,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Admin currentUser;
-  Future<void> Function() logout;
+  VoidCallback logout;
   VoidCallback toRegisteredDoulas;
   VoidCallback toPendingApps;
   VoidCallback toRegisteredClients;
@@ -191,7 +190,10 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        logout: () => dispatchFuture(LogoutUserAction()),
+        logout: () {
+          dispatch(LogoutUserAction());
+          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+        },
         toRegisteredDoulas: () =>
             dispatch(NavigateAction.pushNamed("/registeredDoulas")),
         toRegisteredClients: () =>

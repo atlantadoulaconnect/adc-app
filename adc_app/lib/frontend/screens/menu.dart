@@ -518,8 +518,8 @@ class ViewModel extends BaseModel<AppState> {
         toDoulas: () => dispatch(NavigateAction.pushNamed("/registeredDoulas")),
         logout: () {
           print("logging out from menu");
-          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
           dispatch(LogoutUserAction());
+          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         },
         toAdminHome: () => dispatch(NavigateAction.pushNamed("/adminHome")),
         toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),

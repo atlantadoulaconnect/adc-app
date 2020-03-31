@@ -1,5 +1,8 @@
 import './common.dart';
 import 'package:async_redux/async_redux.dart';
+import './admin/adminHomeScreen.dart';
+import './client/clientHomeScreen.dart';
+import './doula/doulaHomeScreen.dart';
 
 class HomeScreen extends StatelessWidget {
   final VoidCallback toSignup;
@@ -82,6 +85,42 @@ class HomeScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
         model: ViewModel(),
         builder: (BuildContext context, ViewModel vm) {
+          String currentUserType;
+          if (vm.currentUser == null) {
+            // user not logged in
+            currentUserType = "null";
+          } else if (vm.currentUser.userType == null) {
+            currentUserType = "none";
+          } else {
+            currentUserType = vm.currentUser.userType;
+          }
+
+          switch (currentUserType) {
+            case "admin":
+              {
+                return AdminHomeScreen(
+                    vm.currentUser,
+                    vm.logout,
+                    vm.toRegisteredDoulas,
+                    vm.toRegisteredClients,
+                    vm.toPendingApps,
+                    vm.toHome);
+              }
+              break;
+            case "client":
+              {
+                return ClientHomeScreen(vm.currentUser, vm.logout, vm.toHome,
+                    vm.toRecentMessages, vm.toInfo);
+              }
+              break;
+            case "doula":
+              {
+                return DoulaHomeScreen(vm.currentUser, vm.logout, vm.toHome,
+                    vm.toRecentMessages, vm.toInfo);
+              }
+              break;
+            // todo user screen for user that logged out before choosing usertype
+          }
           return HomeScreen(
               toSignup: vm.toSignup, toLogin: vm.toLogin, toInfo: vm.toInfo);
         });
@@ -91,20 +130,46 @@ class HomeScreenConnector extends StatelessWidget {
 class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
+  User currentUser;
   VoidCallback toSignup;
   VoidCallback toLogin;
   VoidCallback toInfo;
+  Future<void> Function() logout;
+  VoidCallback toRegisteredDoulas;
+  VoidCallback toPendingApps;
+  VoidCallback toRegisteredClients;
+  VoidCallback toHome;
+  VoidCallback toRecentMessages;
 
-  ViewModel.build(
-      {@required this.toSignup, @required this.toLogin, @required this.toInfo})
-      : super(equals: []);
+  ViewModel.build({
+    @required this.currentUser,
+    @required this.toSignup,
+    @required this.toLogin,
+    @required this.toInfo,
+    @required this.logout,
+    @required this.toRegisteredDoulas,
+    @required this.toRegisteredClients,
+    @required this.toHome,
+    @required this.toPendingApps,
+    @required this.toRecentMessages,
+  }) : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
+      currentUser: state.currentUser,
       toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
       toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
       toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
+      logout: () => dispatchFuture(LogoutUserAction()),
+      toRegisteredDoulas: () =>
+          dispatch(NavigateAction.pushNamed("/registeredDoulas")),
+      toRegisteredClients: () =>
+          dispatch(NavigateAction.pushNamed("/registeredClients")),
+      toHome: () => dispatch(NavigateAction.pushNamed("/")),
+      toPendingApps: () => dispatch(NavigateAction.pushNamed("/pendingApps")),
+      toRecentMessages: () =>
+          dispatch(NavigateAction.pushNamed("/recentMessages")),
     );
   }
 }

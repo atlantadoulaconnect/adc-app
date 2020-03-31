@@ -2,15 +2,14 @@ import '../common.dart';
 
 class ClientHomeScreen extends StatelessWidget {
   final Client currentUser;
-  final Future<void> Function() logout;
+  final VoidCallback logout;
   final VoidCallback toHome;
   final VoidCallback toRecentMessages;
   final VoidCallback toInfo;
 
   ClientHomeScreen(this.currentUser, this.logout, this.toHome,
       this.toRecentMessages, this.toInfo)
-      : assert(currentUser != null &&
-            logout != null &&
+      : assert(logout != null &&
             toHome != null &&
             toRecentMessages != null &&
             toInfo != null);
@@ -27,12 +26,13 @@ class ClientHomeScreen extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Welcome ${currentUser.name}",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 50.0,
-                    fontWeight: FontWeight.bold,
-                  )),
+              child:
+                  Text("Welcome ${currentUser != null ? currentUser.name : ""}",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 50.0,
+                        fontWeight: FontWeight.bold,
+                      )),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -121,7 +121,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Client currentUser;
-  Future<void> Function() logout;
+  VoidCallback logout;
   VoidCallback toHome;
   VoidCallback toRecentMessages;
   VoidCallback toInfo;
@@ -138,7 +138,10 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        logout: () => dispatchFuture(LogoutUserAction()),
+        logout: () {
+          dispatch(LogoutUserAction());
+          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+        },
         toHome: () => dispatch(NavigateAction.pushNamed("/")),
         toRecentMessages: () =>
             dispatch(NavigateAction.pushNamed("/recentMessages")),

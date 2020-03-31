@@ -59,23 +59,21 @@ class ClientAppPage1State extends State<ClientAppPage1> {
         appBar: AppBar(title: Text("Request a Doula")),
         drawer: Menu(),
         body: Center(
-          child: Form(
-            key: _c1formKey,
-            autovalidate: false,
-            child: ListView(
-              children: <Widget>[
+            child: Form(
+          key: _c1formKey,
+          autovalidate: false,
+          child: ListView(
+            children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 15.0, bottom: 8.0),
-                child: Text(
-                  'Personal Information',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                  textAlign: TextAlign.center
-                ),
+                child: Text('Personal Information',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                    textAlign: TextAlign.center),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -94,7 +92,9 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                 child: Row(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(right: 10.0,),
+                      padding: EdgeInsets.only(
+                        right: 10.0,
+                      ),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.6,
                         child: TextFormField(
@@ -179,75 +179,94 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                   ),
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-                        side: BorderSide(color: themeColors['mediumBlue'])),
-                    onPressed: () {
-                      // inputted information is lost when previous is pressed
-                      // this should take them home
-                      // TODO nav pop until client-specific home
-                      Navigator.pushNamed(context, '/home');
-                    },
-                    color: themeColors['mediumBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['mediumBlue'],
-                    child: Text(
-                      "PREVIOUS",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-                        side: BorderSide(color: themeColors['yellow'])),
-                    onPressed: () {
-                      final form = _c1formKey.currentState;
-                      if (form.validate()) {
-                        form.save();
-
-                        String displayName =
-                            "${_firstNameCtrl.text.toString().trim()} ${_lastInitCtrl.text.toString().trim()}.";
-                        String birthday = _bdayCtrl.text.toString().trim();
-                        List<Phone> phones = List();
-                        phones
-                            .add(Phone(_phoneCtrl.text.toString().trim(), true));
-                        if (_altPhoneCtrl.text.isNotEmpty) {
-                          phones.add(
-                              Phone(_altPhoneCtrl.text.toString().trim(), false));
-                        }
-
-                        updateClient(currentUser, displayName, birthday, phones);
-
-                        toClientAppPage2();
-                      }
-                    },
-                    color: themeColors['yellow'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['yellow'],
-                    child: Text(
-                      "NEXT",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: themeColors['black'],
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(10.0),
+                            side: BorderSide(color: themeColors['mediumBlue'])),
+                        onPressed: () {
+                          // inputted information is lost when previous is pressed
+                          // this should take them home
+                          // TODO nav pop until client-specific home
+                          Navigator.pushNamed(context, '/home');
+                        },
+                        color: themeColors['mediumBlue'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['mediumBlue'],
+                        child: Text(
+                          "PREVIOUS",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
                       ),
-                    ),
-                  ),
-                ]),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(10.0),
+                            side: BorderSide(color: themeColors['yellow'])),
+                        onPressed: () {
+                          // dialog to confirm cancellation
+                          // if yes, dispatch CancelApplication
+                          // navigate to home
+                        },
+                        color: themeColors['yellow'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['yellow'],
+                        child: Text(
+                          "CANCEL",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: themeColors['black'],
+                          ),
+                        ),
+                      ),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(10.0),
+                            side: BorderSide(color: themeColors['yellow'])),
+                        onPressed: () {
+                          final form = _c1formKey.currentState;
+                          if (form.validate()) {
+                            form.save();
+
+                            String displayName =
+                                "${_firstNameCtrl.text.toString().trim()} ${_lastInitCtrl.text.toString().trim()}.";
+                            String birthday = _bdayCtrl.text.toString().trim();
+                            List<Phone> phones = List();
+                            phones.add(
+                                Phone(_phoneCtrl.text.toString().trim(), true));
+                            if (_altPhoneCtrl.text.isNotEmpty) {
+                              phones.add(Phone(
+                                  _altPhoneCtrl.text.toString().trim(), false));
+                            }
+
+                            updateClient(
+                                currentUser, displayName, birthday, phones);
+
+                            toClientAppPage2();
+                          }
+                        },
+                        color: themeColors['yellow'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['yellow'],
+                        child: Text(
+                          "NEXT",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: themeColors['black'],
+                          ),
+                        ),
+                      ),
+                    ]),
               ),
             ],
           ),
-        )
-        )
-    );
+        )));
   }
 }
 

@@ -5,7 +5,7 @@ import '../common.dart';
 
 class RegisteredDoulasScreen extends StatelessWidget {
   final VoidCallback toProfile;
-  final void Function(String, String) setProfileUser;
+  final Future<void> Function(String, String) setProfileUser;
 
   RegisteredDoulasScreen(this.toProfile, this.setProfileUser)
       : assert(toProfile != null && setProfileUser != null);
@@ -23,7 +23,6 @@ class RegisteredDoulasScreen extends StatelessWidget {
             ),
             child: MaterialButton(
               onPressed: () async {
-                // TODO takes you to that doula's profile
                 await setProfileUser(doc["userid"], doc["userType"]);
                 toProfile();
               },
@@ -131,7 +130,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   VoidCallback toProfile;
-  void Function(String, String) setProfileUser;
+  Future<void> Function(String, String) setProfileUser;
 
   ViewModel.build({@required this.toProfile, @required this.setProfileUser});
 
@@ -140,6 +139,6 @@ class ViewModel extends BaseModel<AppState> {
     return ViewModel.build(
         toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
         setProfileUser: (String userid, String userType) =>
-            dispatch(SetProfileUser(userid, userType)));
+            dispatchFuture(SetProfileUser(userid, userType)));
   }
 }

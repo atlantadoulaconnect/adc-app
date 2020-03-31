@@ -7,8 +7,8 @@ class SettingsScreen extends StatefulWidget {
   final VoidCallback toUserProfile;
   final VoidCallback logout;
 
-  SettingsScreen(this.currentUser, this.toUserProfile, this.logout)
-      : assert(currentUser != null && toUserProfile != null && logout != null);
+  SettingsScreen(this.currentUser, this.toUserProfile, this.logout);
+//      : assert(currentUser != null && toUserProfile != null && logout != null);
 
   @override
   State<StatefulWidget> createState() => SettingsScreenState();

@@ -1,6 +1,8 @@
 import '../common.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+//  applications of people who have applied to participate in the program
+//  but need to be accepted or denied by an admin
 class PendingApplicationsScreen extends StatelessWidget {
   final Admin currentUser;
   final VoidCallback toProfile;

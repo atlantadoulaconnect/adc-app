@@ -4,9 +4,11 @@ import 'package:flutter/rendering.dart';
 import '../common.dart';
 
 class RegisteredDoulasScreen extends StatelessWidget {
-  final VoidCallback toMessages;
+  final VoidCallback toProfile;
+  final void Function(String, String) setProfileUser;
 
-  RegisteredDoulasScreen(this.toMessages);
+  RegisteredDoulasScreen(this.toProfile, this.setProfileUser)
+      : assert(toProfile != null && setProfileUser != null);
 
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
     return Padding(
@@ -20,7 +22,11 @@ class RegisteredDoulasScreen extends StatelessWidget {
               borderRadius: BorderRadius.all(const Radius.circular(20.0)),
             ),
             child: MaterialButton(
-              onPressed: () {}, // TODO takes you to that doula's profile
+              onPressed: () async {
+                // TODO takes you to that doula's profile
+                await setProfileUser(doc["userid"], doc["userType"]);
+                toProfile();
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
@@ -116,7 +122,7 @@ class RegisteredDoulasScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) =>
-          RegisteredDoulasScreen(vm.toMessages),
+          RegisteredDoulasScreen(vm.toProfile, vm.setProfileUser),
     );
   }
 }
@@ -124,13 +130,16 @@ class RegisteredDoulasScreenConnector extends StatelessWidget {
 class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
-  VoidCallback toMessages;
+  VoidCallback toProfile;
+  void Function(String, String) setProfileUser;
 
-  ViewModel.build({@required this.toMessages});
+  ViewModel.build({@required this.toProfile, @required this.setProfileUser});
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        toMessages: () => dispatch(NavigateAction.pushNamed("/messages")));
+        toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+        setProfileUser: (String userid, String userType) =>
+            dispatch(SetProfileUser(userid, userType)));
   }
 }

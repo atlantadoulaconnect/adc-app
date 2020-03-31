@@ -1,11 +1,6 @@
 import 'package:async_redux/async_redux.dart';
 
-import '../models/admin.dart';
-import '../models/client.dart';
-import '../models/doula.dart';
-import '../models/emergencyContact.dart';
-import '../models/phone.dart';
-import '../states/appState.dart';
+import 'common.dart';
 
 class UpdateClientUserAction extends ReduxAction<AppState> {
   final Client current;

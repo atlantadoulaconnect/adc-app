@@ -1,4 +1,6 @@
+import 'package:adc_app/backend/util/inputValidation.dart';
 import 'common.dart';
+
 
 // screen where users can change settings related to the TappableChipAttributes
 
@@ -18,10 +20,72 @@ class SettingsScreenState extends State<SettingsScreen> {
   final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
   User currentUser;
 
+  TextEditingController firstNameCtrl;
+  TextEditingController phoneNumCtrl;
+  TextEditingController dateOfBirthCtrl;
+  TextEditingController emailCtrl;
+  TextEditingController bioCtrl;
+  TextEditingController certProgramCtrl;
+
+
+
+  //general
+  String userName;
+  String phone;
+  String email;
+  String dob;
+
+
+  //clients only
+  String emergencyContacts = '';
+
+  //doulas only
+  String bio = '';
+  bool certified = false;
+  bool certInProgress = false;
+  String certProgram;
+
+
+
+
+
   @override
   void initState() {
+
     currentUser = widget.currentUser;
+    String userType = currentUser.userType;
+
+    userName = currentUser.name != null ? currentUser.name : '';
+    phone = currentUser.phones != null ? currentUser.phones.toString().substring(1,9) : '';
+    email = currentUser.email != null ? currentUser.email : '';
+
+    if (userType == 'doula') {
+      dob = (currentUser as Doula).bday;
+      bio = (currentUser as Doula).bio;
+      certified = (currentUser as Doula).certified;
+      certInProgress = (currentUser as Doula).certInProgress;
+      certProgram = (currentUser as Doula).certProgram;
+    }
+
+
+
+    String availabity;
+
+    //admins only
+
+    firstNameCtrl = new TextEditingController(text: userName);
+    phoneNumCtrl = new TextEditingController(text: phone);
+    dateOfBirthCtrl = new TextEditingController(text: dob);
+    emailCtrl = new TextEditingController(text: email);
+    bioCtrl = new TextEditingController(text: bio);
+    certProgramCtrl = new TextEditingController(text: certProgram);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    firstNameCtrl.dispose();
+    super.dispose();
   }
 
   Form adminUser() {
@@ -47,7 +111,168 @@ class SettingsScreenState extends State<SettingsScreen> {
         key: _settingsKey,
         autovalidate: false,
         child: ListView(
-          children: <Widget>[],
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'My Account',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['emoryBlue'],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text('Name',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Jane D.',
+                ),
+                controller: firstNameCtrl,
+                validator: nameValidator,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text('Phone Number',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: '6785201876',
+                ),
+                controller: phoneNumCtrl,
+                validator: phoneValidator,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text('Date of Birth',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: '01/09/1997',
+                ),
+                controller: dateOfBirthCtrl,
+                validator: phoneValidator,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text('Email Address',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'example@gmail.com',
+                ),
+                controller: emailCtrl,
+                validator: emailValidator,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text('Bio',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextField(
+                minLines: 5,
+                maxLines: 10,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Write a few sentences about yourself',
+                ),
+                controller: bioCtrl,
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Certification',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: themeColors['emoryBlue'],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+              child: CheckboxListTile(
+                value: certified,
+                title: Text("Are you certified?"),
+                onChanged: (bool value) {
+                  setState(() { certified = value; });
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+              child: CheckboxListTile(
+                value: certInProgress,
+                title: Text("Working towards certification?"),
+                onChanged: (bool value) {
+                  setState(() { certInProgress = value; });
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text('Certification Program',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'DONA, CAPPA, ICEA, Other',
+                ),
+                controller: certProgramCtrl,
+
+              ),
+            ),
+          ],
         ));
   }
 

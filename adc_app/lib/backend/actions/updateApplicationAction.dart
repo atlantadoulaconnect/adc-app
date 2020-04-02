@@ -13,6 +13,7 @@ class CancelApplicationAction extends ReduxAction<AppState> {
 
   @override
   AppState reduce() {
+    print("user cancelled application");
     User updated = User(state.currentUser.userid, state.currentUser.email);
 
     return state.copy(

@@ -1,3 +1,8 @@
+import 'dart:ffi';
+
+import 'package:adc_app/backend/actions/common.dart';
+import 'package:adc_app/backend/actions/updateApplicationAction.dart';
+
 import '../../common.dart';
 import '../../../../backend/util/inputValidation.dart';
 
@@ -5,12 +10,19 @@ class ClientAppPage1 extends StatefulWidget {
   final Client currentUser;
   final void Function(Client, String, String, List<Phone>) updateClient;
   final VoidCallback toClientAppPage2;
+  final VoidCallback exitDialog;
+  final VoidCallback cancelApplication;
+  final VoidCallback toHome;
 
-  ClientAppPage1(this.currentUser, this.updateClient, this.toClientAppPage2)
+  ClientAppPage1(this.currentUser, this.updateClient, this.toClientAppPage2,
+      this.exitDialog, this.cancelApplication, this.toHome)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
-            toClientAppPage2 != null);
+            toClientAppPage2 != null &&
+            exitDialog != null &&
+            cancelApplication != null &&
+            toHome != null);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,6 +35,9 @@ class ClientAppPage1State extends State<ClientAppPage1> {
   Client currentUser;
   void Function(Client, String, String, List<Phone>) updateClient;
   VoidCallback toClientAppPage2;
+  VoidCallback exitDialog;
+  VoidCallback cancelApplication;
+  VoidCallback toHome;
 
   TextEditingController _firstNameCtrl;
   TextEditingController _lastInitCtrl;
@@ -35,6 +50,10 @@ class ClientAppPage1State extends State<ClientAppPage1> {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
     toClientAppPage2 = widget.toClientAppPage2;
+    exitDialog = widget.exitDialog;
+    cancelApplication = widget.cancelApplication;
+    toHome = widget.toHome;
+
     _firstNameCtrl = TextEditingController();
     _lastInitCtrl = TextEditingController();
     _bdayCtrl = TextEditingController();
@@ -51,6 +70,34 @@ class ClientAppPage1State extends State<ClientAppPage1> {
     _phoneCtrl.dispose();
     _altPhoneCtrl.dispose();
     super.dispose();
+  }
+
+  createAlertDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Cancel Application"),
+          content: Text("Do you want to cancel your application?"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Yes"),
+              onPressed: () {
+                //dispatch CancelApplication
+                cancelApplication();
+                toHome();
+              },
+            ),
+            FlatButton(
+              child: Text("No"),
+              onPressed: () {
+                exitDialog();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -209,8 +256,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                             side: BorderSide(color: themeColors['yellow'])),
                         onPressed: () {
                           // dialog to confirm cancellation
-                          // if yes, dispatch CancelApplication
-                          // navigate to home
+                          createAlertDialog(context);
                         },
                         color: themeColors['yellow'],
                         textColor: Colors.white,
@@ -275,8 +321,13 @@ class ClientAppPage1Connector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) =>
-          ClientAppPage1(vm.currentUser, vm.updateClient, vm.toClientAppPage2),
+      builder: (BuildContext context, ViewModel vm) => ClientAppPage1(
+          vm.currentUser,
+          vm.updateClient,
+          vm.toClientAppPage2,
+          vm.exitDialog,
+          vm.cancelApplication,
+          vm.toHome),
     );
   }
 }
@@ -287,11 +338,17 @@ class ViewModel extends BaseModel<AppState> {
   Client currentUser;
   void Function(Client, String, String, List<Phone>) updateClient;
   VoidCallback toClientAppPage2;
+  VoidCallback exitDialog;
+  VoidCallback cancelApplication;
+  VoidCallback toHome;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateClient,
-      @required this.toClientAppPage2})
+      @required this.toClientAppPage2,
+      @required this.exitDialog,
+      @required cancelApplication,
+      @required toHome})
       : super(equals: []);
 
   @override
@@ -303,6 +360,9 @@ class ViewModel extends BaseModel<AppState> {
         updateClient:
             (Client user, String name, String bday, List<Phone> phones) =>
                 dispatch(UpdateClientUserAction(user,
-                    name: name, phones: phones, bday: bday)));
+                    name: name, phones: phones, bday: bday)),
+        exitDialog: () => dispatch(NavigateAction.pop()),
+        cancelApplication: () => dispatch(CancelApplicationAction()),
+        toHome: () => dispatch(NavigateAction.pushNamedAndRemoveAll("/")));
   }
 }

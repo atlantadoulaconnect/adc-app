@@ -233,9 +233,9 @@ class CurrentMenu extends StatelessWidget {
                     color: Colors.white,
                   ),
                   title: Text('Settings',
-                    style: TextStyle(
-                      color: Colors.white,
-                    )),
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
                   onTap: toSettings,
                 ),
                 ListTile(
@@ -425,6 +425,7 @@ class CurrentMenu extends StatelessWidget {
   }
 
   Drawer unloggedMenu() {
+    print("unlogged menu");
     return Drawer(
         child: Container(
             color: themeColors["mediumBlue"],
@@ -445,7 +446,9 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: () => toHome,
+                  onTap: () {
+                    toHome();
+                  },
                 ),
                 ListTile(
                   leading: Icon(
@@ -566,9 +569,9 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        toHome: () => dispatch(NavigateAction.pushNamed("/")),
-          //print("menu to home pressed. app state: ${state.toString()}");
-
+        toHome: () {
+          dispatch(NavigateAction.pushNamed("/"));
+        },
         toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
         toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
         toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
@@ -583,8 +586,6 @@ class ViewModel extends BaseModel<AppState> {
         toAdminHome: () => dispatch(NavigateAction.pushNamed("/adminHome")),
         toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),
         toDoulaHome: () => dispatch(NavigateAction.pushNamed("/doulaHome")),
-        toSettings: () => dispatch(NavigateAction.pushNamed("/settings"))
-
-    );
+        toSettings: () => dispatch(NavigateAction.pushNamed("/settings")));
   }
 }

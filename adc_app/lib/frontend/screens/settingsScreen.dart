@@ -97,11 +97,6 @@ class SettingsScreenState extends State<SettingsScreen> {
       (currentUser as Client).photoRelease : false;
     }
 
-    if (userType == 'admin') {
-
-    }
-
-
     firstNameCtrl = new TextEditingController(text: userName);
     phoneNumCtrl = new TextEditingController(text: phone);
     dateOfBirthCtrl = new TextEditingController(text: dob);

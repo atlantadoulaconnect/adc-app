@@ -143,14 +143,15 @@ class ViewModel extends BaseModel<AppState> {
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        currentUser: state.currentUser,
-        logout: () {
-          dispatch(LogoutUserAction());
-          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
-        },
-        toHome: () => dispatch(NavigateAction.pushNamed("/")),
-        toRecentMessages: () =>
-            dispatch(NavigateAction.pushNamed("/recentMessages")),
-        toInfo: () => dispatch(NavigateAction.pushNamed("/info")));
+      currentUser: state.currentUser,
+      logout: () {
+        dispatch(LogoutUserAction());
+        dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+      },
+      toHome: () => dispatch(NavigateAction.pushNamed("/")),
+      toRecentMessages: () =>
+          dispatch(NavigateAction.pushNamed("/recentMessages")),
+      toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
+    );
   }
 }

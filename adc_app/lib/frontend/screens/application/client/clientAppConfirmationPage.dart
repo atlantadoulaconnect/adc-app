@@ -4,19 +4,50 @@ class ClientAppConfirmationPage extends StatelessWidget {
   final Client currentUser;
   final VoidCallback toRequestSent;
   final Future<void> Function(Client) userToDB;
+  final void Function(bool) cancelApplication;
+
   String phonesString;
   String deliveryTypes;
   String photoPermission;
 
-  ClientAppConfirmationPage(this.currentUser, this.toRequestSent, this.userToDB)
+  ClientAppConfirmationPage(this.currentUser, this.toRequestSent, this.userToDB,
+      this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             userToDB != null &&
-            toRequestSent != null);
+            toRequestSent != null &&
+            cancelApplication != null);
 
   String boolStr(bool value) {
     if (value) return "Yes";
     return "No";
+  }
+
+  confirmCancelDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Cancel Application"),
+          content: Text("Do you want to cancel your application?"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Yes"),
+              onPressed: () {
+                //dispatch CancelApplication
+                cancelApplication(true);
+              },
+            ),
+            FlatButton(
+              child: Text("No"),
+              onPressed: () {
+                cancelApplication(false);
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -284,6 +315,26 @@ class ClientAppConfirmationPage extends StatelessWidget {
                       ),
                       RaisedButton(
                         shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(10.0),
+                            side: BorderSide(color: themeColors['yellow'])),
+                        onPressed: () {
+                          // dialog to confirm cancellation
+                          confirmCancelDialog(context);
+                        },
+                        color: themeColors['yellow'],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        splashColor: themeColors['yellow'],
+                        child: Text(
+                          "CANCEL",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: themeColors['black'],
+                          ),
+                        ),
+                      ),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(5.0),
                             side: BorderSide(color: themeColors['yellow'])),
                         onPressed: () async {
@@ -317,8 +368,8 @@ class ClientAppConfirmationPageConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) {
-        return ClientAppConfirmationPage(
-            vm.currentUser, vm.toRequestSent, vm.userToDB);
+        return ClientAppConfirmationPage(vm.currentUser, vm.toRequestSent,
+            vm.userToDB, vm.cancelApplication);
       },
     );
   }
@@ -330,11 +381,13 @@ class ViewModel extends BaseModel<AppState> {
   Client currentUser;
   VoidCallback toRequestSent;
   Future<void> Function(Client) userToDB;
+  void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.toRequestSent,
-      @required this.userToDB})
+      @required this.userToDB,
+      @required this.cancelApplication})
       : super(equals: [currentUser]);
 
   @override
@@ -343,6 +396,13 @@ class ViewModel extends BaseModel<AppState> {
       currentUser: state.currentUser,
       userToDB: (Client user) => dispatchFuture(CreateClientUserDocument(user)),
       toRequestSent: () => dispatch(NavigateAction.pushNamed("/requestSent")),
+      cancelApplication: (bool confirmed) {
+        dispatch(NavigateAction.pop());
+        if (confirmed) {
+          dispatch(CancelApplicationAction());
+          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+        }
+      },
     );
   }
 }

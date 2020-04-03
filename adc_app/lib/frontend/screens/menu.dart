@@ -17,6 +17,7 @@ class CurrentMenu extends StatelessWidget {
   final VoidCallback toClientHome;
   final VoidCallback toDoulaHome;
   final VoidCallback toSettings;
+  final VoidCallback toStatusScreen;
 
   CurrentMenu(
       {this.currentUser,
@@ -30,7 +31,8 @@ class CurrentMenu extends StatelessWidget {
       this.toAdminHome,
       this.toClientHome,
       this.toDoulaHome,
-      this.toSettings});
+      this.toSettings,
+      this.toStatusScreen});
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,8 @@ class CurrentMenu extends StatelessWidget {
     } else {
       currentUserType = currentUser.userType;
     }
+
+    print("Menu got user type: $currentUserType");
 
     switch (currentUserType) {
       case "admin":
@@ -173,6 +177,7 @@ class CurrentMenu extends StatelessWidget {
   }
 
   Drawer clientMenu() {
+    print("client menu");
     return Drawer(
         child: Container(
             color: themeColors["mediumBlue"],
@@ -252,11 +257,23 @@ class CurrentMenu extends StatelessWidget {
                     //toHome();
                   },
                 ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59448, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Applications',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () => toStatusScreen,
+                ),
               ],
             )));
   }
 
   Drawer doulaMenu() {
+    print("doula menu");
     return Drawer(
         child: Container(
             color: themeColors["mediumBlue"],
@@ -341,6 +358,7 @@ class CurrentMenu extends StatelessWidget {
   }
 
   Drawer noTypeMenu() {
+    print("no type menu");
     return Drawer(
         child: Container(
             color: themeColors["mediumBlue"],
@@ -351,7 +369,7 @@ class CurrentMenu extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: themeColors['yellow'],
                     ),
-                    child: Text("Welcome, Client")),
+                    child: Text("Welcome")),
                 ListTile(
                   leading: Icon(
                     IconData(59530, fontFamily: 'MaterialIcons'),
@@ -361,7 +379,7 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: toClientHome,
+                  onTap: toHome,
                 ),
                 ListTile(
                   leading: Icon(
@@ -418,6 +436,20 @@ class CurrentMenu extends StatelessWidget {
                   onTap: () {
                     logout();
                     //toHome();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59448, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Applications',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {
+                    print("to app status screen pressed menu");
+                    toStatusScreen();
                   },
                 ),
               ],
@@ -529,6 +561,7 @@ class Menu extends StatelessWidget {
             toClientHome: vm.toClientHome,
             toDoulaHome: vm.toDoulaHome,
             toSettings: vm.toSettings,
+            toStatusScreen: vm.toStatusScreen,
           );
         });
   }
@@ -549,6 +582,7 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toClientHome;
   VoidCallback toDoulaHome;
   VoidCallback toSettings;
+  VoidCallback toStatusScreen;
 
   ViewModel.build(
       {@required this.currentUser,
@@ -562,7 +596,8 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toAdminHome,
       @required this.toClientHome,
       @required this.toDoulaHome,
-      @required this.toSettings})
+      @required this.toSettings,
+      @required this.toStatusScreen})
       : super(equals: [currentUser]);
 
   @override
@@ -586,6 +621,7 @@ class ViewModel extends BaseModel<AppState> {
         toAdminHome: () => dispatch(NavigateAction.pushNamed("/adminHome")),
         toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),
         toDoulaHome: () => dispatch(NavigateAction.pushNamed("/doulaHome")),
-        toSettings: () => dispatch(NavigateAction.pushNamed("/settings")));
+        toSettings: () => dispatch(NavigateAction.pushNamed("/settings")),
+        toStatusScreen: () => dispatch(NavigateAction.pushNamed("/status")));
   }
 }

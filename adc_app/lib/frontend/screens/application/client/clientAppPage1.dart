@@ -347,8 +347,8 @@ class ViewModel extends BaseModel<AppState> {
       @required this.updateClient,
       @required this.toClientAppPage2,
       @required this.exitDialog,
-      @required cancelApplication,
-      @required toHome})
+      @required this.cancelApplication,
+      @required this.toHome})
       : super(equals: []);
 
   @override

@@ -394,6 +394,20 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
+                    IconData(59485, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Application',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {
+                    print("to app status screen pressed menu");
+                    toStatusScreen();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
                     IconData(57545, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
@@ -447,20 +461,6 @@ class CurrentMenu extends StatelessWidget {
                   onTap: () {
                     logout();
                     //toHome();
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59485, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Applications',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: () {
-                    print("to app status screen pressed menu");
-                    toStatusScreen();
                   },
                 ),
               ],

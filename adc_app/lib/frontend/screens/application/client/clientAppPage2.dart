@@ -431,11 +431,18 @@ class ViewModel extends BaseModel<AppState> {
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        currentUser: state.currentUser,
-        toClientAppPage3: () =>
-            dispatch(NavigateAction.pushNamed("/clientAppPage3")),
-        updateClient: (Client user, List<EmergencyContact> contacts) =>
-            dispatch(
-                UpdateClientUserAction(user, emergencyContacts: contacts)));
+      currentUser: state.currentUser,
+      toClientAppPage3: () =>
+          dispatch(NavigateAction.pushNamed("/clientAppPage3")),
+      updateClient: (Client user, List<EmergencyContact> contacts) =>
+          dispatch(UpdateClientUserAction(user, emergencyContacts: contacts)),
+      cancelApplication: (bool confirmed) {
+        dispatch(NavigateAction.pop());
+        if (confirmed) {
+          dispatch(CancelApplicationAction());
+          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+        }
+      },
+    );
   }
 }

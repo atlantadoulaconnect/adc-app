@@ -71,9 +71,7 @@ class CreateAdminUserDocument extends ReduxAction<AppState> {
 }
 
 class UpdateAdminUserDocument extends ReduxAction<AppState> {
-
   final Admin user;
-
 
   UpdateAdminUserDocument(this.user)
       : assert(user != null && user.userType == "admin");
@@ -83,7 +81,6 @@ class UpdateAdminUserDocument extends ReduxAction<AppState> {
     await dbRef.collection("users").document(user.userid).updateData({
       "userid": user.userid,
       "name": user.name,
-
     });
 
     await dbRef
@@ -93,17 +90,14 @@ class UpdateAdminUserDocument extends ReduxAction<AppState> {
         .document("specifics")
         .updateData({
       "email": user.email,
-
-    }
-    );
-
+    });
 
     return null;
   }
+
   void before() => dispatch(WaitAction(true));
 
   void after() => dispatch(WaitAction(false));
-
 }
 
 class CreateClientUserDocument extends ReduxAction<AppState> {
@@ -123,6 +117,10 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
       "name": user.name,
       "userType": user.userType,
     });
+
+    // handle special cases: phones, emergency contacts, deliveryTypes
+
+    // previous birth categories should only show if liveBirths > 0
 
     await dbRef
         .collection("users")
@@ -155,9 +153,7 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
 }
 
 class UpdateClientUserDocument extends ReduxAction<AppState> {
-
   final Client user;
-
 
   UpdateClientUserDocument(this.user)
       : assert(user != null && user.userType == "client");
@@ -167,7 +163,6 @@ class UpdateClientUserDocument extends ReduxAction<AppState> {
     await dbRef.collection("users").document(user.userid).updateData({
       "userid": user.userid,
       "name": user.name,
-
     });
 
     await dbRef
@@ -178,19 +173,15 @@ class UpdateClientUserDocument extends ReduxAction<AppState> {
         .updateData({
       "bday": user.bday,
       "email": user.email,
-
-    }
-    );
-
+    });
 
     return null;
   }
+
   void before() => dispatch(WaitAction(true));
 
   void after() => dispatch(WaitAction(false));
-
 }
-
 
 class CreateDoulaUserDocument extends ReduxAction<AppState> {
   final Doula user;
@@ -246,9 +237,7 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
 }
 
 class UpdateDoulaUserDocument extends ReduxAction<AppState> {
-
   final Doula user;
-
 
   UpdateDoulaUserDocument(this.user)
       : assert(user != null && user.userType == "doula");
@@ -260,7 +249,6 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
     await dbRef.collection("users").document(user.userid).updateData({
       "userid": user.userid,
       "name": user.name,
-
     });
 
     await dbRef
@@ -269,23 +257,19 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
         .collection("userData")
         .document("specifics")
         .updateData({
-            "bday": user.bday,
-            "email": user.email,
-            "bio": user.bio,
-            "certified": user.certified,
-            "certInProgress": user.certInProgress,
-            "certProgram": user.certProgram,
-            "birthsNeeded": user.birthsNeeded
-        }
-    );
-
+      "bday": user.bday,
+      "email": user.email,
+      "bio": user.bio,
+      "certified": user.certified,
+      "certInProgress": user.certInProgress,
+      "certProgram": user.certProgram,
+      "birthsNeeded": user.birthsNeeded
+    });
 
     return null;
   }
+
   void before() => dispatch(WaitAction(true));
 
   void after() => dispatch(WaitAction(false));
-
 }
-
-

@@ -92,6 +92,7 @@ class LoginUserAction extends ReduxAction<AppState> {
       // userData/specifics doc is created when application has been submitted
       user = user.copy(
           name: basics["name"],
+          status: basics["status"],
           bday: specifics["bday"],
           birthLocation: specifics["birthLocation"],
           birthType: specifics["birthType"],
@@ -139,6 +140,7 @@ class LoginUserAction extends ReduxAction<AppState> {
       // userData/specifics doc is created when application has been submitted
       user = user.copy(
           name: basics["name"],
+          status: basics["status"],
           bday: specifics["bday"],
           bio: specifics["bio"],
           birthsNeeded: specifics["birthsNeeded"],

@@ -4,11 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //  applications of people who have applied to participate in the program
 //  but need to be accepted or denied by an admin
 class PendingApplicationsScreen extends StatelessWidget {
-  final Admin currentUser;
   final VoidCallback toProfile;
+  final Future<void> Function(String, String) setProfileUser;
 
-  PendingApplicationsScreen(this.currentUser, this.toProfile)
-      : assert(currentUser != null && toProfile != null);
+  PendingApplicationsScreen(this.toProfile, this.setProfileUser)
+      : assert(toProfile != null && setProfileUser != null);
 
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
     return Padding(
@@ -22,7 +22,10 @@ class PendingApplicationsScreen extends StatelessWidget {
               borderRadius: BorderRadius.all(const Radius.circular(20.0)),
             ),
             child: MaterialButton(
-              onPressed: () {}, // TODO takes you to that doula's profile
+              onPressed: () async {
+                await setProfileUser(doc["userid"], doc["userType"]);
+                toProfile();
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
@@ -117,7 +120,8 @@ class PendingApplicationsScreen extends StatelessWidget {
                               context, snapshot.data.documents[index]),
                           itemCount: snapshot.data.documents.length,
                         );
-                      })),
+                      })
+              ),
               Container(
                   child: StreamBuilder<QuerySnapshot>(
                       stream: Firestore.instance
@@ -154,7 +158,7 @@ class PendingApplicationsScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) {
-        return PendingApplicationsScreen(vm.currentUser, vm.toProfile);
+        return PendingApplicationsScreen(vm.toProfile, vm.setProfileUser);
       },
     );
   }
@@ -163,18 +167,16 @@ class PendingApplicationsScreenConnector extends StatelessWidget {
 class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
-  User currentUser;
   VoidCallback toProfile;
+  Future<void> Function(String, String) setProfileUser;
 
-  ViewModel.build({@required this.currentUser, @required this.toProfile})
-      : super(equals: []);
+  ViewModel.build({@required this.toProfile, @required this.setProfileUser});
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-      currentUser: state.currentUser,
-      toProfile: () => dispatch(NavigateAction.pushNamed("/profile")),
-      //setPeer: (Contact peer) => dispatch(SetPeer(peer))
-    );
+        toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+        setProfileUser: (String userid, String userType) =>
+            dispatchFuture(SetProfileUser(userid, userType)));
   }
 }

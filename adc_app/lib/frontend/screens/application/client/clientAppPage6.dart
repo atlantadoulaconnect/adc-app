@@ -4,13 +4,15 @@ class ClientAppPage6 extends StatefulWidget {
   final Client currentUser;
   final void Function(Client, bool) updateClient;
   final VoidCallback toClientAppConfirmation;
+  final void Function(bool) cancelApplication;
 
-  ClientAppPage6(
-      this.currentUser, this.updateClient, this.toClientAppConfirmation)
+  ClientAppPage6(this.currentUser, this.updateClient,
+      this.toClientAppConfirmation, this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
-            toClientAppConfirmation != null);
+            toClientAppConfirmation != null &&
+            cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,6 +25,7 @@ class ClientAppPage6State extends State<ClientAppPage6> {
   Client currentUser;
   void Function(Client, bool) updateClient;
   VoidCallback toClientAppConfirmation;
+  void Function(bool) cancelApplication;
 
   bool photoReleasePermission = false;
   bool statementAgree = false;
@@ -32,7 +35,35 @@ class ClientAppPage6State extends State<ClientAppPage6> {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
     toClientAppConfirmation = widget.toClientAppConfirmation;
+    cancelApplication = widget.cancelApplication;
     super.initState();
+  }
+
+  confirmCancelDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Cancel Application"),
+          content: Text("Do you want to cancel your application?"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Yes"),
+              onPressed: () {
+                //dispatch CancelApplication
+                cancelApplication(true);
+              },
+            ),
+            FlatButton(
+              child: Text("No"),
+              onPressed: () {
+                cancelApplication(false);
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -44,16 +75,14 @@ class ClientAppPage6State extends State<ClientAppPage6> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Photo Release',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: themeColors['emoryBlue'],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
-                textAlign: TextAlign.center
-              ),
+              child: Text('Photo Release',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['emoryBlue'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                  textAlign: TextAlign.center),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -69,13 +98,11 @@ class ClientAppPage6State extends State<ClientAppPage6> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                  'Please read the following statements: ',
+              child: Text('Please read the following statements: ',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
-                  textAlign: TextAlign.center
-              ),
+                  textAlign: TextAlign.center),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -131,6 +158,26 @@ class ClientAppPage6State extends State<ClientAppPage6> {
                   ),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        side: BorderSide(color: themeColors['yellow'])),
+                    onPressed: () {
+                      // dialog to confirm cancellation
+                      confirmCancelDialog(context);
+                    },
+                    color: themeColors['yellow'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['yellow'],
+                    child: Text(
+                      "CANCEL",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: themeColors['black'],
+                      ),
+                    ),
+                  ),
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(5.0),
                         side: BorderSide(color: themeColors['yellow'])),
                     onPressed: () {
@@ -159,7 +206,10 @@ class ClientAppPage6Connector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) => ClientAppPage6(
-          vm.currentUser, vm.updateClient, vm.toClientAppConfirmation),
+          vm.currentUser,
+          vm.updateClient,
+          vm.toClientAppConfirmation,
+          vm.cancelApplication),
     );
   }
 }
@@ -170,20 +220,30 @@ class ViewModel extends BaseModel<AppState> {
   Client currentUser;
   void Function(Client, bool) updateClient;
   VoidCallback toClientAppConfirmation;
+  void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateClient,
-      @required this.toClientAppConfirmation})
+      @required this.toClientAppConfirmation,
+      @required this.cancelApplication})
       : super(equals: []);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        currentUser: state.currentUser,
-        toClientAppConfirmation: () =>
-            dispatch(NavigateAction.pushNamed("/clientAppConfirmation")),
-        updateClient: (Client user, bool photoRelease) =>
-            dispatch(UpdateClientUserAction(user, photoRelease: photoRelease)));
+      currentUser: state.currentUser,
+      toClientAppConfirmation: () =>
+          dispatch(NavigateAction.pushNamed("/clientAppConfirmation")),
+      updateClient: (Client user, bool photoRelease) =>
+          dispatch(UpdateClientUserAction(user, photoRelease: photoRelease)),
+      cancelApplication: (bool confirmed) {
+        dispatch(NavigateAction.pop());
+        if (confirmed) {
+          dispatch(CancelApplicationAction());
+          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+        }
+      },
+    );
   }
 }

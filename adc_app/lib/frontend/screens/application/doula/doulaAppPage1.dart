@@ -5,12 +5,15 @@ class DoulaAppPage1 extends StatefulWidget {
   final Doula currentUser;
   final void Function(Doula, String, String, List<Phone>) updateDoula;
   final VoidCallback toDoulaAppPage2;
+  final void Function(bool) cancelApplication;
 
-  DoulaAppPage1(this.currentUser, this.updateDoula, this.toDoulaAppPage2)
+  DoulaAppPage1(this.currentUser, this.updateDoula, this.toDoulaAppPage2,
+      this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "doula" &&
             updateDoula != null &&
-            toDoulaAppPage2 != null);
+            toDoulaAppPage2 != null &&
+            cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,6 +26,7 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
   Doula currentUser;
   void Function(Doula, String, String, List<Phone>) updateDoula;
   VoidCallback toDoulaAppPage2;
+  void Function(bool) cancelApplication;
 
   TextEditingController _firstNameCtrl;
   TextEditingController _lastInitCtrl;
@@ -35,6 +39,8 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
     currentUser = widget.currentUser;
     updateDoula = widget.updateDoula;
     toDoulaAppPage2 = widget.toDoulaAppPage2;
+    cancelApplication = widget.cancelApplication;
+
     _firstNameCtrl = TextEditingController();
     _lastInitCtrl = TextEditingController();
     _bdayCtrl = TextEditingController();
@@ -51,6 +57,33 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
     _phoneCtrl.dispose();
     _altPhoneCtrl.dispose();
     super.dispose();
+  }
+
+  confirmCancelDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Cancel Application"),
+          content: Text("Do you want to cancel your application?"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Yes"),
+              onPressed: () {
+                //dispatch CancelApplication
+                cancelApplication(true);
+              },
+            ),
+            FlatButton(
+              child: Text("No"),
+              onPressed: () {
+                cancelApplication(false);
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -82,8 +115,8 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                   width: 250,
                   child: LinearProgressIndicator(
                     backgroundColor: themeColors['skyBlue'],
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        themeColors['mediumBlue']),
                     value: 0.2,
                   ),
                 ),
@@ -150,70 +183,102 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(10.0),
-                                side: BorderSide(color: themeColors['mediumBlue'])),
-                            onPressed: () {
-                              // inputted information is lost when previous is pressed
-                              // this should take them home
-                              // TODO nav pop until doula-specific home
-                              Navigator.pushNamed(context, '/home');
-                            },
-                            color: themeColors['mediumBlue'],
-                            textColor: Colors.white,
-                            padding: EdgeInsets.all(15.0),
-                            splashColor: themeColors['mediumBlue'],
-                            child: Text(
-                              "PREVIOUS",
-                              style: TextStyle(fontSize: 20.0),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(10.0),
-                                side: BorderSide(color: themeColors['yellow'])),
-                            onPressed: () {
-                              final form = _d1formKey.currentState;
-                              if (form.validate()) {
-                                form.save();
-
-                                String displayName =
-                                    "${_firstNameCtrl.text.toString().trim()} ${_lastInitCtrl.text.toString().trim()}.";
-                                String birthday = _bdayCtrl.text.toString().trim();
-                                List<Phone> phones = List();
-                                phones.add(
-                                    Phone(_phoneCtrl.text.toString().trim(), true));
-                                if (_altPhoneCtrl.text.isNotEmpty) {
-                                  phones.add(Phone(
-                                      _altPhoneCtrl.text.toString().trim(), false));
-                                }
-
-                                updateDoula(
-                                    currentUser, displayName, birthday, phones);
-
-                                toDoulaAppPage2();
-                              }
-                            },
-                            color: themeColors['yellow'],
-                            textColor: Colors.white,
-                            padding: EdgeInsets.all(15.0),
-                            splashColor: themeColors['yellow'],
-                            child: Text(
-                              "NEXT",
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                color: themeColors['black'],
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0),
+                                    side: BorderSide(
+                                        color: themeColors['mediumBlue'])),
+                                onPressed: () {
+                                  // inputted information is lost when previous is pressed
+                                  // this should take them home
+                                  // TODO nav pop until doula-specific home
+                                  Navigator.pushNamed(context, '/home');
+                                },
+                                color: themeColors['mediumBlue'],
+                                textColor: Colors.white,
+                                padding: EdgeInsets.all(15.0),
+                                splashColor: themeColors['mediumBlue'],
+                                child: Text(
+                                  "PREVIOUS",
+                                  style: TextStyle(fontSize: 20.0),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ]),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0),
+                                    side: BorderSide(
+                                        color: themeColors['yellow'])),
+                                onPressed: () {
+                                  // dialog to confirm cancellation
+                                  confirmCancelDialog(context);
+                                },
+                                color: themeColors['yellow'],
+                                textColor: Colors.white,
+                                padding: EdgeInsets.all(15.0),
+                                splashColor: themeColors['yellow'],
+                                child: Text(
+                                  "CANCEL",
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    color: themeColors['black'],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0),
+                                    side: BorderSide(
+                                        color: themeColors['yellow'])),
+                                onPressed: () {
+                                  final form = _d1formKey.currentState;
+                                  if (form.validate()) {
+                                    form.save();
+
+                                    String displayName =
+                                        "${_firstNameCtrl.text.toString().trim()} ${_lastInitCtrl.text.toString().trim()}.";
+                                    String birthday =
+                                        _bdayCtrl.text.toString().trim();
+                                    List<Phone> phones = List();
+                                    phones.add(Phone(
+                                        _phoneCtrl.text.toString().trim(),
+                                        true));
+                                    if (_altPhoneCtrl.text.isNotEmpty) {
+                                      phones.add(Phone(
+                                          _altPhoneCtrl.text.toString().trim(),
+                                          false));
+                                    }
+
+                                    updateDoula(currentUser, displayName,
+                                        birthday, phones);
+
+                                    toDoulaAppPage2();
+                                  }
+                                },
+                                color: themeColors['yellow'],
+                                textColor: Colors.white,
+                                padding: EdgeInsets.all(15.0),
+                                splashColor: themeColors['yellow'],
+                                child: Text(
+                                  "NEXT",
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    color: themeColors['black'],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]),
                     ],
                   ),
                 ),
@@ -229,8 +294,11 @@ class DoulaAppPage1Connector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) =>
-          DoulaAppPage1(vm.currentUser, vm.updateDoula, vm.toDoulaAppPage2),
+      builder: (BuildContext context, ViewModel vm) => DoulaAppPage1(
+          vm.currentUser,
+          vm.updateDoula,
+          vm.toDoulaAppPage2,
+          vm.cancelApplication),
     );
   }
 }
@@ -241,11 +309,13 @@ class ViewModel extends BaseModel<AppState> {
   Doula currentUser;
   void Function(Doula, String, String, List<Phone>) updateDoula;
   VoidCallback toDoulaAppPage2;
+  void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateDoula,
-      @required this.toDoulaAppPage2});
+      @required this.toDoulaAppPage2,
+      @required this.cancelApplication});
 
   @override
   ViewModel fromStore() {
@@ -264,7 +334,13 @@ class ViewModel extends BaseModel<AppState> {
               name: name,
               phones: phones,
               bday: bday,
-            ))
-    );
+            )),
+        cancelApplication: (bool confirmed) {
+          dispatch(NavigateAction.pop());
+          if (confirmed) {
+            dispatch(CancelApplicationAction());
+            dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+          }
+        });
   }
 }

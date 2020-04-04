@@ -84,7 +84,7 @@ class AppState {
     if (currentUser != null && currentUser.userType != null) {
       type = currentUser.userType;
     }
-    return "\nAppState:\n\tCurrent User (type: $type): ${this.currentUser.toString()}\n\twaiting: ${this.waiting}";
+    return "\nAppState:\n\tCurrent User (type: $type): ${this.currentUser.toString()}\n\twaiting: ${this.waiting}\n\t${this.formState.toString()}";
   }
 
   // creates this class instance from a map

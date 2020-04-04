@@ -5,12 +5,15 @@ class ClientAppPage2 extends StatefulWidget {
   final Client currentUser;
   final void Function(Client, List<EmergencyContact>) updateClient;
   final VoidCallback toClientAppPage3;
+  final void Function(bool) cancelApplication;
 
-  ClientAppPage2(this.currentUser, this.updateClient, this.toClientAppPage3)
+  ClientAppPage2(this.currentUser, this.updateClient, this.toClientAppPage3,
+      this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
-            toClientAppPage3 != null);
+            toClientAppPage3 != null &&
+            cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
@@ -22,8 +25,8 @@ class ClientAppPage2State extends State<ClientAppPage2> {
   final GlobalKey<FormState> _c2formKey = GlobalKey<FormState>();
   Client currentUser;
   void Function(Client, List<EmergencyContact>) updateClient;
-
   VoidCallback toClientAppPage3;
+  void Function(bool) cancelApplication;
 
   TextEditingController _name1Ctrl;
   TextEditingController _relationship1Ctrl;
@@ -40,6 +43,7 @@ class ClientAppPage2State extends State<ClientAppPage2> {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
     toClientAppPage3 = widget.toClientAppPage3;
+    cancelApplication = widget.cancelApplication;
 
     _name1Ctrl = TextEditingController();
     _relationship1Ctrl = TextEditingController();
@@ -69,6 +73,33 @@ class ClientAppPage2State extends State<ClientAppPage2> {
     super.dispose();
   }
 
+  confirmCancelDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Cancel Application"),
+          content: Text("Do you want to cancel your application?"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Yes"),
+              onPressed: () {
+                //dispatch CancelApplication
+                cancelApplication(true);
+              },
+            ),
+            FlatButton(
+              child: Text("No"),
+              onPressed: () {
+                cancelApplication(false);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,16 +112,14 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                 child: ListView(children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Emergency Contacts',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        color: themeColors['emoryBlue'],
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
-                      textAlign: TextAlign.center
-                    ),
+                    child: Text('Emergency Contacts',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          color: themeColors['emoryBlue'],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                        ),
+                        textAlign: TextAlign.center),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -293,6 +322,26 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                           ),
                         ),
                         RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () {
+                            // dialog to confirm cancellation
+                            confirmCancelDialog(context);
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.white,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "CANCEL",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: themeColors['black'],
+                            ),
+                          ),
+                        ),
+                        RaisedButton(
                             shape: RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(5.0),
                                 side: BorderSide(color: themeColors['yellow'])),
@@ -355,8 +404,11 @@ class ClientAppPage2Connector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) =>
-          ClientAppPage2(vm.currentUser, vm.updateClient, vm.toClientAppPage3),
+      builder: (BuildContext context, ViewModel vm) => ClientAppPage2(
+          vm.currentUser,
+          vm.updateClient,
+          vm.toClientAppPage3,
+          vm.cancelApplication),
     );
   }
 }
@@ -367,11 +419,13 @@ class ViewModel extends BaseModel<AppState> {
   Client currentUser;
   void Function(Client, List<EmergencyContact>) updateClient;
   VoidCallback toClientAppPage3;
+  void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateClient,
-      @required this.toClientAppPage3})
+      @required this.toClientAppPage3,
+      @required this.cancelApplication})
       : super(equals: []);
 
   @override

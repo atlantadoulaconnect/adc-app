@@ -41,7 +41,7 @@ class ApplicationState {
 
   @override
   String toString() {
-    return "ApplicationState: status: $status\ttype: $type\n\tpages: ${pages.keys.join(", ")}";
+    return "ApplicationState: status: $status\ttype: $type";
   }
 
   factory ApplicationState.fromJson(Map<String, dynamic> json) =>

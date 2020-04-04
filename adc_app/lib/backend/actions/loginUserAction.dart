@@ -169,7 +169,6 @@ class LoginUserAction extends ReduxAction<AppState> {
 
       if (userId.length > 0 && userId != null) {
         print("received valid user id: $userId");
-        //print("populating AppState currentUser");
 
         AppState current;
 
@@ -182,7 +181,8 @@ class LoginUserAction extends ReduxAction<AppState> {
             .get();
 
         String userType;
-        if (basics != null) {
+
+        if (basics.exists) {
           // in case user logged out before choosing user type
           userType = basics["userType"];
         }

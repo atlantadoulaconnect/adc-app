@@ -16,6 +16,7 @@ import './frontend/screens/userProfileScreen.dart';
 import './frontend/screens/application/signupScreen.dart';
 import './frontend/screens/application/appTypeScreen.dart';
 import './frontend/screens/application/requestSentScreen.dart';
+import './frontend/screens/application/applicationStatusScreen.dart';
 
 import './frontend/screens/application/client/clientAppPage1.dart';
 import './frontend/screens/application/client/clientAppPage2.dart';
@@ -128,7 +129,8 @@ class ADCApp extends StatelessWidget {
                 RegisteredClientsScreenConnector(),
             '/userProfile': (context) => UserProfileScreenConnector(),
             '/pendingApps': (context) => PendingApplicationsScreenConnector(),
-            '/settings': (context) => SettingsScreenConnector()
+            '/settings': (context) => SettingsScreenConnector(),
+            '/status': (context) => ApplicationStatusScreenConnector()
           },
         ));
   }

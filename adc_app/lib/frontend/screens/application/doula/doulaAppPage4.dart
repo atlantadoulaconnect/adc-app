@@ -5,12 +5,15 @@ class DoulaAppPage4 extends StatefulWidget {
   final Doula currentUser;
   final void Function(Doula, List<String>) updateDoula;
   final VoidCallback toDoulaAppPage5;
+  final void Function(bool) cancelApplication;
 
-  DoulaAppPage4(this.currentUser, this.updateDoula, this.toDoulaAppPage5)
+  DoulaAppPage4(this.currentUser, this.updateDoula, this.toDoulaAppPage5,
+      this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "doula" &&
             updateDoula != null &&
-            toDoulaAppPage5 != null);
+            toDoulaAppPage5 != null &&
+            cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,13 +26,43 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
   Doula currentUser;
   void Function(Doula, List<String>) updateDoula;
   VoidCallback toDoulaAppPage5;
+  void Function(bool) cancelApplication;
 
   @override
   void initState() {
     currentUser = widget.currentUser;
     updateDoula = widget.updateDoula;
     toDoulaAppPage5 = widget.toDoulaAppPage5;
+    cancelApplication = widget.cancelApplication;
+
     super.initState();
+  }
+
+  confirmCancelDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Cancel Application"),
+          content: Text("Do you want to cancel your application?"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Yes"),
+              onPressed: () {
+                //dispatch CancelApplication
+                cancelApplication(true);
+              },
+            ),
+            FlatButton(
+              child: Text("No"),
+              onPressed: () {
+                cancelApplication(false);
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -137,6 +170,29 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
                                 borderRadius: new BorderRadius.circular(10.0),
                                 side: BorderSide(color: themeColors['yellow'])),
                             onPressed: () {
+                              // dialog to confirm cancellation
+                              confirmCancelDialog(context);
+                            },
+                            color: themeColors['yellow'],
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(15.0),
+                            splashColor: themeColors['yellow'],
+                            child: Text(
+                              "CANCEL",
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                color: themeColors['black'],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(10.0),
+                                side: BorderSide(color: themeColors['yellow'])),
+                            onPressed: () {
                               // TODO selecting calendar dates and adding to Doula
                               toDoulaAppPage5();
                             },
@@ -165,8 +221,11 @@ class DoulaAppPage4Connector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) =>
-          DoulaAppPage4(vm.currentUser, vm.updateDoula, vm.toDoulaAppPage5),
+      builder: (BuildContext context, ViewModel vm) => DoulaAppPage4(
+          vm.currentUser,
+          vm.updateDoula,
+          vm.toDoulaAppPage5,
+          vm.cancelApplication),
     );
   }
 }
@@ -177,11 +236,13 @@ class ViewModel extends BaseModel<AppState> {
   Doula currentUser;
   void Function(Doula, List<String>) updateDoula;
   VoidCallback toDoulaAppPage5;
+  void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateDoula,
-      @required this.toDoulaAppPage5});
+      @required this.toDoulaAppPage5,
+      @required this.cancelApplication});
 
   @override
   ViewModel fromStore() {
@@ -190,6 +251,13 @@ class ViewModel extends BaseModel<AppState> {
         updateDoula: (Doula user, List<String> dates) =>
             dispatch(UpdateDoulaUserAction(user, availableDates: dates)),
         toDoulaAppPage5: () =>
-            dispatch(NavigateAction.pushNamed("/doulaAppPage5")));
+            dispatch(NavigateAction.pushNamed("/doulaAppPage5")),
+        cancelApplication: (bool confirmed) {
+          dispatch(NavigateAction.pop());
+          if (confirmed) {
+            dispatch(CancelApplicationAction());
+            dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+          }
+        });
   }
 }

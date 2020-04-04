@@ -15,7 +15,39 @@ class ApplicationStatusScreen extends StatelessWidget {
         drawer: Menu(),
         body: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Center(),
+          child: Center(
+              child: ListView(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                // for testing
+                child: Text("Current user's type: ${currentUser.userType}"),
+              ),
+              Visibility(
+                visible: currentUser.userType == null,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        side: BorderSide(color: themeColors['yellow'])),
+                    onPressed: () {
+                      // test to client page 1
+                      toPage("/appType");
+                    },
+                    color: themeColors['lightBlue'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['lightBlue'],
+                    child: Text(
+                      "Choose Application Type",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )),
         ));
   }
 }
@@ -41,7 +73,9 @@ class ViewModel extends BaseModel<AppState> {
   void Function(String) toPage; // user gets taken to selected page
 
   ViewModel.build(
-      {@required currentUser, @required application, @required toPage})
+      {@required this.currentUser,
+      @required this.application,
+      @required this.toPage})
       : super(equals: [application]);
 
   @override

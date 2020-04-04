@@ -4,12 +4,15 @@ class ClientAppPage3 extends StatefulWidget {
   final Client currentUser;
   final void Function(Client, String, String, String, bool, bool) updateClient;
   final VoidCallback toClientAppPage4;
+  final void Function(bool) cancelApplication;
 
-  ClientAppPage3(this.currentUser, this.updateClient, this.toClientAppPage4)
+  ClientAppPage3(this.currentUser, this.updateClient, this.toClientAppPage4,
+      this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
-            toClientAppPage4 != null);
+            toClientAppPage4 != null &&
+            cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
@@ -22,6 +25,7 @@ class ClientAppPage3State extends State<ClientAppPage3> {
   Client currentUser;
   void Function(Client, String, String, String, bool, bool) updateClient;
   VoidCallback toClientAppPage4;
+  void Function(bool) cancelApplication;
 
   TextEditingController _dueDateCtrl;
   TextEditingController _birthLocCtrl;
@@ -34,6 +38,33 @@ class ClientAppPage3State extends State<ClientAppPage3> {
     _dueDateCtrl = TextEditingController();
     _birthLocCtrl = TextEditingController();
     super.initState();
+  }
+
+  confirmCancelDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Cancel Application"),
+          content: Text("Do you want to cancel your application?"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Yes"),
+              onPressed: () {
+                //dispatch CancelApplication
+                cancelApplication(true);
+              },
+            ),
+            FlatButton(
+              child: Text("No"),
+              onPressed: () {
+                cancelApplication(false);
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   //drop down list
@@ -112,16 +143,14 @@ class ClientAppPage3State extends State<ClientAppPage3> {
                 child: ListView(children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Current Pregnancy Details',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        color: themeColors['emoryBlue'],
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
-                      textAlign: TextAlign.center
-                    ),
+                    child: Text('Current Pregnancy Details',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          color: themeColors['emoryBlue'],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                        ),
+                        textAlign: TextAlign.center),
                   ),
                   // progress bar
                   Padding(
@@ -311,6 +340,26 @@ class ClientAppPage3State extends State<ClientAppPage3> {
                         ),
                         RaisedButton(
                           shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () {
+                            // dialog to confirm cancellation
+                            confirmCancelDialog(context);
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.white,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "CANCEL",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: themeColors['black'],
+                            ),
+                          ),
+                        ),
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(5.0),
                               side: BorderSide(color: themeColors['yellow'])),
                           onPressed: () {
@@ -351,8 +400,11 @@ class ClientAppPage3Connector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) =>
-          ClientAppPage3(vm.currentUser, vm.updateClient, vm.toClientAppPage4),
+      builder: (BuildContext context, ViewModel vm) => ClientAppPage3(
+          vm.currentUser,
+          vm.updateClient,
+          vm.toClientAppPage4,
+          vm.cancelApplication),
     );
   }
 }
@@ -363,26 +415,36 @@ class ViewModel extends BaseModel<AppState> {
   Client currentUser;
   void Function(Client, String, String, String, bool, bool) updateClient;
   VoidCallback toClientAppPage4;
+  void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateClient,
-      @required this.toClientAppPage4})
+      @required this.toClientAppPage4,
+      @required this.cancelApplication})
       : super(equals: []);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        currentUser: state.currentUser,
-        toClientAppPage4: () =>
-            dispatch(NavigateAction.pushNamed("/clientAppPage4")),
-        updateClient: (Client user, String dueDate, String birthLocation,
-                String birthType, bool epidural, bool cesarean) =>
-            dispatch(UpdateClientUserAction(user,
-                dueDate: dueDate,
-                birthLocation: birthLocation,
-                birthType: birthType,
-                epidural: epidural,
-                cesarean: cesarean)));
+      currentUser: state.currentUser,
+      toClientAppPage4: () =>
+          dispatch(NavigateAction.pushNamed("/clientAppPage4")),
+      updateClient: (Client user, String dueDate, String birthLocation,
+              String birthType, bool epidural, bool cesarean) =>
+          dispatch(UpdateClientUserAction(user,
+              dueDate: dueDate,
+              birthLocation: birthLocation,
+              birthType: birthType,
+              epidural: epidural,
+              cesarean: cesarean)),
+      cancelApplication: (bool confirmed) {
+        dispatch(NavigateAction.pop());
+        if (confirmed) {
+          dispatch(CancelApplicationAction());
+          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+        }
+      },
+    );
   }
 }

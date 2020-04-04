@@ -16,10 +16,11 @@ export '../../backend/models/contact.dart';
 
 // actions
 export '../../backend/actions/createUserAction.dart';
-export '../../backend/actions/updateUserAction.dart';
-export '../../backend/actions/waitAction.dart';
 export '../../backend/actions/loginUserAction.dart';
 export '../../backend/actions/profileAction.dart';
+export '../../backend/actions/updateApplicationAction.dart';
+export '../../backend/actions/updateUserAction.dart';
+export '../../backend/actions/waitAction.dart';
 
 // states
 export '../../backend/states/appState.dart';

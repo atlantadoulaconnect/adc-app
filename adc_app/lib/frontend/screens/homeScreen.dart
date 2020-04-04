@@ -119,10 +119,15 @@ class HomeScreenConnector extends StatelessWidget {
                     vm.toRecentMessages, vm.toInfo);
               }
               break;
-            // todo user screen for user that logged out before choosing usertype
+            default:
+              {
+                return HomeScreen(
+                    toSignup: vm.toSignup,
+                    toLogin: vm.toLogin,
+                    toInfo: vm.toInfo);
+              }
+              break;
           }
-          return HomeScreen(
-              toSignup: vm.toSignup, toLogin: vm.toLogin, toInfo: vm.toInfo);
         });
   }
 }

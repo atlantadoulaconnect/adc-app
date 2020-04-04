@@ -29,7 +29,7 @@ class AdminHomeScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 40.0, bottom: 20.0),
               child: Text(
-                "Welcome, Admin",
+                "Welcome ${currentUser != null ? currentUser.name : ""}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 40,

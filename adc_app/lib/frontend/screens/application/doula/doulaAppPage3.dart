@@ -4,12 +4,15 @@ class DoulaAppPage3 extends StatefulWidget {
   final Doula currentUser;
   final void Function(Doula, bool, bool, String, int) updateDoula;
   final VoidCallback toDoulaAppPage4;
+  final void Function(bool) cancelApplication;
 
-  DoulaAppPage3(this.currentUser, this.updateDoula, this.toDoulaAppPage4)
+  DoulaAppPage3(this.currentUser, this.updateDoula, this.toDoulaAppPage4,
+      this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "doula" &&
             updateDoula != null &&
-            toDoulaAppPage4 != null);
+            toDoulaAppPage4 != null &&
+            cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
@@ -22,6 +25,7 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
   Doula currentUser;
   void Function(Doula, bool, bool, String, int) updateDoula;
   VoidCallback toDoulaAppPage4;
+  void Function(bool) cancelApplication;
 
   TextEditingController _birthsNeeded;
 
@@ -34,9 +38,38 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
     currentUser = widget.currentUser;
     updateDoula = widget.updateDoula;
     toDoulaAppPage4 = widget.toDoulaAppPage4;
+    cancelApplication = widget.cancelApplication;
+
     _birthsNeeded = TextEditingController();
 
     super.initState();
+  }
+
+  confirmCancelDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Cancel Application"),
+          content: Text("Do you want to cancel your application?"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Yes"),
+              onPressed: () {
+                //dispatch CancelApplication
+                cancelApplication(true);
+              },
+            ),
+            FlatButton(
+              child: Text("No"),
+              onPressed: () {
+                cancelApplication(false);
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -67,8 +100,8 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                   width: 250,
                   child: LinearProgressIndicator(
                     backgroundColor: themeColors['skyBlue'],
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(themeColors['mediumBlue']),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        themeColors['mediumBlue']),
                     value: 0.6,
                   ),
                 ),
@@ -197,8 +230,13 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                                 dropdownValue = newValue;
                               });
                             },
-                            items: <String>['', 'DONA', 'CAPPA', 'ICEA', 'Other']
-                                .map<DropdownMenuItem<String>>((String value) {
+                            items: <String>[
+                              '',
+                              'DONA',
+                              'CAPPA',
+                              'ICEA',
+                              'Other'
+                            ].map<DropdownMenuItem<String>>((String value) {
                               // TODO if Other is selected then an  option to type that program
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -210,17 +248,17 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                       )
                     ]),
               ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Number of documented births needed until you are certified:',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Number of documented births needed until you are certified:',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Container(
@@ -240,59 +278,83 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          side: BorderSide(color: themeColors['mediumBlue'])),
-                      onPressed: () {
-                        // info won't be saved
-                        Navigator.pop(context);
-                      },
-                      color: themeColors['mediumBlue'],
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['mediumBlue'],
-                      child: Text(
-                        "PREVIOUS",
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          side: BorderSide(color: themeColors['yellow'])),
-                      onPressed: () {
-                        // TODO input validation and error message
-                        bool isCertified = selectedCert[0] == true;
-                        bool inProgress = selectedProgress[0] == true;
-                        String program =
-                            dropdownValue == "" ? "none" : dropdownValue;
-                        int births =
-                            int.parse(_birthsNeeded.text.toString().trim());
-                        updateDoula(
-                            currentUser, isCertified, inProgress, program, births);
-
-                        toDoulaAppPage4();
-                      },
-                      color: themeColors['yellow'],
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(15.0),
-                      splashColor: themeColors['yellow'],
-                      child: Text(
-                        "NEXT",
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: themeColors['black'],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              side:
+                                  BorderSide(color: themeColors['mediumBlue'])),
+                          onPressed: () {
+                            // info won't be saved
+                            Navigator.pop(context);
+                          },
+                          color: themeColors['mediumBlue'],
+                          textColor: Colors.white,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['mediumBlue'],
+                          child: Text(
+                            "PREVIOUS",
+                            style: TextStyle(fontSize: 20.0),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ]),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () {
+                            // dialog to confirm cancellation
+                            confirmCancelDialog(context);
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.white,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "CANCEL",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: themeColors['black'],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () {
+                            // TODO input validation and error message
+                            bool isCertified = selectedCert[0] == true;
+                            bool inProgress = selectedProgress[0] == true;
+                            String program =
+                                dropdownValue == "" ? "none" : dropdownValue;
+                            int births =
+                                int.parse(_birthsNeeded.text.toString().trim());
+                            updateDoula(currentUser, isCertified, inProgress,
+                                program, births);
+
+                            toDoulaAppPage4();
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.white,
+                          padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "NEXT",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: themeColors['black'],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
               ),
             ])));
   }
@@ -303,8 +365,11 @@ class DoulaAppPage3Connector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) =>
-          DoulaAppPage3(vm.currentUser, vm.updateDoula, vm.toDoulaAppPage4),
+      builder: (BuildContext context, ViewModel vm) => DoulaAppPage3(
+          vm.currentUser,
+          vm.updateDoula,
+          vm.toDoulaAppPage4,
+          vm.cancelApplication),
     );
   }
 }
@@ -315,11 +380,13 @@ class ViewModel extends BaseModel<AppState> {
   Doula currentUser;
   void Function(Doula, bool, bool, String, int) updateDoula;
   VoidCallback toDoulaAppPage4;
+  void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateDoula,
-      @required this.toDoulaAppPage4});
+      @required this.toDoulaAppPage4,
+      @required this.cancelApplication});
 
   @override
   ViewModel fromStore() {
@@ -333,6 +400,13 @@ class ViewModel extends BaseModel<AppState> {
                 certProgram: program,
                 birthsNeeded: birthsNeeded)),
         toDoulaAppPage4: () =>
-            dispatch(NavigateAction.pushNamed("/doulaAppPage4")));
+            dispatch(NavigateAction.pushNamed("/doulaAppPage4")),
+        cancelApplication: (bool confirmed) {
+          dispatch(NavigateAction.pop());
+          if (confirmed) {
+            dispatch(CancelApplicationAction());
+            dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+          }
+        });
   }
 }

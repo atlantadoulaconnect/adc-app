@@ -382,11 +382,9 @@ class SettingsScreenState extends State<SettingsScreen> {
               borderRadius: new BorderRadius.circular(5.0),
               side: BorderSide(color: themeColors['yellow'])),
           onPressed: () async {
-            // add functionality
             String adminName = firstNameCtrl.text.toString().trim();
             String adminEmail = emailCtrl.text.toString().trim();
-            //print(bioCtrl.text.toString());
-            //print('certProgram: $certProgram');
+
 
             updateAdminAccount(currentUser, adminName,
                 adminEmail);
@@ -757,8 +755,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                 String clientName = firstNameCtrl.text.toString().trim();
                 String clientBday = dateOfBirthCtrl.text.toString().trim();
                 String clientEmail = emailCtrl.text.toString().trim();
-                //print(bioCtrl.text.toString());
-                //print('certProgram: $certProgram');
+
 
                 updateClientAccount(currentUser, clientName,
                     clientBday, clientEmail, photoRelease);
@@ -1486,9 +1483,6 @@ class ViewModel extends BaseModel<AppState> {
         email: email,
       )),
       adminToDB: (Admin user) => dispatchFuture(UpdateAdminUserDocument(user)),
-
-
-
 
     );
   }

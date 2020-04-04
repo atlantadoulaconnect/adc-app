@@ -8,8 +8,12 @@ class ApplicationStatusScreen extends StatelessWidget {
   ApplicationStatusScreen(this.currentUser, this.application, this.toPage)
       : assert(currentUser != null && application != null && toPage != null);
 
+  // determine application status
+
   @override
   Widget build(BuildContext context) {
+    // build two lists
+
     return Scaffold(
         appBar: AppBar(title: Text("Continue Application")),
         drawer: Menu(),
@@ -21,7 +25,7 @@ class ApplicationStatusScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 // for testing
-                child: Text("Current user's type: ${currentUser.userType}"),
+                child: Text("Application status: ${application.status}"),
               ),
               Visibility(
                 visible: currentUser.userType == null,

@@ -216,6 +216,17 @@ class CurrentMenu extends StatelessWidget {
                     IconData(59448, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
+                  title: Text('Applications',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () => toStatusScreen,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59448, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
                   title: Text('Frequently asked Questions',
                       style: TextStyle(
                         color: Colors.white,
@@ -257,17 +268,6 @@ class CurrentMenu extends StatelessWidget {
                     //toHome();
                   },
                 ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59448, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Applications',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: () => toStatusScreen,
-                ),
               ],
             )));
   }
@@ -306,6 +306,17 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toRecentMessages,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59485, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Applications',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () => toStatusScreen,
                 ),
                 ListTile(
                   leading: Icon(
@@ -440,7 +451,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59448, fontFamily: 'MaterialIcons'),
+                    IconData(59485, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Applications',

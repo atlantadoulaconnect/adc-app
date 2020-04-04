@@ -186,7 +186,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
 //                    valueColor:
 //                        AlwaysStoppedAnimation<Color>(themeColors["lightBlue"]),
 //                  ));
-                  return Container();
+                    return Container();
                 },
               )),
             ),

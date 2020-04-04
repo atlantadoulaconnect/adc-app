@@ -6,11 +6,20 @@ import 'common.dart';
 
 class SettingsScreen extends StatefulWidget {
   final User currentUser;
-  final VoidCallback toUserProfile;
+  final VoidCallback toHome;
   final VoidCallback logout;
+  final void Function(Doula, String, String, String, String, bool, bool, bool, String, int) updateDoulaAccount;
+  final Future<void> Function(Doula) doulaToDB;
+  final void Function(Client, String, String, String, bool) updateClientAccount;
+  final Future<void> Function(Client) clientToDB;
+  final void Function(Admin, String, String) updateAdminAccount;
+  final Future<void> Function(Admin) adminToDB;
 
-  SettingsScreen(this.currentUser, this.toUserProfile, this.logout);
-//      : assert(currentUser != null && toUserProfile != null && logout != null);
+  SettingsScreen(this.currentUser, this.toHome, this.logout,
+      this.updateDoulaAccount, this.doulaToDB,
+      this.updateClientAccount, this.clientToDB,
+      this.updateAdminAccount, this.adminToDB);
+//      : assert(currentUser != null && toHome != null && logout != null);
 
   @override
   State<StatefulWidget> createState() => SettingsScreenState();
@@ -18,6 +27,15 @@ class SettingsScreen extends StatefulWidget {
 
 class SettingsScreenState extends State<SettingsScreen> {
   final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
+  void Function(Doula, String, String, String, String, bool, bool, bool, String, int) updateDoulaAccount;
+  Future<void> Function(Doula) doulaToDB;
+  void Function(Client, String, String, String, bool) updateClientAccount;
+  Future<void> Function(Client) clientToDB;
+  void Function(Admin, String, String) updateAdminAccount;
+  Future<void> Function(Admin) adminToDB;
+
+  VoidCallback toHome;
+
   User currentUser;
 
   TextEditingController firstNameCtrl;
@@ -48,7 +66,6 @@ class SettingsScreenState extends State<SettingsScreen> {
   bool statusReportNotification = true;
   List<EmergencyContact> emergencyContacts;
 
-
   //doulas only
   String bio = '';
   bool certified = false;
@@ -61,18 +78,25 @@ class SettingsScreenState extends State<SettingsScreen> {
   //admins only
   bool newAppNotification = true;
 
-
-
-
   @override
   void initState() {
 
+    toHome = widget.toHome;
     currentUser = widget.currentUser;
+
+    updateDoulaAccount = widget.updateDoulaAccount;
+    doulaToDB = widget.doulaToDB;
+    updateClientAccount = widget.updateClientAccount;
+    clientToDB = widget.clientToDB;
+    updateAdminAccount = widget.updateAdminAccount;
+    adminToDB = widget.adminToDB;
+
+
     String userType = currentUser != null ? currentUser.userType : 'unlogged';
 
     if (currentUser != null) {
       userName = currentUser.name != null ? currentUser.name : '';
-      phone = currentUser.phones != null ? currentUser.phones.toString().substring(1,9) : '';
+      phone = currentUser.phones != null ? currentUser.phones.toString().trim().substring(1,11) : '';
       email = currentUser.email != null ? currentUser.email : '';
     }
 
@@ -82,7 +106,8 @@ class SettingsScreenState extends State<SettingsScreen> {
       certified = (currentUser as Doula).certified;
       certInProgress = (currentUser as Doula).certInProgress;
       certProgram = (currentUser as Doula).certProgram;
-      birthsNeeded = (currentUser as Doula).birthsNeeded;
+      birthsNeeded = (currentUser as Doula).birthsNeeded != null ?
+          (currentUser as Doula).birthsNeeded : 0;
       photoRelease = (currentUser as Doula).photoRelease != null ?
           (currentUser as Doula).photoRelease : false;
     }
@@ -103,6 +128,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     emailCtrl = new TextEditingController(text: email);
     bioCtrl = new TextEditingController(text: bio);
     certProgramCtrl = new TextEditingController(text: certProgram);
+    birthsNeededCtrl = new TextEditingController(text: '0');
 
     super.initState();
   }
@@ -140,25 +166,25 @@ class SettingsScreenState extends State<SettingsScreen> {
         ),
 
       ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-        child: Text('Phone Number',
-          style: TextStyle(
-            fontSize: 14,
-          ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-        child: TextFormField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: '6785201876',
-          ),
-          controller: phoneNumCtrl,
-          validator: phoneValidator,
-        ),
-      ),
+//      Padding(
+//        padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//        child: Text('Phone Number',
+//          style: TextStyle(
+//            fontSize: 14,
+//          ),
+//        ),
+//      ),
+//      Padding(
+//        padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//        child: TextFormField(
+//          decoration: InputDecoration(
+//            border: OutlineInputBorder(),
+//            hintText: '6785201876',
+//          ),
+//          controller: phoneNumCtrl,
+//          validator: phoneValidator,
+//        ),
+//      ),
       Padding(
         padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
         child: Text('Email Address',
@@ -357,6 +383,16 @@ class SettingsScreenState extends State<SettingsScreen> {
               side: BorderSide(color: themeColors['yellow'])),
           onPressed: () async {
             // add functionality
+            String adminName = firstNameCtrl.text.toString().trim();
+            String adminEmail = emailCtrl.text.toString().trim();
+            //print(bioCtrl.text.toString());
+            //print('certProgram: $certProgram');
+
+            updateAdminAccount(currentUser, adminName,
+                adminEmail);
+
+            adminToDB(currentUser);
+            toHome();
 
           },
           color: themeColors['yellow'],
@@ -717,7 +753,18 @@ class SettingsScreenState extends State<SettingsScreen> {
                   borderRadius: new BorderRadius.circular(5.0),
                   side: BorderSide(color: themeColors['yellow'])),
               onPressed: () async {
-                // add functionality
+
+                String clientName = firstNameCtrl.text.toString().trim();
+                String clientBday = dateOfBirthCtrl.text.toString().trim();
+                String clientEmail = emailCtrl.text.toString().trim();
+                //print(bioCtrl.text.toString());
+                //print('certProgram: $certProgram');
+
+                updateClientAccount(currentUser, clientName,
+                    clientBday, clientEmail, photoRelease);
+
+                clientToDB(currentUser);
+                toHome();
 
               },
               color: themeColors['yellow'],
@@ -1150,7 +1197,24 @@ class SettingsScreenState extends State<SettingsScreen> {
               borderRadius: new BorderRadius.circular(5.0),
               side: BorderSide(color: themeColors['yellow'])),
           onPressed: () async {
-            // add functionality
+
+            String doulaName = "${firstNameCtrl.text.toString().trim()}";
+            String doulaBday = dateOfBirthCtrl.text.toString().trim();
+            String doulaEmail = emailCtrl.text.toString().trim();
+            print(bioCtrl.text.toString());
+            String doulaBio = bioCtrl.text.toString();
+            certProgram = certProgramCtrl.text.toString();
+            print('certProgram: $certProgram');
+
+            print('birthsNeededCtrl: $birthsNeededCtrl');
+            birthsNeeded = int.parse(birthsNeededCtrl.text.toString().trim()) != null ?
+              int.parse(birthsNeededCtrl.text.toString().trim()) : 0;
+            print('birthsneeded: $birthsNeeded');
+            updateDoulaAccount(currentUser, doulaName,
+                doulaBday, doulaEmail, doulaBio, photoRelease, certified, certInProgress,
+                certProgram, birthsNeeded);
+
+            doulaToDB(currentUser);
 
           },
           color: themeColors['yellow'],
@@ -1331,7 +1395,10 @@ class SettingsScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
         model: ViewModel(),
         builder: (BuildContext context, ViewModel vm) =>
-            SettingsScreen(vm.currentUser, vm.toUserProfile, vm.logout));
+            SettingsScreen(vm.currentUser, vm.toHome, vm.logout,
+                vm.updateDoulaAccount, vm.doulaToDB,
+                vm.updateClientAccount, vm.clientToDB,
+                vm.updateAdminAccount, vm.adminToDB));
   }
 }
 
@@ -1339,24 +1406,90 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   User currentUser;
-  VoidCallback toUserProfile;
+  VoidCallback toHome;
   VoidCallback logout;
+  void Function(Doula, String, String, String, String, bool, bool, bool, String, int) updateDoulaAccount;
+  Future<void> Function(Doula) doulaToDB;
+  void Function(Client, String, String, String, bool) updateClientAccount;
+  Future<void> Function(Client) clientToDB;
+  void Function(Admin, String, String) updateAdminAccount;
+  Future<void> Function(Admin) adminToDB;
 
   ViewModel.build(
       {@required this.currentUser,
-      @required this.toUserProfile,
-      @required this.logout})
+      @required this.toHome,
+      @required this.logout,
+      @required this.updateDoulaAccount, this.doulaToDB,
+      @required this.updateClientAccount, this.clientToDB,
+      @required this.updateAdminAccount, this.adminToDB,
+      })
       : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        currentUser: state.currentUser,
-        toUserProfile: () => dispatch(NavigateAction.pushNamed("/myProfile")),
-        logout: () {
-          print("logging out from settings");
-          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
-          dispatch(LogoutUserAction());
-        });
+      currentUser: state.currentUser,
+      toHome: () => dispatch(NavigateAction.pushNamed("/")),
+      logout: () {
+        print("logging out from settings");
+        dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+        dispatch(LogoutUserAction());
+      },
+      updateDoulaAccount: (
+        Doula user,
+        String name,
+        String bday,
+        String email,
+        String bio,
+        bool photoRelease,
+        bool certified,
+        bool certInProgress,
+        String certProgram,
+        int birthsNeeded
+      ) =>
+          dispatch(UpdateDoulaUserAction(
+            user,
+            name: name,
+            bday: bday,
+            email: email,
+            bio: bio,
+            photoRelease: photoRelease,
+            certified: certified,
+            certInProgress: certInProgress,
+            certProgram: certProgram,
+            birthsNeeded: birthsNeeded,
+          )),
+      doulaToDB: (Doula user) => dispatchFuture(UpdateDoulaUserDocument(user)),
+
+      updateClientAccount: (
+        Client user,
+          String name,
+          String bday,
+          String email,
+          bool photoRelease
+      ) => dispatch(UpdateClientUserAction(
+            user,
+            name: name,
+            bday: bday,
+            email: email,
+            photoRelease: photoRelease,
+      )),
+      clientToDB: (Client user) => dispatchFuture(UpdateClientUserDocument(user)),
+
+      updateAdminAccount: (
+        Admin user,
+          String name,
+          String email,
+      ) => dispatch(UpdateAdminUserAction(
+        user,
+        name: name,
+        email: email,
+      )),
+      adminToDB: (Admin user) => dispatchFuture(UpdateAdminUserDocument(user)),
+
+
+
+
+    );
   }
 }

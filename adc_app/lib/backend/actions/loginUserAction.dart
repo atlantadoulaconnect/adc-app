@@ -30,7 +30,6 @@ class LoginUserAction extends ReduxAction<AppState> {
         });
       }
     }
-
     return phones;
   }
 

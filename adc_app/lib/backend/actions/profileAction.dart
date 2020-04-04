@@ -36,6 +36,7 @@ class SetProfileUser extends ReduxAction<AppState> {
 
     return profiled.copy(
         name: basics["name"],
+        status: basics["status"],
         bday: specifics["bday"],
         birthLocation: specifics["birthLocation"],
         birthType: specifics["birthType"],
@@ -61,6 +62,7 @@ class SetProfileUser extends ReduxAction<AppState> {
 
     return profiled.copy(
         name: basics["name"],
+        status: basics["status"],
         bday: specifics["bday"],
         bio: specifics["bio"],
         birthsNeeded: specifics["birthsNeeded"],

@@ -70,6 +70,26 @@ class CreateAdminUserDocument extends ReduxAction<AppState> {
   void after() => dispatch(WaitAction(false));
 }
 
+class UpdateUserStatus extends ReduxAction<AppState> {
+  final User profile;
+  final String status;
+
+  UpdateUserStatus(this.profile, this.status)
+      : assert(profile != null && status != null);
+
+  @override
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+    await dbRef.collection("users").document(profile.userid).updateData({
+      "status": status,
+    });
+
+    profile.status = status;
+
+    return state.copy(profileUser: profile);
+  }
+}
+
 class UpdateAdminUserDocument extends ReduxAction<AppState> {
   final Admin user;
 

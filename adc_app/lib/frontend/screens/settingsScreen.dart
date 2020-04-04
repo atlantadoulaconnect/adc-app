@@ -10,7 +10,7 @@ class SettingsScreen extends StatefulWidget {
   final VoidCallback logout;
   final void Function(Doula, String, String, String, String, bool, bool, bool, String, int) updateDoulaAccount;
   final Future<void> Function(Doula) doulaToDB;
-  final void Function(Client, String, String, String, bool) updateClientAccount;
+  final void Function(Client, String, List<Phone>, String, String, bool) updateClientAccount;
   final Future<void> Function(Client) clientToDB;
   final void Function(Admin, String, String) updateAdminAccount;
   final Future<void> Function(Admin) adminToDB;
@@ -29,7 +29,7 @@ class SettingsScreenState extends State<SettingsScreen> {
   final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
   void Function(Doula, String, String, String, String, bool, bool, bool, String, int) updateDoulaAccount;
   Future<void> Function(Doula) doulaToDB;
-  void Function(Client, String, String, String, bool) updateClientAccount;
+  void Function(Client, String, List<Phone>, String, String, bool) updateClientAccount;
   Future<void> Function(Client) clientToDB;
   void Function(Admin, String, String) updateAdminAccount;
   Future<void> Function(Admin) adminToDB;
@@ -113,6 +113,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     }
 
     if (userType == 'client') {
+      dob = (currentUser as Client).bday;
       int contactSize = (currentUser as Client).emergencyContacts != null ?
       (currentUser as Client).emergencyContacts.length : 0 ;
       for(int i = 0; i < contactSize; i++) {
@@ -754,10 +755,15 @@ class SettingsScreenState extends State<SettingsScreen> {
 
                 String clientName = firstNameCtrl.text.toString().trim();
                 String clientBday = dateOfBirthCtrl.text.toString().trim();
+                print('bday: ${dateOfBirthCtrl.text.toString().trim()}');
                 String clientEmail = emailCtrl.text.toString().trim();
+                List<Phone> phones = List();
+                print('phone: ${phoneNumCtrl.text.toString().trim()}');
+                phones.add(
+                    Phone(phoneNumCtrl.text.toString().trim(), true));
 
 
-                updateClientAccount(currentUser, clientName,
+                updateClientAccount(currentUser, clientName, phones,
                     clientBday, clientEmail, photoRelease);
 
                 clientToDB(currentUser);
@@ -1407,7 +1413,7 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback logout;
   void Function(Doula, String, String, String, String, bool, bool, bool, String, int) updateDoulaAccount;
   Future<void> Function(Doula) doulaToDB;
-  void Function(Client, String, String, String, bool) updateClientAccount;
+  void Function(Client, String, List<Phone>, String, String, bool) updateClientAccount;
   Future<void> Function(Client) clientToDB;
   void Function(Admin, String, String) updateAdminAccount;
   Future<void> Function(Admin) adminToDB;
@@ -1461,12 +1467,14 @@ class ViewModel extends BaseModel<AppState> {
       updateClientAccount: (
         Client user,
           String name,
+          List<Phone> phones,
           String bday,
           String email,
           bool photoRelease
       ) => dispatch(UpdateClientUserAction(
             user,
             name: name,
+            phones: phones,
             bday: bday,
             email: email,
             photoRelease: photoRelease,

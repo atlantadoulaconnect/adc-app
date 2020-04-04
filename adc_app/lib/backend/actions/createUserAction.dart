@@ -98,6 +98,7 @@ class UpdateAdminUserDocument extends ReduxAction<AppState> {
   void before() => dispatch(WaitAction(true));
 
   void after() => dispatch(WaitAction(false));
+
 }
 
 class CreateClientUserDocument extends ReduxAction<AppState> {
@@ -171,6 +172,7 @@ class UpdateClientUserDocument extends ReduxAction<AppState> {
         .collection("userData")
         .document("specifics")
         .updateData({
+      "phones": user.phones.join(", "),
       "bday": user.bday,
       "email": user.email,
     });
@@ -272,4 +274,7 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
   void before() => dispatch(WaitAction(true));
 
   void after() => dispatch(WaitAction(false));
+
 }
+
+

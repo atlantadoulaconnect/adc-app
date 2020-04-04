@@ -26,6 +26,7 @@ class Doula extends User {
       bool phoneVerified,
       List<Phone> phones,
       Set<String> chats,
+      String status,
       this.bday,
       this.emailVerified,
       this.bio,
@@ -36,7 +37,8 @@ class Doula extends User {
       this.availableDates,
       this.photoRelease,
       this.currentClients})
-      : super.full(userid, userType, name, email, phoneVerified, phones) {
+      : super.full(
+            userid, userType, name, email, phoneVerified, phones, status) {
     this.availableDates = new List<String>();
     this.currentClients = new List<Client>();
   }
@@ -65,6 +67,7 @@ class Doula extends User {
       bool phoneVerified,
       List<Phone> phones,
       Set<String> chats,
+      String status,
       String bday,
       bool emailVerified,
       String bio,
@@ -82,6 +85,7 @@ class Doula extends User {
         email: email ?? this.email,
         phoneVerified: phoneVerified ?? this.phoneVerified,
         chats: chats ?? this.chats,
+        status: status ?? this.status,
         phones: phones ?? this.phones,
         bday: bday ?? this.bday,
         emailVerified: emailVerified ?? this.emailVerified,

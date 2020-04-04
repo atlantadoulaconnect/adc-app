@@ -11,8 +11,10 @@ class Admin extends User {
       String email,
       bool phoneVerified,
       List<Phone> phones,
-      Set<String> chats})
-      : super.full(userid, userType, name, email, phoneVerified, phones);
+      Set<String> chats,
+      String status})
+      : super.full(
+            userid, userType, name, email, phoneVerified, phones, status);
 
   Admin copy(
       {String userid,
@@ -21,7 +23,8 @@ class Admin extends User {
       List<Phone> phones,
       String email,
       bool phoneVerified,
-      Set<String> chats}) {
+      Set<String> chats,
+      String status}) {
     return Admin(
         userid: userid ?? this.userid,
         userType: userType ?? this.userType,
@@ -29,7 +32,8 @@ class Admin extends User {
         phones: phones ?? this.phones,
         email: email ?? this.email,
         phoneVerified: phoneVerified ?? this.phoneVerified,
-        chats: chats ?? this.chats);
+        chats: chats ?? this.chats,
+        status: status ?? this.status);
   }
 
   @override

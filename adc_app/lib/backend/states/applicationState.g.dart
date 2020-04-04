@@ -8,7 +8,6 @@ part of 'applicationState.dart';
 
 ApplicationState _$ApplicationStateFromJson(Map<String, dynamic> json) {
   return ApplicationState(
-    status: json['status'] as String,
     pages: (json['pages'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, e as bool),
     ),
@@ -18,7 +17,6 @@ ApplicationState _$ApplicationStateFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ApplicationStateToJson(ApplicationState instance) =>
     <String, dynamic>{
-      'status': instance.status,
       'pages': instance.pages,
       'type': instance.type,
     };

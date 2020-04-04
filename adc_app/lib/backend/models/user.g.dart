@@ -12,6 +12,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     json['userid'] as String,
     json['email'] as String,
   )
+    ..status = json['status'] as String
     ..userType = json['userType'] as String
     ..name = json['name'] as String
     ..phones = (json['phones'] as List)
@@ -24,6 +25,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'userid': instance.userid,
+      'status': instance.status,
       'userType': instance.userType,
       'name': instance.name,
       'email': instance.email,

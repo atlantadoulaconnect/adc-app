@@ -33,6 +33,7 @@ class Client extends User {
       bool phoneVerified,
       List<Phone> phones,
       Set<String> chats,
+      String status,
       this.bday,
       this.primaryDoula,
       this.backupDoula,
@@ -50,7 +51,8 @@ class Client extends User {
       this.meetBefore,
       this.homeVisit,
       this.photoRelease})
-      : super.full(userid, userType, name, email, phoneVerified, phones);
+      : super.full(
+            userid, userType, name, email, phoneVerified, phones, status);
 
   void addDeliveryType(String deliveryType) {
     this.deliveryTypes.add(deliveryType);
@@ -74,6 +76,7 @@ class Client extends User {
       String name,
       List<Phone> phones,
       Set<String> chats,
+      String status,
       String email,
       bool phoneVerified,
       String bday,
@@ -101,6 +104,7 @@ class Client extends User {
         chats: chats ?? this.chats,
         email: email ?? this.email,
         phoneVerified: phoneVerified ?? this.phoneVerified,
+        status: status ?? this.status,
         bday: bday ?? this.bday,
         primaryDoula: primaryDoula ?? this.primaryDoula,
         backupDoula: backupDoula ?? this.backupDoula,

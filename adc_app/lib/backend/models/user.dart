@@ -6,6 +6,7 @@ part 'user.g.dart';
 class User {
   @JsonKey(required: true)
   String userid;
+  String status; // incomplete is default, admin has status "approved"
 
   String userType;
   String name;
@@ -22,7 +23,7 @@ class User {
   }
 
   User.full(this.userid, this.userType, this.name, this.email,
-      this.phoneVerified, this.phones);
+      this.phoneVerified, this.phones, this.status);
 
   void addPhone(Phone phone) {
     this.phones.add(phone);
@@ -51,7 +52,8 @@ class User {
           email == other.email &&
           phoneVerified == other.phoneVerified &&
           listEquals(phones, other.phones) &&
-          setEquals(chats, other.chats);
+          setEquals(chats, other.chats) &&
+          status == other.status;
 
   @override
   int get hashCode =>
@@ -61,11 +63,12 @@ class User {
       email.hashCode ^
       phoneVerified.hashCode ^
       phones.hashCode ^
-      chats.hashCode;
+      chats.hashCode ^
+      status.hashCode;
 
   @override
   String toString() {
-    return "$userType $userid: at $email\nname: $name";
+    return "$userType $userid: at $email\nname: $name status: $status";
   }
 
   // creates this class instance from a map

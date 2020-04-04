@@ -25,7 +25,7 @@ class ApplicationStatusScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 // for testing
-                child: Text("Application status: ${application.status}"),
+                child: Text("Application status: ${currentUser.status}"),
               ),
               Visibility(
                 visible: currentUser.userType == null,

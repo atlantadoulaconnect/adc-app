@@ -19,6 +19,7 @@ Client _$ClientFromJson(Map<String, dynamic> json) {
             (e) => e == null ? null : Phone.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     chats: (json['chats'] as List)?.map((e) => e as String)?.toSet(),
+    status: json['status'] as String,
     bday: json['bday'] as String,
     primaryDoula: json['primaryDoula'] == null
         ? null
@@ -50,6 +51,7 @@ Client _$ClientFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ClientToJson(Client instance) => <String, dynamic>{
       'userid': instance.userid,
+      'status': instance.status,
       'userType': instance.userType,
       'name': instance.name,
       'email': instance.email,

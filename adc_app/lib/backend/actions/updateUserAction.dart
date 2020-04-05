@@ -204,3 +204,122 @@ class UpdateAdminUserAction extends ReduxAction<AppState> {
     return state.copy(currentUser: updated);
   }
 }
+
+class UpdateAdminUserDocument extends ReduxAction<AppState> {
+  final Admin user;
+
+  UpdateAdminUserDocument(this.user)
+      : assert(user != null && user.userType == "admin");
+  @override
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+    await dbRef.collection("users").document(user.userid).updateData({
+      "userid": user.userid,
+      "name": user.name,
+    });
+
+    await dbRef
+        .collection("users")
+        .document(user.userid)
+        .collection("userData")
+        .document("specifics")
+        .updateData({
+      "email": user.email,
+    });
+
+    return null;
+  }
+
+  void before() => dispatch(WaitAction(true));
+
+  void after() => dispatch(WaitAction(false));
+}
+
+class UpdateUserStatus extends ReduxAction<AppState> {
+  final User profile;
+  final String status;
+
+  UpdateUserStatus(this.profile, this.status)
+      : assert(profile != null && status != null);
+
+  @override
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+    await dbRef.collection("users").document(profile.userid).updateData({
+      "status": status,
+    });
+
+    profile.status = status;
+
+    return state.copy(profileUser: profile);
+  }
+}
+
+class UpdateClientUserDocument extends ReduxAction<AppState> {
+  final Client user;
+
+  UpdateClientUserDocument(this.user)
+      : assert(user != null && user.userType == "client");
+  @override
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+    await dbRef.collection("users").document(user.userid).updateData({
+      "userid": user.userid,
+      "name": user.name,
+    });
+
+    await dbRef
+        .collection("users")
+        .document(user.userid)
+        .collection("userData")
+        .document("specifics")
+        .updateData({
+      "bday": user.bday,
+      "email": user.email,
+    });
+
+    return null;
+  }
+
+  void before() => dispatch(WaitAction(true));
+
+  void after() => dispatch(WaitAction(false));
+}
+
+class UpdateDoulaUserDocument extends ReduxAction<AppState> {
+  final Doula user;
+
+  UpdateDoulaUserDocument(this.user)
+      : assert(user != null && user.userType == "doula");
+  @override
+  Future<AppState> reduce() async {
+    print(
+        "Attempting to update this doula ${user.toString()} to the users collection");
+    final dbRef = Firestore.instance;
+    await dbRef.collection("users").document(user.userid).updateData({
+      "userid": user.userid,
+      "name": user.name,
+    });
+
+    await dbRef
+        .collection("users")
+        .document(user.userid)
+        .collection("userData")
+        .document("specifics")
+        .updateData({
+      "bday": user.bday,
+      "email": user.email,
+      "bio": user.bio,
+      "certified": user.certified,
+      "certInProgress": user.certInProgress,
+      "certProgram": user.certProgram,
+      "birthsNeeded": user.birthsNeeded
+    });
+
+    return null;
+  }
+
+  void before() => dispatch(WaitAction(true));
+
+  void after() => dispatch(WaitAction(false));
+}

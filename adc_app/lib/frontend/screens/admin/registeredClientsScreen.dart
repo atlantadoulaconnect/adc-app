@@ -4,9 +4,11 @@ import 'package:flutter/rendering.dart';
 import '../common.dart';
 
 class RegisteredClientsScreen extends StatelessWidget {
-  final VoidCallback toMessages;
+  final VoidCallback toProfile;
+  final Future<void> Function(String, String) setProfileUser;
 
-  RegisteredClientsScreen(this.toMessages);
+  RegisteredClientsScreen(this.toProfile, this.setProfileUser)
+      : assert(toProfile != null && setProfileUser != null);
 
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
     return Padding(
@@ -20,7 +22,10 @@ class RegisteredClientsScreen extends StatelessWidget {
               borderRadius: BorderRadius.all(const Radius.circular(20.0)),
             ),
             child: MaterialButton(
-              onPressed: () {}, // TODO takes you to that doula's profile
+              onPressed: () async {
+                await setProfileUser(doc["userid"], doc["userType"]);
+                toProfile();
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
@@ -63,8 +68,9 @@ class RegisteredClientsScreen extends StatelessWidget {
                           ),
                         ]),
                   ),
+                  Spacer(),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Icon(
                       IconData(0xe88f, fontFamily: 'MaterialIcons'),
                       color: Colors.black,
@@ -116,7 +122,7 @@ class RegisteredClientsScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) =>
-          RegisteredClientsScreen(vm.toMessages),
+          RegisteredClientsScreen(vm.toProfile, vm.setProfileUser),
     );
   }
 }
@@ -124,13 +130,16 @@ class RegisteredClientsScreenConnector extends StatelessWidget {
 class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
-  VoidCallback toMessages;
+  VoidCallback toProfile;
+  Future<void> Function(String, String) setProfileUser;
 
-  ViewModel.build({@required this.toMessages});
+  ViewModel.build({@required this.toProfile, @required this.setProfileUser});
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        toMessages: () => dispatch(NavigateAction.pushNamed("/messages")));
+        toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+        setProfileUser: (String userid, String userType) =>
+            dispatchFuture(SetProfileUser(userid, userType)));
   }
 }

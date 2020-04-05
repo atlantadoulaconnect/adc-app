@@ -12,6 +12,7 @@ class CurrentMenu extends StatelessWidget {
   final VoidCallback toInfo;
   final VoidCallback toRecentMessages;
   final VoidCallback toDoulas;
+  final VoidCallback toClients;
   final VoidCallback logout;
   final VoidCallback toAdminHome;
   final VoidCallback toClientHome;
@@ -27,6 +28,7 @@ class CurrentMenu extends StatelessWidget {
       this.toInfo,
       this.toRecentMessages,
       this.toDoulas,
+      this.toClients,
       this.logout,
       this.toAdminHome,
       this.toClientHome,
@@ -120,11 +122,22 @@ class CurrentMenu extends StatelessWidget {
                     IconData(57545, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
-                  title: Text('Doulas',
+                  title: Text('All Doulas',
                       style: TextStyle(
                         color: Colors.white,
                       )),
                   onTap: toDoulas,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(57545, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('All Clients',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: toClients,
                 ),
                 ListTile(
                   leading: Icon(
@@ -157,6 +170,20 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toSettings,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Feedback',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {
+                    // logout();
+                    //toHome();
+                  },
                 ),
                 ListTile(
                   leading: Icon(
@@ -259,6 +286,20 @@ class CurrentMenu extends StatelessWidget {
                     IconData(59513, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
+                  title: Text('Feedback',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {
+                    // logout();
+                    //toHome();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
                   title: Text('Log Out',
                       style: TextStyle(
                         color: Colors.white,
@@ -349,6 +390,20 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toSettings,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Feedback',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {
+                    // logout();
+                    //toHome();
+                  },
                 ),
                 ListTile(
                   leading: Icon(
@@ -454,6 +509,20 @@ class CurrentMenu extends StatelessWidget {
                     IconData(59513, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
+                  title: Text('Feedback',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {
+                    // logout();
+                    //toHome();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
                   title: Text('Log Out',
                       style: TextStyle(
                         color: Colors.white,
@@ -541,6 +610,20 @@ class CurrentMenu extends StatelessWidget {
                     IconData(59513, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
+                  title: Text('Feedback',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {
+                    // logout();
+                    //toHome();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
                   title: Text('Log In',
                       style: TextStyle(
                         color: Colors.white,
@@ -567,6 +650,7 @@ class Menu extends StatelessWidget {
             toInfo: vm.toInfo,
             toRecentMessages: vm.toRecentMessages,
             toDoulas: vm.toDoulas,
+            toClients: vm.toClients,
             logout: vm.logout,
             toAdminHome: vm.toAdminHome,
             toClientHome: vm.toClientHome,
@@ -588,6 +672,7 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toInfo;
   VoidCallback toRecentMessages;
   VoidCallback toDoulas;
+  VoidCallback toClients;
   VoidCallback logout;
   VoidCallback toAdminHome;
   VoidCallback toClientHome;
@@ -603,6 +688,7 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toInfo,
       @required this.toRecentMessages,
       @required this.toDoulas,
+      @required this.toClients,
       @required this.logout,
       @required this.toAdminHome,
       @required this.toClientHome,
@@ -624,6 +710,7 @@ class ViewModel extends BaseModel<AppState> {
         toRecentMessages: () =>
             dispatch(NavigateAction.pushNamed("/recentMessages")),
         toDoulas: () => dispatch(NavigateAction.pushNamed("/registeredDoulas")),
+        toClients: () => dispatch(NavigateAction.pushNamed("/registeredClients")),
         logout: () {
           print("logging out from menu");
           dispatch(LogoutUserAction());

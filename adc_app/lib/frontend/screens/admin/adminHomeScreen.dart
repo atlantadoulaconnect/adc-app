@@ -1,4 +1,6 @@
 import '../common.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class AdminHomeScreen extends StatelessWidget {
   final Admin currentUser;
@@ -15,6 +17,25 @@ class AdminHomeScreen extends StatelessWidget {
             toRegisteredClients != null &&
             toPendingApps != null &&
             toHome != null);
+
+  int getPendingDoulaCount() {
+    int pendingDoulaCount = 0;
+    StreamBuilder<QuerySnapshot>(
+        stream: Firestore.instance
+            .collection("users")
+            .where("userType", isEqualTo: "doula")
+            .where("status", isEqualTo: "submitted")
+            .snapshots(),
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Text("");
+          }
+          pendingDoulaCount = snapshot.data.documents.length;
+          return Text("");
+        });
+    return pendingDoulaCount;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +60,7 @@ class AdminHomeScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 20.0, bottom: 7.0),
               child: Text(
-                "2 New Clients",
+                "2 Pending Client Application(s)",
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -48,7 +69,7 @@ class AdminHomeScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 5.0, bottom: 40.0),
               child: Text(
-                "1 Pending Doula Application",
+                "${getPendingDoulaCount()} Pending Doula Application(s)",
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -69,7 +90,7 @@ class AdminHomeScreen extends StatelessWidget {
                 padding: EdgeInsets.all(15.0),
                 splashColor: themeColors['mediumBlue'],
                 child: Text(
-                  "Pending Matches",
+                  "Pending Applications",
                   style: TextStyle(fontSize: 20.0),
                 ),
               ),
@@ -98,37 +119,57 @@ class AdminHomeScreen extends StatelessWidget {
                     borderRadius: new BorderRadius.circular(10.0),
                     side: BorderSide(color: themeColors['mediumBlue'])),
                 onPressed: () {
-                  toRegisteredClients();
+                  // TODO active matches screen
+                  toPendingApps();
                 },
                 color: themeColors['mediumBlue'],
                 textColor: Colors.white,
                 padding: EdgeInsets.all(15.0),
                 splashColor: themeColors['mediumBlue'],
                 child: Text(
-                  "All Registered Clients",
+                  "Unmatched Clients",
                   style: TextStyle(fontSize: 20.0),
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 30.0),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['mediumBlue'])),
-                onPressed: () {
-                  toRegisteredDoulas();
-                },
-                color: themeColors['mediumBlue'],
-                textColor: Colors.white,
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['mediumBlue'],
-                child: Text(
-                  "All Registered Doulas",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ),
-            ),
+//            Padding(
+//              padding: EdgeInsets.only(bottom: 25.0),
+//              child: RaisedButton(
+//                shape: RoundedRectangleBorder(
+//                    borderRadius: new BorderRadius.circular(10.0),
+//                    side: BorderSide(color: themeColors['mediumBlue'])),
+//                onPressed: () {
+//                  toRegisteredClients();
+//                },
+//                color: themeColors['mediumBlue'],
+//                textColor: Colors.white,
+//                padding: EdgeInsets.all(15.0),
+//                splashColor: themeColors['mediumBlue'],
+//                child: Text(
+//                  "All Registered Clients",
+//                  style: TextStyle(fontSize: 20.0),
+//                ),
+//              ),
+//            ),
+//            Padding(
+//              padding: EdgeInsets.only(bottom: 30.0),
+//              child: RaisedButton(
+//                shape: RoundedRectangleBorder(
+//                    borderRadius: new BorderRadius.circular(10.0),
+//                    side: BorderSide(color: themeColors['mediumBlue'])),
+//                onPressed: () {
+//                  toRegisteredDoulas();
+//                },
+//                color: themeColors['mediumBlue'],
+//                textColor: Colors.white,
+//                padding: EdgeInsets.all(15.0),
+//                splashColor: themeColors['mediumBlue'],
+//                child: Text(
+//                  "All Registered Doulas",
+//                  style: TextStyle(fontSize: 20.0),
+//                ),
+//              ),
+//            ),
             RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(10.0),

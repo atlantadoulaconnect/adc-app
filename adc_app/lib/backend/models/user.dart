@@ -1,4 +1,5 @@
 import './common.dart';
+import './common.dart';
 
 part 'user.g.dart';
 

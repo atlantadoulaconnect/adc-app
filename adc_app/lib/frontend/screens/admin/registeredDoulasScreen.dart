@@ -68,8 +68,9 @@ class RegisteredDoulasScreen extends StatelessWidget {
                           ),
                         ]),
                   ),
+                  Spacer(),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Icon(
                       IconData(0xe88f, fontFamily: 'MaterialIcons'),
                       color: Colors.black,

@@ -1,7 +1,6 @@
 import '../common.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class AdminHomeScreen extends StatelessWidget {
   final Admin currentUser;
   final VoidCallback logout;
@@ -10,6 +9,9 @@ class AdminHomeScreen extends StatelessWidget {
   final VoidCallback toRegisteredClients;
   final VoidCallback toHome;
 
+  int numPendingClients;
+  int numPendingDoulas;
+
   AdminHomeScreen(this.currentUser, this.logout, this.toRegisteredDoulas,
       this.toRegisteredClients, this.toPendingApps, this.toHome)
       : assert(logout != null &&
@@ -17,25 +19,6 @@ class AdminHomeScreen extends StatelessWidget {
             toRegisteredClients != null &&
             toPendingApps != null &&
             toHome != null);
-
-  int getPendingDoulaCount() {
-    int pendingDoulaCount = 0;
-    StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance
-            .collection("users")
-            .where("userType", isEqualTo: "doula")
-            .where("status", isEqualTo: "submitted")
-            .snapshots(),
-        builder: (BuildContext context,
-            AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return Text("");
-          }
-          pendingDoulaCount = snapshot.data.documents.length;
-          return Text("");
-        });
-    return pendingDoulaCount;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,23 +41,60 @@ class AdminHomeScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 20.0, bottom: 7.0),
-              child: Text(
-                "2 Pending Client Application(s)",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 5.0, bottom: 40.0),
-              child: Text(
-                "${getPendingDoulaCount()} Pending Doula Application(s)",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
+                padding: EdgeInsets.only(top: 20.0, bottom: 7.0),
+                child: Container(
+                    child: StreamBuilder<QuerySnapshot>(
+                  stream: Firestore.instance
+                      .collection("users")
+                      .where("status", isEqualTo: "submitted")
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                          child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            themeColors["lightBlue"]),
+                      ));
+                    }
+                    int clients = 0;
+                    int doulas = 0;
+
+                    for (int i = 0; i < snapshot.data.documents.length; i++) {
+                      DocumentSnapshot ds = snapshot.data.documents[i];
+                      if (ds["userType"] == "client") {
+                        clients++;
+                      } else if (ds["userType"] == "doula") {
+                        doulas++;
+                      }
+                    }
+
+                    return Text(
+                      "$clients Pending Client Application(s)\n$doulas Pending Doula Application(s)",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    );
+                  },
+                ))),
+//            Padding(
+//              padding: EdgeInsets.only(top: 20.0, bottom: 7.0),
+//              child: Text(
+//                "$numPendingClients Pending Client Application(s)",
+//                style: TextStyle(
+//                  fontSize: 20,
+//                ),
+//              ),
+//            ),
+//            Padding(
+//              padding: EdgeInsets.only(top: 5.0, bottom: 40.0),
+//              child: Text(
+//                "$numPendingDoulas Pending Doula Application(s)",
+//                style: TextStyle(
+//                  fontSize: 20,
+//                ),
+//              ),
+//            ),
             Padding(
               padding: EdgeInsets.only(bottom: 25.0),
               child: RaisedButton(

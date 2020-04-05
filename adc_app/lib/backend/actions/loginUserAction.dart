@@ -20,6 +20,7 @@ class LoginUserAction extends ReduxAction<AppState> {
     return null;
   }
 
+  // db -> app
   List<Phone> convertPhones(List<dynamic> phoneList) {
     List<Phone> phones = List<Phone>();
 
@@ -31,15 +32,6 @@ class LoginUserAction extends ReduxAction<AppState> {
       }
     }
     return phones;
-  }
-
-  List<String> convertStringArray(List<dynamic> array) {
-    if (array != null) {
-      List<String> list = List<String>();
-      array.forEach((element) => list.add(element.toString()));
-      return list;
-    }
-    return null;
   }
 
   AppState populateAdmin(

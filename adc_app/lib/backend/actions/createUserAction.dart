@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'common.dart';
 
+// creates a user (email/password) with firebase
 class CreateUserAction extends ReduxAction<AppState> {
   final String email;
   final String password;
@@ -40,6 +40,7 @@ class CreateUserAction extends ReduxAction<AppState> {
   void after() => dispatch(WaitAction(false));
 }
 
+// adds an admin document to firestore
 class CreateAdminUserDocument extends ReduxAction<AppState> {
   final Admin user;
 
@@ -64,6 +65,7 @@ class CreateAdminUserDocument extends ReduxAction<AppState> {
   void after() => dispatch(WaitAction(false));
 }
 
+// adds an client document to firestore
 class CreateClientUserDocument extends ReduxAction<AppState> {
   final Client user;
 
@@ -84,7 +86,7 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
 
     // handle special cases: phones, emergency contacts, deliveryTypes
 
-    // previous birth categories should only show if liveBirths > 0
+    // clientAppPage4 inserts null for previous birth values if # live births is 0
 
     await dbRef
         .collection("users")
@@ -103,7 +105,7 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
       "liveBirths": user.liveBirths,
       "preterm": user.preterm,
       "lowWeight": user.lowWeight,
-      "deliveryTypes": user.deliveryTypes.join(", "),
+      "deliveryTypes": user.deliveryTypes,
       "multiples": user.multiples,
       "meetBefore": user.meetBefore,
       "homeVisit": user.homeVisit,
@@ -116,6 +118,7 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
   void after() => dispatch(WaitAction(false));
 }
 
+// adds an doula document to firestore
 class CreateDoulaUserDocument extends ReduxAction<AppState> {
   final Doula user;
 
@@ -134,7 +137,8 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
       "userType": user.userType,
     });
 
-    // TODO add phones and dates as a json list
+    // handle special cases: phones, UNavailable dates
+
     await dbRef
         .collection("users")
         .document(user.userid)

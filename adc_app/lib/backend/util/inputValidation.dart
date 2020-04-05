@@ -1,5 +1,6 @@
-// methods for validating user input
+import '../states/common.dart';
 
+// methods for validating user input
 String nameValidator(String value) {
   if (value.isEmpty) {
     return 'Please enter name';
@@ -87,4 +88,24 @@ String pwdValidator(String value) {
   } else {
     return null;
   }
+}
+
+// Methods for safely transferring data between app and db
+
+// db -> app
+List<String> convertStringArray(List<dynamic> array) {
+  if (array != null) {
+    List<String> list = List<String>();
+    array.forEach((element) => list.add(element.toString()));
+    return list;
+  }
+  return null;
+}
+
+List<Map<String, dynamic>> phonesToDB(List<Phone> phones) {
+  if (phones != null && phones.length > 0) {
+    // sanity check
+
+  }
+  return null;
 }

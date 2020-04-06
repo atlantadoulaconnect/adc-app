@@ -96,7 +96,6 @@ class UnmatchedClientsScreen extends StatelessWidget {
                         .collection("users")
                         .where("userType", isEqualTo: "client")
                         .where("status", isEqualTo: "approved")
-                        .where("primaryDoula", isEqualTo: null)
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {

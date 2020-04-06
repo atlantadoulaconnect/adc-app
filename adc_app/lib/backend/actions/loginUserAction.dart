@@ -71,25 +71,26 @@ class LoginUserAction extends ReduxAction<AppState> {
     if (specifics != null) {
       // userData/specifics doc is created when application has been submitted
       user = user.copy(
-          name: basics["name"],
-          status: basics["status"],
-          bday: specifics["bday"],
-          birthLocation: specifics["birthLocation"],
-          birthType: specifics["birthType"],
-          deliveryTypes: convertStringArray(specifics["deliveryTypes"]),
-          dueDate: specifics["dueDate"],
-          email: specifics["email"],
-          epidural: specifics["epidural"],
-          homeVisit: specifics["homeVisit"],
-          liveBirths: specifics["liveBirths"],
-          lowWeight: specifics["lowWeight"],
-          meetBefore: specifics["meetBefore"],
-          multiples: specifics["multiples"],
-          phones: convertPhones(specifics["phones"]),
-          photoRelease: specifics["photoRelease"],
-          emergencyContacts: convertEmgContacts(specifics["emergencyContacts"])
-          // primary and backup doulas
-          );
+        name: basics["name"],
+        status: basics["status"],
+        bday: specifics["bday"],
+        birthLocation: specifics["birthLocation"],
+        birthType: specifics["birthType"],
+        deliveryTypes: convertStringArray(specifics["deliveryTypes"]),
+        dueDate: specifics["dueDate"],
+        email: specifics["email"],
+        epidural: specifics["epidural"],
+        homeVisit: specifics["homeVisit"],
+        liveBirths: specifics["liveBirths"],
+        lowWeight: specifics["lowWeight"],
+        meetBefore: specifics["meetBefore"],
+        multiples: specifics["multiples"],
+        phones: convertPhones(specifics["phones"]),
+        photoRelease: specifics["photoRelease"],
+        emergencyContacts: convertEmgContacts(specifics["emergencyContacts"]),
+        primaryDoula: convertDoulaMap(specifics["primaryDoula"]),
+        backupDoula: convertDoulaMap(specifics["backupDoula"]),
+      );
     }
 
     return currState.copy(

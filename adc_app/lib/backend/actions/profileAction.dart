@@ -50,7 +50,9 @@ class SetProfileUser extends ReduxAction<AppState> {
         meetBefore: specifics["meetBefore"],
         multiples: specifics["multiples"],
         phones: convertPhones(specifics["phones"]),
-        photoRelease: specifics["photoRelease"]
+        photoRelease: specifics["photoRelease"],
+        primaryDoula: convertDoulaMap(specifics["primaryDoula"]),
+        backupDoula: convertDoulaMap(specifics["backupDoula"])
         // emergency contacts
         // primary and backup doulas
         );

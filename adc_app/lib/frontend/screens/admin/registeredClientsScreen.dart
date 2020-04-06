@@ -95,7 +95,6 @@ class RegisteredClientsScreen extends StatelessWidget {
                     stream: Firestore.instance
                         .collection("users")
                         .where("userType", isEqualTo: "client")
-                        .where("status", isEqualTo: "approved")
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {

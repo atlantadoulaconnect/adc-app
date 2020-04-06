@@ -8,9 +8,13 @@ class DoulasListForMatchingScreen extends StatelessWidget {
   final User assignee;
   final Future<void> Function(String, String) setProfileUser;
   final Future<void> Function(Client, Map<String, String>) setClientDoulas;
+  final Future<void> Function(User, String) changeStatus;
+  final VoidCallback popScreen;
+  final Future<void> Function(Client, Map<String, String>) setBackupDoula;
 
-  DoulasListForMatchingScreen(this.toProfile, this.setProfileUser,
-      this.assignee, this.setClientDoulas)
+  DoulasListForMatchingScreen(
+      this.toProfile, this.setProfileUser, this.assignee, this.setClientDoulas,
+      this.changeStatus, this.popScreen, this.setBackupDoula)
       : assert(toProfile != null && setProfileUser != null);
 
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
@@ -27,8 +31,15 @@ class DoulasListForMatchingScreen extends StatelessWidget {
             child: MaterialButton(
               onPressed: () async {
                 //TODO: assign this doula to client
-                await setClientDoulas((assignee as Client), {doc["name"] : doc["userid"]});
-                Navigator.pop(context);
+                if ((assignee as Client).primaryDoula == null) {
+                  await setClientDoulas((assignee as Client),
+                      {"name": doc["name"], "userid": doc["userid"]});
+                } else {
+                  await setBackupDoula((assignee as Client),
+                      {"name": doc["name"], "userid": doc["userid"]});
+                  await changeStatus(assignee, "matched");
+                }
+                popScreen();
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -90,7 +101,7 @@ class DoulasListForMatchingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Registered Doulas'),
+          title: Text('Available Doulas'),
         ),
         body: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -106,9 +117,9 @@ class DoulasListForMatchingScreen extends StatelessWidget {
                       if (!snapshot.hasData) {
                         return Center(
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  themeColors["lightBlue"]),
-                            ));
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              themeColors["lightBlue"]),
+                        ));
                       }
                       return ListView.builder(
                         padding: EdgeInsets.all(10.0),
@@ -126,8 +137,9 @@ class DoulasListForMatchingScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) =>
-          DoulasListForMatchingScreen(vm.toProfile, vm.setProfileUser,
-              vm.assignee, vm.setClientDoulas),
+          DoulasListForMatchingScreen(
+              vm.toProfile, vm.setProfileUser, vm.assignee, vm.setClientDoulas,
+              vm.changeStatus, vm.popScreen, vm.setBackupDoulas),
     );
   }
 }
@@ -139,22 +151,35 @@ class ViewModel extends BaseModel<AppState> {
   User assignee;
   Future<void> Function(String, String) setProfileUser;
   Future<void> Function(Client, Map<String, String>) setClientDoulas;
+  Future<void> Function(User, String) changeStatus;
+  VoidCallback popScreen;
+  Future<void> Function(Client, Map<String, String>) setBackupDoulas;
 
   ViewModel.build({
     @required this.toProfile,
     @required this.setProfileUser,
     @required this.assignee,
-    @required this.setClientDoulas,});
+    @required this.setClientDoulas,
+    @required this.changeStatus,
+    @required this.popScreen,
+    @required this.setBackupDoulas,
+  });
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        assignee: state.profileUser,
-        toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
-        setProfileUser: (String userid, String userType) =>
-            dispatchFuture(SetProfileUser(userid, userType)),
-        setClientDoulas: (Client client, Map<String, String> primaryDoula) =>
-            dispatchFuture(UpdateClientDoulas(client, primaryDoula)),
+      assignee: state.profileUser,
+      toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+      setProfileUser: (String userid, String userType) =>
+          dispatchFuture(SetProfileUser(userid, userType)),
+      setClientDoulas: (Client client, Map<String, String> primaryDoula) =>
+          dispatchFuture(UpdateClientDoulas(client, primaryDoula)),
+      changeStatus: (User user, String status) =>
+          dispatchFuture(UpdateUserStatus(user, status)),
+      popScreen: () => dispatch(NavigateAction.pop()),
+      setBackupDoulas: (Client client, Map<String, String> backupDoula) =>
+          dispatchFuture(UpdateClientBackupDoula(client, backupDoula)),
+
     );
   }
 }

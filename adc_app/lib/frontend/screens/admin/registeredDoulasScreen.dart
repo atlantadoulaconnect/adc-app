@@ -95,7 +95,6 @@ class RegisteredDoulasScreen extends StatelessWidget {
                     stream: Firestore.instance
                         .collection("users")
                         .where("userType", isEqualTo: "doula")
-                        .where("status", isEqualTo: "approved")
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {

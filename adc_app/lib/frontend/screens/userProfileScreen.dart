@@ -11,10 +11,7 @@ class UserProfileScreen extends StatefulWidget {
   // profile and can edit it
   final User currentUser;
 
-  UserProfileScreen(
-      this.changeStatus,
-      this.profileUser,
-      this.currentUser,
+  UserProfileScreen(this.changeStatus, this.profileUser, this.currentUser,
       this.toDoulasListMatching)
       : assert(profileUser != null && currentUser != null);
 
@@ -30,6 +27,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   Future<void> Function(User, String) changeStatus;
   bool userApproved;
   bool userHasDoula;
+  bool userHasBackupDoula;
   final VoidCallback toDoulasListMatching;
 
   UserProfileScreenState(this.toDoulasListMatching);
@@ -39,8 +37,13 @@ class UserProfileScreenState extends State<UserProfileScreen> {
     profileUser = widget.profileUser;
     currentUser = widget.currentUser;
     changeStatus = widget.changeStatus;
-    userApproved = profileUser.status == 'approved';
-    userHasDoula = (profileUser is Client) ? (profileUser as Client).primaryDoula != null : null;
+    userApproved = profileUser.status != 'submitted';
+    userHasDoula = (profileUser is Client)
+        ? (profileUser as Client).primaryDoula != null
+        : null;
+    userHasBackupDoula = (profileUser is Client)
+        ? (profileUser as Client).backupDoula != null
+        : null;
     super.initState();
   }
 
@@ -65,7 +68,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       return ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+            padding:
+                EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -130,7 +134,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       onPressed: () async {
                         await changeStatus(profileUserDoula, 'approved');
                         setState(() {
-                          userApproved = profileUser.status == 'approved';
+                          userApproved = profileUser.status != 'submitted';
                         });
                       },
                       color: themeColors['emoryBlue'],
@@ -164,8 +168,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       fontSize: 25,
                       height: 1.5,
                     ),
-                    textAlign: TextAlign.left
-                ),
+                    textAlign: TextAlign.left),
                 Text(
                   'Name: ${profileUser.name}',
                   style: TextStyle(
@@ -248,8 +251,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       fontSize: 25,
                       height: 1.5,
                     ),
-                    textAlign: TextAlign.left
-                ),
+                    textAlign: TextAlign.left),
                 Text(
                   'I am not availabe on: $availableDates',
                   style: TextStyle(
@@ -361,7 +363,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       return ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+            padding:
+                EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -453,7 +456,9 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                   textAlign: TextAlign.left,
                 ),
                 Text(
-                  userHasDoula ? 'Assigned Doula: ${profileUserClient.primaryDoula.keys.first}' : 'No Doula Assigned',
+                  userHasDoula
+                      ? 'Assigned Doula: ${profileUserClient.primaryDoula["name"]}'
+                      : 'No Primary Doula Assigned',
                   style: TextStyle(
                       fontFamily: 'Roboto',
                       color: themeColors['black'],
@@ -485,6 +490,66 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                         toDoulasListMatching();
                         setState(() {
                           userHasDoula = profileUserClient.primaryDoula != null;
+                        });
+                      },
+                      color: themeColors['emoryBlue'],
+                      textColor: Colors.black,
+                      padding: EdgeInsets.all(15.0),
+                      splashColor: themeColors['emoryBlue'],
+                      child: Text(
+                        "Assign Doula",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: themeColors['white'],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  userHasBackupDoula
+                      ? 'Assigned Doula: ${profileUserClient.primaryDoula["name"]}'
+                      : 'No Backup Doula Assigned',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Visibility(
+                  visible: userApproved && userHasDoula && !userHasBackupDoula,
+                  child: Text(
+                    '',
+                    style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: themeColors['black'],
+                        fontSize: 12,
+                        height: 1.0),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Center(
+                  child: Visibility(
+                    visible: userApproved && userHasDoula && !userHasBackupDoula,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(15.0),
+                          side: BorderSide(color: themeColors['emoryBlue'])),
+                      onPressed: () async {
+                        //TODO: need to show doulas and store selected assignment
+                        toDoulasListMatching();
+                        setState(() {
+                          userHasBackupDoula = profileUserClient.backupDoula != null;
                         });
                       },
                       color: themeColors['emoryBlue'],
@@ -772,7 +837,6 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         ],
       );
     }
-
   }
 
   ListView clientUser() {}
@@ -827,8 +891,11 @@ class UserProfileScreenConnector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
         model: ViewModel(),
-        builder: (BuildContext context, ViewModel vm) =>
-            UserProfileScreen(vm.changeStatus, vm.profileUser, vm.currentUser, vm.toDoulasListMatching));
+        builder: (BuildContext context, ViewModel vm) => UserProfileScreen(
+            vm.changeStatus,
+            vm.profileUser,
+            vm.currentUser,
+            vm.toDoulasListMatching));
   }
 }
 
@@ -841,21 +908,22 @@ class ViewModel extends BaseModel<AppState> {
   User currentUser;
   Future<void> Function(User, String) changeStatus;
 
-  ViewModel.build({
-    @required this.profileUser,
-    @required this.currentUser,
-    @required this.changeStatus,
-    @required this.toDoulasListMatching})
+  ViewModel.build(
+      {@required this.profileUser,
+      @required this.currentUser,
+      @required this.changeStatus,
+      @required this.toDoulasListMatching})
       : super(equals: [profileUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        profileUser: state.profileUser,
-        currentUser: state.currentUser,
-        toDoulasListMatching: () => dispatch(NavigateAction.pushNamed("/doulasListMatching")),
-        changeStatus: (User profile, String status) =>
-            dispatchFuture(UpdateUserStatus(profile, status)),
+      profileUser: state.profileUser,
+      currentUser: state.currentUser,
+      toDoulasListMatching: () =>
+          dispatch(NavigateAction.pushNamed("/doulasListMatching")),
+      changeStatus: (User profile, String status) =>
+          dispatchFuture(UpdateUserStatus(profile, status)),
     );
   }
 }

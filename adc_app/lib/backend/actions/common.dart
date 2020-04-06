@@ -17,6 +17,7 @@ export '../states/messagesState.dart';
 // util
 export '../util/persistence.dart';
 export '../util/timeConversion.dart';
+export '../util/inputValidation.dart';
 
 // packages
 export 'package:async_redux/async_redux.dart';

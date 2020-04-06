@@ -404,13 +404,20 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                                 deliveries.add("vbac");
                               }
 
-                              updateClient(
-                                  currentUser,
-                                  int.parse(selectedBirthCount),
-                                  pretermValue == 1,
-                                  lowBirthWeightValue == 1,
-                                  deliveries,
-                                  previousTwinsOrTriplets == 1);
+                              int births = int.parse(selectedBirthCount);
+
+                              if (births == 0) {
+                                updateClient(currentUser, births, null, null,
+                                    null, null);
+                              } else {
+                                updateClient(
+                                    currentUser,
+                                    births,
+                                    pretermValue == 1,
+                                    lowBirthWeightValue == 1,
+                                    deliveries,
+                                    previousTwinsOrTriplets == 1);
+                              }
 
                               toClientAppPage5();
                             }

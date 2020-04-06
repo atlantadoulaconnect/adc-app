@@ -1,3 +1,5 @@
+import 'package:adc_app/frontend/screens/application/appTypeScreen.dart';
+
 import './common.dart';
 import 'package:async_redux/async_redux.dart';
 import './admin/adminHomeScreen.dart';
@@ -119,6 +121,11 @@ class HomeScreenConnector extends StatelessWidget {
                     vm.toRecentMessages, vm.toInfo);
               }
               break;
+            case "none":
+              {
+                return AppTypeScreen(vm.currentUser, vm.updateClient,
+                    vm.updateDoula, vm.toClientApp, vm.toDoulaApp);
+              }
             default:
               {
                 return HomeScreen(
@@ -145,36 +152,48 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toRegisteredClients;
   VoidCallback toHome;
   VoidCallback toRecentMessages;
+  void Function(Client) updateClient;
+  void Function(Doula) updateDoula;
+  VoidCallback toClientApp;
+  VoidCallback toDoulaApp;
 
-  ViewModel.build({
-    @required this.currentUser,
-    @required this.toSignup,
-    @required this.toLogin,
-    @required this.toInfo,
-    @required this.logout,
-    @required this.toRegisteredDoulas,
-    @required this.toRegisteredClients,
-    @required this.toHome,
-    @required this.toPendingApps,
-    @required this.toRecentMessages,
-  }) : super(equals: [currentUser]);
+  ViewModel.build(
+      {@required this.currentUser,
+      @required this.toSignup,
+      @required this.toLogin,
+      @required this.toInfo,
+      @required this.logout,
+      @required this.toRegisteredDoulas,
+      @required this.toRegisteredClients,
+      @required this.toHome,
+      @required this.toPendingApps,
+      @required this.toRecentMessages,
+      @required this.toClientApp,
+      @required this.toDoulaApp,
+      @required this.updateClient,
+      @required this.updateDoula})
+      : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-      currentUser: state.currentUser,
-      toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
-      toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
-      toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
-      logout: () => dispatchFuture(LogoutUserAction()),
-      toRegisteredDoulas: () =>
-          dispatch(NavigateAction.pushNamed("/registeredDoulas")),
-      toRegisteredClients: () =>
-          dispatch(NavigateAction.pushNamed("/registeredClients")),
-      toHome: () => dispatch(NavigateAction.pushNamed("/")),
-      toPendingApps: () => dispatch(NavigateAction.pushNamed("/pendingApps")),
-      toRecentMessages: () =>
-          dispatch(NavigateAction.pushNamed("/recentMessages")),
-    );
+        currentUser: state.currentUser,
+        toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
+        toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
+        toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
+        logout: () => dispatchFuture(LogoutUserAction()),
+        toRegisteredDoulas: () =>
+            dispatch(NavigateAction.pushNamed("/registeredDoulas")),
+        toRegisteredClients: () =>
+            dispatch(NavigateAction.pushNamed("/registeredClients")),
+        toHome: () => dispatch(NavigateAction.pushNamed("/")),
+        toPendingApps: () => dispatch(NavigateAction.pushNamed("/pendingApps")),
+        toRecentMessages: () =>
+            dispatch(NavigateAction.pushNamed("/recentMessages")),
+        toClientApp: () =>
+            dispatch(NavigateAction.pushNamed("/clientAppPage1")),
+        toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
+        updateClient: (Client user) => dispatch(UpdateClientUserAction(user)),
+        updateDoula: (Doula user) => dispatch(UpdateDoulaUserAction(user)));
   }
 }

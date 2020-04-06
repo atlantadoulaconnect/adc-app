@@ -1,5 +1,6 @@
-// methods for validating user input
+import '../states/common.dart';
 
+// methods for validating user input
 String nameValidator(String value) {
   if (value.isEmpty) {
     return 'Please enter name';
@@ -87,4 +88,71 @@ String pwdValidator(String value) {
   } else {
     return null;
   }
+}
+
+// Methods for safely transferring data between app and db
+
+// db -> app
+List<String> convertStringArray(List<dynamic> array) {
+  if (array != null) {
+    List<String> list = List<String>();
+    array.forEach((element) => list.add(element.toString()));
+    return list;
+  }
+  return null;
+}
+
+List<Map<String, dynamic>> phonesToDB(List<Phone> phones) {
+  List<Map<String, dynamic>> array = List();
+  if (phones != null && phones.length > 0) {
+    // sanity check
+    phones.forEach((phone) {
+      array.add({"number": phone.number, "isPrimary": phone.isPrimary});
+    });
+    return array;
+  }
+  return null;
+}
+
+List<Phone> convertPhones(List<dynamic> phoneList) {
+  List<Phone> phones = List<Phone>();
+
+  if (phoneList != null) {
+    if (phoneList.length > 0) {
+      phoneList.forEach((element) {
+        phones.add(Phone(element["number"].toString(), element["isPrimary"]));
+      });
+    }
+  }
+  return phones;
+}
+
+// emergency contacts
+List<Map<String, dynamic>> emgContactsToDB(List<EmergencyContact> ecs) {
+  List<Map<String, dynamic>> array = List();
+  if (ecs != null && ecs.length > 0) {
+    // sanity check
+    ecs.forEach((ec) {
+      array.add({
+        "name": ec.name,
+        "relationship": ec.relationship,
+        "phones": phonesToDB(ec.phones)
+      });
+    });
+    return array;
+  }
+  return null;
+}
+
+List<EmergencyContact> convertEmgContacts(List<dynamic> ecList) {
+  List<EmergencyContact> emgContacts = List();
+
+  if (ecList != null && ecList.length > 0) {
+    ecList.forEach((ec) {
+      emgContacts.add(EmergencyContact(ec["name"].toString(),
+          ec["relationship"].toString(), convertPhones(ec["phones"])));
+    });
+    return emgContacts;
+  }
+  return null;
 }

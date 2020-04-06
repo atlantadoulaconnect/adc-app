@@ -24,7 +24,7 @@ export '../../backend/actions/waitAction.dart';
 
 // states
 export '../../backend/states/appState.dart';
-export '../../backend/states/applicationState.dart';
+export '../../backend/states/messagesState.dart';
 
 // util
 export '../../backend/util/timeConversion.dart';

@@ -11,17 +11,17 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) {
     currentUser: json['currentUser'] == null
         ? null
         : User.fromJson(json['currentUser'] as Map<String, dynamic>),
-    formState: json['formState'] == null
-        ? null
-        : ApplicationState.fromJson(json['formState'] as Map<String, dynamic>),
     messagesState: json['messagesState'] == null
         ? null
         : MessagesState.fromJson(json['messagesState'] as Map<String, dynamic>),
+    pages: (json['pages'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, e as bool),
+    ),
   );
 }
 
 Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'currentUser': instance.currentUser?.toJson(),
       'messagesState': instance.messagesState?.toJson(),
-      'formState': instance.formState?.toJson(),
+      'pages': instance.pages,
     };

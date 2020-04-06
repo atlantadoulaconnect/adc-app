@@ -489,6 +489,7 @@ class ViewModel extends BaseModel<AppState> {
           dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         }
       },
+      //completePage: (String pageName) => dispatch(CompletePageAction(pageName))
     );
   }
 }

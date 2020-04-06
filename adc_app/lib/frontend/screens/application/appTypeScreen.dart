@@ -125,7 +125,13 @@ class ViewModel extends BaseModel<AppState> {
         toClientApp: () =>
             dispatch(NavigateAction.pushNamed("/clientAppPage1")),
         toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
-        updateClient: (Client user) => dispatch(UpdateClientUserAction(user)),
-        updateDoula: (Doula user) => dispatch(UpdateDoulaUserAction(user)));
+        updateClient: (Client user) {
+          dispatch(UpdateClientUserAction(user));
+          dispatch(ClientInitFormAction());
+        },
+        updateDoula: (Doula user) {
+          dispatch(UpdateDoulaUserAction(user));
+          dispatch(DoulaInitFormAction());
+        });
   }
 }

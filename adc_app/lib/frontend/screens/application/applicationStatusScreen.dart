@@ -2,7 +2,7 @@ import '../common.dart';
 
 class ApplicationStatusScreen extends StatelessWidget {
   final User currentUser;
-  final ApplicationState application;
+  final Map<String, bool> application;
   final void Function(String) toPage;
 
   ApplicationStatusScreen(this.currentUser, this.application, this.toPage)
@@ -73,7 +73,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   User currentUser;
-  ApplicationState application;
+  Map<String, bool> application;
   void Function(String) toPage; // user gets taken to selected page
 
   ViewModel.build(
@@ -86,7 +86,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        application: state.formState,
+        application: state.pages,
         toPage: (String pageName) =>
             dispatch(NavigateAction.pushNamed(pageName)));
   }

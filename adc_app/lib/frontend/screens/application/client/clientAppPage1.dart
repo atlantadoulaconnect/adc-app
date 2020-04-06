@@ -11,14 +11,16 @@ class ClientAppPage1 extends StatefulWidget {
   final void Function(Client, String, String, List<Phone>) updateClient;
   final VoidCallback toClientAppPage2;
   final void Function(bool) cancelApplication;
+  final void Function(String) completePage;
 
   ClientAppPage1(this.currentUser, this.updateClient, this.toClientAppPage2,
-      this.cancelApplication)
+      this.cancelApplication, this.completePage)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
             toClientAppPage2 != null &&
-            cancelApplication != null);
+            cancelApplication != null &&
+            completePage != null);
 
   @override
   State<StatefulWidget> createState() {
@@ -32,6 +34,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
   void Function(Client, String, String, List<Phone>) updateClient;
   VoidCallback toClientAppPage2;
   void Function(bool) cancelApplication;
+  void Function(String) completePage;
 
   TextEditingController _firstNameCtrl;
   TextEditingController _lastInitCtrl;
@@ -45,6 +48,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
     updateClient = widget.updateClient;
     toClientAppPage2 = widget.toClientAppPage2;
     cancelApplication = widget.cancelApplication;
+    completePage = widget.completePage;
 
     _firstNameCtrl = TextEditingController();
     _lastInitCtrl = TextEditingController();
@@ -264,7 +268,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
 
                             updateClient(
                                 currentUser, displayName, birthday, phones);
-
+                            completePage("clientAppPage1");
                             toClientAppPage2();
                           }
                         },
@@ -297,7 +301,8 @@ class ClientAppPage1Connector extends StatelessWidget {
           vm.currentUser,
           vm.updateClient,
           vm.toClientAppPage2,
-          vm.cancelApplication),
+          vm.cancelApplication,
+          vm.completePage),
     );
   }
 }
@@ -309,31 +314,34 @@ class ViewModel extends BaseModel<AppState> {
   void Function(Client, String, String, List<Phone>) updateClient;
   VoidCallback toClientAppPage2;
   void Function(bool) cancelApplication;
+  void Function(String) completePage;
 
   ViewModel.build({
     @required this.currentUser,
     @required this.updateClient,
     @required this.toClientAppPage2,
     @required this.cancelApplication,
+    @required this.completePage,
   }) : super(equals: []);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-      currentUser: state.currentUser,
-      toClientAppPage2: () =>
-          dispatch(NavigateAction.pushNamed("/clientAppPage2")),
-      updateClient:
-          (Client user, String name, String bday, List<Phone> phones) =>
-              dispatch(UpdateClientUserAction(user,
-                  name: name, phones: phones, bday: bday)),
-      cancelApplication: (bool confirmed) {
-        dispatch(NavigateAction.pop());
-        if (confirmed) {
-          dispatch(CancelApplicationAction());
-          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
-        }
-      },
-    );
+        currentUser: state.currentUser,
+        toClientAppPage2: () =>
+            dispatch(NavigateAction.pushNamed("/clientAppPage2")),
+        updateClient:
+            (Client user, String name, String bday, List<Phone> phones) =>
+                dispatch(UpdateClientUserAction(user,
+                    name: name, phones: phones, bday: bday)),
+        cancelApplication: (bool confirmed) {
+          dispatch(NavigateAction.pop());
+          if (confirmed) {
+            dispatch(CancelApplicationAction());
+            dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+          }
+        },
+        completePage: (String pageName) =>
+            dispatch(CompletePageAction(pageName)));
   }
 }

@@ -9,7 +9,6 @@ export '../models/phone.dart';
 export '../models/user.dart';
 
 // states
-export '../states/applicationState.dart';
 export '../states/appState.dart';
 export '../states/connectionsState.dart';
 export '../states/messagesState.dart';

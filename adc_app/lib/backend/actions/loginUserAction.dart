@@ -128,7 +128,8 @@ class LoginUserAction extends ReduxAction<AppState> {
           certProgram: specifics["certProgram"],
           certified: specifics["certified"],
           email: specifics["email"],
-          phones: convertPhones(specifics["phones"]));
+          phones: convertPhones(specifics["phones"]),
+          availableDates: specifics["unavailableDates"]);
     }
 
     return currState.copy(
@@ -191,7 +192,7 @@ class LoginUserAction extends ReduxAction<AppState> {
               current = AppState(
                   currentUser: User(userId, email),
                   waiting: false,
-                  formState: ApplicationState.initialState(),
+                  pages: null,
                   messagesState: MessagesState.initialState());
             }
             break;

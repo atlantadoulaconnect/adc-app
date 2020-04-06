@@ -21,12 +21,12 @@ Client _$ClientFromJson(Map<String, dynamic> json) {
     chats: (json['chats'] as List)?.map((e) => e as String)?.toSet(),
     status: json['status'] as String,
     bday: json['bday'] as String,
-    primaryDoula: json['primaryDoula'] == null
-        ? null
-        : Doula.fromJson(json['primaryDoula'] as Map<String, dynamic>),
-    backupDoula: json['backupDoula'] == null
-        ? null
-        : Doula.fromJson(json['backupDoula'] as Map<String, dynamic>),
+    primaryDoula: (json['primaryDoula'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, e as String),
+    ),
+    backupDoula: (json['backupDoula'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, e as String),
+    ),
     dueDate: json['dueDate'] as String,
     birthLocation: json['birthLocation'] as String,
     birthType: json['birthType'] as String,
@@ -74,6 +74,6 @@ Map<String, dynamic> _$ClientToJson(Client instance) => <String, dynamic>{
       'preterm': instance.preterm,
       'emergencyContacts':
           instance.emergencyContacts?.map((e) => e?.toJson())?.toList(),
-      'primaryDoula': instance.primaryDoula?.toJson(),
-      'backupDoula': instance.backupDoula?.toJson(),
+      'primaryDoula': instance.primaryDoula,
+      'backupDoula': instance.backupDoula,
     };

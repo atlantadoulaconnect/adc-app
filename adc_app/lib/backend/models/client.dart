@@ -1,3 +1,5 @@
+import 'package:adc_app/frontend/screens/common.dart';
+
 import './common.dart';
 
 part 'client.g.dart';
@@ -22,8 +24,8 @@ class Client extends User {
   bool preterm;
 
   List<EmergencyContact> emergencyContacts;
-  Doula primaryDoula;
-  Doula backupDoula;
+  Map<String, String> primaryDoula; // {"name": "Debra D.", "userid": "ABCD123"}
+  Map<String, String> backupDoula;
 
   Client(
       {String userid,
@@ -131,8 +133,8 @@ class Client extends User {
           other is Client &&
           runtimeType == other.runtimeType &&
           bday == other.bday &&
-          primaryDoula == other.primaryDoula &&
-          backupDoula == other.backupDoula &&
+          mapEquals(primaryDoula, other.primaryDoula) &&
+          mapEquals(backupDoula, other.backupDoula) &&
           dueDate == other.dueDate &&
           birthLocation == other.birthLocation &&
           birthType == other.birthType &&

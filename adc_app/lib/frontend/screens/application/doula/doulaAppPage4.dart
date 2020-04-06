@@ -1,5 +1,3 @@
-import 'package:adc_app/backend/actions/updateApplicationAction.dart';
-
 import '../../common.dart';
 import 'package:calendarro/calendarro.dart';
 
@@ -69,6 +67,18 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
 
   @override
   Widget build(BuildContext context) {
+    String monthYear = formatDateMonthYYYY(DateTime.now());
+    Calendarro myCal = Calendarro(
+      displayMode: DisplayMode.MONTHS,
+      selectionMode: SelectionMode.MULTI,
+      startDate: DateTime.now()
+          .subtract(Duration(days: DateTime.now().day - 1)),
+      endDate: DateTime.now().add(Duration(days: 1000)),
+    );
+    myCal.onPageSelected = (start, end) {
+      monthYear = formatDateMonthYYYY(start);
+      setState(() {});
+    };
     return Scaffold(
         appBar: AppBar(
           title: Text("Doula Application"),
@@ -105,9 +115,9 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(14.0),
                   child: Text(
-                    'Please select the dates that you \nare available to serve as a doula:',
+                    'Please select the dates when you \nare NOT available:',
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.bold,
@@ -118,22 +128,27 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
               ),
               Center(
                 child: Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 8.0),
+                  child: Text(
+                    monthYear,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    height: 260,
+                    height: 280,
                     width: 300,
-                    child: Calendarro(
-                      displayMode: DisplayMode.MONTHS,
-                      selectionMode: SelectionMode.MULTI,
-                      startDate: DateTime.now()
-                          .subtract(Duration(days: DateTime.now().day - 1)),
-                      endDate: DateTime.now().add(Duration(days: 1000)),
-
-//                  onTap: (date) {
-//                    setState(() {
-//                      monthYear = date.toString();
-//                    });
-//                  }
+                    color: themeColors["coolGray1"],
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: myCal,
                     ),
                   ),
                 ),
@@ -197,6 +212,11 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
                                 side: BorderSide(color: themeColors['yellow'])),
                             onPressed: () {
                               // TODO selecting calendar dates and adding to Doula
+                              List<String> availableDates = new List<String>();
+                              for (DateTime d in myCal.selectedDates) {
+                                availableDates.add(formatDateYYYYMMDD(d));
+                              }
+                              updateDoula(currentUser, availableDates);
                               toDoulaAppPage5();
                             },
                             color: themeColors['yellow'],

@@ -1,7 +1,6 @@
 import 'dart:ffi';
 
 import 'package:adc_app/backend/actions/common.dart';
-import 'package:adc_app/backend/actions/updateApplicationAction.dart';
 
 import '../../common.dart';
 import '../../../../backend/util/inputValidation.dart';

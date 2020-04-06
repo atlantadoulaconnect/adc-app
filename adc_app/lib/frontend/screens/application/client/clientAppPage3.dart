@@ -1,5 +1,3 @@
-import 'package:adc_app/backend/actions/updateApplicationAction.dart';
-
 import '../../common.dart';
 
 class ClientAppPage3 extends StatefulWidget {

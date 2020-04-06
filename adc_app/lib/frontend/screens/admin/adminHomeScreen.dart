@@ -31,6 +31,7 @@ class AdminHomeScreen extends StatelessWidget {
         body: Center(
             child: Column(
           children: <Widget>[
+            NotificationHandler(),
             Padding(
               padding: EdgeInsets.only(top: 40.0, bottom: 20.0),
               child: Text(

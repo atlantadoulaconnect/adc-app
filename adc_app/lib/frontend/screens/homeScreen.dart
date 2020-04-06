@@ -23,6 +23,7 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.all(26.0),
           child: Center(
               child: Column(children: <Widget>[
+            NotificationHandler(),
             Spacer(flex: 1),
             Text("Atlanta Doula Connect",
                 textAlign: TextAlign.center,

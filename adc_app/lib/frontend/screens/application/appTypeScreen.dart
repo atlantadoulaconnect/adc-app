@@ -53,6 +53,7 @@ class AppTypeScreen extends StatelessWidget {
                         // replace current User with a Client in AppState
                         Client user = Client(
                             userType: "client",
+                            status: "incomplete",
                             userid: currentUser.userid,
                             email: currentUser.email);
                         updateClient(user);
@@ -76,6 +77,7 @@ class AppTypeScreen extends StatelessWidget {
                       onPressed: () {
                         Doula user = Doula(
                             userType: "doula",
+                            status: "incomplete",
                             userid: currentUser.userid,
                             email: currentUser.email);
                         updateDoula(user);

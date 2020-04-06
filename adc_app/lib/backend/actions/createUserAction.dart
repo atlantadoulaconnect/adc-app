@@ -80,6 +80,7 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
     final dbRef = Firestore.instance;
     await dbRef.collection("users").document(user.userid).setData({
       "userid": user.userid,
+      "status": "submitted",
       "name": user.name,
       "userType": user.userType,
     });
@@ -133,6 +134,7 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
     final dbRef = Firestore.instance;
     await dbRef.collection("users").document(user.userid).setData({
       "userid": user.userid,
+      "status": "submitted",
       "name": user.name,
       "userType": user.userType,
     });
@@ -153,14 +155,6 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
       "certInProgress": user.certInProgress,
       "certProgram": user.certProgram,
       "birthsNeeded": user.birthsNeeded
-    });
-
-    await dbRef.collection("applications").document(user.userid).setData({
-      "userid": user.userid,
-      "name": user.name,
-      "type": user.userType,
-      "status": "submitted",
-      "dateSubmitted": "${currentUnixTime()}"
     });
 
     // TODO applicationState, update application state to submitted

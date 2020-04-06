@@ -9,8 +9,8 @@ class DoulasListForMatchingScreen extends StatelessWidget {
   final Future<void> Function(String, String) setProfileUser;
   final Future<void> Function(Client, Map<String, String>) setClientDoulas;
 
-  DoulasListForMatchingScreen(this.toProfile, this.setProfileUser,
-      this.assignee, this.setClientDoulas)
+  DoulasListForMatchingScreen(
+      this.toProfile, this.setProfileUser, this.assignee, this.setClientDoulas)
       : assert(toProfile != null && setProfileUser != null);
 
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
@@ -27,7 +27,8 @@ class DoulasListForMatchingScreen extends StatelessWidget {
             child: MaterialButton(
               onPressed: () async {
                 //TODO: assign this doula to client
-                await setClientDoulas((assignee as Client), {doc["name"] : doc["userid"]});
+                await setClientDoulas((assignee as Client),
+                    {"name": doc["name"], "userid": doc["userid"]});
                 Navigator.pop(context);
               },
               child: Row(
@@ -106,9 +107,9 @@ class DoulasListForMatchingScreen extends StatelessWidget {
                       if (!snapshot.hasData) {
                         return Center(
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  themeColors["lightBlue"]),
-                            ));
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              themeColors["lightBlue"]),
+                        ));
                       }
                       return ListView.builder(
                         padding: EdgeInsets.all(10.0),
@@ -126,8 +127,8 @@ class DoulasListForMatchingScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) =>
-          DoulasListForMatchingScreen(vm.toProfile, vm.setProfileUser,
-              vm.assignee, vm.setClientDoulas),
+          DoulasListForMatchingScreen(
+              vm.toProfile, vm.setProfileUser, vm.assignee, vm.setClientDoulas),
     );
   }
 }
@@ -144,17 +145,18 @@ class ViewModel extends BaseModel<AppState> {
     @required this.toProfile,
     @required this.setProfileUser,
     @required this.assignee,
-    @required this.setClientDoulas,});
+    @required this.setClientDoulas,
+  });
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        assignee: state.profileUser,
-        toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
-        setProfileUser: (String userid, String userType) =>
-            dispatchFuture(SetProfileUser(userid, userType)),
-        setClientDoulas: (Client client, Map<String, String> primaryDoula) =>
-            dispatchFuture(UpdateClientDoulas(client, primaryDoula)),
+      assignee: state.profileUser,
+      toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+      setProfileUser: (String userid, String userType) =>
+          dispatchFuture(SetProfileUser(userid, userType)),
+      setClientDoulas: (Client client, Map<String, String> primaryDoula) =>
+          dispatchFuture(UpdateClientDoulas(client, primaryDoula)),
     );
   }
 }

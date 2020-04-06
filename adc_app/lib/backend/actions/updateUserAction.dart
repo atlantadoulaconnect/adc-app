@@ -14,8 +14,8 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
   final bool phoneVerified;
 
   final String bday;
-  final Doula primaryDoula;
-  final Doula backupDoula;
+  final Map<String, String> primaryDoula;
+  final Map<String, String> backupDoula;
   final String dueDate;
   final String birthLocation;
   final String birthType;
@@ -264,7 +264,12 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
   @override
   Future<AppState> reduce() async {
     final dbRef = Firestore.instance;
-    await dbRef.collection("users").document(client.userid).updateData({
+    await dbRef
+        .collection("users")
+        .document(client.userid)
+        .collection("userData")
+        .document("specifics")
+        .updateData({
       "primaryDoula": primaryDoula,
     });
 

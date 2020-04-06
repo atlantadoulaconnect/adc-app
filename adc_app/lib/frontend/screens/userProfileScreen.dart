@@ -11,10 +11,7 @@ class UserProfileScreen extends StatefulWidget {
   // profile and can edit it
   final User currentUser;
 
-  UserProfileScreen(
-      this.changeStatus,
-      this.profileUser,
-      this.currentUser,
+  UserProfileScreen(this.changeStatus, this.profileUser, this.currentUser,
       this.toDoulasListMatching)
       : assert(profileUser != null && currentUser != null);
 
@@ -40,7 +37,9 @@ class UserProfileScreenState extends State<UserProfileScreen> {
     currentUser = widget.currentUser;
     changeStatus = widget.changeStatus;
     userApproved = profileUser.status == 'approved';
-    userHasDoula = (profileUser is Client) ? (profileUser as Client).primaryDoula != null : null;
+    userHasDoula = (profileUser is Client)
+        ? (profileUser as Client).primaryDoula != null
+        : null;
     super.initState();
   }
 
@@ -65,7 +64,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       return ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+            padding:
+                EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -164,8 +164,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       fontSize: 25,
                       height: 1.5,
                     ),
-                    textAlign: TextAlign.left
-                ),
+                    textAlign: TextAlign.left),
                 Text(
                   'Name: ${profileUser.name}',
                   style: TextStyle(
@@ -248,8 +247,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       fontSize: 25,
                       height: 1.5,
                     ),
-                    textAlign: TextAlign.left
-                ),
+                    textAlign: TextAlign.left),
                 Text(
                   'I am not availabe on: $availableDates',
                   style: TextStyle(
@@ -361,7 +359,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       return ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+            padding:
+                EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -453,7 +452,9 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                   textAlign: TextAlign.left,
                 ),
                 Text(
-                  userHasDoula ? 'Assigned Doula: ${profileUserClient.primaryDoula.keys.first}' : 'No Doula Assigned',
+                  userHasDoula
+                      ? 'Assigned Doula: ${profileUserClient.primaryDoula["name"]}'
+                      : 'No Doula Assigned',
                   style: TextStyle(
                       fontFamily: 'Roboto',
                       color: themeColors['black'],
@@ -772,7 +773,6 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         ],
       );
     }
-
   }
 
   ListView clientUser() {}
@@ -827,8 +827,11 @@ class UserProfileScreenConnector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
         model: ViewModel(),
-        builder: (BuildContext context, ViewModel vm) =>
-            UserProfileScreen(vm.changeStatus, vm.profileUser, vm.currentUser, vm.toDoulasListMatching));
+        builder: (BuildContext context, ViewModel vm) => UserProfileScreen(
+            vm.changeStatus,
+            vm.profileUser,
+            vm.currentUser,
+            vm.toDoulasListMatching));
   }
 }
 
@@ -841,21 +844,22 @@ class ViewModel extends BaseModel<AppState> {
   User currentUser;
   Future<void> Function(User, String) changeStatus;
 
-  ViewModel.build({
-    @required this.profileUser,
-    @required this.currentUser,
-    @required this.changeStatus,
-    @required this.toDoulasListMatching})
+  ViewModel.build(
+      {@required this.profileUser,
+      @required this.currentUser,
+      @required this.changeStatus,
+      @required this.toDoulasListMatching})
       : super(equals: [profileUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        profileUser: state.profileUser,
-        currentUser: state.currentUser,
-        toDoulasListMatching: () => dispatch(NavigateAction.pushNamed("/doulasListMatching")),
-        changeStatus: (User profile, String status) =>
-            dispatchFuture(UpdateUserStatus(profile, status)),
+      profileUser: state.profileUser,
+      currentUser: state.currentUser,
+      toDoulasListMatching: () =>
+          dispatch(NavigateAction.pushNamed("/doulasListMatching")),
+      changeStatus: (User profile, String status) =>
+          dispatchFuture(UpdateUserStatus(profile, status)),
     );
   }
 }

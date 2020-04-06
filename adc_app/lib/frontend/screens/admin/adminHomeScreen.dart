@@ -41,7 +41,7 @@ class AdminHomeScreen extends StatelessWidget {
               ),
             ),
             Padding(
-                padding: EdgeInsets.only(top: 20.0, bottom: 7.0),
+                padding: EdgeInsets.only(top: 20.0, bottom: 25.0),
                 child: Container(
                     child: StreamBuilder<QuerySnapshot>(
                   stream: Firestore.instance
@@ -70,7 +70,7 @@ class AdminHomeScreen extends StatelessWidget {
                     }
 
                     return Text(
-                      "$clients Pending Client Application(s)\n$doulas Pending Doula Application(s)",
+                      "$clients Pending Client Application(s)\n\n$doulas Pending Doula Application(s)\n",
                       style: TextStyle(
                         fontSize: 20,
                       ),
@@ -96,7 +96,7 @@ class AdminHomeScreen extends StatelessWidget {
 //              ),
 //            ),
             Padding(
-              padding: EdgeInsets.only(bottom: 25.0),
+              padding: EdgeInsets.only(bottom: 35.0),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
@@ -133,7 +133,7 @@ class AdminHomeScreen extends StatelessWidget {
 //              ),
 //            ),
             Padding(
-              padding: EdgeInsets.only(bottom: 25.0),
+              padding: EdgeInsets.only(bottom: 45.0),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),

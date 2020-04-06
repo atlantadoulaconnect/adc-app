@@ -109,6 +109,50 @@ List<Map<String, dynamic>> phonesToDB(List<Phone> phones) {
     phones.forEach((phone) {
       array.add({"number": phone.number, "isPrimary": phone.isPrimary});
     });
+    return array;
+  }
+  return null;
+}
+
+List<Phone> convertPhones(List<dynamic> phoneList) {
+  List<Phone> phones = List<Phone>();
+
+  if (phoneList != null) {
+    if (phoneList.length > 0) {
+      phoneList.forEach((element) {
+        phones.add(Phone(element["number"].toString(), element["isPrimary"]));
+      });
+    }
+  }
+  return phones;
+}
+
+// emergency contacts
+List<Map<String, dynamic>> emgContactsToDB(List<EmergencyContact> ecs) {
+  List<Map<String, dynamic>> array = List();
+  if (ecs != null && ecs.length > 0) {
+    // sanity check
+    ecs.forEach((ec) {
+      array.add({
+        "name": ec.name,
+        "relationship": ec.relationship,
+        "phones": phonesToDB(ec.phones)
+      });
+    });
+    return array;
+  }
+  return null;
+}
+
+List<EmergencyContact> convertEmgContacts(List<dynamic> ecList) {
+  List<EmergencyContact> emgContacts = List();
+
+  if (ecList != null && ecList.length > 0) {
+    ecList.forEach((ec) {
+      emgContacts.add(EmergencyContact(ec["name"].toString(),
+          ec["relationship"].toString(), convertPhones(ec["phones"])));
+    });
+    return emgContacts;
   }
   return null;
 }

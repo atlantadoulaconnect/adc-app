@@ -21,18 +21,6 @@ class LoginUserAction extends ReduxAction<AppState> {
   }
 
   // db -> app
-  List<Phone> convertPhones(List<dynamic> phoneList) {
-    List<Phone> phones = List<Phone>();
-
-    if (phoneList != null) {
-      if (phoneList.length > 0) {
-        phoneList.forEach((element) {
-          phones.add(Phone(element["number"].toString(), element["isPrimary"]));
-        });
-      }
-    }
-    return phones;
-  }
 
   AppState populateAdmin(
       String userId, DocumentSnapshot basics, DocumentSnapshot specifics) {

@@ -110,7 +110,8 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
       "multiples": user.multiples,
       "meetBefore": user.meetBefore,
       "homeVisit": user.homeVisit,
-      "photoRelease": user.photoRelease
+      "photoRelease": user.photoRelease,
+      "emergencyContacts": emgContactsToDB(user.emergencyContacts)
     });
   }
 

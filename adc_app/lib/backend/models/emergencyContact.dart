@@ -6,8 +6,6 @@ part 'emergencyContact.g.dart';
 class EmergencyContact {
   String name;
   String relationship;
-
-  // TODO list of phone.dart objects
   List<Phone> phones;
 
   EmergencyContact(String name, String relationship, List<Phone> phones) {

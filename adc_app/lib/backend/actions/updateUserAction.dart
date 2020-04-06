@@ -14,8 +14,8 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
   final bool phoneVerified;
 
   final String bday;
-  final Doula primaryDoula;
-  final Doula backupDoula;
+  final Map<String, String> primaryDoula;
+  final Map<String, String> backupDoula;
   final String dueDate;
   final String birthLocation;
   final String birthType;
@@ -157,7 +157,6 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
         availableDates: availableDates ?? this.availableDates,
         photoRelease: photoRelease ?? this.photoRelease,
         currentClients: currentClients ?? this.currentClients);
-
     return state.copy(currentUser: updated);
   }
 }
@@ -255,6 +254,56 @@ class UpdateUserStatus extends ReduxAction<AppState> {
   }
 }
 
+class UpdateClientDoulas extends ReduxAction<AppState> {
+  final Client client;
+  final Map<String, String> primaryDoula;
+
+  UpdateClientDoulas(this.client, this.primaryDoula)
+      : assert(client != null && primaryDoula != null);
+
+  @override
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+    await dbRef
+        .collection("users")
+        .document(client.userid)
+        .collection("userData")
+        .document("specifics")
+        .updateData({
+      "primaryDoula": primaryDoula,
+    });
+
+    client.primaryDoula = primaryDoula;
+
+    return state.copy(profileUser: client);
+  }
+}
+
+class UpdateClientBackupDoula extends ReduxAction<AppState> {
+  final Client client;
+  final Map<String, String> backupDoula;
+
+  UpdateClientBackupDoula(this.client, this.backupDoula)
+      : assert(client != null && backupDoula != null);
+
+  @override
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+    await dbRef
+        .collection("users")
+        .document(client.userid)
+        .collection("userData")
+        .document("specifics")
+        .updateData({
+      "backupDoula": backupDoula,
+    });
+
+    client.backupDoula = backupDoula;
+
+    return state.copy(profileUser: client);
+  }
+}
+
 class UpdateClientUserDocument extends ReduxAction<AppState> {
   final Client user;
 
@@ -315,7 +364,8 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
       "certified": user.certified,
       "certInProgress": user.certInProgress,
       "certProgram": user.certProgram,
-      "birthsNeeded": user.birthsNeeded
+      "birthsNeeded": user.birthsNeeded,
+      "unavailableDates": user.availableDates
     });
 
     return null;

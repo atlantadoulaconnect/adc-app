@@ -50,7 +50,9 @@ class SetProfileUser extends ReduxAction<AppState> {
         meetBefore: specifics["meetBefore"],
         multiples: specifics["multiples"],
         phones: convertPhones(specifics["phones"]),
-        photoRelease: specifics["photoRelease"]
+        photoRelease: specifics["photoRelease"],
+        primaryDoula: convertDoulaMap(specifics["primaryDoula"]),
+        backupDoula: convertDoulaMap(specifics["backupDoula"])
         // emergency contacts
         // primary and backup doulas
         );
@@ -59,6 +61,8 @@ class SetProfileUser extends ReduxAction<AppState> {
   Doula populateProfileDoula(
       String userId, DocumentSnapshot basics, DocumentSnapshot specifics) {
     Doula profiled = Doula(userid: userId, userType: "doula");
+
+    print("unav dates type: ${specifics["unavailableDates"].runtimeType}");
 
     return profiled.copy(
         name: basics["name"],
@@ -70,7 +74,8 @@ class SetProfileUser extends ReduxAction<AppState> {
         certProgram: specifics["certProgram"],
         certified: specifics["certified"],
         email: specifics["email"],
-        phones: convertPhones(specifics["phones"]));
+        phones: convertPhones(specifics["phones"]),
+        availableDates: convertStringArray(specifics["unavailableDates"]));
   }
 
   @override

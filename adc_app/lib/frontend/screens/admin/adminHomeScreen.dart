@@ -5,15 +5,16 @@ class AdminHomeScreen extends StatelessWidget {
   final Admin currentUser;
   final VoidCallback logout;
   final VoidCallback toRegisteredDoulas;
-  final VoidCallback toPendingApps;
   final VoidCallback toRegisteredClients;
   final VoidCallback toHome;
+  final VoidCallback toPendingApps;
+  final VoidCallback toUnmatchedClients;
 
   int numPendingClients;
   int numPendingDoulas;
 
   AdminHomeScreen(this.currentUser, this.logout, this.toRegisteredDoulas,
-      this.toRegisteredClients, this.toPendingApps, this.toHome)
+      this.toRegisteredClients, this.toHome, this.toPendingApps, this.toUnmatchedClients)
       : assert(logout != null &&
             toRegisteredDoulas != null &&
             toRegisteredClients != null &&
@@ -30,6 +31,7 @@ class AdminHomeScreen extends StatelessWidget {
         body: Center(
             child: Column(
           children: <Widget>[
+            NotificationHandler(),
             Padding(
               padding: EdgeInsets.only(top: 40.0, bottom: 20.0),
               child: Text(
@@ -41,7 +43,7 @@ class AdminHomeScreen extends StatelessWidget {
               ),
             ),
             Padding(
-                padding: EdgeInsets.only(top: 20.0, bottom: 7.0),
+                padding: EdgeInsets.only(top: 20.0, bottom: 25.0),
                 child: Container(
                     child: StreamBuilder<QuerySnapshot>(
                   stream: Firestore.instance
@@ -70,7 +72,7 @@ class AdminHomeScreen extends StatelessWidget {
                     }
 
                     return Text(
-                      "$clients Pending Client Application(s)\n$doulas Pending Doula Application(s)",
+                      "$clients Pending Client Application(s)\n\n$doulas Pending Doula Application(s)\n",
                       style: TextStyle(
                         fontSize: 20,
                       ),
@@ -96,14 +98,13 @@ class AdminHomeScreen extends StatelessWidget {
 //              ),
 //            ),
             Padding(
-              padding: EdgeInsets.only(bottom: 25.0),
+              padding: EdgeInsets.only(bottom: 35.0),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
                     side: BorderSide(color: themeColors['mediumBlue'])),
                 onPressed: () {
-                  // TODO active matches screen
-                  toPendingApps();
+                    toPendingApps();
                 },
                 color: themeColors['mediumBlue'],
                 textColor: Colors.white,
@@ -133,14 +134,14 @@ class AdminHomeScreen extends StatelessWidget {
 //              ),
 //            ),
             Padding(
-              padding: EdgeInsets.only(bottom: 25.0),
+              padding: EdgeInsets.only(bottom: 45.0),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
                     side: BorderSide(color: themeColors['mediumBlue'])),
                 onPressed: () {
                   // TODO active matches screen
-                  toPendingApps();
+                  toUnmatchedClients();
                 },
                 color: themeColors['mediumBlue'],
                 textColor: Colors.white,
@@ -222,7 +223,7 @@ class AdminHomeScreenConnector extends StatelessWidget {
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) {
         return AdminHomeScreen(vm.currentUser, vm.logout, vm.toRegisteredDoulas,
-            vm.toRegisteredClients, vm.toPendingApps, vm.toHome);
+            vm.toRegisteredClients, vm.toHome, vm.toPendingApps, vm.toUnmatchedClients);
       },
     );
   }
@@ -237,6 +238,7 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toPendingApps;
   VoidCallback toRegisteredClients;
   VoidCallback toHome;
+  VoidCallback toUnmatchedClients;
 
   ViewModel.build(
       {@required this.currentUser,
@@ -244,7 +246,8 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toRegisteredDoulas,
       @required this.toRegisteredClients,
       @required this.toHome,
-      @required this.toPendingApps})
+      @required this.toPendingApps,
+      @required this.toUnmatchedClients,})
       : super(equals: []);
 
   @override
@@ -261,6 +264,8 @@ class ViewModel extends BaseModel<AppState> {
             dispatch(NavigateAction.pushNamed("/registeredClients")),
         toHome: () => dispatch(NavigateAction.pushNamed("/")),
         toPendingApps: () =>
-            dispatch(NavigateAction.pushNamed("/pendingApps")));
+            dispatch(NavigateAction.pushNamed("/pendingApps")),
+        toUnmatchedClients: () => dispatch(NavigateAction.pushNamed("/unmatchedClients")),
+    );
   }
 }

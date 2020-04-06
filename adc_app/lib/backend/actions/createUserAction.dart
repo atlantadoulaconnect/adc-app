@@ -155,7 +155,8 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
       "certified": user.certified,
       "certInProgress": user.certInProgress,
       "certProgram": user.certProgram,
-      "birthsNeeded": user.birthsNeeded
+      "birthsNeeded": user.birthsNeeded,
+      "unavailableDates": user.availableDates
     });
 
     // TODO applicationState, update application state to submitted

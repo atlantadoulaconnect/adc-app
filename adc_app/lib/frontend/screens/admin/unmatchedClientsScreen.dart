@@ -1,13 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/rendering.dart';
-
 import '../common.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class RegisteredDoulasScreen extends StatelessWidget {
+//  applications of people who have applied to participate in the program
+//  but need to be accepted or denied by an admin
+class UnmatchedClientsScreen extends StatelessWidget {
   final VoidCallback toProfile;
   final Future<void> Function(String, String) setProfileUser;
 
-  RegisteredDoulasScreen(this.toProfile, this.setProfileUser)
+  UnmatchedClientsScreen(this.toProfile, this.setProfileUser)
       : assert(toProfile != null && setProfileUser != null);
 
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
@@ -31,10 +31,10 @@ class RegisteredDoulasScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
                       child: Container(
-                        width: 65,
-                        height: 65,
+                        width: 50,
+                        height: 50,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
@@ -46,7 +46,7 @@ class RegisteredDoulasScreen extends StatelessWidget {
                         child: Icon(
                           IconData(0xe7fd, fontFamily: 'MaterialIcons'),
                           color: Colors.black,
-                          size: 50,
+                          size: 40,
                         ),
                       )),
                   Padding(
@@ -61,7 +61,7 @@ class RegisteredDoulasScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               )),
                           Text(
-                            "Doula",
+                            doc["userType"],
                             style: TextStyle(
                               fontSize: 20,
                             ),
@@ -70,7 +70,7 @@ class RegisteredDoulasScreen extends StatelessWidget {
                   ),
                   Spacer(),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Icon(
                       IconData(0xe88f, fontFamily: 'MaterialIcons'),
                       color: Colors.black,
@@ -86,42 +86,47 @@ class RegisteredDoulasScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Registered Doulas'),
+          title: Text("Unmatched Clients"),
         ),
         body: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
-            child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          child: Container(
                 child: StreamBuilder<QuerySnapshot>(
                     stream: Firestore.instance
                         .collection("users")
-                        .where("userType", isEqualTo: "doula")
+                        .where("userType", isEqualTo: "client")
+                        .where("status", isEqualTo: "approved")
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (!snapshot.hasData) {
                         return Center(
                             child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              themeColors["lightBlue"]),
-                        ));
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  themeColors["lightBlue"]),
+                            ));
                       }
                       return ListView.builder(
                         padding: EdgeInsets.all(10.0),
-                        itemBuilder: (context, index) =>
-                            buildItem(context, snapshot.data.documents[index]),
+                        itemBuilder: (context, index) => buildItem(
+                            context, snapshot.data.documents[index]),
                         itemCount: snapshot.data.documents.length,
                       );
-                    }))));
+                    })
+            ),
+        ),
+    );
   }
 }
 
-class RegisteredDoulasScreenConnector extends StatelessWidget {
+class UnmatchedClientsScreenConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) =>
-          RegisteredDoulasScreen(vm.toProfile, vm.setProfileUser),
+      builder: (BuildContext context, ViewModel vm) {
+        return UnmatchedClientsScreen(vm.toProfile, vm.setProfileUser);
+      },
     );
   }
 }

@@ -331,6 +331,24 @@ class SettingsScreenState extends State<SettingsScreen> {
         ]
 
     ));
+//    adminCategoryExpansionTiles.add(ExpansionTile(
+//        title: Text(
+//          'Availability',
+//          style: TextStyle(
+//            fontSize: 25,
+//          ),
+//        ),
+//        //TODO what else to add to privacy
+//        children: <Widget>[
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//            child: Text('I am NOT avaliable on: ${(currentUser as Doula).availableDates}'),
+//
+//          ),
+//
+//        ]
+//
+//    ));
     adminCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Notifications',

@@ -1,5 +1,4 @@
 import 'common.dart';
-import 'applicationState.dart';
 import 'connectionsState.dart';
 import 'errorsState.dart';
 import 'messagesState.dart';
@@ -15,7 +14,8 @@ class AppState {
   final bool waiting;
 
   final MessagesState messagesState;
-  final ApplicationState formState;
+
+  final Map<String, bool> pages;
 
   @JsonKey(ignore: true)
   final User profileUser; // User object of profile current user may be viewing
@@ -29,17 +29,17 @@ class AppState {
   AppState(
       {this.currentUser,
       this.waiting,
-      this.formState,
       this.messagesState,
-      this.profileUser});
+      this.profileUser,
+      this.pages});
 
   static AppState initialState() {
     return AppState(
         currentUser: null,
         waiting: false,
-        formState: ApplicationState.initialState(),
         messagesState: MessagesState.initialState(),
-        profileUser: null);
+        profileUser: null,
+        pages: null);
   }
 
   AppState copy(
@@ -47,14 +47,14 @@ class AppState {
       bool waiting,
       String loginError,
       MessagesState messagesState,
-      ApplicationState formState,
-      User profileUser}) {
+      User profileUser,
+      Map<String, bool> pages}) {
     return AppState(
         currentUser: currentUser ?? this.currentUser,
         waiting: waiting ?? this.waiting,
         messagesState: messagesState ?? this.messagesState,
-        formState: formState ?? this.formState,
-        profileUser: profileUser ?? this.profileUser);
+        profileUser: profileUser ?? this.profileUser,
+        pages: pages ?? this.pages);
   }
 
   @override
@@ -65,8 +65,8 @@ class AppState {
             currentUser == other.currentUser &&
             waiting == other.waiting &&
             messagesState == other.messagesState &&
-            formState == other.formState &&
-            profileUser == other.profileUser;
+            profileUser == other.profileUser &&
+            mapEquals(pages, other.pages);
   }
 
   @override
@@ -74,8 +74,8 @@ class AppState {
     return currentUser.hashCode ^
         waiting.hashCode ^
         messagesState.hashCode ^
-        formState.hashCode ^
-        profileUser.hashCode;
+        profileUser.hashCode ^
+        pages.hashCode;
   }
 
   @override
@@ -84,7 +84,7 @@ class AppState {
     if (currentUser != null && currentUser.userType != null) {
       type = currentUser.userType;
     }
-    return "\nAppState:\n\tCurrent User (type: $type): ${this.currentUser.toString()}\n\twaiting: ${this.waiting}\n\t${this.formState.toString()}";
+    return "\nAppState:\n\tCurrent User (type: $type): ${this.currentUser.toString()}\n\twaiting: ${this.waiting}\n\tpages: ${pages != null ? pages.toString() : "no pages"}";
   }
 
   // creates this class instance from a map

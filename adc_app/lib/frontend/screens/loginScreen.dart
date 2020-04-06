@@ -117,31 +117,32 @@ class LoginScreenState extends State<LoginScreen> {
                           form.save();
                           await login(_emailInputCtrl.text.toString().trim(),
                               _pwdInputCtrl.text.toString().trim());
-
-                          print("exited await login going toHome");
-                          toHome();
+//
+//                          print("exited await login going toHome");
+//                          toHome();
                         }
                       },
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text("Don't have an account?", textAlign: TextAlign.center),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(50.0),
+                            side: BorderSide(color: themeColors['lightBlue'])),
+                        color: themeColors["lightBlue"],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        child: Text("SIGN UP"),
+                        onPressed: () {
+                          toSignup();
+                        }
+                    ),
                   ])),
-              SizedBox(
-                height: 20,
-              ),
-              Text("Don't have an account?", textAlign: TextAlign.center),
-              SizedBox(
-                height: 5,
-              ),
-              RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(50.0),
-                      side: BorderSide(color: themeColors['lightBlue'])),
-                  color: themeColors["lightBlue"],
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(15.0),
-                  child: Text("SIGN UP"),
-                  onPressed: () {
-                    toSignup();
-                  })
             ])));
   }
 }

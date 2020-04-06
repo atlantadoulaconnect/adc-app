@@ -1,7 +1,6 @@
 import 'dart:ffi';
 
 import 'package:adc_app/backend/actions/common.dart';
-import 'package:adc_app/backend/actions/updateApplicationAction.dart';
 
 import '../../common.dart';
 import '../../../../backend/util/inputValidation.dart';
@@ -11,14 +10,16 @@ class ClientAppPage1 extends StatefulWidget {
   final void Function(Client, String, String, List<Phone>) updateClient;
   final VoidCallback toClientAppPage2;
   final void Function(bool) cancelApplication;
+  final void Function(String) completePage;
 
   ClientAppPage1(this.currentUser, this.updateClient, this.toClientAppPage2,
-      this.cancelApplication)
+      this.cancelApplication, this.completePage)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
             toClientAppPage2 != null &&
-            cancelApplication != null);
+            cancelApplication != null &&
+            completePage != null);
 
   @override
   State<StatefulWidget> createState() {
@@ -32,6 +33,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
   void Function(Client, String, String, List<Phone>) updateClient;
   VoidCallback toClientAppPage2;
   void Function(bool) cancelApplication;
+  void Function(String) completePage;
 
   TextEditingController _firstNameCtrl;
   TextEditingController _lastInitCtrl;
@@ -45,6 +47,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
     updateClient = widget.updateClient;
     toClientAppPage2 = widget.toClientAppPage2;
     cancelApplication = widget.cancelApplication;
+    completePage = widget.completePage;
 
     _firstNameCtrl = TextEditingController();
     _lastInitCtrl = TextEditingController();
@@ -225,34 +228,15 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                       RaisedButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(10.0),
-                            side: BorderSide(color: themeColors['mediumBlue'])),
-                        onPressed: () {
-                          // inputted information is lost when previous is pressed
-                          // this should take them home
-                          // TODO nav pop until client-specific home
-                          Navigator.pushNamed(context, '/home');
-                        },
-                        color: themeColors['mediumBlue'],
-                        textColor: Colors.white,
-                        padding: EdgeInsets.all(15.0),
-                        splashColor: themeColors['mediumBlue'],
-                        child: Text(
-                          "PREVIOUS",
-                          style: TextStyle(fontSize: 20.0),
-                        ),
-                      ),
-                      RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(10.0),
-                            side: BorderSide(color: themeColors['yellow'])),
+                            side: BorderSide(color: themeColors['coolGray5'])),
                         onPressed: () {
                           // dialog to confirm cancellation
                           confirmCancelDialog(context);
                         },
-                        color: themeColors['yellow'],
+                        color: themeColors['coolGray5'],
                         textColor: Colors.white,
                         padding: EdgeInsets.all(15.0),
-                        splashColor: themeColors['yellow'],
+                        splashColor: themeColors['coolGray5'],
                         child: Text(
                           "CANCEL",
                           style: TextStyle(
@@ -283,7 +267,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
 
                             updateClient(
                                 currentUser, displayName, birthday, phones);
-
+                            completePage("clientAppPage1");
                             toClientAppPage2();
                           }
                         },
@@ -316,7 +300,8 @@ class ClientAppPage1Connector extends StatelessWidget {
           vm.currentUser,
           vm.updateClient,
           vm.toClientAppPage2,
-          vm.cancelApplication),
+          vm.cancelApplication,
+          vm.completePage),
     );
   }
 }
@@ -328,31 +313,34 @@ class ViewModel extends BaseModel<AppState> {
   void Function(Client, String, String, List<Phone>) updateClient;
   VoidCallback toClientAppPage2;
   void Function(bool) cancelApplication;
+  void Function(String) completePage;
 
   ViewModel.build({
     @required this.currentUser,
     @required this.updateClient,
     @required this.toClientAppPage2,
     @required this.cancelApplication,
+    @required this.completePage,
   }) : super(equals: []);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-      currentUser: state.currentUser,
-      toClientAppPage2: () =>
-          dispatch(NavigateAction.pushNamed("/clientAppPage2")),
-      updateClient:
-          (Client user, String name, String bday, List<Phone> phones) =>
-              dispatch(UpdateClientUserAction(user,
-                  name: name, phones: phones, bday: bday)),
-      cancelApplication: (bool confirmed) {
-        dispatch(NavigateAction.pop());
-        if (confirmed) {
-          dispatch(CancelApplicationAction());
-          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
-        }
-      },
-    );
+        currentUser: state.currentUser,
+        toClientAppPage2: () =>
+            dispatch(NavigateAction.pushNamed("/clientAppPage2")),
+        updateClient:
+            (Client user, String name, String bday, List<Phone> phones) =>
+                dispatch(UpdateClientUserAction(user,
+                    name: name, phones: phones, bday: bday)),
+        cancelApplication: (bool confirmed) {
+          dispatch(NavigateAction.pop());
+          if (confirmed) {
+            dispatch(CancelApplicationAction());
+            dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+          }
+        },
+        completePage: (String pageName) =>
+            dispatch(CompletePageAction(pageName)));
   }
 }

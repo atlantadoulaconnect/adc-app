@@ -1,5 +1,3 @@
-import 'package:adc_app/backend/actions/updateApplicationAction.dart';
-
 import '../../common.dart';
 
 class ClientAppPage6 extends StatefulWidget {
@@ -161,15 +159,15 @@ class ClientAppPage6State extends State<ClientAppPage6> {
                   RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(10.0),
-                        side: BorderSide(color: themeColors['yellow'])),
+                        side: BorderSide(color: themeColors['coolGray5'])),
                     onPressed: () {
                       // dialog to confirm cancellation
                       confirmCancelDialog(context);
                     },
-                    color: themeColors['yellow'],
+                    color: themeColors['coolGray5'],
                     textColor: Colors.white,
                     padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['yellow'],
+                    splashColor: themeColors['coolGray5'],
                     child: Text(
                       "CANCEL",
                       style: TextStyle(
@@ -246,6 +244,8 @@ class ViewModel extends BaseModel<AppState> {
           dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         }
       },
+//        completePage: (String pageName) =>
+//            dispatch(CompletePageAction(pageName))
     );
   }
 }

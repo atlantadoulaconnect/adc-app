@@ -18,7 +18,6 @@ class CurrentMenu extends StatelessWidget {
   final VoidCallback toClientHome;
   final VoidCallback toDoulaHome;
   final VoidCallback toSettings;
-  final VoidCallback toStatusScreen;
 
   CurrentMenu(
       {this.currentUser,
@@ -33,8 +32,7 @@ class CurrentMenu extends StatelessWidget {
       this.toAdminHome,
       this.toClientHome,
       this.toDoulaHome,
-      this.toSettings,
-      this.toStatusScreen});
+      this.toSettings});
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +117,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
+                    IconData(57921, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('All Doulas',
@@ -130,7 +128,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
+                    IconData(57921, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('All Clients',
@@ -173,7 +171,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59519, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -243,17 +241,6 @@ class CurrentMenu extends StatelessWidget {
                     IconData(59448, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
-                  title: Text('Applications',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: () => toStatusScreen,
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59448, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
                   title: Text('Frequently asked Questions',
                       style: TextStyle(
                         color: Colors.white,
@@ -283,7 +270,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59519, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -350,17 +337,6 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59485, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Applications',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: () => toStatusScreen,
-                ),
-                ListTile(
-                  leading: Icon(
                     IconData(59448, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
@@ -393,7 +369,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59519, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -449,20 +425,6 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59485, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Application',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: () {
-                    print("to app status screen pressed menu");
-                    toStatusScreen();
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
                     IconData(57545, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
@@ -506,7 +468,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59519, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -607,7 +569,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59519, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -643,21 +605,19 @@ class Menu extends StatelessWidget {
         model: ViewModel(),
         builder: (BuildContext context, ViewModel vm) {
           return CurrentMenu(
-            currentUser: vm.currentUser,
-            toHome: vm.toHome,
-            toSignup: vm.toSignup,
-            toLogin: vm.toLogin,
-            toInfo: vm.toInfo,
-            toRecentMessages: vm.toRecentMessages,
-            toDoulas: vm.toDoulas,
-            toClients: vm.toClients,
-            logout: vm.logout,
-            toAdminHome: vm.toAdminHome,
-            toClientHome: vm.toClientHome,
-            toDoulaHome: vm.toDoulaHome,
-            toSettings: vm.toSettings,
-            toStatusScreen: vm.toStatusScreen,
-          );
+              currentUser: vm.currentUser,
+              toHome: vm.toHome,
+              toSignup: vm.toSignup,
+              toLogin: vm.toLogin,
+              toInfo: vm.toInfo,
+              toRecentMessages: vm.toRecentMessages,
+              toDoulas: vm.toDoulas,
+              toClients: vm.toClients,
+              logout: vm.logout,
+              toAdminHome: vm.toAdminHome,
+              toClientHome: vm.toClientHome,
+              toDoulaHome: vm.toDoulaHome,
+              toSettings: vm.toSettings);
         });
   }
 }
@@ -678,7 +638,6 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toClientHome;
   VoidCallback toDoulaHome;
   VoidCallback toSettings;
-  VoidCallback toStatusScreen;
 
   ViewModel.build(
       {@required this.currentUser,
@@ -693,33 +652,32 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toAdminHome,
       @required this.toClientHome,
       @required this.toDoulaHome,
-      @required this.toSettings,
-      @required this.toStatusScreen})
+      @required this.toSettings})
       : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        currentUser: state.currentUser,
-        toHome: () {
-          dispatch(NavigateAction.pushNamed("/"));
-        },
-        toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
-        toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
-        toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
-        toRecentMessages: () =>
-            dispatch(NavigateAction.pushNamed("/recentMessages")),
-        toDoulas: () => dispatch(NavigateAction.pushNamed("/registeredDoulas")),
-        toClients: () => dispatch(NavigateAction.pushNamed("/registeredClients")),
-        logout: () {
-          print("logging out from menu");
-          dispatch(LogoutUserAction());
-          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
-        },
-        toAdminHome: () => dispatch(NavigateAction.pushNamed("/adminHome")),
-        toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),
-        toDoulaHome: () => dispatch(NavigateAction.pushNamed("/doulaHome")),
-        toSettings: () => dispatch(NavigateAction.pushNamed("/settings")),
-        toStatusScreen: () => dispatch(NavigateAction.pushNamed("/status")));
+      currentUser: state.currentUser,
+      toHome: () {
+        dispatch(NavigateAction.pushNamed("/"));
+      },
+      toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
+      toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
+      toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
+      toRecentMessages: () =>
+          dispatch(NavigateAction.pushNamed("/recentMessages")),
+      toDoulas: () => dispatch(NavigateAction.pushNamed("/registeredDoulas")),
+      toClients: () => dispatch(NavigateAction.pushNamed("/registeredClients")),
+      logout: () {
+        print("logging out from menu");
+        dispatch(LogoutUserAction());
+        dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+      },
+      toAdminHome: () => dispatch(NavigateAction.pushNamed("/adminHome")),
+      toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),
+      toDoulaHome: () => dispatch(NavigateAction.pushNamed("/doulaHome")),
+      toSettings: () => dispatch(NavigateAction.pushNamed("/settings")),
+    );
   }
 }

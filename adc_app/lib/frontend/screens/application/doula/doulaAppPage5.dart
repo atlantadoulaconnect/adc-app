@@ -1,5 +1,3 @@
-import 'package:adc_app/backend/actions/updateApplicationAction.dart';
-
 import '../../common.dart';
 
 class DoulaAppPage5 extends StatefulWidget {
@@ -172,15 +170,16 @@ class DoulaAppPage5State extends State<DoulaAppPage5> {
                         child: RaisedButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(10.0),
-                              side: BorderSide(color: themeColors['yellow'])),
+                              side:
+                                  BorderSide(color: themeColors['coolGray5'])),
                           onPressed: () {
                             // dialog to confirm cancellation
                             confirmCancelDialog(context);
                           },
-                          color: themeColors['yellow'],
+                          color: themeColors['coolGray5'],
                           textColor: Colors.white,
                           padding: EdgeInsets.all(15.0),
-                          splashColor: themeColors['yellow'],
+                          splashColor: themeColors['coolGray5'],
                           child: Text(
                             "CANCEL",
                             style: TextStyle(

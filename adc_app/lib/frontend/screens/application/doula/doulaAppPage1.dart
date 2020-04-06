@@ -1,5 +1,3 @@
-import 'package:adc_app/backend/actions/updateApplicationAction.dart';
-
 import '../../common.dart';
 import '../../../../backend/util/inputValidation.dart';
 
@@ -192,39 +190,15 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                                     borderRadius:
                                         new BorderRadius.circular(10.0),
                                     side: BorderSide(
-                                        color: themeColors['mediumBlue'])),
-                                onPressed: () {
-                                  // inputted information is lost when previous is pressed
-                                  // this should take them home
-                                  // TODO nav pop until doula-specific home
-                                  Navigator.pushNamed(context, '/home');
-                                },
-                                color: themeColors['mediumBlue'],
-                                textColor: Colors.white,
-                                padding: EdgeInsets.all(15.0),
-                                splashColor: themeColors['mediumBlue'],
-                                child: Text(
-                                  "PREVIOUS",
-                                  style: TextStyle(fontSize: 20.0),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(10.0),
-                                    side: BorderSide(
-                                        color: themeColors['yellow'])),
+                                        color: themeColors['coolGray5'])),
                                 onPressed: () {
                                   // dialog to confirm cancellation
                                   confirmCancelDialog(context);
                                 },
-                                color: themeColors['yellow'],
+                                color: themeColors['coolGray5'],
                                 textColor: Colors.white,
                                 padding: EdgeInsets.all(15.0),
-                                splashColor: themeColors['yellow'],
+                                splashColor: themeColors['coolGray5'],
                                 child: Text(
                                   "CANCEL",
                                   style: TextStyle(

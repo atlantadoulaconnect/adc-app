@@ -3,11 +3,18 @@ import 'package:flutter/rendering.dart';
 
 import '../common.dart';
 
-class RegisteredDoulasScreen extends StatelessWidget {
+class DoulasListForMatchingScreen extends StatelessWidget {
   final VoidCallback toProfile;
+  final User assignee;
   final Future<void> Function(String, String) setProfileUser;
+  final Future<void> Function(Client, Map<String, String>) setClientDoulas;
+  final Future<void> Function(User, String) changeStatus;
+  final VoidCallback popScreen;
+  final Future<void> Function(Client, Map<String, String>) setBackupDoula;
 
-  RegisteredDoulasScreen(this.toProfile, this.setProfileUser)
+  DoulasListForMatchingScreen(
+      this.toProfile, this.setProfileUser, this.assignee, this.setClientDoulas,
+      this.changeStatus, this.popScreen, this.setBackupDoula)
       : assert(toProfile != null && setProfileUser != null);
 
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
@@ -23,7 +30,15 @@ class RegisteredDoulasScreen extends StatelessWidget {
             ),
             child: MaterialButton(
               onPressed: () async {
-                await setProfileUser(doc["userid"], doc["userType"]);
+                //TODO: assign this doula to client
+                if ((assignee as Client).primaryDoula == null) {
+                  await setClientDoulas((assignee as Client),
+                      {"name": doc["name"], "userid": doc["userid"]});
+                } else {
+                  await setBackupDoula((assignee as Client),
+                      {"name": doc["name"], "userid": doc["userid"]});
+                  await changeStatus(assignee, "matched");
+                }
                 toProfile();
               },
               child: Row(
@@ -86,7 +101,7 @@ class RegisteredDoulasScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Registered Doulas'),
+          title: Text('Available Doulas'),
         ),
         body: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -95,6 +110,7 @@ class RegisteredDoulasScreen extends StatelessWidget {
                     stream: Firestore.instance
                         .collection("users")
                         .where("userType", isEqualTo: "doula")
+                        .where("status", isEqualTo: "approved")
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -115,13 +131,15 @@ class RegisteredDoulasScreen extends StatelessWidget {
   }
 }
 
-class RegisteredDoulasScreenConnector extends StatelessWidget {
+class DoulasListForMatchingScreenConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) =>
-          RegisteredDoulasScreen(vm.toProfile, vm.setProfileUser),
+          DoulasListForMatchingScreen(
+              vm.toProfile, vm.setProfileUser, vm.assignee, vm.setClientDoulas,
+              vm.changeStatus, vm.popScreen, vm.setBackupDoulas),
     );
   }
 }
@@ -130,15 +148,38 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   VoidCallback toProfile;
+  User assignee;
   Future<void> Function(String, String) setProfileUser;
+  Future<void> Function(Client, Map<String, String>) setClientDoulas;
+  Future<void> Function(User, String) changeStatus;
+  VoidCallback popScreen;
+  Future<void> Function(Client, Map<String, String>) setBackupDoulas;
 
-  ViewModel.build({@required this.toProfile, @required this.setProfileUser});
+  ViewModel.build({
+    @required this.toProfile,
+    @required this.setProfileUser,
+    @required this.assignee,
+    @required this.setClientDoulas,
+    @required this.changeStatus,
+    @required this.popScreen,
+    @required this.setBackupDoulas,
+  });
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
-        setProfileUser: (String userid, String userType) =>
-            dispatchFuture(SetProfileUser(userid, userType)));
+      assignee: state.profileUser,
+      toProfile: () => dispatch(NavigateAction.pushReplacementNamed("/userProfile")),
+      setProfileUser: (String userid, String userType) =>
+          dispatchFuture(SetProfileUser(userid, userType)),
+      setClientDoulas: (Client client, Map<String, String> primaryDoula) =>
+          dispatchFuture(UpdateClientDoulas(client, primaryDoula)),
+      changeStatus: (User user, String status) =>
+          dispatchFuture(UpdateUserStatus(user, status)),
+      popScreen: () => dispatch(NavigateAction.pop()),
+      setBackupDoulas: (Client client, Map<String, String> backupDoula) =>
+          dispatchFuture(UpdateClientBackupDoula(client, backupDoula)),
+
+    );
   }
 }

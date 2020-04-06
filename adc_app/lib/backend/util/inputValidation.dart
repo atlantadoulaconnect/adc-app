@@ -91,6 +91,12 @@ String pwdValidator(String value) {
 }
 
 // Methods for safely transferring data between app and db
+Map<String, String> convertDoulaMap(Map<dynamic, dynamic> doula) {
+  if (doula != null) {
+    return {"name": doula["name"], "userid": doula["userid"]};
+  }
+  return null;
+}
 
 // db -> app
 List<String> convertStringArray(List<dynamic> array) {

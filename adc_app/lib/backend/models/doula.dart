@@ -38,10 +38,10 @@ class Doula extends User {
       this.photoRelease,
       this.currentClients})
       : super.full(
-            userid, userType, name, email, phoneVerified, phones, status) {
-    this.availableDates = new List<String>();
-    this.currentClients = new List<Client>();
-  }
+            userid, userType, name, email, phoneVerified, phones, status);
+
+  Doula.short(String userid, String name, String status)
+      : super.full(userid, "doula", name, null, null, null, status);
 
   void addAvailableDate(String date) {
     this.availableDates.add(date);

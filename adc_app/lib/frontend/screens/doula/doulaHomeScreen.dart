@@ -26,6 +26,7 @@ class DoulaHomeScreen extends StatelessWidget {
           child: Center(
               child: Column(
             children: <Widget>[
+              NotificationHandler(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(

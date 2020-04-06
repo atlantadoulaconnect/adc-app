@@ -86,8 +86,8 @@ class LoginUserAction extends ReduxAction<AppState> {
           meetBefore: specifics["meetBefore"],
           multiples: specifics["multiples"],
           phones: convertPhones(specifics["phones"]),
-          photoRelease: specifics["photoRelease"]
-          // emergency contacts
+          photoRelease: specifics["photoRelease"],
+          emergencyContacts: convertEmgContacts(specifics["emergencyContacts"])
           // primary and backup doulas
           );
     }

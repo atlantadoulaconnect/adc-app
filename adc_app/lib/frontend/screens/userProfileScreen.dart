@@ -487,8 +487,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                           side: BorderSide(color: themeColors['emoryBlue'])),
                       onPressed: () async {
                         //TODO: need to show doulas and store selected assignment
-                        toDoulasListMatching();
                         setState(() {
+                          toDoulasListMatching();
                           userHasDoula = profileUserClient.primaryDoula != null;
                         });
                       },
@@ -517,7 +517,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                 ),
                 Text(
                   userHasBackupDoula
-                      ? 'Assigned Doula: ${profileUserClient.primaryDoula["name"]}'
+                      ? 'Assigned Backup Doula: ${profileUserClient.backupDoula["name"]}'
                       : 'No Backup Doula Assigned',
                   style: TextStyle(
                       fontFamily: 'Roboto',
@@ -547,8 +547,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                           side: BorderSide(color: themeColors['emoryBlue'])),
                       onPressed: () async {
                         //TODO: need to show doulas and store selected assignment
-                        toDoulasListMatching();
                         setState(() {
+                          toDoulasListMatching();
                           userHasBackupDoula = profileUserClient.backupDoula != null;
                         });
                       },
@@ -921,7 +921,7 @@ class ViewModel extends BaseModel<AppState> {
       profileUser: state.profileUser,
       currentUser: state.currentUser,
       toDoulasListMatching: () =>
-          dispatch(NavigateAction.pushNamed("/doulasListMatching")),
+          dispatch(NavigateAction.pushReplacementNamed("/doulasListMatching")),
       changeStatus: (User profile, String status) =>
           dispatchFuture(UpdateUserStatus(profile, status)),
     );

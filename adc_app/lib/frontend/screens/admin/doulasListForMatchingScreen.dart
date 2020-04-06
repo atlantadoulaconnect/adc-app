@@ -39,7 +39,7 @@ class DoulasListForMatchingScreen extends StatelessWidget {
                       {"name": doc["name"], "userid": doc["userid"]});
                   await changeStatus(assignee, "matched");
                 }
-                popScreen();
+                toProfile();
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -169,7 +169,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
       assignee: state.profileUser,
-      toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+      toProfile: () => dispatch(NavigateAction.pushReplacementNamed("/userProfile")),
       setProfileUser: (String userid, String userType) =>
           dispatchFuture(SetProfileUser(userid, userType)),
       setClientDoulas: (Client client, Map<String, String> primaryDoula) =>

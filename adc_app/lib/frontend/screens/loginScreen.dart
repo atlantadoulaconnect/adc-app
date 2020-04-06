@@ -117,9 +117,9 @@ class LoginScreenState extends State<LoginScreen> {
                           form.save();
                           await login(_emailInputCtrl.text.toString().trim(),
                               _pwdInputCtrl.text.toString().trim());
-
-                          print("exited await login going toHome");
-                          toHome();
+//
+//                          print("exited await login going toHome");
+//                          toHome();
                         }
                       },
                     ),

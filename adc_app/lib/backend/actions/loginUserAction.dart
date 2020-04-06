@@ -218,10 +218,15 @@ class LoginUserAction extends ReduxAction<AppState> {
         // TODO set login error
         return null;
       }
-    } catch (e, stacktrace) {
-      // TODO set login error in error state
-      print("LOGIN ERROR: $e\n$stacktrace");
-      return null;
+    } on PlatformException catch (e) {
+      if (e.code == "ERROR_USER_NOT_FOUND") {
+        // TODO set sign up error
+        print("There is no account associated with this email address");
+      }
+      if (e.code == "ERROR_WRONG_PASSWORD") {
+        // TODO set sign up error
+        print("Incorrect password was entered");
+      }
     }
   }
 

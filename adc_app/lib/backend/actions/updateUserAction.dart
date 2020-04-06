@@ -254,6 +254,26 @@ class UpdateUserStatus extends ReduxAction<AppState> {
   }
 }
 
+class UpdateClientDoulas extends ReduxAction<AppState> {
+  final Client client;
+  final Map<String, String> primaryDoula;
+
+  UpdateClientDoulas(this.client, this.primaryDoula)
+      : assert(client != null && primaryDoula != null);
+
+  @override
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+    await dbRef.collection("users").document(client.userid).updateData({
+      "primaryDoula": primaryDoula,
+    });
+
+    client.primaryDoula = primaryDoula;
+
+    return state.copy(profileUser: client);
+  }
+}
+
 class UpdateClientUserDocument extends ReduxAction<AppState> {
   final Client user;
 

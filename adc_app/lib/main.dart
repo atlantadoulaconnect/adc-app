@@ -45,6 +45,8 @@ import './frontend/screens/admin/registeredDoulasScreen.dart';
 import './frontend/screens/admin/registeredClientsScreen.dart';
 import 'frontend/screens/userProfileScreen.dart';
 import './frontend/screens/admin/pendingApplicationsScreen.dart';
+import './frontend/screens/admin/unmatchedClientsScreen.dart';
+import 'package:adc_app/frontend/screens/admin/doulasListForMatchingScreen.dart';
 
 // messaging screens
 import './frontend/screens/messaging/contactsScreen.dart';
@@ -125,10 +127,12 @@ class ADCApp extends StatelessWidget {
             '/recentMessages': (context) => RecentMessagesScreenConnector(),
             '/textBank': (context) => TextBankScreen(),
             '/registeredDoulas': (context) => RegisteredDoulasScreenConnector(),
+            '/doulasListMatching': (context) => DoulasListForMatchingScreenConnector(),
             '/registeredClients': (context) =>
                 RegisteredClientsScreenConnector(),
             '/userProfile': (context) => UserProfileScreenConnector(),
             '/pendingApps': (context) => PendingApplicationsScreenConnector(),
+            '/unmatchedClients': (context) => UnmatchedClientsScreenConnector(),
             '/settings': (context) => SettingsScreenConnector(),
             '/status': (context) => ApplicationStatusScreenConnector()
           },

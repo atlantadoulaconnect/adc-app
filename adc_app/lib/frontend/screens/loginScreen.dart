@@ -123,25 +123,26 @@ class LoginScreenState extends State<LoginScreen> {
                         }
                       },
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text("Don't have an account?", textAlign: TextAlign.center),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(50.0),
+                            side: BorderSide(color: themeColors['lightBlue'])),
+                        color: themeColors["lightBlue"],
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(15.0),
+                        child: Text("SIGN UP"),
+                        onPressed: () {
+                          toSignup();
+                        }
+                    ),
                   ])),
-              SizedBox(
-                height: 20,
-              ),
-              Text("Don't have an account?", textAlign: TextAlign.center),
-              SizedBox(
-                height: 5,
-              ),
-              RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(50.0),
-                      side: BorderSide(color: themeColors['lightBlue'])),
-                  color: themeColors["lightBlue"],
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(15.0),
-                  child: Text("SIGN UP"),
-                  onPressed: () {
-                    toSignup();
-                  })
             ])));
   }
 }

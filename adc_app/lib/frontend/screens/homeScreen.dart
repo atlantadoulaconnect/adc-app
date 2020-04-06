@@ -105,8 +105,9 @@ class HomeScreenConnector extends StatelessWidget {
                     vm.logout,
                     vm.toRegisteredDoulas,
                     vm.toRegisteredClients,
+                    vm.toHome,
                     vm.toPendingApps,
-                    vm.toHome);
+                    vm.toUnmatchedClients);
               }
               break;
             case "client":
@@ -149,6 +150,7 @@ class ViewModel extends BaseModel<AppState> {
   Future<void> Function() logout;
   VoidCallback toRegisteredDoulas;
   VoidCallback toPendingApps;
+  VoidCallback toUnmatchedClients;
   VoidCallback toRegisteredClients;
   VoidCallback toHome;
   VoidCallback toRecentMessages;
@@ -167,6 +169,7 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toRegisteredClients,
       @required this.toHome,
       @required this.toPendingApps,
+      @required this.toUnmatchedClients,
       @required this.toRecentMessages,
       @required this.toClientApp,
       @required this.toDoulaApp,
@@ -188,6 +191,7 @@ class ViewModel extends BaseModel<AppState> {
             dispatch(NavigateAction.pushNamed("/registeredClients")),
         toHome: () => dispatch(NavigateAction.pushNamed("/")),
         toPendingApps: () => dispatch(NavigateAction.pushNamed("/pendingApps")),
+        toUnmatchedClients: () => dispatch(NavigateAction.pushNamed("/unmatchedClients")),
         toRecentMessages: () =>
             dispatch(NavigateAction.pushNamed("/recentMessages")),
         toClientApp: () =>

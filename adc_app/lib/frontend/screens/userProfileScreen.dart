@@ -46,12 +46,17 @@ class UserProfileScreenState extends State<UserProfileScreen> {
     if (profileUser.userType == "doula") {
       String phonesString = profileUser.phones.join(", ");
       Doula profileUserDoula = profileUser;
-      String availableDates = profileUserDoula.availableDates.join(", ");
+      print(
+          "unav dates profile screen: ${profileUserDoula.availableDates.join(", ")}");
+      String availableDates = profileUserDoula.availableDates != null
+          ? profileUserDoula.availableDates.join(", ")
+          : "no dates selected";
 
       return ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+            padding:
+                EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -78,7 +83,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                   padding: EdgeInsets.only(left: 20, right: 20.0),
                   child: Column(
                     children: <Widget>[
-                      Text(profileUser.name,
+                      Text(
+                        profileUser.name,
                         style: TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
@@ -149,8 +155,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       fontSize: 25,
                       height: 1.5,
                     ),
-                    textAlign: TextAlign.left
-                ),
+                    textAlign: TextAlign.left),
                 Text(
                   'Name: ${profileUser.name}',
                   style: TextStyle(
@@ -233,8 +238,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       fontSize: 25,
                       height: 1.5,
                     ),
-                    textAlign: TextAlign.left
-                ),
+                    textAlign: TextAlign.left),
                 Text(
                   'I am not availabe on: $availableDates',
                   style: TextStyle(
@@ -346,7 +350,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       return ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+            padding:
+                EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -373,22 +378,23 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                   padding: EdgeInsets.only(left: 20, right: 20.0),
                   child: Column(
                     children: <Widget>[
-                      Text(profileUser.name,
+                      Text(
+                        profileUser.name,
                         style: TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                          userApproved ? "Approved" : "Not Approved",
-                          style: TextStyle(
-                              fontFamily: 'Roboto',
-                              color: themeColors['black'],
-                              fontStyle: FontStyle.italic,
-                              fontSize: 20,
-                              height: 1.5),
-                          textAlign: TextAlign.left,
-                        ),
+                        userApproved ? "Approved" : "Not Approved",
+                        style: TextStyle(
+                            fontFamily: 'Roboto',
+                            color: themeColors['black'],
+                            fontStyle: FontStyle.italic,
+                            fontSize: 20,
+                            height: 1.5),
+                        textAlign: TextAlign.left,
+                      ),
                     ],
                   ),
                 ),
@@ -698,7 +704,6 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         ],
       );
     }
-
   }
 
   ListView clientUser() {}
@@ -765,17 +770,19 @@ class ViewModel extends BaseModel<AppState> {
   User currentUser;
   Future<void> Function(User, String) changeStatus;
 
-  ViewModel.build({@required this.profileUser,
-    @required this.currentUser,
-    @required this.changeStatus})
+  ViewModel.build(
+      {@required this.profileUser,
+      @required this.currentUser,
+      @required this.changeStatus})
       : super(equals: [profileUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        profileUser: state.profileUser,
-        currentUser: state.currentUser,
-        changeStatus: (User profile, String status) => dispatchFuture(UpdateUserStatus(profile, status)),
+      profileUser: state.profileUser,
+      currentUser: state.currentUser,
+      changeStatus: (User profile, String status) =>
+          dispatchFuture(UpdateUserStatus(profile, status)),
     );
   }
 }

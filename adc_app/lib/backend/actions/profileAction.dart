@@ -60,6 +60,8 @@ class SetProfileUser extends ReduxAction<AppState> {
       String userId, DocumentSnapshot basics, DocumentSnapshot specifics) {
     Doula profiled = Doula(userid: userId, userType: "doula");
 
+    print("unav dates type: ${specifics["unavailableDates"].runtimeType}");
+
     return profiled.copy(
         name: basics["name"],
         status: basics["status"],
@@ -70,7 +72,8 @@ class SetProfileUser extends ReduxAction<AppState> {
         certProgram: specifics["certProgram"],
         certified: specifics["certified"],
         email: specifics["email"],
-        phones: convertPhones(specifics["phones"]));
+        phones: convertPhones(specifics["phones"]),
+        availableDates: convertStringArray(specifics["unavailableDates"]));
   }
 
   @override

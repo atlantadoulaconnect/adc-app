@@ -40,6 +40,9 @@ class Doula extends User {
       : super.full(
             userid, userType, name, email, phoneVerified, phones, status);
 
+  Doula.short(String userid, String name, String status)
+      : super.full(userid, "doula", name, null, null, null, status);
+
   void addAvailableDate(String date) {
     this.availableDates.add(date);
   }

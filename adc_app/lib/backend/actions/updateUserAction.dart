@@ -298,7 +298,7 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
       "backupDoula": backupDoula,
     });
 
-    client.primaryDoula = backupDoula;
+    client.backupDoula = backupDoula;
 
     return state.copy(profileUser: client);
   }

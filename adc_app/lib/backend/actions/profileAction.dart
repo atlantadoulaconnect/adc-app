@@ -33,7 +33,6 @@ class SetProfileUser extends ReduxAction<AppState> {
   Client populateProfileClient(
       String userId, DocumentSnapshot basics, DocumentSnapshot specifics) {
     Client profiled = Client(userid: userId, userType: "client");
-    print("primary doula type: ${specifics["primaryDoula"].runtimeType}");
 
     return profiled.copy(
         name: basics["name"],
@@ -52,7 +51,8 @@ class SetProfileUser extends ReduxAction<AppState> {
         multiples: specifics["multiples"],
         phones: convertPhones(specifics["phones"]),
         photoRelease: specifics["photoRelease"],
-        primaryDoula: convertDoulaMap(specifics["primaryDoula"])
+        primaryDoula: convertDoulaMap(specifics["primaryDoula"]),
+        backupDoula: convertDoulaMap(specifics["backupDoula"])
         // emergency contacts
         // primary and backup doulas
         );

@@ -27,6 +27,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   Future<void> Function(User, String) changeStatus;
   bool userApproved;
   bool userHasDoula;
+  bool userHasBackupDoula;
   final VoidCallback toDoulasListMatching;
 
   UserProfileScreenState(this.toDoulasListMatching);
@@ -36,9 +37,12 @@ class UserProfileScreenState extends State<UserProfileScreen> {
     profileUser = widget.profileUser;
     currentUser = widget.currentUser;
     changeStatus = widget.changeStatus;
-    userApproved = profileUser.status == 'approved';
+    userApproved = profileUser.status != 'submitted';
     userHasDoula = (profileUser is Client)
         ? (profileUser as Client).primaryDoula != null
+        : null;
+    userHasBackupDoula = (profileUser is Client)
+        ? (profileUser as Client).backupDoula != null
         : null;
     super.initState();
   }
@@ -130,7 +134,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       onPressed: () async {
                         await changeStatus(profileUserDoula, 'approved');
                         setState(() {
-                          userApproved = profileUser.status == 'approved';
+                          userApproved = profileUser.status != 'submitted';
                         });
                       },
                       color: themeColors['emoryBlue'],
@@ -454,7 +458,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                 Text(
                   userHasDoula
                       ? 'Assigned Doula: ${profileUserClient.primaryDoula["name"]}'
-                      : 'No Doula Assigned',
+                      : 'No Primary Doula Assigned',
                   style: TextStyle(
                       fontFamily: 'Roboto',
                       color: themeColors['black'],
@@ -486,6 +490,66 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                         toDoulasListMatching();
                         setState(() {
                           userHasDoula = profileUserClient.primaryDoula != null;
+                        });
+                      },
+                      color: themeColors['emoryBlue'],
+                      textColor: Colors.black,
+                      padding: EdgeInsets.all(15.0),
+                      splashColor: themeColors['emoryBlue'],
+                      child: Text(
+                        "Assign Doula",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: themeColors['white'],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  userHasBackupDoula
+                      ? 'Assigned Doula: ${profileUserClient.primaryDoula["name"]}'
+                      : 'No Backup Doula Assigned',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Visibility(
+                  visible: userApproved && userHasDoula && !userHasBackupDoula,
+                  child: Text(
+                    '',
+                    style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: themeColors['black'],
+                        fontSize: 12,
+                        height: 1.0),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Center(
+                  child: Visibility(
+                    visible: userApproved && userHasDoula && !userHasBackupDoula,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(15.0),
+                          side: BorderSide(color: themeColors['emoryBlue'])),
+                      onPressed: () async {
+                        //TODO: need to show doulas and store selected assignment
+                        toDoulasListMatching();
+                        setState(() {
+                          userHasBackupDoula = profileUserClient.backupDoula != null;
                         });
                       },
                       color: themeColors['emoryBlue'],

@@ -103,9 +103,12 @@ List<String> convertStringArray(List<dynamic> array) {
 }
 
 List<Map<String, dynamic>> phonesToDB(List<Phone> phones) {
+  List<Map<String, dynamic>> array = List();
   if (phones != null && phones.length > 0) {
     // sanity check
-
+    phones.forEach((phone) {
+      array.add({"number": phone.number, "isPrimary": phone.isPrimary});
+    });
   }
   return null;
 }

@@ -95,7 +95,7 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
         .collection("userData")
         .document("specifics")
         .setData({
-      "phones": user.phones.join(", "),
+      "phones": phonesToDB(user.phones),
       "bday": user.bday,
       "email": user.email,
       "dueDate": user.dueDate,
@@ -147,7 +147,7 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
         .collection("userData")
         .document("specifics")
         .setData({
-      "phones": user.phones.join(", "),
+      "phones": phonesToDB(user.phones),
       "bday": user.bday,
       "email": user.email,
       "bio": user.bio,
@@ -158,7 +158,6 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
     });
 
     // TODO applicationState, update application state to submitted
-
     return null;
   }
 

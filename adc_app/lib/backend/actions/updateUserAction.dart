@@ -157,7 +157,6 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
         availableDates: availableDates ?? this.availableDates,
         photoRelease: photoRelease ?? this.photoRelease,
         currentClients: currentClients ?? this.currentClients);
-
     return state.copy(currentUser: updated);
   }
 }

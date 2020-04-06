@@ -38,10 +38,7 @@ class Doula extends User {
       this.photoRelease,
       this.currentClients})
       : super.full(
-            userid, userType, name, email, phoneVerified, phones, status) {
-    this.availableDates = new List<String>();
-    this.currentClients = new List<Client>();
-  }
+            userid, userType, name, email, phoneVerified, phones, status);
 
   void addAvailableDate(String date) {
     this.availableDates.add(date);

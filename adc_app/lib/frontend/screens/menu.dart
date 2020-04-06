@@ -119,7 +119,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
+                    IconData(57921, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('All Doulas',
@@ -130,7 +130,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
+                    IconData(57921, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('All Clients',
@@ -173,7 +173,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59519, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -283,7 +283,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59519, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -393,7 +393,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59519, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -506,7 +506,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59519, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -607,7 +607,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59519, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',

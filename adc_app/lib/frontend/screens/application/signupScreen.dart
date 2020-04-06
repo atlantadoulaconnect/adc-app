@@ -26,6 +26,8 @@ class SignupScreenState extends State<SignupScreen> {
   TextEditingController _passCtrl;
   TextEditingController _confirmPassCtrl;
 
+  bool _passwordVisible;
+
   @override
   void initState() {
     isWaiting = widget.isWaiting;
@@ -35,6 +37,7 @@ class SignupScreenState extends State<SignupScreen> {
     _emailCtrl = TextEditingController();
     _passCtrl = TextEditingController();
     _confirmPassCtrl = TextEditingController();
+    _passwordVisible = false;
     super.initState();
   }
 
@@ -72,22 +75,57 @@ class SignupScreenState extends State<SignupScreen> {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                        labelText: "Password*",
-                        hintText: "********",
-                        icon: new Icon(Icons.lock,
-                            color: themeColors["coolGray5"])),
+                      labelText: "Password*",
+                      hintText: "********",
+                      icon: new Icon(Icons.lock,
+                          color: themeColors["coolGray5"]
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: _passwordVisible
+                                ? themeColors["black"]
+                                : themeColors["coolGray5"]),
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                      ),
+                    ),
                     controller: _passCtrl,
-                    obscureText: true,
+                    obscureText: !_passwordVisible,
                     validator: pwdValidator,
+
                   ),
                   TextFormField(
-                      decoration: InputDecoration(
-                          labelText: "Confirm Password*",
-                          hintText: "********",
-                          icon: new Icon(Icons.lock,
-                              color: themeColors["coolGray5"])),
+                        decoration: InputDecoration(
+                        labelText: "Confirm Password*",
+                        hintText: "********",
+                        icon: new Icon(Icons.lock,
+                            color: themeColors["coolGray5"]
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            // Based on passwordVisible state choose the icon
+                              _passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: _passwordVisible
+                                  ? themeColors["black"]
+                                  : themeColors["coolGray5"]),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
+                      ),
                       controller: _confirmPassCtrl,
-                      obscureText: true,
+                      obscureText: !_passwordVisible,
                       validator: (val) {
                         if (val != _passCtrl.text)
                           return "Passwords do not match.";

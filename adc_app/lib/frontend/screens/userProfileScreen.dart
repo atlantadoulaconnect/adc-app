@@ -46,6 +46,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
     if (profileUser.userType == "doula") {
       String phonesString = profileUser.phones.join(", ");
       Doula profileUserDoula = profileUser;
+      String availableDates = profileUserDoula.availableDates.join(", ");
+
       return ListView(
         children: <Widget>[
           Padding(
@@ -205,6 +207,36 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                     textAlign: TextAlign.left),
                 Text(
                   '${profileUserDoula.bio}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+
+                // AVAILABILITY
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+                Text('Availability',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left
+                ),
+                Text(
+                  'I am not availabe on: $availableDates',
                   style: TextStyle(
                       fontFamily: 'Roboto',
                       color: themeColors['black'],

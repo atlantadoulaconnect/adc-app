@@ -52,6 +52,7 @@ class DoulaAppConfirmationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     phonesString = currentUser.phones.join(", ");
+    String availableDates = currentUser.availableDates.join(", ");
     photoPermission = currentUser.photoRelease
         ? "Yes, I give permission for my photos to be used."
         : "No, I do not give permission for my photos to be used.";
@@ -133,6 +134,25 @@ class DoulaAppConfirmationPage extends StatelessWidget {
                   textAlign: TextAlign.left),
               Text(
                 '${currentUser.bio}',
+                style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['black'],
+                    fontSize: 18,
+                    height: 1.5),
+                textAlign: TextAlign.left,
+              ),
+              Text('Availability',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: themeColors['emoryBlue'],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.left
+              ),
+              Text(
+                'I am not availabe on: $availableDates',
                 style: TextStyle(
                     fontFamily: 'Roboto',
                     color: themeColors['black'],

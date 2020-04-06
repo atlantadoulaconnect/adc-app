@@ -102,8 +102,7 @@ class AdminHomeScreen extends StatelessWidget {
                     borderRadius: new BorderRadius.circular(10.0),
                     side: BorderSide(color: themeColors['mediumBlue'])),
                 onPressed: () {
-                  // TODO active matches screen
-                  toPendingApps();
+                    toPendingApps();
                 },
                 color: themeColors['mediumBlue'],
                 textColor: Colors.white,

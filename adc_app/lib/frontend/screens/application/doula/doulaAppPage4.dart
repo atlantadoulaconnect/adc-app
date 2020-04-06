@@ -216,6 +216,7 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
                               for (DateTime d in myCal.selectedDates) {
                                 availableDates.add(formatDateYYYYMMDD(d));
                               }
+                              print(availableDates);
                               updateDoula(currentUser, availableDates);
                               toDoulaAppPage5();
                             },
@@ -271,8 +272,8 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        updateDoula: (Doula user, List<String> dates) =>
-            dispatch(UpdateDoulaUserAction(user, availableDates: dates)),
+        updateDoula: (Doula user, List<String> availableDates) =>
+            dispatch(UpdateDoulaUserAction(user, availableDates: availableDates)),
         toDoulaAppPage5: () =>
             dispatch(NavigateAction.pushNamed("/doulaAppPage5")),
         cancelApplication: (bool confirmed) {

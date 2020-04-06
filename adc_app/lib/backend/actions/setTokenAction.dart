@@ -12,6 +12,18 @@ class SetTokenAction extends ReduxAction<AppState> {
 
   // appends message object to corresponding thread
   @override
-  Future<AppState> reduce() async {}
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+    await dbRef
+        .collection("users")
+        .document(userid)
+        .collection("tokens")
+        .document(token)
+        .setData({
+      "token": token,
+      "createdAt": FieldValue.serverTimestamp(),
+      "platform": Platform.operatingSystem
+    });
+  }
 
 }

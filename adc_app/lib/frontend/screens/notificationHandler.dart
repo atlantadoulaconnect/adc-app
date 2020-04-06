@@ -20,20 +20,7 @@ class _NotificationHandlerState extends State<NotificationHandler> {
   _saveDeviceToken() async {
     String fcmToken = await fcm.getToken();
 
-    final dbRef = Firestore.instance;
-//    if (fcmToken != null) {
-//      await dbRef
-//          .collection("users")
-//          .document(user.userid)
-//          .collection("tokens")
-//          .document(fcmToken)
-//          .setData({
-//        "token": fcmToken,
-//        "createdAt": FieldValue.serverTimestamp(),
-//        "platform": Platform.operatingSystem
-//
-//      });
-//    }
+//    SetTokenAction(userid, fcmToken);
   }
 
   @override

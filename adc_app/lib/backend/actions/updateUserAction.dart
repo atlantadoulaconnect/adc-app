@@ -274,6 +274,7 @@ class UpdateClientUserDocument extends ReduxAction<AppState> {
         .collection("userData")
         .document("specifics")
         .updateData({
+      "phones": phonesToDB(user.phones),
       "bday": user.bday,
       "email": user.email,
     });
@@ -307,6 +308,7 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
         .collection("userData")
         .document("specifics")
         .updateData({
+      "phones": phonesToDB(user.phones),
       "bday": user.bday,
       "email": user.email,
       "bio": user.bio,

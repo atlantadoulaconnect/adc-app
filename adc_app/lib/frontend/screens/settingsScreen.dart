@@ -1,3 +1,4 @@
+import 'package:adc_app/backend/actions/common.dart';
 import 'package:adc_app/backend/util/inputValidation.dart';
 import 'common.dart';
 
@@ -8,7 +9,8 @@ class SettingsScreen extends StatefulWidget {
   final User currentUser;
   final VoidCallback toHome;
   final VoidCallback logout;
-  final void Function(Doula, String, String, String, String, bool, bool, bool, String, int) updateDoulaAccount;
+  final void Function(Doula, String, List<Phone>, String, String, String, bool,
+      bool, bool, String, int) updateDoulaAccount;
   final Future<void> Function(Doula) doulaToDB;
   final void Function(Client, String, List<Phone>, String, String, bool) updateClientAccount;
   final Future<void> Function(Client) clientToDB;
@@ -27,7 +29,8 @@ class SettingsScreen extends StatefulWidget {
 
 class SettingsScreenState extends State<SettingsScreen> {
   final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
-  void Function(Doula, String, String, String, String, bool, bool, bool, String, int) updateDoulaAccount;
+  void Function(Doula, String, List<Phone>, String, String, String, bool,
+      bool, bool, String, int) updateDoulaAccount;
   Future<void> Function(Doula) doulaToDB;
   void Function(Client, String, List<Phone>, String, String, bool) updateClientAccount;
   Future<void> Function(Client) clientToDB;
@@ -46,7 +49,10 @@ class SettingsScreenState extends State<SettingsScreen> {
   TextEditingController certProgramCtrl;
   TextEditingController birthsNeededCtrl;
   TextEditingController emergencyContactCtrl;
+  TextEditingController oldPasswordCtrl;
   TextEditingController newPasswordCtrl;
+  TextEditingController confirmPasswordCtrl;
+  TextEditingController changeEmailPasswordCtrl;
 
   //general
   String userName;
@@ -54,6 +60,10 @@ class SettingsScreenState extends State<SettingsScreen> {
   String email;
   String dob;
   bool photoRelease = false;
+  bool passwordVisible = false;
+  String password;
+  String newPassword;
+  String confirmPassword;
 
   bool pushNotification = true;
   bool smsNotification = true;
@@ -131,6 +141,11 @@ class SettingsScreenState extends State<SettingsScreen> {
     certProgramCtrl = new TextEditingController(text: certProgram);
     birthsNeededCtrl = new TextEditingController(text: '0');
 
+    oldPasswordCtrl = new TextEditingController();
+    newPasswordCtrl = new TextEditingController();
+    confirmPasswordCtrl = new TextEditingController();
+    changeEmailPasswordCtrl = new TextEditingController();
+
     super.initState();
   }
 
@@ -138,6 +153,42 @@ class SettingsScreenState extends State<SettingsScreen> {
   void dispose() {
     //firstNameCtrl.dispose();
     super.dispose();
+  }
+
+  confirmPasswordDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Enter Your Password"),
+          content: TextFormField(
+            decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: '*****',
+          ),
+            controller: oldPasswordCtrl,
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Confirm"),
+              onPressed: () {
+                password = oldPasswordCtrl.text.toString().trim();
+                //passwordForEmailChange(true);
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+            ),
+            FlatButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                password = '';
+                //passwordForEmailChange(false);
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   Form adminUser() {
@@ -481,25 +532,6 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text('Email Address',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'example@gmail.com',
-            ),
-            controller: emailCtrl,
-            validator: emailValidator,
-          ),
-        ),
-        Padding(
           padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
           child: CheckboxListTile(
             value: photoRelease,
@@ -533,9 +565,25 @@ class SettingsScreenState extends State<SettingsScreen> {
             child: TextFormField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                //hintText: 'Jane D.',
+                hintText: "********",
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                      passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: passwordVisible
+                          ? themeColors["black"]
+                          : themeColors["coolGray5"]),
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
               ),
-              controller: newPasswordCtrl,
+              obscureText: !passwordVisible,
+              controller: oldPasswordCtrl,
               //validator: ,
             ),
 
@@ -553,9 +601,24 @@ class SettingsScreenState extends State<SettingsScreen> {
             child: TextFormField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                //hintText: 'Jane D.',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                      passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: passwordVisible
+                          ? themeColors["black"]
+                          : themeColors["coolGray5"]),
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
               ),
-              //controller: firstNameCtrl,
+              obscureText: !passwordVisible,
+              controller: newPasswordCtrl,
               //validator: ,
             ),
 
@@ -573,13 +636,96 @@ class SettingsScreenState extends State<SettingsScreen> {
             child: TextFormField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                //hintText: 'Jane D.',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                      passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: passwordVisible
+                          ? themeColors["black"]
+                          : themeColors["coolGray5"]),
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
               ),
-              //controller: firstNameCtrl,
+              obscureText: !passwordVisible,
+              controller: confirmPasswordCtrl,
+              validator: pwdValidator,
+            ),
+
+          ),
+
+        ]
+
+    ));
+    clientCategoryExpansionTiles.add(ExpansionTile(
+        title: Text(
+          'Email',
+          style: TextStyle(
+            fontSize: 25,
+          ),
+        ),
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+            child: Text('Email Address',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'example@gmail.com',
+              ),
+              controller: emailCtrl,
+              validator: emailValidator,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('Enter Current Password',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "********",
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                      passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: passwordVisible
+                          ? themeColors["black"]
+                          : themeColors["coolGray5"]),
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
+              ),
+              obscureText: !passwordVisible,
+              controller: changeEmailPasswordCtrl,
               //validator: ,
             ),
 
           ),
+
 
         ]
 
@@ -762,6 +908,53 @@ class SettingsScreenState extends State<SettingsScreen> {
                 phones.add(
                     Phone(phoneNumCtrl.text.toString().trim(), true));
 
+                if (clientEmail != currentUser.email) {
+//              print('dialog box open');
+//              confirmPasswordDialog(context);
+                  print('password: ${changeEmailPasswordCtrl.text.toString().trim()}');
+                  if (changeEmailPasswordCtrl.text.toString().trim() != '') {
+                    print('changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
+                    AuthResult result = await FirebaseAuth.instance
+                        .signInWithEmailAndPassword(email: currentUser.email,
+                        password: '${changeEmailPasswordCtrl.text.toString().trim()}');
+                    FirebaseUser user = result.user;
+                    print('user: $user');
+                    String userId = user.uid;
+                    print('userId: $userId');
+                    if (userId.length > 0 && userId != null) {
+                      user.updateEmail(clientEmail);
+                      print('email was changed to: $clientEmail');
+                    } else {
+                      print('email was not changed');
+                    }
+                  }
+//
+                }
+
+                if (oldPasswordCtrl.text.toString().trim() != '' ) {
+
+                  print('oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
+                  AuthResult result = await FirebaseAuth.instance
+                      .signInWithEmailAndPassword(email: currentUser.email, password: '${oldPasswordCtrl.text.toString().trim()}');
+                  FirebaseUser user = result.user;
+                  print('user: $user');
+                  String userId = user.uid;
+                  print('userId: $userId');
+
+                  if (userId.length > 0 && userId != null) {
+                    if (newPasswordCtrl.text.toString() ==
+                        confirmPasswordCtrl.text.toString()) {
+                      user.updatePassword(newPasswordCtrl.text.toString());
+                      print('password was changed to ${newPasswordCtrl.text
+                          .toString()}');
+                    }
+                  } else {
+                    //TODO add a pop up notification here
+                    print('password was NOT changed to ${newPasswordCtrl.text
+                        .toString()}');
+                  }
+                }
+
 
                 updateClientAccount(currentUser, clientName, phones,
                     clientBday, clientEmail, photoRelease);
@@ -858,25 +1051,6 @@ class SettingsScreenState extends State<SettingsScreen> {
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text('Email Address',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'example@gmail.com',
-            ),
-            controller: emailCtrl,
-            validator: emailValidator,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
           child: Text('Bio',
             style: TextStyle(
               fontSize: 14,
@@ -929,9 +1103,25 @@ class SettingsScreenState extends State<SettingsScreen> {
             child: TextFormField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                //hintText: 'Jane D.',
+                hintText: "********",
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                      passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: passwordVisible
+                          ? themeColors["black"]
+                          : themeColors["coolGray5"]),
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
               ),
-              //controller: firstNameCtrl,
+              obscureText: !passwordVisible,
+              controller: oldPasswordCtrl,
               //validator: ,
             ),
 
@@ -949,9 +1139,24 @@ class SettingsScreenState extends State<SettingsScreen> {
             child: TextFormField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                //hintText: 'Jane D.',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                      passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: passwordVisible
+                          ? themeColors["black"]
+                          : themeColors["coolGray5"]),
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
               ),
-              //controller: firstNameCtrl,
+              obscureText: !passwordVisible,
+              controller: newPasswordCtrl,
               //validator: ,
             ),
 
@@ -969,13 +1174,96 @@ class SettingsScreenState extends State<SettingsScreen> {
             child: TextFormField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                //hintText: 'Jane D.',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                      passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: passwordVisible
+                          ? themeColors["black"]
+                          : themeColors["coolGray5"]),
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
               ),
-              //controller: firstNameCtrl,
+              obscureText: !passwordVisible,
+              controller: confirmPasswordCtrl,
+              validator: pwdValidator,
+            ),
+
+          ),
+
+        ]
+
+    ));
+    doulaCategoryExpansionTiles.add(ExpansionTile(
+        title: Text(
+          'Email',
+          style: TextStyle(
+            fontSize: 25,
+          ),
+        ),
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+            child: Text('Email Address',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'example@gmail.com',
+              ),
+              controller: emailCtrl,
+              validator: emailValidator,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('Enter Current Password',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "********",
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                      passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: passwordVisible
+                          ? themeColors["black"]
+                          : themeColors["coolGray5"]),
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
+              ),
+              obscureText: !passwordVisible,
+              controller: changeEmailPasswordCtrl,
               //validator: ,
             ),
 
           ),
+
 
         ]
 
@@ -1204,21 +1492,70 @@ class SettingsScreenState extends State<SettingsScreen> {
             String doulaName = "${firstNameCtrl.text.toString().trim()}";
             String doulaBday = dateOfBirthCtrl.text.toString().trim();
             String doulaEmail = emailCtrl.text.toString().trim();
-            print(bioCtrl.text.toString());
             String doulaBio = bioCtrl.text.toString();
             certProgram = certProgramCtrl.text.toString();
-            print('certProgram: $certProgram');
+            List<Phone> phones = List();
+            //print('phone: ${phoneNumCtrl.text.toString().trim()}');
+            phones.add(
+                Phone(phoneNumCtrl.text.toString().trim(), true));
 
-            print('birthsNeededCtrl: $birthsNeededCtrl');
             birthsNeeded = int.parse(birthsNeededCtrl.text.toString().trim()) != null ?
               int.parse(birthsNeededCtrl.text.toString().trim()) : 0;
-            print('birthsneeded: $birthsNeeded');
-            updateDoulaAccount(currentUser, doulaName,
+
+            print('doulaEmail: $doulaEmail');
+            print('currentUser.email: ${currentUser.email}');
+
+            if (doulaEmail != currentUser.email) {
+//              print('dialog box open');
+//              confirmPasswordDialog(context);
+              print('password: ${changeEmailPasswordCtrl.text.toString().trim()}');
+              if (changeEmailPasswordCtrl.text.toString().trim() != '') {
+                print('changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
+                AuthResult result = await FirebaseAuth.instance
+                    .signInWithEmailAndPassword(email: currentUser.email,
+                    password: '${changeEmailPasswordCtrl.text.toString().trim()}');
+                FirebaseUser user = result.user;
+                print('user: $user');
+                String userId = user.uid;
+                print('userId: $userId');
+                if (userId.length > 0 && userId != null) {
+                  user.updateEmail(doulaEmail);
+                  print('email was changed to: $doulaEmail');
+                } else {
+                  print('email was not changed');
+                }
+              }
+//
+            }
+
+            if (oldPasswordCtrl.text.toString().trim() != '' ) {
+
+              print('oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
+              AuthResult result = await FirebaseAuth.instance
+                  .signInWithEmailAndPassword(email: currentUser.email, password: '${oldPasswordCtrl.text.toString().trim()}');
+              FirebaseUser user = result.user;
+              print('user: $user');
+              String userId = user.uid;
+              print('userId: $userId');
+
+              if (userId.length > 0 && userId != null) {
+                if (newPasswordCtrl.text.toString() ==
+                    confirmPasswordCtrl.text.toString()) {
+                  user.updatePassword(newPasswordCtrl.text.toString());
+                  print('password was changed to ${newPasswordCtrl.text
+                      .toString()}');
+                }
+              } else {
+                //TODO add a pop up notification here
+                print('password was NOT changed to ${newPasswordCtrl.text
+                    .toString()}');
+              }
+            }
+            updateDoulaAccount(currentUser, doulaName, phones,
                 doulaBday, doulaEmail, doulaBio, photoRelease, certified, certInProgress,
                 certProgram, birthsNeeded);
-
             doulaToDB(currentUser);
-
+            toHome();
           },
           color: themeColors['yellow'],
           textColor: Colors.black,
@@ -1244,17 +1581,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // settings page for user without a user type (someone who logged out before choosing user type)
-//  Form newUser() {
-//
-//
-//    return Form(
-//        key: _settingsKey,
-//        autovalidate: false,
-//        child: ListView(
-//          children: <Widget>[],
-//        ));
-//  }
+
 
   // settings page for user that is not logged in or user without type
   Form unlogged() {
@@ -1369,12 +1696,6 @@ class SettingsScreenState extends State<SettingsScreen> {
           settingsForm = doulaUser();
         }
         break;
-//      case "none":
-//        {
-//          // user has created account but not chosen a user type
-//          settingsForm = newUser();
-//        }
-        break;
       default:
         {
           // not logged in or new user without a type
@@ -1411,7 +1732,8 @@ class ViewModel extends BaseModel<AppState> {
   User currentUser;
   VoidCallback toHome;
   VoidCallback logout;
-  void Function(Doula, String, String, String, String, bool, bool, bool, String, int) updateDoulaAccount;
+  void Function(Doula, String, List<Phone>, String, String, String, bool,
+      bool, bool, String, int) updateDoulaAccount;
   Future<void> Function(Doula) doulaToDB;
   void Function(Client, String, List<Phone>, String, String, bool) updateClientAccount;
   Future<void> Function(Client) clientToDB;
@@ -1441,6 +1763,7 @@ class ViewModel extends BaseModel<AppState> {
       updateDoulaAccount: (
         Doula user,
         String name,
+        List<Phone> phones,
         String bday,
         String email,
         String bio,
@@ -1453,6 +1776,7 @@ class ViewModel extends BaseModel<AppState> {
           dispatch(UpdateDoulaUserAction(
             user,
             name: name,
+            phones: phones,
             bday: bday,
             email: email,
             bio: bio,
@@ -1491,7 +1815,6 @@ class ViewModel extends BaseModel<AppState> {
         email: email,
       )),
       adminToDB: (Admin user) => dispatchFuture(UpdateAdminUserDocument(user)),
-
     );
   }
 }

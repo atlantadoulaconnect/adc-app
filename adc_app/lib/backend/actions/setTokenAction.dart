@@ -17,13 +17,14 @@ class SetTokenAction extends ReduxAction<AppState> {
     await dbRef
         .collection("users")
         .document(userid)
-        .collection("tokens")
+        .collection('tokens')
         .document(token)
         .setData({
       "token": token,
       "createdAt": FieldValue.serverTimestamp(),
       "platform": Platform.operatingSystem
     });
+    return null;
   }
 
 }

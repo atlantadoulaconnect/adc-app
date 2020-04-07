@@ -48,8 +48,6 @@ class CurrentMenu extends StatelessWidget {
       currentUserType = currentUser.userType;
     }
 
-    print("Menu got user type: $currentUserType");
-
     switch (currentUserType) {
       case "admin":
         {

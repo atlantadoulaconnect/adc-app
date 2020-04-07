@@ -59,11 +59,9 @@ class UserProfileScreenState extends State<UserProfileScreen> {
     if (profileUser.userType == "doula") {
       String phonesString = profileUser.phones.join(", ");
       Doula profileUserDoula = profileUser;
-      print(
-          "unav dates profile screen: ${profileUserDoula.availableDates.join(", ")}");
       String availableDates = profileUserDoula.availableDates != null
           ? profileUserDoula.availableDates.join(", ")
-          : "no dates selected";
+          : "(no dates selected)";
 
       return ListView(
         children: <Widget>[
@@ -540,7 +538,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                 ),
                 Center(
                   child: Visibility(
-                    visible: userApproved && userHasDoula && !userHasBackupDoula,
+                    visible:
+                        userApproved && userHasDoula && !userHasBackupDoula,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(15.0),
@@ -549,7 +548,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                         //TODO: need to show doulas and store selected assignment
                         setState(() {
                           toDoulasListMatching();
-                          userHasBackupDoula = profileUserClient.backupDoula != null;
+                          userHasBackupDoula =
+                              profileUserClient.backupDoula != null;
                         });
                       },
                       color: themeColors['emoryBlue'],

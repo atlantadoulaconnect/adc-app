@@ -46,39 +46,42 @@ class AdminHomeScreen extends StatelessWidget {
                 padding: EdgeInsets.only(top: 20.0, bottom: 25.0),
                 child: Container(
                     child: StreamBuilder<QuerySnapshot>(
-                  stream: Firestore.instance
-                      .collection("users")
-                      .where("status", isEqualTo: "submitted")
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(
-                          child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            themeColors["lightBlue"]),
-                      ));
-                    }
-                    int clients = 0;
-                    int doulas = 0;
+                        stream: Firestore.instance
+                            .collection("users")
+                            .where("status", isEqualTo: "submitted")
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      themeColors["lightBlue"]),
+                                )
+                            );
+                          }
+                          int clients = 0;
+                          int doulas = 0;
 
-                    for (int i = 0; i < snapshot.data.documents.length; i++) {
-                      DocumentSnapshot ds = snapshot.data.documents[i];
-                      if (ds["userType"] == "client") {
-                        clients++;
-                      } else if (ds["userType"] == "doula") {
-                        doulas++;
-                      }
-                    }
+                          for (int i = 0; i < snapshot.data.documents.length; i++) {
+                            DocumentSnapshot ds = snapshot.data.documents[i];
+                            if (ds["userType"] == "client") {
+                              clients++;
+                            } else if (ds["userType"] == "doula") {
+                              doulas++;
+                            }
+                          }
 
-                    return Text(
-                      "$clients Pending Client Application(s)\n\n$doulas Pending Doula Application(s)\n",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    );
-                  },
-                ))),
+                          return Text(
+                            "$doulas Pending Doula Application(s)\n\n$clients Pending Client Application(s)\n",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          );
+                        },
+                    )
+                )
+            ),
 //            Padding(
 //              padding: EdgeInsets.only(top: 20.0, bottom: 7.0),
 //              child: Text(

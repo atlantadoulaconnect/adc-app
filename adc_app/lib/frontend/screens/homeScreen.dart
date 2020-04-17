@@ -114,13 +114,13 @@ class HomeScreenConnector extends StatelessWidget {
             case "client":
               {
                 return ClientHomeScreen(vm.currentUser, vm.logout, vm.toHome,
-                    vm.toRecentMessages, vm.toInfo);
+                    vm.toRecentMessages, vm.toInfo, vm.toProfile, vm.setProfileUser);
               }
               break;
             case "doula":
               {
                 return DoulaHomeScreen(vm.currentUser, vm.logout, vm.toHome,
-                    vm.toRecentMessages, vm.toInfo);
+                    vm.toRecentMessages, vm.toInfo, vm.toProfile, vm.setProfileUser);
               }
               break;
             case "none":
@@ -159,6 +159,8 @@ class ViewModel extends BaseModel<AppState> {
   void Function(Doula) updateDoula;
   VoidCallback toClientApp;
   VoidCallback toDoulaApp;
+  VoidCallback toProfile;
+  Future<void> Function(String, String) setProfileUser;
 
   ViewModel.build(
       {@required this.currentUser,
@@ -175,7 +177,9 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toClientApp,
       @required this.toDoulaApp,
       @required this.updateClient,
-      @required this.updateDoula})
+      @required this.updateDoula,
+      @required this.setProfileUser,
+      @required this.toProfile})
       : super(equals: [currentUser]);
 
   @override
@@ -199,6 +203,10 @@ class ViewModel extends BaseModel<AppState> {
             dispatch(NavigateAction.pushNamed("/clientAppPage1")),
         toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
         updateClient: (Client user) => dispatch(UpdateClientUserAction(user)),
-        updateDoula: (Doula user) => dispatch(UpdateDoulaUserAction(user)));
+        updateDoula: (Doula user) => dispatch(UpdateDoulaUserAction(user)),
+        toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+        setProfileUser: (String userid, String userType) =>
+            dispatchFuture(SetProfileUser(userid, userType)),
+    );
   }
 }

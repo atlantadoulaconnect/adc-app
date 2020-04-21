@@ -4,8 +4,8 @@ A Flutter application that provides a platform for assigning low-resource pregna
 
 ## VERSION 1.0 
 
-### NEW FEATURES
-#### List of features that were implemented since Sprint 3
+### New Features
+_List of features that were implemented since Sprint 3_
 - Client/Doula matching interface for admin users
 - Local storage persistence
 - Settings page where you can edit your application information

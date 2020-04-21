@@ -33,8 +33,8 @@ _List of all known defects that currently exist in the app_
 - Need to fix the recent messages screen to pull from Firebase chats
 - In-App Notifications do not fully work yet 
 
-
-
+  
+  
 
 ## Installation Guide
 
@@ -89,6 +89,7 @@ _Detailed instructions on how to access, download, and install the app for each 
 
 ### Running the App
 _Instructions on how to run and use the app after downloading and installing_  
+  
 Just open the app after you install it
 
 ### Build Instructions

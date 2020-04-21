@@ -34,6 +34,8 @@ _List of all known defects that currently exist in the app_
 - In-App Notifications do not fully work yet 
 
 
+
+
 ## Installation Guide
 
 ### Pre-Requisites 
@@ -44,35 +46,35 @@ _Minimum requirements that are needed to be able to run this application_
 
 ### Dependencies
 _List of all the flutter libraries that are used in this app and their download locations_
-  #### general dependencies: 
-        flutter:
-          sdk: flutter
-        firebase_core: 0.4.0+9
-        firebase_analytics: ^5.0.2
-        firebase_messaging: ^6.0.13
+  #### General Dependencies: 
+    flutter:
+      sdk: flutter
+    firebase_core: 0.4.0+9
+    firebase_analytics: ^5.0.2
+    firebase_messaging: ^6.0.13
 
-  #### frontend specific dependencies:
-        calendarro: ^1.1.2
-        url_launcher: ^5.4.2
-        intl: ^0.16.1
+  #### Frontend Specific Dependencies:
+    calendarro: ^1.1.2
+    url_launcher: ^5.4.2
+    intl: ^0.16.1
 
-  #### iOS style icons dependency:
-        cupertino_icons: ^0.1.2
+  #### iOS Style Icons Dependency:
+    cupertino_icons: ^0.1.2
 
-  #### backend specific dependencies:
-        firebase_auth: 0.15.4
-        firebase_database: ^3.1.1
-        cloud_firestore: ^0.12.9+5
-        cloud_functions: ^0.4.1+1
-        async_redux: ^2.5.2
-        path_provider: ^1.6.5
-        json_annotation: ^3.0.0
+  #### Backend Specific Dependencies:
+    firebase_auth: 0.15.4
+    firebase_database: ^3.1.1
+    cloud_firestore: ^0.12.9+5
+    cloud_functions: ^0.4.1+1
+    async_redux: ^2.5.2
+    path_provider: ^1.6.5
+    json_annotation: ^3.0.0
 
   #### dev dependencies:
-        build_runner: ^1.0.0
-        json_serializable: ^3.2.0
-        flutter_test:
-          sdk: flutter
+    build_runner: ^1.0.0
+    json_serializable: ^3.2.0
+    flutter_test:
+      sdk: flutter
 
 ### Download and Installation Instructions
 _Detailed instructions on how to access, download, and install the app for each platform_ 

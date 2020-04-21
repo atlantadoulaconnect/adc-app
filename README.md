@@ -44,51 +44,51 @@ _Minimum requirements that are needed to be able to run this application_
 
 ### Dependencies
 _List of all the flutter libraries that are used in this app and their download locations_
-  #### general dependencies 
-  flutter:
-    sdk: flutter
-  firebase_core: 0.4.0+9
-  firebase_analytics: ^5.0.2
-  firebase_messaging: ^6.0.13
+  #### general dependencies: 
+        flutter:
+          sdk: flutter
+        firebase_core: 0.4.0+9
+        firebase_analytics: ^5.0.2
+        firebase_messaging: ^6.0.13
 
-  #### frontend specific dependencies
-  calendarro: ^1.1.2
-  url_launcher: ^5.4.2
-  intl: ^0.16.1
+  #### frontend specific dependencies:
+        calendarro: ^1.1.2
+        url_launcher: ^5.4.2
+        intl: ^0.16.1
 
-  #### iOS style icons dependency
-  cupertino_icons: ^0.1.2
+  #### iOS style icons dependency:
+        cupertino_icons: ^0.1.2
 
-  #### backend specific dependencies
-  firebase_auth: 0.15.4
-  firebase_database: ^3.1.1
-  cloud_firestore: ^0.12.9+5
-  cloud_functions: ^0.4.1+1
-  async_redux: ^2.5.2
-  path_provider: ^1.6.5
-  json_annotation: ^3.0.0
+  #### backend specific dependencies:
+        firebase_auth: 0.15.4
+        firebase_database: ^3.1.1
+        cloud_firestore: ^0.12.9+5
+        cloud_functions: ^0.4.1+1
+        async_redux: ^2.5.2
+        path_provider: ^1.6.5
+        json_annotation: ^3.0.0
 
-  #### dev dependencies
-  build_runner: ^1.0.0
-  json_serializable: ^3.2.0
-  flutter_test:
-    sdk: flutter
+  #### dev dependencies:
+        build_runner: ^1.0.0
+        json_serializable: ^3.2.0
+        flutter_test:
+          sdk: flutter
 
 ### Download and Installation Instructions
 _Detailed instructions on how to access, download, and install the app for each platform_ 
   #### Android: 
     1. Search “ADC app” on Google Playstore
-    2. Click install
+    2. Click Install
   #### iOS: 
     1. Search “ADC app” on the Apple Store
     2. Click Get
 
 ### Running the App
 _Instructions on how to run and use the app after downloading and installing_
-  Just open the app after you install it
+Just open the app after you install it
 
 ### Build Instructions
-  Not applicable since the app is being delivered through the app store
+Not applicable since the app is being delivered through the app store
 
 ### Troubleshooting  
 _Here are some common errors that you might experience and how you can fix them_

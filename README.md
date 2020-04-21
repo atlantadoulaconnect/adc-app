@@ -40,7 +40,7 @@ _List of all known defects that currently exist in the app_
 
 ### Pre-Requisites 
 _Minimum requirements that are needed to be able to run this application_
-1. An Android phone with operating system 5.1 Lollipop (API 22) or later 
+1. An Android phone with operating system 5.1 Lollipop (API 22) or later \n
       OR an iPhone with operating system iOS 12 or later
 2. 100 MB of free storage on your device 
 
@@ -70,11 +70,13 @@ _List of all the flutter libraries that are used in this app and their download 
     path_provider: ^1.6.5
     json_annotation: ^3.0.0
 
-  #### dev dependencies:
+  #### Dev Dependencies:
     build_runner: ^1.0.0
     json_serializable: ^3.2.0
     flutter_test:
       sdk: flutter
+
+All of these dependencies can be accessed and downloaded directly through flutter using the "flutter get" command 
 
 ### Download and Installation Instructions
 _Detailed instructions on how to access, download, and install the app for each platform_ 
@@ -87,7 +89,7 @@ _Detailed instructions on how to access, download, and install the app for each 
 
 ### Running the App
 _Instructions on how to run and use the app after downloading and installing_
-Just open the app after you install it
+- Just open the app after you install it
 
 ### Build Instructions
 Not applicable since the app is being delivered through the app store

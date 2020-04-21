@@ -75,7 +75,7 @@ _List of all the flutter libraries that are used in this app and their download 
     flutter_test:
       sdk: flutter
 
-All of these dependencies can be accessed and downloaded directly through Flutter using the `flutter pub get` command 
+All of these dependencies can be accessed and downloaded directly through Flutter using the `flutter pub get` command.
 
 ### Download and Installation Instructions
 _Detailed instructions on how to access, download, and install the app for each platform_ 

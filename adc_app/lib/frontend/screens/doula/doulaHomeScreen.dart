@@ -40,12 +40,12 @@ class DoulaHomeScreen extends StatelessWidget {
                     )),
               ),
               //TODO ADD IN CLIENT NAME AFTER MATCHING PAGE IS UP
-              Text("Current Client: ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  )),
+//              Text("Current Client: ",
+//                  textAlign: TextAlign.center,
+//                  style: TextStyle(
+//                    fontSize: 20.0,
+//                    fontWeight: FontWeight.bold,
+//                  )),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: RaisedButton(

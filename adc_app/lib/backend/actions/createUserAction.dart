@@ -26,16 +26,9 @@ class CreateUserAction extends ReduxAction<AppState> {
         User applicant = new User(userId, email);
 
         print("adding admin as first contact");
-        QuerySnapshot adminQuery = await Firestore.instance
-            .collection("users")
-            .where("userType", isEqualTo: "admin")
-            .getDocuments();
-        DocumentSnapshot admin = adminQuery.documents[0];
 
         print("new user: ${applicant.toString()}");
-        return state.copy(
-            currentUser: applicant,
-            messagesState: state.messagesState.addAppContact(admin["userid"]));
+        return state.copy(currentUser: applicant);
       }
     } on PlatformException catch (e) {
       if (e.code == "ERROR_EMAIL_ALREADY_IN_USE") {
@@ -97,6 +90,23 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
       "userType": user.userType,
     });
 
+    QuerySnapshot adminQuery = await Firestore.instance
+        .collection("users")
+        .where("userType", isEqualTo: "admin")
+        .getDocuments();
+    DocumentSnapshot admin = adminQuery.documents[0];
+
+    await dbRef
+        .collection("users")
+        .document(user.userid)
+        .collection("recentMsgs")
+        .document(admin["userid"])
+        .setData({
+      "name": admin["name"],
+      "userid": admin["userid"],
+      "userType": admin["userType"]
+    });
+
     // handle special cases: phones, emergency contacts, deliveryTypes
 
     // clientAppPage4 inserts null for previous birth values if # live births is 0
@@ -125,9 +135,9 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
       "photoRelease": user.photoRelease,
       "emergencyContacts": emgContactsToDB(user.emergencyContacts),
       "appContacts": state.messagesState.appContacts,
-      "chats": state.messagesState.chats != null
-          ? state.messagesState.chats.toList()
-          : null,
+//      "chats": state.messagesState.chats != null
+//          ? state.messagesState.chats.toList()
+//          : null,
     });
   }
 
@@ -156,6 +166,23 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
       "userType": user.userType,
     });
 
+    QuerySnapshot adminQuery = await Firestore.instance
+        .collection("users")
+        .where("userType", isEqualTo: "admin")
+        .getDocuments();
+    DocumentSnapshot admin = adminQuery.documents[0];
+
+    await dbRef
+        .collection("users")
+        .document(user.userid)
+        .collection("recentMsgs")
+        .document(admin["userid"])
+        .setData({
+      "name": admin["name"],
+      "userid": admin["userid"],
+      "userType": "Admin"
+    });
+
     // handle special cases: phones, UNavailable dates
 
     await dbRef
@@ -174,9 +201,7 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
       "birthsNeeded": user.birthsNeeded,
       "unavailableDates": user.availableDates,
       "appContacts": state.messagesState.appContacts,
-      "chats": state.messagesState.chats != null
-          ? state.messagesState.chats.toList()
-          : null,
+//      "chats": state.messagesState.chats != null ? state.messagesState.chats.toList() : null,
     });
 
     // TODO applicationState, update application state to submitted

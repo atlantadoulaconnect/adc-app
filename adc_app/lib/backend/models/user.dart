@@ -12,7 +12,6 @@ class User {
   String name;
   String email;
   List<Phone> phones; // List of phone.dart objects later
-  Set<String> chats;
 
   bool
       phoneVerified; // if the primary phone used for the app is verified via SMS confirmation
@@ -33,14 +32,6 @@ class User {
     this.phones.remove(phone);
   }
 
-  Set<String> addChat(String threadId) {
-    if (this.chats == null) {
-      this.chats = Set<String>();
-    }
-    this.chats.add(threadId);
-    return this.chats;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -52,7 +43,6 @@ class User {
           email == other.email &&
           phoneVerified == other.phoneVerified &&
           listEquals(phones, other.phones) &&
-          setEquals(chats, other.chats) &&
           status == other.status;
 
   @override
@@ -63,7 +53,6 @@ class User {
       email.hashCode ^
       phoneVerified.hashCode ^
       phones.hashCode ^
-      chats.hashCode ^
       status.hashCode;
 
   @override

@@ -19,7 +19,6 @@ User _$UserFromJson(Map<String, dynamic> json) {
         ?.map(
             (e) => e == null ? null : Phone.fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..chats = (json['chats'] as List)?.map((e) => e as String)?.toSet()
     ..phoneVerified = json['phoneVerified'] as bool;
 }
 
@@ -30,6 +29,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'name': instance.name,
       'email': instance.email,
       'phones': instance.phones?.map((e) => e?.toJson())?.toList(),
-      'chats': instance.chats?.toList(),
       'phoneVerified': instance.phoneVerified,
     };

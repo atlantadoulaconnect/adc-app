@@ -43,3 +43,25 @@ class SetPeer extends ReduxAction<AppState> {
     return state.copy(messagesState: state.messagesState.copy(peer: peer));
   }
 }
+
+class AddAppContact extends ReduxAction<AppState> {
+  final String userid;
+
+  AddAppContact(this.userid) : assert(userid != null);
+
+  @override
+  AppState reduce() {
+    return state.copy(messagesState: state.messagesState.addAppContact(userid));
+  }
+}
+
+class AddChat extends ReduxAction<AppState> {
+  final String peerId;
+
+  AddChat(this.peerId) : assert(peerId != null);
+
+  @override
+  AppState reduce() {
+    return state.copy(messagesState: state.messagesState.addChat(peerId));
+  }
+}

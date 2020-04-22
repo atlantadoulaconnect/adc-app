@@ -24,6 +24,7 @@ export '../../backend/actions/profileAction.dart';
 export '../../backend/actions/updateApplicationAction.dart';
 export '../../backend/actions/updateUserAction.dart';
 export '../../backend/actions/waitAction.dart';
+export '../../backend/actions/messageAction.dart';
 
 // states
 export '../../backend/states/appState.dart';

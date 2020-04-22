@@ -13,15 +13,6 @@ class LoginUserAction extends ReduxAction<AppState> {
   LoginUserAction(this.email, this.password)
       : assert(email != null && password != null);
 
-  Set<String> convertChats(String chatList) {
-    if (chatList != null) {
-      return chatList.split(", ").toSet();
-    }
-    return null;
-  }
-
-  // db -> app
-
   AppState populateAdmin(
       String userId, DocumentSnapshot basics, DocumentSnapshot specifics) {
     Admin user = Admin();
@@ -47,8 +38,9 @@ class LoginUserAction extends ReduxAction<AppState> {
 
     return currState.copy(
         currentUser: user,
-        messagesState: currState.messagesState
-            .copy(chats: convertChats(specifics["chats"])));
+        messagesState: currState.messagesState.copy(
+            chats: convertStringSet(specifics["chats"]),
+            appContacts: convertStringSet(specifics["appContacts"])));
   }
 
   AppState populateClient(
@@ -66,6 +58,8 @@ class LoginUserAction extends ReduxAction<AppState> {
     // overwrite local info with guaranteed server info
     user.userid = userId;
     user.userType = "client";
+
+    MessagesState msgState = state.messagesState;
 
     // copy ensures that local values will not be overwritten by nulls
     if (specifics != null) {
@@ -91,12 +85,12 @@ class LoginUserAction extends ReduxAction<AppState> {
         primaryDoula: convertDoulaMap(specifics["primaryDoula"]),
         backupDoula: convertDoulaMap(specifics["backupDoula"]),
       );
+      msgState = msgState.copy(
+          chats: convertStringSet(specifics["chats"]),
+          appContacts: convertStringSet(specifics["appContacts"]));
     }
 
-    return currState.copy(
-        currentUser: user,
-        messagesState: currState.messagesState
-            .copy(chats: convertChats(specifics["chats"])));
+    return currState.copy(currentUser: user, messagesState: msgState);
   }
 
   AppState populateDoula(
@@ -116,6 +110,8 @@ class LoginUserAction extends ReduxAction<AppState> {
     user.userid = userId;
     user.userType = "doula";
 
+    MessagesState msgState = state.messagesState;
+
     // copy ensures that local values will not be overwritten by nulls
     if (specifics != null) {
       // userData/specifics doc is created when application has been submitted
@@ -131,12 +127,12 @@ class LoginUserAction extends ReduxAction<AppState> {
           email: specifics["email"],
           phones: convertPhones(specifics["phones"]),
           availableDates: specifics["unavailableDates"]);
+      msgState = msgState.copy(
+          chats: convertStringSet(specifics["chats"]),
+          appContacts: convertStringSet(specifics["appContacts"]));
     }
 
-    return currState.copy(
-        currentUser: user,
-        messagesState: currState.messagesState
-            .copy(chats: convertChats(specifics["chats"])));
+    return currState.copy(currentUser: user, messagesState: msgState);
   }
 
   @override
@@ -193,7 +189,6 @@ class LoginUserAction extends ReduxAction<AppState> {
               current = AppState(
                   currentUser: User(userId, email),
                   waiting: false,
-                  pages: null,
                   messagesState: MessagesState.initialState());
             }
             break;

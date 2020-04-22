@@ -9,7 +9,6 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
   final String userType;
   final String name;
   final List<Phone> phones;
-  final Set<String> chats;
   final String email;
   final bool phoneVerified;
 
@@ -38,7 +37,6 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
       this.userType,
       this.name,
       this.phones,
-      this.chats,
       this.email,
       this.phoneVerified,
       this.bday,
@@ -66,7 +64,6 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
         userType: this.userType,
         name: this.name,
         phones: this.phones,
-        chats: this.chats,
         email: this.email,
         phoneVerified: this.phoneVerified,
         bday: this.bday,
@@ -101,7 +98,6 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
   final String email;
 
   final List<Phone> phones;
-  final Set<String> chats;
 
   final bool phoneVerified;
 
@@ -124,7 +120,6 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
       this.name,
       this.email,
       this.phones,
-      this.chats,
       this.phoneVerified,
       this.bday,
       this.emailVerified,
@@ -145,7 +140,6 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
         name: name ?? this.name,
         email: email ?? this.email,
         phones: phones ?? this.phones,
-        chats: chats ?? this.chats,
         phoneVerified: phoneVerified ?? this.phoneVerified,
         bday: bday ?? this.bday,
         emailVerified: emailVerified ?? this.emailVerified,
@@ -171,7 +165,6 @@ class UpdateAdminUserAction extends ReduxAction<AppState> {
   final String email;
 
   final List<Phone> phones;
-  final Set<String> chats;
 
   final bool phoneVerified;
 
@@ -184,7 +177,6 @@ class UpdateAdminUserAction extends ReduxAction<AppState> {
       this.name,
       this.email,
       this.phones,
-      this.chats,
       this.phoneVerified,
       this.role,
       this.privileges});
@@ -197,7 +189,6 @@ class UpdateAdminUserAction extends ReduxAction<AppState> {
         name: name ?? this.name,
         email: email ?? this.email,
         phones: phones ?? this.phones,
-        chats: chats ?? this.chats,
         phoneVerified: phoneVerified ?? this.phoneVerified);
 
     return state.copy(currentUser: updated);
@@ -209,6 +200,7 @@ class UpdateAdminUserDocument extends ReduxAction<AppState> {
 
   UpdateAdminUserDocument(this.user)
       : assert(user != null && user.userType == "admin");
+
   @override
   Future<AppState> reduce() async {
     final dbRef = Firestore.instance;
@@ -264,6 +256,7 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
   @override
   Future<AppState> reduce() async {
     final dbRef = Firestore.instance;
+    Set<String> chats = state.messagesState.chats;
     await dbRef
         .collection("users")
         .document(client.userid)
@@ -271,11 +264,14 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
         .document("specifics")
         .updateData({
       "primaryDoula": primaryDoula,
+      "chats": chats.add(primaryDoula["userid"])
     });
 
     client.primaryDoula = primaryDoula;
 
-    return state.copy(profileUser: client);
+    return state.copy(
+        profileUser: client,
+        messagesState: state.messagesState.addChat(primaryDoula["userid"]));
   }
 }
 
@@ -289,6 +285,7 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
   @override
   Future<AppState> reduce() async {
     final dbRef = Firestore.instance;
+    Set<String> chats = state.messagesState.chats;
     await dbRef
         .collection("users")
         .document(client.userid)
@@ -296,11 +293,14 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
         .document("specifics")
         .updateData({
       "backupDoula": backupDoula,
+      "chats": chats.add(backupDoula["userid"])
     });
 
     client.backupDoula = backupDoula;
 
-    return state.copy(profileUser: client);
+    return state.copy(
+        profileUser: client,
+        messagesState: state.messagesState.addChat(backupDoula["userid"]));
   }
 }
 
@@ -309,6 +309,7 @@ class UpdateClientUserDocument extends ReduxAction<AppState> {
 
   UpdateClientUserDocument(this.user)
       : assert(user != null && user.userType == "client");
+
   @override
   Future<AppState> reduce() async {
     final dbRef = Firestore.instance;
@@ -341,6 +342,7 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
 
   UpdateDoulaUserDocument(this.user)
       : assert(user != null && user.userType == "doula");
+
   @override
   Future<AppState> reduce() async {
     print(
@@ -365,7 +367,7 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
       "certInProgress": user.certInProgress,
       "certProgram": user.certProgram,
       "birthsNeeded": user.birthsNeeded,
-      "unavailableDates": user.availableDates
+      "unavailableDates": user.availableDates,
     });
 
     return null;

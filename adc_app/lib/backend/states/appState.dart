@@ -15,7 +15,7 @@ class AppState {
 
   final MessagesState messagesState;
 
-  final Map<String, bool> pages;
+  //final Map<String, bool> pages;
 
   @JsonKey(ignore: true)
   final User profileUser; // User object of profile current user may be viewing
@@ -27,19 +27,14 @@ class AppState {
 //  final ConnectionsState;
 
   AppState(
-      {this.currentUser,
-      this.waiting,
-      this.messagesState,
-      this.profileUser,
-      this.pages});
+      {this.currentUser, this.waiting, this.messagesState, this.profileUser});
 
   static AppState initialState() {
     return AppState(
         currentUser: null,
         waiting: false,
         messagesState: MessagesState.initialState(),
-        profileUser: null,
-        pages: null);
+        profileUser: null);
   }
 
   AppState copy(
@@ -53,8 +48,7 @@ class AppState {
         currentUser: currentUser ?? this.currentUser,
         waiting: waiting ?? this.waiting,
         messagesState: messagesState ?? this.messagesState,
-        profileUser: profileUser ?? this.profileUser,
-        pages: pages ?? this.pages);
+        profileUser: profileUser ?? this.profileUser);
   }
 
   @override
@@ -65,8 +59,7 @@ class AppState {
             currentUser == other.currentUser &&
             waiting == other.waiting &&
             messagesState == other.messagesState &&
-            profileUser == other.profileUser &&
-            mapEquals(pages, other.pages);
+            profileUser == other.profileUser;
   }
 
   @override
@@ -74,8 +67,7 @@ class AppState {
     return currentUser.hashCode ^
         waiting.hashCode ^
         messagesState.hashCode ^
-        profileUser.hashCode ^
-        pages.hashCode;
+        profileUser.hashCode;
   }
 
   @override
@@ -84,7 +76,7 @@ class AppState {
     if (currentUser != null && currentUser.userType != null) {
       type = currentUser.userType;
     }
-    return "\nAppState:\n\tCurrent User (type: $type): ${this.currentUser.toString()}\n\twaiting: ${this.waiting}\n\tpages: ${pages != null ? pages.toString() : "no pages"}";
+    return "\nAppState:\n\tCurrent User (type: $type): ${this.currentUser.toString()}\n\twaiting: ${this.waiting}";
   }
 
   // creates this class instance from a map

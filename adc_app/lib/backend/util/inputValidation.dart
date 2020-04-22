@@ -108,6 +108,15 @@ List<String> convertStringArray(List<dynamic> array) {
   return null;
 }
 
+Set<String> convertStringSet(List<dynamic> array) {
+  if (array != null) {
+    Set<String> set = Set<String>();
+    array.forEach((element) => set.add(element.toString()));
+    return set;
+  }
+  return null;
+}
+
 List<Map<String, dynamic>> phonesToDB(List<Phone> phones) {
   List<Map<String, dynamic>> array = List();
   if (phones != null && phones.length > 0) {

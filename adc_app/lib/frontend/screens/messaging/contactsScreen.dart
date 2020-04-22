@@ -2,16 +2,16 @@ import 'package:adc_app/backend/actions/messageAction.dart';
 
 import '../common.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import './messagesScreen.dart';
 
 class ContactsScreen extends StatelessWidget {
   final User currentUser;
   final VoidCallback toMessages;
   final void Function(Contact) setPeer;
   final void Function(String) addThread;
+  final Set<String> appContacts;
 
-  ContactsScreen(
-      this.currentUser, this.toMessages, this.setPeer, this.addThread)
+  ContactsScreen(this.currentUser, this.toMessages, this.setPeer,
+      this.addThread, this.appContacts)
       : assert(currentUser != null &&
             toMessages != null &&
             setPeer != null &&
@@ -67,7 +67,8 @@ class ContactsScreen extends StatelessWidget {
                         ),
                       )),
                   Padding(
-                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * .05),
+                    padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * .05),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,6 +100,43 @@ class ContactsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // default is admin only
+    Firestore fs = Firestore.instance;
+    Query getContacts;
+
+    // if user is notype, contact list from messages state
+    // if admin, contact list is everyone except for them
+    // if client, contact list is pulled from firestore
+    // if doula, contact list is pulled from firestore
+
+    // null users do not have access to contacts screen
+    switch (currentUser.userType) {
+      case "admin":
+        {
+          getContacts = fs.collection("users");
+        }
+        break;
+      case "client":
+        {
+          getContacts = fs
+              .collection("users")
+              .where("userid", whereIn: appContacts.toList());
+        }
+        break;
+      case "doula":
+        {
+          getContacts = fs.collection("users");
+        }
+        break;
+      default:
+        {
+          getContacts = fs
+              .collection("users")
+              .where("userid", whereIn: appContacts.toList());
+        }
+        break;
+    }
+
     return Scaffold(
       appBar: AppBar(title: Text("Contacts")),
       body: Padding(
@@ -106,6 +144,7 @@ class ContactsScreen extends StatelessWidget {
         child: Container(
           child: StreamBuilder<QuerySnapshot>(
               stream: Firestore.instance.collection("users").snapshots(),
+              //stream: contacts.snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
@@ -134,8 +173,8 @@ class ContactsScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) {
-        return ContactsScreen(
-            vm.currentUser, vm.toMessages, vm.setPeer, vm.addThread);
+        return ContactsScreen(vm.currentUser, vm.toMessages, vm.setPeer,
+            vm.addThread, vm.appContacts);
       },
     );
   }
@@ -148,48 +187,25 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toMessages;
   void Function(Contact) setPeer;
   void Function(String) addThread;
+  Set<String> appContacts;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.toMessages,
       @required this.setPeer,
-      @required this.addThread})
-      : super(equals: [currentUser]);
+      @required this.addThread,
+      @required this.appContacts})
+      : super(equals: [currentUser, appContacts]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-      currentUser: state.currentUser,
-      toMessages: () => dispatch(NavigateAction.pushNamed("/messages")),
-      setPeer: (Contact peer) => dispatch(SetPeer(peer)),
-      addThread: (String threadId) {
-        User current = state.currentUser;
-        switch (current.userType) {
-          case "admin":
-            {
-              dispatch(UpdateAdminUserAction(current,
-                  chats: current.addChat(threadId)));
-            }
-            break;
-          case "client":
-            {
-              dispatch(UpdateClientUserAction(current,
-                  chats: current.addChat(threadId)));
-            }
-            break;
-          case "doula":
-            {
-              dispatch(UpdateDoulaUserAction(current,
-                  chats: current.addChat(threadId)));
-            }
-            break;
-          default:
-            {
-              print("error unknown user type");
-            }
-            break;
-        }
-      },
-    );
+        currentUser: state.currentUser,
+        toMessages: () => dispatch(NavigateAction.pushNamed("/messages")),
+        setPeer: (Contact peer) => dispatch(SetPeer(peer)),
+        addThread: (String peerId) {
+          dispatch(AddChat(peerId));
+        },
+        appContacts: state.messagesState.appContacts);
   }
 }

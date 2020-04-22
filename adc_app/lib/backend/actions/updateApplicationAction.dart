@@ -43,9 +43,10 @@ class CompletePageAction extends ReduxAction<AppState> {
 
   @override
   AppState reduce() {
-    Map<String, bool> form = state.pages ?? Map<String, bool>(); // sanity check
-    form[pageName] = true;
-    return state.copy(pages: form);
+//    Map<String, bool> form = state.pages ?? Map<String, bool>(); // sanity check
+//    form[pageName] = true;
+//    return state.copy(pages: form);
+    return null;
   }
 }
 

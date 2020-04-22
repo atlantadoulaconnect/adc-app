@@ -110,32 +110,32 @@ class ContactsScreen extends StatelessWidget {
     // if doula, contact list is pulled from firestore
 
     // null users do not have access to contacts screen
-    switch (currentUser.userType) {
-      case "admin":
-        {
-          getContacts = fs.collection("users");
-        }
-        break;
-      case "client":
-        {
-          getContacts = fs
-              .collection("users")
-              .where("userid", whereIn: appContacts.toList());
-        }
-        break;
-      case "doula":
-        {
-          getContacts = fs.collection("users");
-        }
-        break;
-      default:
-        {
-          getContacts = fs
-              .collection("users")
-              .where("userid", whereIn: appContacts.toList());
-        }
-        break;
-    }
+//    switch (currentUser.userType) {
+//      case "admin":
+//        {
+//          getContacts = fs.collection("users");
+//        }
+//        break;
+//      case "client":
+//        {
+//          getContacts = fs
+//              .collection("users")
+//              .where("userid", whereIn: appContacts.toList());
+//        }
+//        break;
+//      case "doula":
+//        {
+//          getContacts = fs.collection("users");
+//        }
+//        break;
+//      default:
+//        {
+//          getContacts = fs
+//              .collection("users")
+//              .where("userid", whereIn: appContacts.toList());
+//        }
+//        break;
+//    }
 
     return Scaffold(
       appBar: AppBar(title: Text("Contacts")),

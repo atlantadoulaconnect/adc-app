@@ -40,12 +40,12 @@ class DoulaHomeScreen extends StatelessWidget {
                     )),
               ),
               //TODO ADD IN CLIENT NAME AFTER MATCHING PAGE IS UP
-              Text("Current Client: ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  )),
+//              Text("Current Client: ",
+//                  textAlign: TextAlign.center,
+//                  style: TextStyle(
+//                    fontSize: 20.0,
+//                    fontWeight: FontWeight.bold,
+//                  )),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: RaisedButton(
@@ -70,7 +70,8 @@ class DoulaHomeScreen extends StatelessWidget {
                       borderRadius: new BorderRadius.circular(10.0),
                       side: BorderSide(color: themeColors['lightBlue'])),
                   onPressed: () async {
-                    await setProfileUser(currentUser.userid, currentUser.userType);
+                    await setProfileUser(
+                        currentUser.userid, currentUser.userType);
                     toProfile();
                   },
                   color: themeColors['lightBlue'],
@@ -152,8 +153,13 @@ class DoulaHomeScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) => DoulaHomeScreen(
-          vm.currentUser, vm.logout, vm.toHome, vm.toRecentMessages, vm.toInfo,
-          vm.toProfile, vm.setProfileUser),
+          vm.currentUser,
+          vm.logout,
+          vm.toHome,
+          vm.toRecentMessages,
+          vm.toInfo,
+          vm.toProfile,
+          vm.setProfileUser),
     );
   }
 }
@@ -169,16 +175,15 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toProfile;
   Future<void> Function(String, String) setProfileUser;
 
-  ViewModel.build(
-      {@required this.currentUser,
-      @required this.logout,
-      @required this.toHome,
-      @required this.toRecentMessages,
-      @required this.toInfo,
-      @required this.toProfile,
-      @required this.setProfileUser,
-      })
-      : super(equals: [currentUser]);
+  ViewModel.build({
+    @required this.currentUser,
+    @required this.logout,
+    @required this.toHome,
+    @required this.toRecentMessages,
+    @required this.toInfo,
+    @required this.toProfile,
+    @required this.setProfileUser,
+  }) : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {

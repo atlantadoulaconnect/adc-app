@@ -267,6 +267,28 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
       "chats": chats.add(primaryDoula["userid"])
     });
 
+    await dbRef
+        .collection("users")
+        .document(client.userid)
+        .collection("recentMsgs")
+        .document(primaryDoula["userid"])
+        .setData({
+      "name": primaryDoula["name"],
+      "userid": primaryDoula["userid"],
+      "userType": "Doula"
+    });
+
+    await dbRef
+        .collection("users")
+        .document(primaryDoula["userid"])
+        .collection("recentMsgs")
+        .document(client.userid)
+        .setData({
+      "name": client.name,
+      "userid": client.userid,
+      "userType": "Client"
+    });
+
     client.primaryDoula = primaryDoula;
 
     return state.copy(

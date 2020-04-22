@@ -121,10 +121,7 @@ class RecentMessagesScreen extends StatelessWidget {
             child: Container(
                 child: StreamBuilder<QuerySnapshot>(
               stream: Firestore.instance
-                  .collection("users")
-                  .where("userid",
-                      whereIn:
-                          (msgSt.chats != null ? msgSt.chats.toList() : []))
+                  .collection("users/${currentUser.userid}/recentMsgs")
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {

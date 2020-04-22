@@ -29,25 +29,25 @@ class ClientHomeScreen extends StatelessWidget {
             NotificationHandler(),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child:
-                  Text("Welcome, \n${currentUser != null ? currentUser.name : ""}",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 50.0,
-                        fontWeight: FontWeight.bold,
-                      )),
+              child: Text(
+                  "Welcome, \n${currentUser != null ? currentUser.name : ""}",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 50.0,
+                    fontWeight: FontWeight.bold,
+                  )),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['lightBlue'])),
+                    side: BorderSide(color: themeColors['mediumBlue'])),
                 onPressed: toRecentMessages,
-                color: themeColors['lightBlue'],
+                color: themeColors['mediumBlue'],
                 textColor: Colors.white,
                 padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['lightBlue'],
+                splashColor: themeColors['mediumBlue'],
                 child: Text(
                   "See Messages",
                   style: TextStyle(fontSize: 20.0),
@@ -59,15 +59,16 @@ class ClientHomeScreen extends StatelessWidget {
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['lightBlue'])),
+                    side: BorderSide(color: themeColors['mediumBlue'])),
                 onPressed: () async {
-                  await setProfileUser(currentUser.userid, currentUser.userType);
+                  await setProfileUser(
+                      currentUser.userid, currentUser.userType);
                   toProfile();
                 },
-                color: themeColors['lightBlue'],
+                color: themeColors['mediumBlue'],
                 textColor: Colors.white,
                 padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['lightBlue'],
+                splashColor: themeColors['mediumBlue'],
                 child: Text(
                   "See Profile",
                   style: TextStyle(fontSize: 20.0),
@@ -79,12 +80,12 @@ class ClientHomeScreen extends StatelessWidget {
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['gold'])),
+                    side: BorderSide(color: themeColors['mediumBlue'])),
                 onPressed: toInfo,
-                color: themeColors['gold'],
-                textColor: Colors.black,
+                color: themeColors['mediumBlue'],
+                textColor: Colors.white,
                 padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['gold'],
+                splashColor: themeColors['mediumBlue'],
                 child: Text(
                   "Frequently Asked Questions",
                   style: TextStyle(fontSize: 20.0),
@@ -96,13 +97,14 @@ class ClientHomeScreen extends StatelessWidget {
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['lightBlue'])),
+                    side: BorderSide(
+                        color: themeColors['darkPurple'], width: 2.0)),
                 //TODO change route to messaging doula
                 onPressed: toRecentMessages,
-                color: themeColors['lightBlue'],
-                textColor: Colors.white,
+                color: themeColors['hItPink'],
+                textColor: themeColors['darkPurple'],
                 padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['lightBlue'],
+                splashColor: themeColors['hItPink'],
                 child: Text(
                   "I'm going into labor!",
                   style: TextStyle(fontSize: 20.0),
@@ -143,8 +145,13 @@ class ClientHomeScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) => ClientHomeScreen(
-          vm.currentUser, vm.logout, vm.toHome, vm.toRecentMessages, vm.toInfo,
-          vm.toProfile, vm.setProfileUser),
+          vm.currentUser,
+          vm.logout,
+          vm.toHome,
+          vm.toRecentMessages,
+          vm.toInfo,
+          vm.toProfile,
+          vm.setProfileUser),
     );
   }
 }
@@ -160,31 +167,31 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toProfile;
   Future<void> Function(String, String) setProfileUser;
 
-  ViewModel.build(
-      {@required this.currentUser,
-      @required this.logout,
-      @required this.toHome,
-      @required this.toRecentMessages,
-      @required this.toInfo,
-      @required this.toProfile,
-      @required this.setProfileUser,})
-      : super(equals: [currentUser]);
+  ViewModel.build({
+    @required this.currentUser,
+    @required this.logout,
+    @required this.toHome,
+    @required this.toRecentMessages,
+    @required this.toInfo,
+    @required this.toProfile,
+    @required this.setProfileUser,
+  }) : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        currentUser: state.currentUser,
-        logout: () {
-          dispatch(LogoutUserAction());
-          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
-        },
-        toHome: () => dispatch(NavigateAction.pushNamed("/")),
-        toRecentMessages: () =>
-            dispatch(NavigateAction.pushNamed("/recentMessages")),
-        toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
-        toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
-        setProfileUser: (String userid, String userType) =>
-            dispatchFuture(SetProfileUser(userid, userType)),
+      currentUser: state.currentUser,
+      logout: () {
+        dispatch(LogoutUserAction());
+        dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+      },
+      toHome: () => dispatch(NavigateAction.pushNamed("/")),
+      toRecentMessages: () =>
+          dispatch(NavigateAction.pushNamed("/recentMessages")),
+      toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
+      toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+      setProfileUser: (String userid, String userType) =>
+          dispatchFuture(SetProfileUser(userid, userType)),
     );
   }
 }

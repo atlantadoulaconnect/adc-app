@@ -51,12 +51,12 @@ class DoulaHomeScreen extends StatelessWidget {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
-                      side: BorderSide(color: themeColors['lightBlue'])),
+                      side: BorderSide(color: themeColors['mediumBlue'])),
                   onPressed: toRecentMessages,
-                  color: themeColors['lightBlue'],
+                  color: themeColors['mediumBlue'],
                   textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
-                  splashColor: themeColors['lightBlue'],
+                  splashColor: themeColors['mediumBlue'],
                   child: Text(
                     "See Messages",
                     style: TextStyle(fontSize: 20.0),
@@ -68,15 +68,16 @@ class DoulaHomeScreen extends StatelessWidget {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
-                      side: BorderSide(color: themeColors['lightBlue'])),
+                      side: BorderSide(color: themeColors['mediumBlue'])),
                   onPressed: () async {
-                    await setProfileUser(currentUser.userid, currentUser.userType);
+                    await setProfileUser(
+                        currentUser.userid, currentUser.userType);
                     toProfile();
                   },
-                  color: themeColors['lightBlue'],
+                  color: themeColors['mediumBlue'],
                   textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
-                  splashColor: themeColors['lightBlue'],
+                  splashColor: themeColors['mediumBlue'],
                   child: Text(
                     "See Profile",
                     style: TextStyle(fontSize: 20.0),
@@ -88,12 +89,12 @@ class DoulaHomeScreen extends StatelessWidget {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
-                      side: BorderSide(color: themeColors['gold'])),
+                      side: BorderSide(color: themeColors['mediumBlue'])),
                   onPressed: toInfo,
-                  color: themeColors['gold'],
-                  textColor: Colors.black,
+                  color: themeColors['mediumBlue'],
+                  textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
-                  splashColor: themeColors['gold'],
+                  splashColor: themeColors['mediumBlue'],
                   child: Text(
                     "Frequently Asked Questions",
                     style: TextStyle(fontSize: 20.0),
@@ -105,12 +106,12 @@ class DoulaHomeScreen extends StatelessWidget {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
-                      side: BorderSide(color: themeColors['lightBlue'])),
+                      side: BorderSide(color: themeColors['mediumBlue'])),
                   onPressed: toRecentMessages,
-                  color: themeColors['lightBlue'],
+                  color: themeColors['mediumBlue'],
                   textColor: Colors.white,
                   padding: EdgeInsets.all(15.0),
-                  splashColor: themeColors['lightBlue'],
+                  splashColor: themeColors['mediumBlue'],
                   child: Text(
                     "Discussion Boards",
                     style: TextStyle(fontSize: 20.0),
@@ -152,8 +153,13 @@ class DoulaHomeScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) => DoulaHomeScreen(
-          vm.currentUser, vm.logout, vm.toHome, vm.toRecentMessages, vm.toInfo,
-          vm.toProfile, vm.setProfileUser),
+          vm.currentUser,
+          vm.logout,
+          vm.toHome,
+          vm.toRecentMessages,
+          vm.toInfo,
+          vm.toProfile,
+          vm.setProfileUser),
     );
   }
 }
@@ -169,16 +175,15 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toProfile;
   Future<void> Function(String, String) setProfileUser;
 
-  ViewModel.build(
-      {@required this.currentUser,
-      @required this.logout,
-      @required this.toHome,
-      @required this.toRecentMessages,
-      @required this.toInfo,
-      @required this.toProfile,
-      @required this.setProfileUser,
-      })
-      : super(equals: [currentUser]);
+  ViewModel.build({
+    @required this.currentUser,
+    @required this.logout,
+    @required this.toHome,
+    @required this.toRecentMessages,
+    @required this.toInfo,
+    @required this.toProfile,
+    @required this.setProfileUser,
+  }) : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {

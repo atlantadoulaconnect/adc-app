@@ -2,7 +2,6 @@ import 'package:adc_app/backend/actions/common.dart';
 import 'package:adc_app/backend/util/inputValidation.dart';
 import 'common.dart';
 
-
 // screen where users can change settings related to the TappableChipAttributes
 
 class SettingsScreen extends StatefulWidget {
@@ -12,15 +11,22 @@ class SettingsScreen extends StatefulWidget {
   final void Function(Doula, String, List<Phone>, String, String, String, bool,
       bool, bool, String, int) updateDoulaAccount;
   final Future<void> Function(Doula) doulaToDB;
-  final void Function(Client, String, List<Phone>, String, String, bool) updateClientAccount;
+  final void Function(Client, String, List<Phone>, String, String, bool)
+      updateClientAccount;
   final Future<void> Function(Client) clientToDB;
   final void Function(Admin, String, String) updateAdminAccount;
   final Future<void> Function(Admin) adminToDB;
 
-  SettingsScreen(this.currentUser, this.toHome, this.logout,
-      this.updateDoulaAccount, this.doulaToDB,
-      this.updateClientAccount, this.clientToDB,
-      this.updateAdminAccount, this.adminToDB);
+  SettingsScreen(
+      this.currentUser,
+      this.toHome,
+      this.logout,
+      this.updateDoulaAccount,
+      this.doulaToDB,
+      this.updateClientAccount,
+      this.clientToDB,
+      this.updateAdminAccount,
+      this.adminToDB);
 //      : assert(currentUser != null && toHome != null && logout != null);
 
   @override
@@ -29,10 +35,11 @@ class SettingsScreen extends StatefulWidget {
 
 class SettingsScreenState extends State<SettingsScreen> {
   final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
-  void Function(Doula, String, List<Phone>, String, String, String, bool,
-      bool, bool, String, int) updateDoulaAccount;
+  void Function(Doula, String, List<Phone>, String, String, String, bool, bool,
+      bool, String, int) updateDoulaAccount;
   Future<void> Function(Doula) doulaToDB;
-  void Function(Client, String, List<Phone>, String, String, bool) updateClientAccount;
+  void Function(Client, String, List<Phone>, String, String, bool)
+      updateClientAccount;
   Future<void> Function(Client) clientToDB;
   void Function(Admin, String, String) updateAdminAccount;
   Future<void> Function(Admin) adminToDB;
@@ -70,7 +77,6 @@ class SettingsScreenState extends State<SettingsScreen> {
   bool emailNotification = true;
   bool messagesNotification = true;
 
-
   //clients only
   bool matchWithDoulaNotification = true;
   bool statusReportNotification = true;
@@ -90,7 +96,6 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   @override
   void initState() {
-
     toHome = widget.toHome;
     currentUser = widget.currentUser;
 
@@ -101,12 +106,13 @@ class SettingsScreenState extends State<SettingsScreen> {
     updateAdminAccount = widget.updateAdminAccount;
     adminToDB = widget.adminToDB;
 
-
     String userType = currentUser != null ? currentUser.userType : 'unlogged';
 
     if (currentUser != null) {
       userName = currentUser.name != null ? currentUser.name : '';
-      phone = currentUser.phones != null ? currentUser.phones.toString().trim().substring(1,11) : '';
+      phone = currentUser.phones != null
+          ? currentUser.phones.toString().trim().substring(1, 11)
+          : '';
       email = currentUser.email != null ? currentUser.email : '';
     }
 
@@ -116,21 +122,26 @@ class SettingsScreenState extends State<SettingsScreen> {
       certified = (currentUser as Doula).certified;
       certInProgress = (currentUser as Doula).certInProgress;
       certProgram = (currentUser as Doula).certProgram;
-      birthsNeeded = (currentUser as Doula).birthsNeeded != null ?
-          (currentUser as Doula).birthsNeeded : 0;
-      photoRelease = (currentUser as Doula).photoRelease != null ?
-          (currentUser as Doula).photoRelease : false;
+      birthsNeeded = (currentUser as Doula).birthsNeeded != null
+          ? (currentUser as Doula).birthsNeeded
+          : 0;
+      photoRelease = (currentUser as Doula).photoRelease != null
+          ? (currentUser as Doula).photoRelease
+          : false;
     }
 
     if (userType == 'client') {
       dob = (currentUser as Client).bday;
-      int contactSize = (currentUser as Client).emergencyContacts != null ?
-      (currentUser as Client).emergencyContacts.length : 0 ;
-      for(int i = 0; i < contactSize; i++) {
+      int contactSize = (currentUser as Client).emergencyContacts != null
+          ? (currentUser as Client).emergencyContacts.length
+          : 0;
+      emergencyContacts = (currentUser as Client).emergencyContacts;
+      for (int i = 0; i < contactSize; i++) {
         emergencyContacts[i] = (currentUser as Client).emergencyContacts[i];
       }
-      photoRelease = (currentUser as Client).photoRelease != null ?
-      (currentUser as Client).photoRelease : false;
+      photoRelease = (currentUser as Client).photoRelease != null
+          ? (currentUser as Client).photoRelease
+          : false;
     }
 
     firstNameCtrl = new TextEditingController(text: userName);
@@ -163,9 +174,9 @@ class SettingsScreenState extends State<SettingsScreen> {
           title: Text("Enter Your Password"),
           content: TextFormField(
             decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: '*****',
-          ),
+              border: OutlineInputBorder(),
+              hintText: '*****',
+            ),
             controller: oldPasswordCtrl,
           ),
           actions: <Widget>[
@@ -194,30 +205,30 @@ class SettingsScreenState extends State<SettingsScreen> {
   Form adminUser() {
     final adminCategoryExpansionTiles = List<Widget>();
     adminCategoryExpansionTiles.add(ExpansionTile(
-      title: Text(
-        'My Account',
-        style: TextStyle(
-          fontSize: 25,
-        ),
-      ),
-      children: <Widget>[
-      Text('Name',
-      style: TextStyle(
-        fontSize: 14,
-      ),
-    ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-        child: TextFormField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Jane D.',
+        title: Text(
+          'My Account',
+          style: TextStyle(
+            fontSize: 25,
           ),
-          controller: firstNameCtrl,
-          validator: nameValidator,
         ),
-
-      ),
+        children: <Widget>[
+          Text(
+            'Name',
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Jane D.',
+              ),
+              controller: firstNameCtrl,
+              validator: nameValidator,
+            ),
+          ),
 //      Padding(
 //        padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
 //        child: Text('Phone Number',
@@ -237,28 +248,27 @@ class SettingsScreenState extends State<SettingsScreen> {
 //          validator: phoneValidator,
 //        ),
 //      ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-        child: Text('Email Address',
-          style: TextStyle(
-            fontSize: 14,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+            child: Text(
+              'Email Address',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
           ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-        child: TextFormField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'example@gmail.com',
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'example@gmail.com',
+              ),
+              controller: emailCtrl,
+              validator: emailValidator,
+            ),
           ),
-          controller: emailCtrl,
-          validator: emailValidator,
-        ),
-      ),
-      ]
-
-    ));
+        ]));
     adminCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Password',
@@ -269,7 +279,8 @@ class SettingsScreenState extends State<SettingsScreen> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Enter Current Password',
+            child: Text(
+              'Enter Current Password',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -285,11 +296,11 @@ class SettingsScreenState extends State<SettingsScreen> {
               controller: newPasswordCtrl,
               //validator: ,
             ),
-
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Enter New Password',
+            child: Text(
+              'Enter New Password',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -305,11 +316,11 @@ class SettingsScreenState extends State<SettingsScreen> {
               //controller: firstNameCtrl,
               //validator: ,
             ),
-
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Confirm New Password',
+            child: Text(
+              'Confirm New Password',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -325,12 +336,8 @@ class SettingsScreenState extends State<SettingsScreen> {
               //controller: firstNameCtrl,
               //validator: ,
             ),
-
           ),
-
-        ]
-
-    ));
+        ]));
 //    adminCategoryExpansionTiles.add(ExpansionTile(
 //        title: Text(
 //          'Availability',
@@ -363,7 +370,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: pushNotification,
               title: Text('Push Notifications'),
-              onChanged: (value){
+              onChanged: (value) {
                 pushNotification = value;
               },
             ),
@@ -374,7 +381,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: smsNotification,
               title: Text('SMS Notifications'),
-              onChanged: (value){
+              onChanged: (value) {
                 smsNotification = value;
               },
             ),
@@ -385,7 +392,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: emailNotification,
               title: Text('Email Notifications'),
-              onChanged: (value){
+              onChanged: (value) {
                 emailNotification = value;
               },
             ),
@@ -396,7 +403,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: newAppNotification,
               title: Text('New Application'),
-              onChanged: (value){
+              onChanged: (value) {
                 newAppNotification = value;
               },
             ),
@@ -407,14 +414,12 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: statusReportNotification,
               title: Text('Status Report Reminders'),
-              onChanged: (value){
+              onChanged: (value) {
                 statusReportNotification = value;
               },
             ),
           ),
-        ]
-
-    ));
+        ]));
     adminCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Privacy',
@@ -427,12 +432,8 @@ class SettingsScreenState extends State<SettingsScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
             child: Text('Link to Privacy Policy goes here'),
-
           ),
-
-        ]
-
-    ));
+        ]));
     adminCategoryExpansionTiles.add(Padding(
       padding: const EdgeInsets.all(8),
       child: Center(
@@ -455,13 +456,10 @@ class SettingsScreenState extends State<SettingsScreen> {
             String adminName = firstNameCtrl.text.toString().trim();
             String adminEmail = emailCtrl.text.toString().trim();
 
-
-            updateAdminAccount(currentUser, adminName,
-                adminEmail);
+            updateAdminAccount(currentUser, adminName, adminEmail);
 
             adminToDB(currentUser);
             toHome();
-
           },
           color: themeColors['yellow'],
           textColor: Colors.black,
@@ -484,84 +482,85 @@ class SettingsScreenState extends State<SettingsScreen> {
   }
 
   Form clientUser() {
-
     final clientCategoryExpansionTiles = List<Widget>();
     clientCategoryExpansionTiles.add(ExpansionTile(
-      title: Text(
-        'My Account',
-        style: TextStyle(
-          fontSize: 25,
-        ),
-      ),
-      children: <Widget>[
-        Text('Name',
-        style: TextStyle(
-          fontSize: 14,
-        ),
-      ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Jane D.',
-            ),
-            controller: firstNameCtrl,
-            validator: nameValidator,
+        title: Text(
+          'My Account',
+          style: TextStyle(
+            fontSize: 25,
           ),
-
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text('Phone Number',
+        children: <Widget>[
+          Text(
+            'Name',
             style: TextStyle(
               fontSize: 14,
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: '6785201876',
-            ),
-            controller: phoneNumCtrl,
-            validator: phoneValidator,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text('Date of Birth',
-            style: TextStyle(
-              fontSize: 14,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Jane D.',
+              ),
+              controller: firstNameCtrl,
+              validator: nameValidator,
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: '01/09/1997',
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+            child: Text(
+              'Phone Number',
+              style: TextStyle(
+                fontSize: 14,
+              ),
             ),
-            controller: dateOfBirthCtrl,
-            validator: phoneValidator,
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-          child: CheckboxListTile(
-            value: photoRelease,
-            title: Text("Photo Release Permission"),
-            onChanged: (bool value) {
-              setState(() { photoRelease = value; });
-            },
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: '6785201876',
+              ),
+              controller: phoneNumCtrl,
+              validator: phoneValidator,
+            ),
           ),
-        ),
-      ]
-
-    ));
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+            child: Text(
+              'Date of Birth',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: '01/09/1997',
+              ),
+              controller: dateOfBirthCtrl,
+              validator: phoneValidator,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+            child: CheckboxListTile(
+              value: photoRelease,
+              title: Text("Photo Release Permission"),
+              onChanged: (bool value) {
+                setState(() {
+                  photoRelease = value;
+                });
+              },
+            ),
+          ),
+        ]));
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Password',
@@ -572,7 +571,8 @@ class SettingsScreenState extends State<SettingsScreen> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Enter Current Password',
+            child: Text(
+              'Enter Current Password',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -586,10 +586,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                 hintText: "********",
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      // Based on passwordVisible state choose the icon
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
                           : themeColors["coolGray5"]),
@@ -604,11 +602,11 @@ class SettingsScreenState extends State<SettingsScreen> {
               controller: oldPasswordCtrl,
               //validator: ,
             ),
-
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Enter New Password',
+            child: Text(
+              'Enter New Password',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -621,10 +619,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      // Based on passwordVisible state choose the icon
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
                           : themeColors["coolGray5"]),
@@ -639,11 +635,11 @@ class SettingsScreenState extends State<SettingsScreen> {
               controller: newPasswordCtrl,
               //validator: ,
             ),
-
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Confirm New Password',
+            child: Text(
+              'Confirm New Password',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -656,10 +652,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      // Based on passwordVisible state choose the icon
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
                           : themeColors["coolGray5"]),
@@ -674,12 +668,8 @@ class SettingsScreenState extends State<SettingsScreen> {
               controller: confirmPasswordCtrl,
               validator: pwdValidator,
             ),
-
           ),
-
-        ]
-
-    ));
+        ]));
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Email',
@@ -690,7 +680,8 @@ class SettingsScreenState extends State<SettingsScreen> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text('Email Address',
+            child: Text(
+              'Email Address',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -709,7 +700,8 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Enter Current Password',
+            child: Text(
+              'Enter Current Password',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -723,10 +715,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                 hintText: "********",
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      // Based on passwordVisible state choose the icon
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
                           : themeColors["coolGray5"]),
@@ -741,16 +731,12 @@ class SettingsScreenState extends State<SettingsScreen> {
               controller: changeEmailPasswordCtrl,
               //validator: ,
             ),
-
           ),
-
-
-        ]
-
-    ));
+        ]));
     if (emergencyContacts == null) {
       clientCategoryExpansionTiles.add(ExpansionTile(
-        title: Text ('Emergency Contacts',
+        title: Text(
+          'Emergency Contacts',
           style: TextStyle(
             fontSize: 25,
           ),
@@ -767,9 +753,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
         ));
-
       }
-
     }
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
@@ -785,7 +769,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: pushNotification,
               title: Text('Push Notifications'),
-              onChanged: (value){
+              onChanged: (value) {
                 pushNotification = value;
               },
             ),
@@ -796,7 +780,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: smsNotification,
               title: Text('SMS Notifications'),
-              onChanged: (value){
+              onChanged: (value) {
                 smsNotification = value;
               },
             ),
@@ -807,7 +791,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: emailNotification,
               title: Text('Email Notifications'),
-              onChanged: (value){
+              onChanged: (value) {
                 emailNotification = value;
               },
             ),
@@ -818,7 +802,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: matchWithDoulaNotification,
               title: Text('Matched with Doula'),
-              onChanged: (value){
+              onChanged: (value) {
                 matchWithDoulaNotification = value;
               },
             ),
@@ -829,14 +813,12 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: statusReportNotification,
               title: Text('Status Report Reminders'),
-              onChanged: (value){
+              onChanged: (value) {
                 statusReportNotification = value;
               },
             ),
           ),
-        ]
-
-    ));
+        ]));
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Privacy',
@@ -852,20 +834,14 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: true,
               title: Text('Make Account Private'),
-              onChanged: (value){
-
-              },
+              onChanged: (value) {},
             ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
             child: Text('Link to Privacy Policy goes here'),
-
           ),
-
-        ]
-
-    ));
+        ]));
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Send Feedback',
@@ -879,9 +855,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
             child: Text('Insert link here'),
           ),
-        ]
-
-    ));
+        ]));
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Terms of Service',
@@ -894,105 +868,104 @@ class SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
             child: Text('Insert link here'),
           ),
-        ]
-
+        ]));
+    clientCategoryExpansionTiles.add(Padding(
+      padding: const EdgeInsets.all(8),
+      child: Center(
+        child: Text(
+          'Version Number 1',
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+      ),
     ));
     clientCategoryExpansionTiles.add(Padding(
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: Text(
-              'Version Number 1',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-          ),
-        ));
-    clientCategoryExpansionTiles.add(Padding(
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])),
-              onPressed: () async {
+      padding: const EdgeInsets.all(8),
+      child: Center(
+        child: RaisedButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(5.0),
+              side: BorderSide(color: themeColors['yellow'])),
+          onPressed: () async {
+            String clientName = firstNameCtrl.text.toString().trim();
+            String clientBday = dateOfBirthCtrl.text.toString().trim();
+            print('bday: ${dateOfBirthCtrl.text.toString().trim()}');
+            String clientEmail = emailCtrl.text.toString().trim();
+            List<Phone> phones = List();
+            print('phone: ${phoneNumCtrl.text.toString().trim()}');
+            phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
 
-                String clientName = firstNameCtrl.text.toString().trim();
-                String clientBday = dateOfBirthCtrl.text.toString().trim();
-                print('bday: ${dateOfBirthCtrl.text.toString().trim()}');
-                String clientEmail = emailCtrl.text.toString().trim();
-                List<Phone> phones = List();
-                print('phone: ${phoneNumCtrl.text.toString().trim()}');
-                phones.add(
-                    Phone(phoneNumCtrl.text.toString().trim(), true));
-
-                if (clientEmail != currentUser.email) {
+            if (clientEmail != currentUser.email) {
 //              print('dialog box open');
 //              confirmPasswordDialog(context);
-                  print('password: ${changeEmailPasswordCtrl.text.toString().trim()}');
-                  if (changeEmailPasswordCtrl.text.toString().trim() != '') {
-                    print('changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
-                    AuthResult result = await FirebaseAuth.instance
-                        .signInWithEmailAndPassword(email: currentUser.email,
-                        password: '${changeEmailPasswordCtrl.text.toString().trim()}');
-                    FirebaseUser user = result.user;
-                    print('user: $user');
-                    String userId = user.uid;
-                    print('userId: $userId');
-                    if (userId.length > 0 && userId != null) {
-                      user.updateEmail(clientEmail);
-                      print('email was changed to: $clientEmail');
-                    } else {
-                      print('email was not changed');
-                    }
-                  }
+              print(
+                  'password: ${changeEmailPasswordCtrl.text.toString().trim()}');
+              if (changeEmailPasswordCtrl.text.toString().trim() != '') {
+                print(
+                    'changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
+                AuthResult result = await FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                        email: currentUser.email,
+                        password:
+                            '${changeEmailPasswordCtrl.text.toString().trim()}');
+                FirebaseUser user = result.user;
+                print('user: $user');
+                String userId = user.uid;
+                print('userId: $userId');
+                if (userId.length > 0 && userId != null) {
+                  user.updateEmail(clientEmail);
+                  print('email was changed to: $clientEmail');
+                } else {
+                  print('email was not changed');
+                }
+              }
 //
+            }
+
+            if (oldPasswordCtrl.text.toString().trim() != '') {
+              print(
+                  'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
+              AuthResult result = await FirebaseAuth.instance
+                  .signInWithEmailAndPassword(
+                      email: currentUser.email,
+                      password: '${oldPasswordCtrl.text.toString().trim()}');
+              FirebaseUser user = result.user;
+              print('user: $user');
+              String userId = user.uid;
+              print('userId: $userId');
+
+              if (userId.length > 0 && userId != null) {
+                if (newPasswordCtrl.text.toString() ==
+                    confirmPasswordCtrl.text.toString()) {
+                  user.updatePassword(newPasswordCtrl.text.toString());
+                  print(
+                      'password was changed to ${newPasswordCtrl.text.toString()}');
                 }
+              } else {
+                //TODO add a pop up notification here
+                print(
+                    'password was NOT changed to ${newPasswordCtrl.text.toString()}');
+              }
+            }
 
-                if (oldPasswordCtrl.text.toString().trim() != '' ) {
+            updateClientAccount(currentUser, clientName, phones, clientBday,
+                clientEmail, photoRelease);
 
-                  print('oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
-                  AuthResult result = await FirebaseAuth.instance
-                      .signInWithEmailAndPassword(email: currentUser.email, password: '${oldPasswordCtrl.text.toString().trim()}');
-                  FirebaseUser user = result.user;
-                  print('user: $user');
-                  String userId = user.uid;
-                  print('userId: $userId');
-
-                  if (userId.length > 0 && userId != null) {
-                    if (newPasswordCtrl.text.toString() ==
-                        confirmPasswordCtrl.text.toString()) {
-                      user.updatePassword(newPasswordCtrl.text.toString());
-                      print('password was changed to ${newPasswordCtrl.text
-                          .toString()}');
-                    }
-                  } else {
-                    //TODO add a pop up notification here
-                    print('password was NOT changed to ${newPasswordCtrl.text
-                        .toString()}');
-                  }
-                }
-
-
-                updateClientAccount(currentUser, clientName, phones,
-                    clientBday, clientEmail, photoRelease);
-
-                clientToDB(currentUser);
-                toHome();
-
-              },
-              color: themeColors['yellow'],
-              textColor: Colors.black,
-              padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['yellow'],
-              child: Text(
-                "Submit Changes",
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
+            clientToDB(currentUser);
+            toHome();
+          },
+          color: themeColors['yellow'],
+          textColor: Colors.black,
+          padding: EdgeInsets.all(15.0),
+          splashColor: themeColors['yellow'],
+          child: Text(
+            "Submit Changes",
+            style: TextStyle(fontSize: 20.0),
           ),
-        ));
-
+        ),
+      ),
+    ));
 
     return Form(
         key: _settingsKey,
@@ -1012,7 +985,8 @@ class SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
       children: <Widget>[
-        Text('Name',
+        Text(
+          'Name',
           style: TextStyle(
             fontSize: 14,
           ),
@@ -1027,11 +1001,11 @@ class SettingsScreenState extends State<SettingsScreen> {
             controller: firstNameCtrl,
             validator: nameValidator,
           ),
-
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text('Phone Number',
+          child: Text(
+            'Phone Number',
             style: TextStyle(
               fontSize: 14,
             ),
@@ -1050,7 +1024,8 @@ class SettingsScreenState extends State<SettingsScreen> {
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text('Date of Birth',
+          child: Text(
+            'Date of Birth',
             style: TextStyle(
               fontSize: 14,
             ),
@@ -1069,7 +1044,8 @@ class SettingsScreenState extends State<SettingsScreen> {
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text('Bio',
+          child: Text(
+            'Bio',
             style: TextStyle(
               fontSize: 14,
             ),
@@ -1093,7 +1069,9 @@ class SettingsScreenState extends State<SettingsScreen> {
             value: photoRelease,
             title: Text("Photo Release Permission"),
             onChanged: (bool value) {
-              setState(() { photoRelease = value; });
+              setState(() {
+                photoRelease = value;
+              });
             },
           ),
         ),
@@ -1110,7 +1088,8 @@ class SettingsScreenState extends State<SettingsScreen> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Enter Current Password',
+            child: Text(
+              'Enter Current Password',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -1124,10 +1103,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                 hintText: "********",
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      // Based on passwordVisible state choose the icon
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
                           : themeColors["coolGray5"]),
@@ -1142,11 +1119,11 @@ class SettingsScreenState extends State<SettingsScreen> {
               controller: oldPasswordCtrl,
               //validator: ,
             ),
-
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Enter New Password',
+            child: Text(
+              'Enter New Password',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -1159,10 +1136,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      // Based on passwordVisible state choose the icon
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
                           : themeColors["coolGray5"]),
@@ -1177,11 +1152,11 @@ class SettingsScreenState extends State<SettingsScreen> {
               controller: newPasswordCtrl,
               //validator: ,
             ),
-
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Confirm New Password',
+            child: Text(
+              'Confirm New Password',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -1194,10 +1169,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      // Based on passwordVisible state choose the icon
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
                           : themeColors["coolGray5"]),
@@ -1212,12 +1185,8 @@ class SettingsScreenState extends State<SettingsScreen> {
               controller: confirmPasswordCtrl,
               validator: pwdValidator,
             ),
-
           ),
-
-        ]
-
-    ));
+        ]));
     doulaCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Email',
@@ -1228,7 +1197,8 @@ class SettingsScreenState extends State<SettingsScreen> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text('Email Address',
+            child: Text(
+              'Email Address',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -1247,7 +1217,8 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Enter Current Password',
+            child: Text(
+              'Enter Current Password',
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -1261,10 +1232,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                 hintText: "********",
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      // Based on passwordVisible state choose the icon
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
                           : themeColors["coolGray5"]),
@@ -1279,88 +1248,80 @@ class SettingsScreenState extends State<SettingsScreen> {
               controller: changeEmailPasswordCtrl,
               //validator: ,
             ),
-
           ),
-
-
-        ]
-
-    ));
+        ]));
     doulaCategoryExpansionTiles.add(ExpansionTile(
-      title: Text(
-        'Certification',
-        style: TextStyle(
-          fontSize: 25,
-        ),
-      ),
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-          child: CheckboxListTile(
-            value: certified,
-            title: Text("Are you certified?"),
-            onChanged: (bool value) {
-              setState(() { certified = value; });
-            },
+        title: Text(
+          'Certification',
+          style: TextStyle(
+            fontSize: 25,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-          child: CheckboxListTile(
-            value: certInProgress,
-            title: Text("Working towards certification?"),
-            onChanged: (bool value) {
-              setState(() { certInProgress = value; });
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text('Certification Program',
-            style: TextStyle(
-              fontSize: 14,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+            child: CheckboxListTile(
+              value: certified,
+              title: Text("Are you certified?"),
+              onChanged: (bool value) {
+                setState(() {
+                  certified = value;
+                });
+              },
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'DONA, CAPPA, ICEA, Other',
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+            child: CheckboxListTile(
+              value: certInProgress,
+              title: Text("Working towards certification?"),
+              onChanged: (bool value) {
+                setState(() {
+                  certInProgress = value;
+                });
+              },
             ),
-            controller: certProgramCtrl,
-
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text(
-                  'Births Needed for Certification:'
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: 50,
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: '0'
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+            child: Text(
+              'Certification Program',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'DONA, CAPPA, ICEA, Other',
+              ),
+              controller: certProgramCtrl,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text('Births Needed for Certification:'),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 50,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), hintText: '0'),
+                        controller: birthsNeededCtrl,
                       ),
-                      controller: birthsNeededCtrl,
                     ),
                   ),
-                ),
-              ]
+                ]),
           ),
-        ),
-      ]
-
-    ));
+        ]));
     doulaCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Notifications',
@@ -1369,64 +1330,62 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
         children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
             child: SwitchListTile(
               activeColor: themeColors['yellow'],
               value: pushNotification,
               title: Text('Push Notifications'),
-              onChanged: (value){
+              onChanged: (value) {
                 pushNotification = value;
               },
             ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-          child: SwitchListTile(
-            activeColor: themeColors['yellow'],
-            value: smsNotification,
-            title: Text('SMS Notifications'),
-            onChanged: (value){
-              smsNotification = value;
-            },
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-          child: SwitchListTile(
-            activeColor: themeColors['yellow'],
-            value: emailNotification,
-            title: Text('Email Notifications'),
-            onChanged: (value){
-              emailNotification = value;
-            },
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+            child: SwitchListTile(
+              activeColor: themeColors['yellow'],
+              value: smsNotification,
+              title: Text('SMS Notifications'),
+              onChanged: (value) {
+                smsNotification = value;
+              },
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-          child: SwitchListTile(
-            activeColor: themeColors['yellow'],
-            value: matchWithClientNotification,
-            title: Text('Matched with Client'),
-            onChanged: (value){
-              matchWithClientNotification = value;
-            },
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+            child: SwitchListTile(
+              activeColor: themeColors['yellow'],
+              value: emailNotification,
+              title: Text('Email Notifications'),
+              onChanged: (value) {
+                emailNotification = value;
+              },
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-          child: SwitchListTile(
-            activeColor: themeColors['yellow'],
-            value: clientInLaborNotification,
-            title: Text('Client going into labor'),
-            onChanged: (value){
-              clientInLaborNotification = value;
-            },
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+            child: SwitchListTile(
+              activeColor: themeColors['yellow'],
+              value: matchWithClientNotification,
+              title: Text('Matched with Client'),
+              onChanged: (value) {
+                matchWithClientNotification = value;
+              },
+            ),
           ),
-        ),
-    ]
-
-    ));
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+            child: SwitchListTile(
+              activeColor: themeColors['yellow'],
+              value: clientInLaborNotification,
+              title: Text('Client going into labor'),
+              onChanged: (value) {
+                clientInLaborNotification = value;
+              },
+            ),
+          ),
+        ]));
     doulaCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Privacy',
@@ -1442,20 +1401,14 @@ class SettingsScreenState extends State<SettingsScreen> {
               activeColor: themeColors['yellow'],
               value: true,
               title: Text('Make Account Private'),
-              onChanged: (value){
-
-              },
+              onChanged: (value) {},
             ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
             child: Text('Link to Privacy Policy goes here'),
-
           ),
-
-        ]
-
-    ));
+        ]));
     doulaCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Send Feedback',
@@ -1469,9 +1422,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
             child: Text('Insert link here'),
           ),
-        ]
-
-    ));
+        ]));
     doulaCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Terms of Service',
@@ -1484,20 +1435,18 @@ class SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
             child: Text('Insert link here'),
           ),
-        ]
-
-    ));
+        ]));
     doulaCategoryExpansionTiles.add(Padding(
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: Text(
-              'Version Number 1',
-               style: TextStyle(
-                fontSize: 20,
-               ),
-            ),
+      padding: const EdgeInsets.all(8),
+      child: Center(
+        child: Text(
+          'Version Number 1',
+          style: TextStyle(
+            fontSize: 20,
           ),
-        ));
+        ),
+      ),
+    ));
     doulaCategoryExpansionTiles.add(Padding(
       padding: const EdgeInsets.all(8),
       child: Center(
@@ -1506,7 +1455,6 @@ class SettingsScreenState extends State<SettingsScreen> {
               borderRadius: new BorderRadius.circular(5.0),
               side: BorderSide(color: themeColors['yellow'])),
           onPressed: () async {
-
             String doulaName = "${firstNameCtrl.text.toString().trim()}";
             String doulaBday = dateOfBirthCtrl.text.toString().trim();
             String doulaEmail = emailCtrl.text.toString().trim();
@@ -1514,11 +1462,12 @@ class SettingsScreenState extends State<SettingsScreen> {
             certProgram = certProgramCtrl.text.toString();
             List<Phone> phones = List();
             //print('phone: ${phoneNumCtrl.text.toString().trim()}');
-            phones.add(
-                Phone(phoneNumCtrl.text.toString().trim(), true));
+            phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
 
-            birthsNeeded = int.parse(birthsNeededCtrl.text.toString().trim()) != null ?
-              int.parse(birthsNeededCtrl.text.toString().trim()) : 0;
+            birthsNeeded =
+                int.parse(birthsNeededCtrl.text.toString().trim()) != null
+                    ? int.parse(birthsNeededCtrl.text.toString().trim())
+                    : 0;
 
             print('doulaEmail: $doulaEmail');
             print('currentUser.email: ${currentUser.email}');
@@ -1526,12 +1475,16 @@ class SettingsScreenState extends State<SettingsScreen> {
             if (doulaEmail != currentUser.email) {
 //              print('dialog box open');
 //              confirmPasswordDialog(context);
-              print('password: ${changeEmailPasswordCtrl.text.toString().trim()}');
+              print(
+                  'password: ${changeEmailPasswordCtrl.text.toString().trim()}');
               if (changeEmailPasswordCtrl.text.toString().trim() != '') {
-                print('changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
+                print(
+                    'changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
                 AuthResult result = await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(email: currentUser.email,
-                    password: '${changeEmailPasswordCtrl.text.toString().trim()}');
+                    .signInWithEmailAndPassword(
+                        email: currentUser.email,
+                        password:
+                            '${changeEmailPasswordCtrl.text.toString().trim()}');
                 FirebaseUser user = result.user;
                 print('user: $user');
                 String userId = user.uid;
@@ -1546,11 +1499,13 @@ class SettingsScreenState extends State<SettingsScreen> {
 //
             }
 
-            if (oldPasswordCtrl.text.toString().trim() != '' ) {
-
-              print('oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
+            if (oldPasswordCtrl.text.toString().trim() != '') {
+              print(
+                  'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
               AuthResult result = await FirebaseAuth.instance
-                  .signInWithEmailAndPassword(email: currentUser.email, password: '${oldPasswordCtrl.text.toString().trim()}');
+                  .signInWithEmailAndPassword(
+                      email: currentUser.email,
+                      password: '${oldPasswordCtrl.text.toString().trim()}');
               FirebaseUser user = result.user;
               print('user: $user');
               String userId = user.uid;
@@ -1560,18 +1515,27 @@ class SettingsScreenState extends State<SettingsScreen> {
                 if (newPasswordCtrl.text.toString() ==
                     confirmPasswordCtrl.text.toString()) {
                   user.updatePassword(newPasswordCtrl.text.toString());
-                  print('password was changed to ${newPasswordCtrl.text
-                      .toString()}');
+                  print(
+                      'password was changed to ${newPasswordCtrl.text.toString()}');
                 }
               } else {
                 //TODO add a pop up notification here
-                print('password was NOT changed to ${newPasswordCtrl.text
-                    .toString()}');
+                print(
+                    'password was NOT changed to ${newPasswordCtrl.text.toString()}');
               }
             }
-            updateDoulaAccount(currentUser, doulaName, phones,
-                doulaBday, doulaEmail, doulaBio, photoRelease, certified, certInProgress,
-                certProgram, birthsNeeded);
+            updateDoulaAccount(
+                currentUser,
+                doulaName,
+                phones,
+                doulaBday,
+                doulaEmail,
+                doulaBio,
+                photoRelease,
+                certified,
+                certInProgress,
+                certProgram,
+                birthsNeeded);
             doulaToDB(currentUser);
             toHome();
           },
@@ -1587,19 +1551,12 @@ class SettingsScreenState extends State<SettingsScreen> {
       ),
     ));
 
-
     return Form(
-        key: _settingsKey,
-        autovalidate: false,
-        child: ListView(
-          children:
-            doulaCategoryExpansionTiles
-        ),
-
+      key: _settingsKey,
+      autovalidate: false,
+      child: ListView(children: doulaCategoryExpansionTiles),
     );
   }
-
-
 
   // settings page for user that is not logged in or user without type
   Form unlogged() {
@@ -1617,9 +1574,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
             child: Text('Insert link here'),
           ),
-        ]
-
-    ));
+        ]));
     unloggedCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Privacy Policy',
@@ -1633,9 +1588,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
             child: Text('Insert link here'),
           ),
-        ]
-
-    ));
+        ]));
     unloggedCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Terms of Service',
@@ -1648,9 +1601,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
             child: Text('Insert link here'),
           ),
-        ]
-
-    ));
+        ]));
     unloggedCategoryExpansionTiles.add(Padding(
       padding: const EdgeInsets.all(8),
       child: Center(
@@ -1671,7 +1622,6 @@ class SettingsScreenState extends State<SettingsScreen> {
               side: BorderSide(color: themeColors['yellow'])),
           onPressed: () async {
             // add functionality
-
           },
           color: themeColors['yellow'],
           textColor: Colors.black,
@@ -1736,11 +1686,16 @@ class SettingsScreenConnector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
         model: ViewModel(),
-        builder: (BuildContext context, ViewModel vm) =>
-            SettingsScreen(vm.currentUser, vm.toHome, vm.logout,
-                vm.updateDoulaAccount, vm.doulaToDB,
-                vm.updateClientAccount, vm.clientToDB,
-                vm.updateAdminAccount, vm.adminToDB));
+        builder: (BuildContext context, ViewModel vm) => SettingsScreen(
+            vm.currentUser,
+            vm.toHome,
+            vm.logout,
+            vm.updateDoulaAccount,
+            vm.doulaToDB,
+            vm.updateClientAccount,
+            vm.clientToDB,
+            vm.updateAdminAccount,
+            vm.adminToDB));
   }
 }
 
@@ -1750,23 +1705,26 @@ class ViewModel extends BaseModel<AppState> {
   User currentUser;
   VoidCallback toHome;
   VoidCallback logout;
-  void Function(Doula, String, List<Phone>, String, String, String, bool,
-      bool, bool, String, int) updateDoulaAccount;
+  void Function(Doula, String, List<Phone>, String, String, String, bool, bool,
+      bool, String, int) updateDoulaAccount;
   Future<void> Function(Doula) doulaToDB;
-  void Function(Client, String, List<Phone>, String, String, bool) updateClientAccount;
+  void Function(Client, String, List<Phone>, String, String, bool)
+      updateClientAccount;
   Future<void> Function(Client) clientToDB;
   void Function(Admin, String, String) updateAdminAccount;
   Future<void> Function(Admin) adminToDB;
 
-  ViewModel.build(
-      {@required this.currentUser,
-      @required this.toHome,
-      @required this.logout,
-      @required this.updateDoulaAccount, this.doulaToDB,
-      @required this.updateClientAccount, this.clientToDB,
-      @required this.updateAdminAccount, this.adminToDB,
-      })
-      : super(equals: [currentUser]);
+  ViewModel.build({
+    @required this.currentUser,
+    @required this.toHome,
+    @required this.logout,
+    @required this.updateDoulaAccount,
+    this.doulaToDB,
+    @required this.updateClientAccount,
+    this.clientToDB,
+    @required this.updateAdminAccount,
+    this.adminToDB,
+  }) : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
@@ -1778,56 +1736,49 @@ class ViewModel extends BaseModel<AppState> {
         dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         dispatch(LogoutUserAction());
       },
-      updateDoulaAccount: (
-        Doula user,
-        String name,
-        List<Phone> phones,
-        String bday,
-        String email,
-        String bio,
-        bool photoRelease,
-        bool certified,
-        bool certInProgress,
-        String certProgram,
-        int birthsNeeded
-      ) =>
+      updateDoulaAccount: (Doula user,
+              String name,
+              List<Phone> phones,
+              String bday,
+              String email,
+              String bio,
+              bool photoRelease,
+              bool certified,
+              bool certInProgress,
+              String certProgram,
+              int birthsNeeded) =>
           dispatch(UpdateDoulaUserAction(
-            user,
-            name: name,
-            phones: phones,
-            bday: bday,
-            email: email,
-            bio: bio,
-            photoRelease: photoRelease,
-            certified: certified,
-            certInProgress: certInProgress,
-            certProgram: certProgram,
-            birthsNeeded: birthsNeeded,
-          )),
-      doulaToDB: (Doula user) => dispatchFuture(UpdateDoulaUserDocument(user)),
-
-      updateClientAccount: (
-        Client user,
-          String name,
-          List<Phone> phones,
-          String bday,
-          String email,
-          bool photoRelease
-      ) => dispatch(UpdateClientUserAction(
-            user,
-            name: name,
-            phones: phones,
-            bday: bday,
-            email: email,
-            photoRelease: photoRelease,
+        user,
+        name: name,
+        phones: phones,
+        bday: bday,
+        email: email,
+        bio: bio,
+        photoRelease: photoRelease,
+        certified: certified,
+        certInProgress: certInProgress,
+        certProgram: certProgram,
+        birthsNeeded: birthsNeeded,
       )),
-      clientToDB: (Client user) => dispatchFuture(UpdateClientUserDocument(user)),
-
+      doulaToDB: (Doula user) => dispatchFuture(UpdateDoulaUserDocument(user)),
+      updateClientAccount: (Client user, String name, List<Phone> phones,
+              String bday, String email, bool photoRelease) =>
+          dispatch(UpdateClientUserAction(
+        user,
+        name: name,
+        phones: phones,
+        bday: bday,
+        email: email,
+        photoRelease: photoRelease,
+      )),
+      clientToDB: (Client user) =>
+          dispatchFuture(UpdateClientUserDocument(user)),
       updateAdminAccount: (
         Admin user,
-          String name,
-          String email,
-      ) => dispatch(UpdateAdminUserAction(
+        String name,
+        String email,
+      ) =>
+          dispatch(UpdateAdminUserAction(
         user,
         name: name,
         email: email,

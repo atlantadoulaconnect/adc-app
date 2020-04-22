@@ -19,6 +19,7 @@ class ClientAppConfirmationPage extends StatelessWidget {
             cancelApplication != null);
 
   String boolStr(bool value) {
+    if (value == null) return "N/A";
     if (value) return "Yes";
     return "No";
   }
@@ -53,7 +54,9 @@ class ClientAppConfirmationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     phonesString = currentUser.phones.join(", ");
-    deliveryTypes = currentUser.deliveryTypes.join(", ");
+    deliveryTypes = currentUser.deliveryTypes != null
+        ? currentUser.deliveryTypes.join(", ")
+        : "N/A";
 
     photoPermission = currentUser.photoRelease
         ? "Yes, I give permission for my photos to be used."

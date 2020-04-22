@@ -6,9 +6,11 @@ class DoulaHomeScreen extends StatelessWidget {
   final VoidCallback toHome;
   final VoidCallback toRecentMessages;
   final VoidCallback toInfo;
+  final VoidCallback toProfile;
+  final Future<void> Function(String, String) setProfileUser;
 
   DoulaHomeScreen(this.currentUser, this.logout, this.toHome,
-      this.toRecentMessages, this.toInfo)
+      this.toRecentMessages, this.toInfo, this.toProfile, this.setProfileUser)
       : assert(logout != null &&
             toHome != null &&
             toRecentMessages != null &&
@@ -48,7 +50,7 @@ class DoulaHomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(50.0),
+                      borderRadius: new BorderRadius.circular(10.0),
                       side: BorderSide(color: themeColors['lightBlue'])),
                   onPressed: toRecentMessages,
                   color: themeColors['lightBlue'],
@@ -65,7 +67,27 @@ class DoulaHomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(50.0),
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: themeColors['lightBlue'])),
+                  onPressed: () async {
+                    await setProfileUser(currentUser.userid, currentUser.userType);
+                    toProfile();
+                  },
+                  color: themeColors['lightBlue'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  splashColor: themeColors['lightBlue'],
+                  child: Text(
+                    "See Profile",
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
                       side: BorderSide(color: themeColors['gold'])),
                   onPressed: toInfo,
                   color: themeColors['gold'],
@@ -82,7 +104,7 @@ class DoulaHomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(50.0),
+                      borderRadius: new BorderRadius.circular(10.0),
                       side: BorderSide(color: themeColors['lightBlue'])),
                   onPressed: toRecentMessages,
                   color: themeColors['lightBlue'],
@@ -95,17 +117,28 @@ class DoulaHomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(50.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: themeColors['yellow'])),
+                  color: themeColors['yellow'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  child: Text(
+                    "LOG OUT",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: themeColors['black'],
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () async {
+                    logout();
+                    toHome();
+                  },
                 ),
-                color: Colors.blue,
-                textColor: Colors.white,
-                child: Text("LOG OUT"),
-                onPressed: () async {
-                  logout();
-                  toHome();
-                },
               ),
             ],
           )),
@@ -119,7 +152,8 @@ class DoulaHomeScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) => DoulaHomeScreen(
-          vm.currentUser, vm.logout, vm.toHome, vm.toRecentMessages, vm.toInfo),
+          vm.currentUser, vm.logout, vm.toHome, vm.toRecentMessages, vm.toInfo,
+          vm.toProfile, vm.setProfileUser),
     );
   }
 }
@@ -132,13 +166,18 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toHome;
   VoidCallback toRecentMessages;
   VoidCallback toInfo;
+  VoidCallback toProfile;
+  Future<void> Function(String, String) setProfileUser;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.logout,
       @required this.toHome,
       @required this.toRecentMessages,
-      @required this.toInfo})
+      @required this.toInfo,
+      @required this.toProfile,
+      @required this.setProfileUser,
+      })
       : super(equals: [currentUser]);
 
   @override
@@ -153,6 +192,9 @@ class ViewModel extends BaseModel<AppState> {
       toRecentMessages: () =>
           dispatch(NavigateAction.pushNamed("/recentMessages")),
       toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
+      toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+      setProfileUser: (String userid, String userType) =>
+          dispatchFuture(SetProfileUser(userid, userType)),
     );
   }
 }

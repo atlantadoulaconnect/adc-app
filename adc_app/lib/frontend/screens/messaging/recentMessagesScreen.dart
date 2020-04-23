@@ -1,7 +1,6 @@
 import 'package:url_launcher/url_launcher.dart';
 
 import '../common.dart';
-//import 'package:url_launcher/url_launcher.dart';
 
 class RecentMessagesScreen extends StatelessWidget {
   final User currentUser;
@@ -97,6 +96,7 @@ class RecentMessagesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final phone911 = "911";
     return Scaffold(
         appBar: AppBar(
           title: Text('Recent Messages'),
@@ -117,26 +117,57 @@ class RecentMessagesScreen extends StatelessWidget {
         drawer: Menu(),
         body: Padding(
             padding:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
-            child: Container(
-                child: StreamBuilder<QuerySnapshot>(
-              stream: Firestore.instance
-                  .collection("users/${currentUser.userid}/recentMsgs")
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(
+                EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+            child: Center(
+                child: Column(
+              children: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 8.0),
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: Firestore.instance
+                          .collection("users/${currentUser.userid}/recentMsgs")
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                              child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                themeColors["lightBlue"]),
+                          ));
+                        }
+                        return ListView.builder(
+                          padding: EdgeInsets.all(10.0),
+                          itemBuilder: (context, index) => buildItem(
+                              context, snapshot.data.documents[index]),
+                          itemCount: snapshot.data.documents.length,
+                        );
+                      },
+                    )),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 35.0),
+                  child: Container(
+                    height: 60,
+                    child: MaterialButton(
+                      onPressed: () => launch("tel:$phone911"),
+                      //onPressed: () {},
+                      color: themeColors["yellow"],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10.0),
+                          side: BorderSide(color: themeColors['yellow'])),
                       child: Text(
-                          "No recent messages.\nSend a message to someone in your contacts."));
-                }
-                return ListView.builder(
-                  padding: EdgeInsets.all(10.0),
-                  itemBuilder: (context, index) =>
-                      buildItem(context, snapshot.data.documents[index]),
-                  itemCount: snapshot.data.documents.length,
-                );
-              },
+                        "CALL 911",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: themeColors["emoryBlue"],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ))));
   }
 }

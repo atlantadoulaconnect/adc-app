@@ -18,6 +18,9 @@ class CurrentMenu extends StatelessWidget {
   final VoidCallback toClientHome;
   final VoidCallback toDoulaHome;
   final VoidCallback toSettings;
+  final VoidCallback toClientSettings;
+  final VoidCallback toDoulaSettings;
+  final VoidCallback toAdminSettings;
 
   CurrentMenu(
       {this.currentUser,
@@ -32,7 +35,10 @@ class CurrentMenu extends StatelessWidget {
       this.toAdminHome,
       this.toClientHome,
       this.toDoulaHome,
-      this.toSettings});
+      this.toSettings,
+      this.toClientSettings,
+      this.toDoulaSettings,
+      this.toAdminSettings});
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +171,7 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: toSettings,
+                  onTap: toAdminSettings,
                 ),
                 ListTile(
                   leading: Icon(
@@ -264,7 +270,7 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: toSettings,
+                  onTap: toClientSettings,
                 ),
                 ListTile(
                   leading: Icon(
@@ -363,7 +369,7 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: toSettings,
+                  onTap: toDoulaSettings,
                 ),
                 ListTile(
                   leading: Icon(
@@ -615,7 +621,10 @@ class Menu extends StatelessWidget {
               toAdminHome: vm.toAdminHome,
               toClientHome: vm.toClientHome,
               toDoulaHome: vm.toDoulaHome,
-              toSettings: vm.toSettings);
+              toSettings: vm.toSettings,
+              toClientSettings: vm.toClientSettings,
+              toDoulaSettings: vm.toDoulaSettings,
+              toAdminSettings: vm.toAdminSettings,);
         });
   }
 }
@@ -636,6 +645,9 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toClientHome;
   VoidCallback toDoulaHome;
   VoidCallback toSettings;
+  VoidCallback toClientSettings;
+  VoidCallback toDoulaSettings;
+  VoidCallback toAdminSettings;
 
   ViewModel.build(
       {@required this.currentUser,
@@ -650,7 +662,10 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toAdminHome,
       @required this.toClientHome,
       @required this.toDoulaHome,
-      @required this.toSettings})
+      @required this.toSettings,
+      @required this.toClientSettings,
+      @required this.toDoulaSettings,
+      @required this.toAdminSettings,})
       : super(equals: [currentUser]);
 
   @override
@@ -676,6 +691,9 @@ class ViewModel extends BaseModel<AppState> {
       toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),
       toDoulaHome: () => dispatch(NavigateAction.pushNamed("/doulaHome")),
       toSettings: () => dispatch(NavigateAction.pushNamed("/settings")),
+      toClientSettings: () => dispatch(NavigateAction.pushNamed("/clientSettings")),
+      toDoulaSettings: () => dispatch(NavigateAction.pushNamed("/doulaSettings")),
+      toAdminSettings: () => dispatch(NavigateAction.pushNamed("/adminSettings")),
     );
   }
 }

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:async_redux/async_redux.dart';
 import './backend/states/appState.dart';
@@ -10,6 +11,9 @@ import './frontend/screens/homeScreen.dart';
 import './frontend/screens/loginScreen.dart';
 import './frontend/screens/infoScreen.dart';
 import './frontend/screens/settingsScreen.dart';
+import './frontend/screens/settings/clientSettingsScreen.dart';
+import './frontend/screens/settings/doulaSettingsScreen.dart';
+import './frontend/screens/settings/adminSettingsScreen.dart';
 import './frontend/screens/userProfileScreen.dart';
 
 // application screens
@@ -42,10 +46,10 @@ import './frontend/screens/doula/doulaHomeScreen.dart';
 import './frontend/screens/admin/adminHomeScreen.dart';
 import './frontend/screens/admin/registeredDoulasScreen.dart';
 import './frontend/screens/admin/registeredClientsScreen.dart';
-import 'frontend/screens/userProfileScreen.dart';
+import './frontend/screens/userProfileScreen.dart';
 import './frontend/screens/admin/pendingApplicationsScreen.dart';
 import './frontend/screens/admin/unmatchedClientsScreen.dart';
-import 'package:adc_app/frontend/screens/admin/doulasListForMatchingScreen.dart';
+import './frontend/screens/admin/doulasListForMatchingScreen.dart';
 
 // messaging screens
 import './frontend/screens/messaging/contactsScreen.dart';
@@ -134,6 +138,9 @@ class ADCApp extends StatelessWidget {
             '/pendingApps': (context) => PendingApplicationsScreenConnector(),
             '/unmatchedClients': (context) => UnmatchedClientsScreenConnector(),
             '/settings': (context) => SettingsScreenConnector(),
+            '/clientSettings': (context) => ClientSettingsScreenConnector(),
+            '/doulaSettings': (context) => DoulaSettingsScreenConnector(),
+            '/adminSettings': (context) => AdminSettingsScreenConnector(),
           },
         ));
   }

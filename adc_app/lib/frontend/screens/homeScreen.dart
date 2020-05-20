@@ -65,12 +65,12 @@ class HomeScreen extends StatelessWidget {
             RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(50.0),
-                  side: BorderSide(color: themeColors['gold'])),
+                  side: BorderSide(color: themeColors['mediumBlue'])),
               onPressed: toInfo,
-              color: themeColors['gold'],
-              textColor: Colors.black,
+              color: themeColors['mediumBlue'],
+              textColor: Colors.white,
               padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['gold'],
+              splashColor: themeColors['mediumBlue'],
               child: Text(
                 "Learn More",
                 style: TextStyle(fontSize: 20.0),

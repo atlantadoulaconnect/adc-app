@@ -55,7 +55,12 @@ class SettingsScreenState extends State<SettingsScreen> {
   TextEditingController bioCtrl;
   TextEditingController certProgramCtrl;
   TextEditingController birthsNeededCtrl;
-  TextEditingController emergencyContactCtrl;
+  TextEditingController emergencyContactNameCtrl;
+  TextEditingController emergencyContactRelationCtrl;
+  TextEditingController emergencyContactPhoneCtrl;
+  TextEditingController emergencyContactNameCtrl2;
+  TextEditingController emergencyContactRelationCtrl2;
+  TextEditingController emergencyContactPhoneCtrl2;
   TextEditingController oldPasswordCtrl;
   TextEditingController newPasswordCtrl;
   TextEditingController confirmPasswordCtrl;
@@ -148,6 +153,28 @@ class SettingsScreenState extends State<SettingsScreen> {
     phoneNumCtrl = new TextEditingController(text: phone);
     dateOfBirthCtrl = new TextEditingController(text: dob);
     emailCtrl = new TextEditingController(text: email);
+
+    //clients
+    emergencyContactNameCtrl = new TextEditingController(text:
+      (emergencyContacts[0] != null ? emergencyContacts[0].name : '')
+    );
+    emergencyContactRelationCtrl = new TextEditingController(text:
+      (emergencyContacts[0] != null ? emergencyContacts[0].relationship : '')
+    );
+    emergencyContactPhoneCtrl = new TextEditingController(text:
+      (emergencyContacts[0] != null ? emergencyContacts[0].phones.toString().trim().substring(1, 11) : '')
+    );
+    emergencyContactNameCtrl2 = new TextEditingController(text:
+      (emergencyContacts[1] != null ? emergencyContacts[1].name : '')
+    );
+    emergencyContactRelationCtrl2 = new TextEditingController(text:
+      (emergencyContacts[1] != null ? emergencyContacts[1].relationship : '')
+    );
+    emergencyContactPhoneCtrl2 = new TextEditingController(text:
+      (emergencyContacts[1] != null ? emergencyContacts[1].phones.toString().trim().substring(1, 11) : '')
+    );
+
+    //doulas
     bioCtrl = new TextEditingController(text: bio);
     certProgramCtrl = new TextEditingController(text: certProgram);
     birthsNeededCtrl = new TextEditingController(text: '0');
@@ -202,6 +229,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  //TODO add admin backend functionality
   Form adminUser() {
     final adminCategoryExpansionTiles = List<Widget>();
     adminCategoryExpansionTiles.add(ExpansionTile(
@@ -482,6 +510,7 @@ class SettingsScreenState extends State<SettingsScreen> {
   }
 
   Form clientUser() {
+    print('old settings');
     final clientCategoryExpansionTiles = List<Widget>();
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
@@ -733,28 +762,181 @@ class SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
         ]));
-    if (emergencyContacts == null) {
-      clientCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Emergency Contacts',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-      ));
-    } else {
-      //TODO fix emergency contacts
-      for (int i = 0; i < emergencyContacts.length; i++) {
+
+//    if (emergencyContacts != null) {
+//      for (int i = 0; i < emergencyContacts.length; i++) {
         clientCategoryExpansionTiles.add(ExpansionTile(
           title: Text(
-            emergencyContacts[i].toString(),
+            'Emergency Contacts',
             style: TextStyle(
               fontSize: 25,
             ),
           ),
+          children: <Widget>[
+            //Contact1
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text(
+                'Emergency Contact 1',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text(
+                'Name',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Robert',
+                ),
+                controller: emergencyContactNameCtrl,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text(
+                'Relationship',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Father',
+                ),
+                controller: emergencyContactRelationCtrl,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text(
+                'Phone',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: '6785201876',
+                ),
+                controller: emergencyContactPhoneCtrl,
+                validator: phoneValidator,
+              ),
+            ),
+            //Contact2
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text(
+                'Emergency Contact 2',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text(
+                'Name',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Robert',
+                ),
+                controller: emergencyContactNameCtrl2,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text(
+                'Relationship',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Father',
+                ),
+                controller: emergencyContactRelationCtrl2,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+              child: Text(
+                'Phone',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: '6785201876',
+                ),
+                controller: emergencyContactPhoneCtrl2,
+                validator: phoneValidator,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(5.0),
+                    side: BorderSide(color: themeColors['yellow'])
+                ),
+                onPressed: () async {
+                  toHome();
+                },
+                color: themeColors['yellow'],
+                textColor: Colors.black,
+                //padding: EdgeInsets.all(15.0),
+                splashColor: themeColors['yellow'],
+                child: Text(
+                  "Update Contacts",
+                  style: TextStyle(fontSize: 15.0),
+                ),
+                //onPressed: ,
+              ),
+            )
+
+          ],
         ));
-      }
-    }
+//      }
+//    }
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Notifications',
@@ -886,7 +1068,8 @@ class SettingsScreenState extends State<SettingsScreen> {
         child: RaisedButton(
           shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(5.0),
-              side: BorderSide(color: themeColors['yellow'])),
+              side: BorderSide(color: themeColors['yellow'])
+          ),
           onPressed: () async {
             String clientName = firstNameCtrl.text.toString().trim();
             String clientBday = dateOfBirthCtrl.text.toString().trim();
@@ -1761,6 +1944,7 @@ class ViewModel extends BaseModel<AppState> {
         birthsNeeded: birthsNeeded,
       )),
       doulaToDB: (Doula user) => dispatchFuture(UpdateDoulaUserDocument(user)),
+
       updateClientAccount: (Client user, String name, List<Phone> phones,
               String bday, String email, bool photoRelease) =>
           dispatch(UpdateClientUserAction(
@@ -1773,6 +1957,7 @@ class ViewModel extends BaseModel<AppState> {
       )),
       clientToDB: (Client user) =>
           dispatchFuture(UpdateClientUserDocument(user)),
+
       updateAdminAccount: (
         Admin user,
         String name,

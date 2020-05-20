@@ -83,6 +83,8 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
         "Attempting to add this client ${user.toString()} to the users collection");
 
     final dbRef = Firestore.instance;
+
+    // add user to the collection of users
     await dbRef.collection("users").document(user.userid).setData({
       "userid": user.userid,
       "status": "submitted",
@@ -90,26 +92,25 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
       "userType": user.userType,
     });
 
+    // get the admin info
     QuerySnapshot adminQuery = await Firestore.instance
         .collection("users")
         .where("userType", isEqualTo: "admin")
         .getDocuments();
     DocumentSnapshot admin = adminQuery.documents[0];
 
+    // add admin to CLIENT's contact list
     await dbRef
         .collection("users")
         .document(user.userid)
-        .collection("recentMsgs")
+        .collection("contacts")
         .document(admin["userid"])
         .setData({
       "name": admin["name"],
       "userid": admin["userid"],
-      "userType": admin["userType"]
+      "userType": admin["userType"],
+      "isRecent": true
     });
-
-    // handle special cases: phones, emergency contacts, deliveryTypes
-
-    // clientAppPage4 inserts null for previous birth values if # live births is 0
 
     await dbRef
         .collection("users")
@@ -175,12 +176,13 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
     await dbRef
         .collection("users")
         .document(user.userid)
-        .collection("recentMsgs")
+        .collection("contacts")
         .document(admin["userid"])
         .setData({
       "name": admin["name"],
       "userid": admin["userid"],
-      "userType": "Admin"
+      "userType": "Admin",
+      "isRecent": true
     });
 
     // handle special cases: phones, UNavailable dates

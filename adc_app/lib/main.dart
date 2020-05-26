@@ -5,7 +5,7 @@ import 'backend/util/persistence.dart';
 
 import './frontend/theme/style.dart';
 
-// general screens - testing
+// general screens
 import './frontend/screens/homeScreen.dart';
 import './frontend/screens/loginScreen.dart';
 import './frontend/screens/infoScreen.dart';

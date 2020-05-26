@@ -1,5 +1,5 @@
 import '../../common.dart';
-import 'package:calendarro/calendarro.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class DoulaAppPage4 extends StatefulWidget {
   final Doula currentUser;
@@ -27,15 +27,19 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
   void Function(Doula, List<String>) updateDoula;
   VoidCallback toDoulaAppPage5;
   void Function(bool) cancelApplication;
+  CalendarController calendarController;
+  List<DateTime> unavailableDates;
 
   @override
   void initState() {
+    super.initState();
+
     currentUser = widget.currentUser;
     updateDoula = widget.updateDoula;
     toDoulaAppPage5 = widget.toDoulaAppPage5;
     cancelApplication = widget.cancelApplication;
-
-    super.initState();
+    calendarController = CalendarController();
+    unavailableDates = List<DateTime>();
   }
 
   confirmCancelDialog(BuildContext context) {
@@ -67,18 +71,128 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
 
   @override
   Widget build(BuildContext context) {
-    String monthYear = formatDateMonthYYYY(DateTime.now());
-    Calendarro myCal = Calendarro(
-      displayMode: DisplayMode.MONTHS,
-      selectionMode: SelectionMode.MULTI,
-      startDate: DateTime.now()
-          .subtract(Duration(days: DateTime.now().day - 1)),
-      endDate: DateTime.now().add(Duration(days: 1000)),
+
+    TableCalendar myCal = TableCalendar(
+      calendarController: calendarController,
+      availableCalendarFormats: const {
+        CalendarFormat.month: 'Month',
+      },
+      calendarStyle: CalendarStyle(),
+      headerStyle: HeaderStyle(
+        centerHeaderTitle: true,
+      ),
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      startDay: DateTime.now(),
+      onDaySelected: (date, events) {
+        setState(() {
+          if (unavailableDates.contains(date)) {
+            unavailableDates.remove(date);
+          } else {
+            unavailableDates.add(date);
+          }
+        });
+      },
+      builders: CalendarBuilders(
+        dayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+            ),
+            decoration: BoxDecoration(
+              color: unavailableDates.contains(date) ? themeColors["gold"] : themeColors["lightGrey"],
+              shape: BoxShape.circle,
+            ),
+          );
+        },
+        outsideDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(
+                  color: themeColors["coolGray5"]
+              ),
+            ),
+          );
+        },
+        outsideHolidayDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(
+                  color: themeColors["coolGray5"]
+              ),
+            ),
+          );
+        },
+        outsideWeekendDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(
+                  color: themeColors["coolGray5"]
+              ),
+            ),
+          );
+        },
+        unavailableDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(
+                  color: themeColors["coolGray5"]
+              ),
+            ),
+          );
+        },
+        weekendDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(
+                  color: themeColors["red"]
+              ),
+            ),
+          );
+        },
+        todayDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(
+                  color: themeColors["white"]
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: themeColors["mediumBlue"],
+              shape: BoxShape.circle,
+            ),
+          );
+        },
+        selectedDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(
+                color: themeColors["white"],
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: themeColors["kellyGreen"],
+              shape: BoxShape.circle,
+            ),
+          );
+        },
+      ),
     );
-    myCal.onPageSelected = (start, end) {
-      monthYear = formatDateMonthYYYY(start);
-      setState(() {});
-    };
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Doula Application"),
@@ -89,7 +203,7 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
                 children: <Widget>[
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(top: 17.0, bottom: 8.0),
                   child: Text(
                     'Availability',
                     style: TextStyle(
@@ -128,24 +242,14 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0, bottom: 8.0),
-                  child: Text(
-                    monthYear,
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-              Center(
-                child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    height: 280,
-                    width: 300,
-                    color: themeColors["coolGray1"],
+                    height: 350,
+                    width: 320,
+                    color: themeColors["lightGrey"],
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                    ),
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: myCal,
@@ -212,12 +316,11 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
                                 side: BorderSide(color: themeColors['yellow'])),
                             onPressed: () {
                               // TODO selecting calendar dates and adding to Doula
-                              List<String> availableDates = new List<String>();
-                              for (DateTime d in myCal.selectedDates) {
-                                availableDates.add(formatDateYYYYMMDD(d));
+                              List<String> unavailableDatesAsString = new List<String>();
+                              for (DateTime d in unavailableDates) {
+                                unavailableDatesAsString.add(formatDateYYYYMMDD(d));
                               }
-                              print(availableDates);
-                              updateDoula(currentUser, availableDates);
+                              updateDoula(currentUser, unavailableDatesAsString);
                               toDoulaAppPage5();
                             },
                             color: themeColors['yellow'],

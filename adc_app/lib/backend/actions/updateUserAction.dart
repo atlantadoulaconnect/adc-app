@@ -349,6 +349,17 @@ class UpdateClientUserDocument extends ReduxAction<AppState> {
       "phones": phonesToDB(user.phones),
       "bday": user.bday,
       "email": user.email,
+      "emergencyContacts": emgContactsToDB(user.emergencyContacts),
+      "birthLocation": user.birthLocation,
+      "birthType": user.birthType,
+      "dueDate": user.dueDate,
+      "deliveryTypes": user.deliveryTypes,
+      "preterm": user.preterm,
+      "lowWeight": user.lowWeight,
+      "multiples": user.multiples,
+      "epidural": user.epidural,
+      "cesarean": user.cesarean,
+
     });
 
     return null;

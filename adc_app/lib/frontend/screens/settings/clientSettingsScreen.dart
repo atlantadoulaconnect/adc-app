@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:adc_app/backend/actions/common.dart';
 import 'package:adc_app/backend/util/inputValidation.dart';
 import '../common.dart';
@@ -8,9 +10,15 @@ class ClientSettingsScreen extends StatefulWidget {
   final User currentUser;
   final VoidCallback toHome;
   final VoidCallback logout;
+  final VoidCallback toClientSettings;
 
-  final void Function(Client, String, List<Phone>, String, String, bool)
+  final void Function(Client, String, List<Phone>, String, bool)
   updateClientAccount;
+  //user, birthLocation, birthType, DueDate, previousDeliveryTypes,
+  //preterm, lowBirthWeight, multiples, epidural, cesarean
+  final void Function(Client, String, String, String, List<String>,
+      bool, bool, bool, bool, bool) updateBirthInformation;
+  final void Function(Client, List<EmergencyContact>) updateEmergencyContacts;
   final Future<void> Function(Client) clientToDB;
 
   ClientSettingsScreen(
@@ -18,7 +26,10 @@ class ClientSettingsScreen extends StatefulWidget {
       this.toHome,
       this.logout,
       this.updateClientAccount,
-      this.clientToDB);
+      this.updateBirthInformation,
+      this.updateEmergencyContacts,
+      this.clientToDB,
+      this.toClientSettings);
 //      : assert(currentUser != null && toHome != null && logout != null);
 
   @override
@@ -28,29 +39,50 @@ class ClientSettingsScreen extends StatefulWidget {
 class ClientSettingsScreenState extends State<ClientSettingsScreen> {
   final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
 
-  void Function(Client, String, List<Phone>, String, String, bool)
-  updateClientAccount;
+  void Function(Client, String, List<Phone>, String, bool)
+      updateClientAccount;
+  void Function(Client, String, String, String, List<String>,
+      bool, bool, bool, bool, bool) updateBirthInformation;
+  void Function(Client, List<EmergencyContact>) updateEmergencyContacts;
   Future<void> Function(Client) clientToDB;
 
 
   VoidCallback toHome;
+  VoidCallback toClientSettings;
 
   User currentUser;
 
   TextEditingController firstNameCtrl;
   TextEditingController phoneNumCtrl;
   TextEditingController dateOfBirthCtrl;
+  TextEditingController oldPasswordCtrl;
+
+  TextEditingController newPasswordCtrl;
+  TextEditingController confirmPasswordCtrl;
+  TextEditingController changeEmailPasswordCtrl;
   TextEditingController emailCtrl;
+
   TextEditingController emergencyContactNameCtrl;
   TextEditingController emergencyContactRelationCtrl;
   TextEditingController emergencyContactPhoneCtrl;
   TextEditingController emergencyContactNameCtrl2;
   TextEditingController emergencyContactRelationCtrl2;
   TextEditingController emergencyContactPhoneCtrl2;
-  TextEditingController oldPasswordCtrl;
-  TextEditingController newPasswordCtrl;
-  TextEditingController confirmPasswordCtrl;
-  TextEditingController changeEmailPasswordCtrl;
+
+  TextEditingController birthLocationCtrl;
+  TextEditingController birthTypeCtrl;
+  TextEditingController dueDateCtrl;
+
+  //TextEditingController deliveryTypesCtrl;
+  bool previousVaginalBirth = false, previousCesarean = false , previousVbac  = false;
+  bool cesarean = false, epidural = false;
+  bool homeVisit = false;
+  int liveBirths;
+  bool preterm = false, lowWeight = false;
+  bool meetBefore = false;
+  bool multiples = false;
+
+
 
   //general
   String userName;
@@ -62,6 +94,12 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
   String password;
   String newPassword;
   String confirmPassword;
+  String birthLocation;
+  String birthType;
+  String dueDate;
+
+
+  List<String> deliveryType;
 
   bool pushNotification = true;
   bool smsNotification = true;
@@ -78,25 +116,29 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
   @override
   void initState() {
     toHome = widget.toHome;
+    toClientSettings = widget.toClientSettings;
     currentUser = widget.currentUser;
 
     updateClientAccount = widget.updateClientAccount;
+    updateBirthInformation = widget.updateBirthInformation;
+    updateEmergencyContacts = widget.updateEmergencyContacts;
     clientToDB = widget.clientToDB;
 
 
-    String userType = currentUser != null ? currentUser.userType : 'unlogged';
+    //String userType = currentUser != null ? currentUser.userType : 'unlogged';
 
-    if (currentUser != null) {
+    //if (currentUser != null) {
       userName = currentUser.name != null ? currentUser.name : '';
       phone = currentUser.phones != null
           ? currentUser.phones.toString().trim().substring(1, 11)
           : '';
       email = currentUser.email != null ? currentUser.email : '';
-    }
+    //}
 
 
 
-    if (userType == 'client') {
+    //if (userType == 'client') {
+    //ASSIGNING VALUES
       dob = (currentUser as Client).bday;
       int contactSize = (currentUser as Client).emergencyContacts != null
           ? (currentUser as Client).emergencyContacts.length
@@ -105,10 +147,48 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
       for (int i = 0; i < contactSize; i++) {
         emergencyContacts[i] = (currentUser as Client).emergencyContacts[i];
       }
+
+      birthLocation = (currentUser as Client).birthLocation;
+      birthType = (currentUser as Client).birthType;
+      dueDate = (currentUser as Client).dueDate;
+
+      int deliveryTypeSize = (currentUser as Client).deliveryTypes != null
+          ? (currentUser as Client).deliveryTypes.length
+          : 0;
+
+      for (int i = 0; i < deliveryTypeSize; i++) {
+        if ((currentUser as Client).deliveryTypes[i].toString() == 'vaginal' ){
+          previousVaginalBirth = true;
+        }
+        if ((currentUser as Client).deliveryTypes[i].toString() == 'vbac' ){
+          previousVbac = true;
+        }
+        if ((currentUser as Client).deliveryTypes[i].toString() == 'cesarean' ){
+          previousCesarean = true;
+        }
+        //emergencyContacts[i] = (currentUser as Client).emergencyContacts[i];
+      }
+
+      preterm = (currentUser as Client).preterm != null
+          ? (currentUser as Client).preterm : false;
+      //print('preterm: $preterm');
+      lowWeight = (currentUser as Client).lowWeight != null
+        ? (currentUser as Client).lowWeight : false;
+      multiples = (currentUser as Client).multiples != null
+          ? (currentUser as Client).multiples : false;
+      cesarean = (currentUser as Client).cesarean != null
+        ? (currentUser as Client).cesarean : false;
+      epidural = (currentUser as Client).epidural != null
+          ? (currentUser as Client).epidural : false;
+
+
+
+//      deliveryType = (currentUser as Client).deliveryTypes;
+//      print('deliveryType: ${deliveryType.toString}');
       photoRelease = (currentUser as Client).photoRelease != null
           ? (currentUser as Client).photoRelease
           : false;
-    }
+    //}
 
     firstNameCtrl = new TextEditingController(text: userName);
     phoneNumCtrl = new TextEditingController(text: phone);
@@ -140,6 +220,10 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
     newPasswordCtrl = new TextEditingController();
     confirmPasswordCtrl = new TextEditingController();
     changeEmailPasswordCtrl = new TextEditingController();
+
+    birthLocationCtrl = new TextEditingController(text: birthLocation);
+    birthTypeCtrl = new TextEditingController(text: birthType);
+    dueDateCtrl = new TextEditingController(text: dueDate);
 
     super.initState();
   }
@@ -180,6 +264,26 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                 Navigator.of(context, rootNavigator: true).pop('dialog');
               },
             )
+          ],
+        );
+      },
+    );
+  }
+
+  passwordWasChanged(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Your password was successfully changed"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Go back"),
+              onPressed: () {
+                toHome();
+                //Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+            ),
           ],
         );
       },
@@ -265,6 +369,43 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  side: BorderSide(color: themeColors['yellow'])
+              ),
+              onPressed: () async {
+                String clientName = firstNameCtrl.text.toString().trim();
+                print('clientName: $clientName');
+                String clientBday = dateOfBirthCtrl.text.toString().trim();
+                print('bday: ${dateOfBirthCtrl.text.toString().trim()}');
+                List<Phone> phones = List();
+                print('phone: ${phoneNumCtrl.text.toString().trim()}');
+                phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
+
+                updateClientAccount(currentUser, clientName, phones, clientBday,
+                    photoRelease);
+                print('currentUser.name before: ${currentUser.name}');
+
+                clientToDB(currentUser);
+                print('currentUser.name after: ${currentUser.name}');
+
+                toClientSettings;
+
+              },
+              color: themeColors['yellow'],
+              textColor: Colors.black,
+              //padding: EdgeInsets.all(15.0),
+              splashColor: themeColors['yellow'],
+              child: Text(
+                "Update Account",
+                style: TextStyle(fontSize: 15.0),
+              ),
+              //onPressed: ,
+            ),
+          )
         ]));
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
@@ -374,6 +515,52 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               validator: pwdValidator,
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  side: BorderSide(color: themeColors['yellow'])
+              ),
+              onPressed: () async {
+                if (oldPasswordCtrl.text.toString().trim() != '') {
+                  print(
+                      'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
+                  AuthResult result = await FirebaseAuth.instance
+                      .signInWithEmailAndPassword(
+                      email: currentUser.email,
+                      password: '${oldPasswordCtrl.text.toString().trim()}');
+                  FirebaseUser user = result.user;
+                  print('user: $user');
+                  String userId = user.uid;
+                  print('userId: $userId');
+
+                  if (userId.length > 0 && userId != null) {
+                    if (newPasswordCtrl.text.toString() ==
+                        confirmPasswordCtrl.text.toString()) {
+                      user.updatePassword(newPasswordCtrl.text.toString());
+                      passwordWasChanged(context);
+                      print(
+                          'password was changed to ${newPasswordCtrl.text.toString()}');
+                    }
+                  } else {
+                    //TODO add a pop up notification here
+                    print(
+                        'password was NOT changed to ${newPasswordCtrl.text.toString()}');
+                  }
+                }
+              },
+              color: themeColors['yellow'],
+              textColor: Colors.black,
+              //padding: EdgeInsets.all(15.0),
+              splashColor: themeColors['yellow'],
+              child: Text(
+                "Update Password",
+                style: TextStyle(fontSize: 15.0),
+              ),
+              //onPressed: ,
+            ),
+          )
         ]));
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
@@ -437,10 +624,29 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               //validator: ,
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  side: BorderSide(color: themeColors['yellow'])
+              ),
+              onPressed: () async {
+                //TODO add contacts functionality
+                toHome();
+              },
+              color: themeColors['yellow'],
+              textColor: Colors.black,
+              //padding: EdgeInsets.all(15.0),
+              splashColor: themeColors['yellow'],
+              child: Text(
+                "Update Email",
+                style: TextStyle(fontSize: 15.0),
+              ),
+              //onPressed: ,
+            ),
+          )
         ]));
-
-//    if (emergencyContacts != null) {
-//      for (int i = 0; i < emergencyContacts.length; i++) {
     clientCategoryExpansionTiles.add(ExpansionTile(
       title: Text(
         'Emergency Contacts',
@@ -595,7 +801,35 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                 side: BorderSide(color: themeColors['yellow'])
             ),
             onPressed: () async {
-              toHome();
+              List<Phone> phones1 = new List<Phone>();
+              List<Phone> phones2 = new List<Phone>();
+
+              if (emergencyContactPhoneCtrl.text.isNotEmpty) {
+                phones1.add(Phone(
+                    emergencyContactPhoneCtrl.text.toString().trim(), true));
+              }
+              if (emergencyContactPhoneCtrl2.text.isNotEmpty) {
+                phones2.add(Phone(
+                    emergencyContactPhoneCtrl2.text.toString().trim(), true));
+              }
+
+              EmergencyContact ec1 = EmergencyContact(
+                  emergencyContactNameCtrl.text.toString().trim(),
+                  emergencyContactRelationCtrl.text.toString().trim(),
+                  phones1);
+              EmergencyContact ec2 = EmergencyContact(
+                  emergencyContactNameCtrl2.text.toString().trim(),
+                  emergencyContactRelationCtrl2.text.toString().trim(),
+                  phones2);
+
+              List<EmergencyContact> ecs = new List<EmergencyContact>();
+              ecs.add(ec1);
+              ecs.add(ec2);
+              print("ec1: $ecs");
+              updateEmergencyContacts(currentUser, ecs);
+              clientToDB(currentUser);
+              //toHome();
+
             },
             color: themeColors['yellow'],
             textColor: Colors.black,
@@ -611,8 +845,268 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
 
       ],
     ));
-//      }
-//    }
+    clientCategoryExpansionTiles.add(ExpansionTile(
+        title: Text(
+          'Birth Information',
+          style: TextStyle(
+            fontSize: 25,
+          ),
+        ),
+        children: <Widget>[
+          Text(
+            'Birth Location',
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Grady',
+              ),
+              controller: birthLocationCtrl,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+            child: Text(
+              'Birth Type',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: '"Singleton", "Twins", "Triplets", "more"',
+              ),
+              controller: birthTypeCtrl,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+            child: Text(
+              'Due Date',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: '01/09/1997',
+              ),
+              controller: dueDateCtrl,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+            child: Text(
+              'Previous Delivery Types',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Vaginal Birth"),
+                    Checkbox(
+                      value: previousVaginalBirth,
+                      onChanged: (bool value) {
+                        setState(() {
+                          previousVaginalBirth = value;
+                        });
+                      },
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Cesaerean"),
+                    Checkbox(
+                      value: previousCesarean,
+                      onChanged: (bool value) {
+                        setState(() {
+                          previousCesarean = value;
+                        });
+                      },
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("VBAC"),
+                    Checkbox(
+                      value: previousVbac,
+                      onChanged: (bool value) {
+                        setState(() {
+                          previousVbac = value;
+                        });
+                      },
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Preterm"),
+                    Checkbox(
+                      value: preterm,
+                      onChanged: (bool value) {
+                        setState(() {
+                          preterm = value;
+                        });
+                      },
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Low Birth Weight"),
+                    Checkbox(
+                      value: lowWeight,
+                      onChanged: (bool value) {
+                        setState(() {
+                          lowWeight = value;
+                        });
+                      },
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Twins/Triplets"),
+                    Checkbox(
+                      value: multiples,
+                      onChanged: (bool value) {
+                        setState(() {
+                          multiples = value;
+                        });
+                      },
+                    )
+                  ],
+                ),
+
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+            child: Text(
+              'Current Birth Plan',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Epidural"),
+                    Checkbox(
+                      value: epidural,
+                      onChanged: (bool value) {
+                        setState(() {
+                          epidural = value;
+                        });
+                      },
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Cesarean (C-Section)"),
+                    Checkbox(
+                      value: cesarean,
+                      onChanged: (bool value) {
+                        setState(() {
+                          cesarean = value;
+                        });
+                      },
+                    )
+                  ],
+                ),
+
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  side: BorderSide(color: themeColors['yellow'])
+              ),
+              onPressed: () async {
+
+                String location = birthLocationCtrl.text.toString().trim();
+                String type = birthTypeCtrl.text.toString().trim();
+                String date = dueDateCtrl.text.toString().trim();
+
+                List<String> deliveries = List();
+                if (previousVaginalBirth) {
+                  deliveries.add("vaginal");
+                }
+                if (previousCesarean) {
+                  deliveries.add("cesarean");
+                }
+                if (previousVbac) {
+                  deliveries.add("vbac");
+                }
+
+                updateBirthInformation(currentUser, location, type, date,
+                  deliveries, preterm, lowWeight, multiples, epidural, cesarean);
+                clientToDB(currentUser);
+
+
+                //toClientSettings;
+
+              },
+              color: themeColors['yellow'],
+              textColor: Colors.black,
+              //padding: EdgeInsets.all(15.0),
+              splashColor: themeColors['yellow'],
+              child: Text(
+                "Update Birth Information",
+                style: TextStyle(fontSize: 15.0),
+              ),
+              //onPressed: ,
+            ),
+          )
+        ]));
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
           'Notifications',
@@ -747,13 +1241,14 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               side: BorderSide(color: themeColors['emoryBlue'])
           ),
           onPressed: () async {
-            String clientName = firstNameCtrl.text.toString().trim();
-            String clientBday = dateOfBirthCtrl.text.toString().trim();
-            print('bday: ${dateOfBirthCtrl.text.toString().trim()}');
+//            String clientName = firstNameCtrl.text.toString().trim();
+//            String clientBday = dateOfBirthCtrl.text.toString().trim();
+//            print('bday: ${dateOfBirthCtrl.text.toString().trim()}');
+//
+//            List<Phone> phones = List();
+//            print('phone: ${phoneNumCtrl.text.toString().trim()}');
+//            phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
             String clientEmail = emailCtrl.text.toString().trim();
-            List<Phone> phones = List();
-            print('phone: ${phoneNumCtrl.text.toString().trim()}');
-            phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
 
             if (clientEmail != currentUser.email) {
 //              print('dialog box open');
@@ -782,36 +1277,12 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
 //
             }
 
-            if (oldPasswordCtrl.text.toString().trim() != '') {
-              print(
-                  'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
-              AuthResult result = await FirebaseAuth.instance
-                  .signInWithEmailAndPassword(
-                  email: currentUser.email,
-                  password: '${oldPasswordCtrl.text.toString().trim()}');
-              FirebaseUser user = result.user;
-              print('user: $user');
-              String userId = user.uid;
-              print('userId: $userId');
 
-              if (userId.length > 0 && userId != null) {
-                if (newPasswordCtrl.text.toString() ==
-                    confirmPasswordCtrl.text.toString()) {
-                  user.updatePassword(newPasswordCtrl.text.toString());
-                  print(
-                      'password was changed to ${newPasswordCtrl.text.toString()}');
-                }
-              } else {
-                //TODO add a pop up notification here
-                print(
-                    'password was NOT changed to ${newPasswordCtrl.text.toString()}');
-              }
-            }
 
-            updateClientAccount(currentUser, clientName, phones, clientBday,
-                clientEmail, photoRelease);
-
-            clientToDB(currentUser);
+//            updateClientAccount(currentUser, clientName, phones, clientBday,
+//                clientEmail, photoRelease);
+//
+//            clientToDB(currentUser);
             toHome();
           },
           color: themeColors['emoryBlue'],
@@ -858,7 +1329,10 @@ class ClientSettingsScreenConnector extends StatelessWidget {
             vm.toHome,
             vm.logout,
             vm.updateClientAccount,
-            vm.clientToDB));
+            vm.updateBirthInformation,
+            vm.updateEmergencyContacts,
+            vm.clientToDB,
+            vm.toClientSettings,));
   }
 }
 
@@ -868,9 +1342,13 @@ class ViewModel extends BaseModel<AppState> {
   User currentUser;
   VoidCallback toHome;
   VoidCallback logout;
+  VoidCallback toClientSettings;
 
-  void Function(Client, String, List<Phone>, String, String, bool)
-  updateClientAccount;
+  void Function(Client, String, List<Phone>, String, bool)
+      updateClientAccount;
+  void Function(Client, String, String, String, List<String>,
+      bool, bool, bool, bool, bool) updateBirthInformation;
+  void Function(Client, List<EmergencyContact>) updateEmergencyContacts;
   Future<void> Function(Client) clientToDB;
 
 
@@ -879,7 +1357,10 @@ class ViewModel extends BaseModel<AppState> {
     @required this.toHome,
     @required this.logout,
     @required this.updateClientAccount,
-    this.clientToDB,
+    @required this.updateBirthInformation,
+    @required this.updateEmergencyContacts,
+    @required this.clientToDB,
+    @required this.toClientSettings,
 
   }) : super(equals: [currentUser]);
 
@@ -888,6 +1369,7 @@ class ViewModel extends BaseModel<AppState> {
     return ViewModel.build(
       currentUser: state.currentUser,
       toHome: () => dispatch(NavigateAction.pushNamed("/")),
+      toClientSettings: () => dispatch(NavigateAction.pushNamed("/clientSettings")),
       logout: () {
         print("logging out from settings");
         dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
@@ -895,15 +1377,33 @@ class ViewModel extends BaseModel<AppState> {
       },
 
       updateClientAccount: (Client user, String name, List<Phone> phones,
-          String bday, String email, bool photoRelease) =>
+          String bday, bool photoRelease) =>
           dispatch(UpdateClientUserAction(
             user,
             name: name,
             phones: phones,
             bday: bday,
-            email: email,
             photoRelease: photoRelease,
           )),
+      updateBirthInformation: (Client user, String birthLocation, String birthType, String dueDate, List<String> deliveryTypes,
+          bool preterm, bool lowWeight, bool multiples, bool epidural, bool cesarean) =>
+          dispatch(UpdateClientUserAction(
+            user,
+            birthLocation: birthLocation,
+            birthType: birthType,
+            dueDate: dueDate,
+            deliveryTypes: deliveryTypes,
+            preterm: preterm,
+            lowWeight: lowWeight,
+            multiples: multiples,
+            epidural: epidural,
+            cesarean: cesarean,
+          )),
+      updateEmergencyContacts: (Client user, List<EmergencyContact> emergencyContacts) =>
+        dispatch(UpdateClientUserAction(
+          user,
+          emergencyContacts: emergencyContacts,
+        )),
       clientToDB: (Client user) =>
           dispatchFuture(UpdateClientUserDocument(user)),
 

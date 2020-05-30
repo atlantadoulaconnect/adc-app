@@ -10,7 +10,7 @@ import './frontend/theme/style.dart';
 import './frontend/screens/homeScreen.dart';
 import './frontend/screens/loginScreen.dart';
 import './frontend/screens/infoScreen.dart';
-import './frontend/screens/settingsScreen.dart';
+import 'frontend/screens/settings/unloggedSettingsScreen.dart';
 import './frontend/screens/settings/clientSettingsScreen.dart';
 import './frontend/screens/settings/doulaSettingsScreen.dart';
 import './frontend/screens/settings/adminSettingsScreen.dart';

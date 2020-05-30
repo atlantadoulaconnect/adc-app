@@ -81,6 +81,7 @@ class User {
     return _$UserFromJson(json);
   }
 
+
   // declares support for serialization
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }

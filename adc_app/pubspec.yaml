@@ -23,6 +23,7 @@ dependencies:
 
   # frontend specific
   calendarro: ^1.1.2
+  table_calendar: ^2.2.3
   url_launcher: ^5.4.2
   intl: ^0.16.1
 

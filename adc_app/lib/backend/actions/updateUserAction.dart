@@ -246,6 +246,7 @@ class UpdateUserStatus extends ReduxAction<AppState> {
   }
 }
 
+// assigning the primary doula only
 class UpdateClientDoulas extends ReduxAction<AppState> {
   final Client client;
   final Map<String, String> primaryDoula;
@@ -257,36 +258,39 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
   Future<AppState> reduce() async {
     final dbRef = Firestore.instance;
     Set<String> chats = state.messagesState.chats;
-    await dbRef
-        .collection("users")
-        .document(client.userid)
-        .collection("userData")
-        .document("specifics")
-        .updateData({
-      "primaryDoula": primaryDoula,
-      "chats": chats.add(primaryDoula["userid"])
+
+    // push the match to the database
+    await dbRef.collection("matches").document(client.userid).setData({
+      "clientName": client.userid,
+      "clientId": client.name,
+      "primaryDoulaId": primaryDoula["userid"],
+      "primaryDoulaName": primaryDoula["name"]
     });
 
+    // add doula to the CLIENT's contact list
     await dbRef
         .collection("users")
         .document(client.userid)
-        .collection("recentMsgs")
+        .collection("contacts")
         .document(primaryDoula["userid"])
         .setData({
       "name": primaryDoula["name"],
       "userid": primaryDoula["userid"],
-      "userType": "Doula"
+      "userType": "Doula",
+      "isRecent": true
     });
 
+    // add client to the DOULA's contact list
     await dbRef
         .collection("users")
         .document(primaryDoula["userid"])
-        .collection("recentMsgs")
+        .collection("contacts")
         .document(client.userid)
         .setData({
       "name": client.name,
       "userid": client.userid,
-      "userType": "Client"
+      "userType": "Client",
+      "isRecent": true
     });
 
     client.primaryDoula = primaryDoula;
@@ -297,6 +301,7 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
   }
 }
 
+// assigning the backup doula only
 class UpdateClientBackupDoula extends ReduxAction<AppState> {
   final Client client;
   final Map<String, String> backupDoula;
@@ -308,14 +313,38 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
   Future<AppState> reduce() async {
     final dbRef = Firestore.instance;
     Set<String> chats = state.messagesState.chats;
+
+    // push the match to the database
+    // Note: this action is always invoked after the primary doula is set
+    await dbRef.collection("matches").document(client.userid).updateData({
+      "backupDoulaId": backupDoula["userid"],
+      "backupDoulaName": backupDoula["name"]
+    });
+
+    // add doula to the CLIENT's contact list
     await dbRef
         .collection("users")
         .document(client.userid)
-        .collection("userData")
-        .document("specifics")
-        .updateData({
-      "backupDoula": backupDoula,
-      "chats": chats.add(backupDoula["userid"])
+        .collection("contacts")
+        .document(backupDoula["userid"])
+        .setData({
+      "name": backupDoula["name"],
+      "userid": backupDoula["userid"],
+      "userType": "Doula",
+      "isRecent": true
+    });
+
+    // add client to the DOULA's contact list
+    await dbRef
+        .collection("users")
+        .document(backupDoula["userid"])
+        .collection("contacts")
+        .document(client.userid)
+        .setData({
+      "name": client.name,
+      "userid": client.userid,
+      "userType": "Client",
+      "isRecent": true
     });
 
     client.backupDoula = backupDoula;

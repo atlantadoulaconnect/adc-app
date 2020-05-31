@@ -1170,6 +1170,28 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  side: BorderSide(color: themeColors['yellow'])
+              ),
+              onPressed: () async {
+                //TODO add notifications functionality
+                toHome();
+              },
+              color: themeColors['yellow'],
+              textColor: Colors.black,
+              //padding: EdgeInsets.all(15.0),
+              splashColor: themeColors['yellow'],
+              child: Text(
+                "Update Notifications",
+                style: TextStyle(fontSize: 15.0),
+              ),
+              //onPressed: ,
+            ),
+          )
         ]));
     clientCategoryExpansionTiles.add(ExpansionTile(
         title: Text(

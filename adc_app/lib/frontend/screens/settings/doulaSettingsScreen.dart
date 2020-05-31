@@ -8,8 +8,9 @@ class DoulaSettingsScreen extends StatefulWidget {
   final User currentUser;
   final VoidCallback toHome;
   final VoidCallback logout;
-  final void Function(Doula, String, List<Phone>, String, String, String, bool,
-      bool, bool, String, int) updateDoulaAccount;
+  final void Function(Doula, String, List<Phone>, String, String, bool)
+    updateDoulaAccount;
+  final void Function(Doula, bool, bool, String, int) updateCertification;
   final Future<void> Function(Doula) doulaToDB;
 
 
@@ -18,6 +19,7 @@ class DoulaSettingsScreen extends StatefulWidget {
       this.toHome,
       this.logout,
       this.updateDoulaAccount,
+      this.updateCertification,
       this.doulaToDB);
 //      : assert(currentUser != null && toHome != null && logout != null);
 
@@ -27,10 +29,9 @@ class DoulaSettingsScreen extends StatefulWidget {
 
 class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
   final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
-  void Function(Doula, String, List<Phone>, String, String, String, bool, bool,
-      bool, String, int) updateDoulaAccount;
+  void Function(Doula, String, List<Phone>, String, String, bool) updateDoulaAccount;
+  void Function(Doula, bool, bool, String, int) updateCertification;
   Future<void> Function(Doula) doulaToDB;
-
 
   VoidCallback toHome;
 
@@ -64,18 +65,14 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
   bool emailNotification = true;
   bool messagesNotification = true;
 
-
-
-  //doulas only
   String bio = '';
   bool certified = false;
   bool certInProgress = false;
   String certProgram;
   int birthsNeeded;
+
   bool matchWithClientNotification = true;
   bool clientInLaborNotification = true;
-
-
 
   @override
   void initState() {
@@ -83,6 +80,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
     currentUser = widget.currentUser;
 
     updateDoulaAccount = widget.updateDoulaAccount;
+    updateCertification = widget.updateCertification;
     doulaToDB = widget.doulaToDB;
 
     String userType = currentUser != null ? currentUser.userType : 'unlogged';
@@ -118,7 +116,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
 
     bioCtrl = new TextEditingController(text: bio);
     certProgramCtrl = new TextEditingController(text: certProgram);
-    birthsNeededCtrl = new TextEditingController(text: '0');
+    birthsNeededCtrl = new TextEditingController(text: birthsNeeded.toString());
 
     oldPasswordCtrl = new TextEditingController();
     newPasswordCtrl = new TextEditingController();
@@ -164,6 +162,26 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                 Navigator.of(context, rootNavigator: true).pop('dialog');
               },
             )
+          ],
+        );
+      },
+    );
+  }
+
+  passwordWasChanged(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Your password was successfully changed"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Go back"),
+              onPressed: () {
+                toHome();
+                //Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+            ),
           ],
         );
       },
@@ -270,6 +288,51 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
             },
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: RaisedButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(5.0),
+                side: BorderSide(color: themeColors['yellow'])
+            ),
+            onPressed: () async {
+              String doulaName = "${firstNameCtrl.text.toString().trim()}";
+              String doulaBday = dateOfBirthCtrl.text.toString().trim();
+              String doulaBio = bioCtrl.text.toString();
+              List<Phone> phones = List();
+              //print('phone: ${phoneNumCtrl.text.toString().trim()}');
+              phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
+
+              updateDoulaAccount(
+                  currentUser,
+                  doulaName,
+                  phones,
+                  doulaBday,
+                  doulaBio,
+                  photoRelease);
+              doulaToDB(currentUser);
+
+//              updateClientAccount(currentUser, clientName, phones, clientBday,
+//                  photoRelease);
+//              print('currentUser.name before: ${currentUser.name}');
+//
+//              clientToDB(currentUser);
+//              print('currentUser.name after: ${currentUser.name}');
+//
+//              toClientSettings;
+
+            },
+            color: themeColors['yellow'],
+            textColor: Colors.black,
+            //padding: EdgeInsets.all(15.0),
+            splashColor: themeColors['yellow'],
+            child: Text(
+              "Update Account",
+              style: TextStyle(fontSize: 15.0),
+            ),
+            //onPressed: ,
+          ),
+        )
         //TODO add doula unavailable dates
       ],
     ));
@@ -381,6 +444,52 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               validator: pwdValidator,
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  side: BorderSide(color: themeColors['yellow'])
+              ),
+              onPressed: () async {
+                if (oldPasswordCtrl.text.toString().trim() != '') {
+                  print(
+                      'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
+                  AuthResult result = await FirebaseAuth.instance
+                      .signInWithEmailAndPassword(
+                      email: currentUser.email,
+                      password: '${oldPasswordCtrl.text.toString().trim()}');
+                  FirebaseUser user = result.user;
+                  print('user: $user');
+                  String userId = user.uid;
+                  print('userId: $userId');
+
+                  if (userId.length > 0 && userId != null) {
+                    if (newPasswordCtrl.text.toString() ==
+                        confirmPasswordCtrl.text.toString()) {
+                      user.updatePassword(newPasswordCtrl.text.toString());
+                      passwordWasChanged(context);
+                      print(
+                          'password was changed to ${newPasswordCtrl.text.toString()}');
+                    }
+                  } else {
+                    //TODO add a pop up notification here
+                    print(
+                        'password was NOT changed to ${newPasswordCtrl.text.toString()}');
+                  }
+                }
+              },
+              color: themeColors['yellow'],
+              textColor: Colors.black,
+              //padding: EdgeInsets.all(15.0),
+              splashColor: themeColors['yellow'],
+              child: Text(
+                "Update Password",
+                style: TextStyle(fontSize: 15.0),
+              ),
+              //onPressed: ,
+            ),
+          )
         ]));
     doulaCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
@@ -444,6 +553,28 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               //validator: ,
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  side: BorderSide(color: themeColors['yellow'])
+              ),
+              onPressed: () async {
+                //TODO add contacts functionality
+                toHome();
+              },
+              color: themeColors['yellow'],
+              textColor: Colors.black,
+              //padding: EdgeInsets.all(15.0),
+              splashColor: themeColors['yellow'],
+              child: Text(
+                "Update Email",
+                style: TextStyle(fontSize: 15.0),
+              ),
+              //onPressed: ,
+            ),
+          )
         ]));
     doulaCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
@@ -516,6 +647,33 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                   ),
                 ]),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  side: BorderSide(color: themeColors['yellow'])
+              ),
+              onPressed: () async {
+
+                String programName = certProgramCtrl.text.toString().trim();
+                int numOfBirths = int.parse(birthsNeededCtrl.text.toString().trim());
+
+                updateCertification(currentUser, certified, certInProgress,
+                    programName, numOfBirths);
+                doulaToDB(currentUser);
+              },
+              color: themeColors['yellow'],
+              textColor: Colors.black,
+              //padding: EdgeInsets.all(15.0),
+              splashColor: themeColors['yellow'],
+              child: Text(
+                "Update Certification",
+                style: TextStyle(fontSize: 15.0),
+              ),
+              //onPressed: ,
+            ),
+          )
         ]));
     doulaCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
@@ -580,6 +738,28 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  side: BorderSide(color: themeColors['yellow'])
+              ),
+              onPressed: () async {
+                //TODO add notifications functionality
+                toHome();
+              },
+              color: themeColors['yellow'],
+              textColor: Colors.black,
+              //padding: EdgeInsets.all(15.0),
+              splashColor: themeColors['yellow'],
+              child: Text(
+                "Update Notifications",
+                style: TextStyle(fontSize: 15.0),
+              ),
+              //onPressed: ,
+            ),
+          )
         ]));
     doulaCategoryExpansionTiles.add(ExpansionTile(
         title: Text(
@@ -648,96 +828,90 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
         child: RaisedButton(
           shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(5.0),
-              side: BorderSide(color: themeColors['yellow'])),
+              side: BorderSide(color: themeColors['emoryBlue'])),
           onPressed: () async {
-            String doulaName = "${firstNameCtrl.text.toString().trim()}";
-            String doulaBday = dateOfBirthCtrl.text.toString().trim();
-            String doulaEmail = emailCtrl.text.toString().trim();
-            String doulaBio = bioCtrl.text.toString();
-            certProgram = certProgramCtrl.text.toString();
-            List<Phone> phones = List();
-            //print('phone: ${phoneNumCtrl.text.toString().trim()}');
-            phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
-
-            birthsNeeded =
-            int.parse(birthsNeededCtrl.text.toString().trim()) != null
-                ? int.parse(birthsNeededCtrl.text.toString().trim())
-                : 0;
-
-            print('doulaEmail: $doulaEmail');
-            print('currentUser.email: ${currentUser.email}');
-
-            if (doulaEmail != currentUser.email) {
-//              print('dialog box open');
-//              confirmPasswordDialog(context);
-              print(
-                  'password: ${changeEmailPasswordCtrl.text.toString().trim()}');
-              if (changeEmailPasswordCtrl.text.toString().trim() != '') {
-                print(
-                    'changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
-                AuthResult result = await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                    email: currentUser.email,
-                    password:
-                    '${changeEmailPasswordCtrl.text.toString().trim()}');
-                FirebaseUser user = result.user;
-                print('user: $user');
-                String userId = user.uid;
-                print('userId: $userId');
-                if (userId.length > 0 && userId != null) {
-                  user.updateEmail(doulaEmail);
-                  print('email was changed to: $doulaEmail');
-                } else {
-                  print('email was not changed');
-                }
-              }
+//            String doulaName = "${firstNameCtrl.text.toString().trim()}";
+//            String doulaBday = dateOfBirthCtrl.text.toString().trim();
+//            String doulaEmail = emailCtrl.text.toString().trim();
+//            String doulaBio = bioCtrl.text.toString();
+//            certProgram = certProgramCtrl.text.toString();
+//            List<Phone> phones = List();
+//            //print('phone: ${phoneNumCtrl.text.toString().trim()}');
+//            phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
 //
-            }
-
-            if (oldPasswordCtrl.text.toString().trim() != '') {
-              print(
-                  'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
-              AuthResult result = await FirebaseAuth.instance
-                  .signInWithEmailAndPassword(
-                  email: currentUser.email,
-                  password: '${oldPasswordCtrl.text.toString().trim()}');
-              FirebaseUser user = result.user;
-              print('user: $user');
-              String userId = user.uid;
-              print('userId: $userId');
-
-              if (userId.length > 0 && userId != null) {
-                if (newPasswordCtrl.text.toString() ==
-                    confirmPasswordCtrl.text.toString()) {
-                  user.updatePassword(newPasswordCtrl.text.toString());
-                  print(
-                      'password was changed to ${newPasswordCtrl.text.toString()}');
-                }
-              } else {
-                //TODO add a pop up notification here
-                print(
-                    'password was NOT changed to ${newPasswordCtrl.text.toString()}');
-              }
-            }
-            updateDoulaAccount(
-                currentUser,
-                doulaName,
-                phones,
-                doulaBday,
-                doulaEmail,
-                doulaBio,
-                photoRelease,
-                certified,
-                certInProgress,
-                certProgram,
-                birthsNeeded);
+//            birthsNeeded =
+//            int.parse(birthsNeededCtrl.text.toString().trim()) != null
+//                ? int.parse(birthsNeededCtrl.text.toString().trim())
+//                : 0;
+//
+//            print('doulaEmail: $doulaEmail');
+//            print('currentUser.email: ${currentUser.email}');
+//
+//            if (doulaEmail != currentUser.email) {
+//
+//              print(
+//                  'password: ${changeEmailPasswordCtrl.text.toString().trim()}');
+//              if (changeEmailPasswordCtrl.text.toString().trim() != '') {
+//                print(
+//                    'changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
+//                AuthResult result = await FirebaseAuth.instance
+//                    .signInWithEmailAndPassword(
+//                    email: currentUser.email,
+//                    password:
+//                    '${changeEmailPasswordCtrl.text.toString().trim()}');
+//                FirebaseUser user = result.user;
+//                print('user: $user');
+//                String userId = user.uid;
+//                print('userId: $userId');
+//                if (userId.length > 0 && userId != null) {
+//                  user.updateEmail(doulaEmail);
+//                  print('email was changed to: $doulaEmail');
+//                } else {
+//                  print('email was not changed');
+//                }
+//              }
+////
+//            }
+//
+//            if (oldPasswordCtrl.text.toString().trim() != '') {
+//              print(
+//                  'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
+//              AuthResult result = await FirebaseAuth.instance
+//                  .signInWithEmailAndPassword(
+//                  email: currentUser.email,
+//                  password: '${oldPasswordCtrl.text.toString().trim()}');
+//              FirebaseUser user = result.user;
+//              print('user: $user');
+//              String userId = user.uid;
+//              print('userId: $userId');
+//
+//              if (userId.length > 0 && userId != null) {
+//                if (newPasswordCtrl.text.toString() ==
+//                    confirmPasswordCtrl.text.toString()) {
+//                  user.updatePassword(newPasswordCtrl.text.toString());
+//                  print(
+//                      'password was changed to ${newPasswordCtrl.text.toString()}');
+//                }
+//              } else {
+//                //TODO add a pop up notification here
+//                print(
+//                    'password was NOT changed to ${newPasswordCtrl.text.toString()}');
+//              }
+//            }
+//            updateDoulaAccount(
+//                currentUser,
+//                doulaName,
+//                phones,
+//                doulaBday,
+//                doulaBio,
+//                photoRelease);
             doulaToDB(currentUser);
             toHome();
           },
-          color: themeColors['yellow'],
-          textColor: Colors.black,
+          color: themeColors['emoryBlue'],
+          textColor: Colors.white,
           padding: EdgeInsets.all(15.0),
-          splashColor: themeColors['yellow'],
+          splashColor: themeColors['emoryBlue'],
           child: Text(
             "Submit Changes",
             style: TextStyle(fontSize: 20.0),
@@ -778,6 +952,7 @@ class DoulaSettingsScreenConnector extends StatelessWidget {
             vm.toHome,
             vm.logout,
             vm.updateDoulaAccount,
+            vm.updateCertification,
             vm.doulaToDB));
   }
 }
@@ -788,8 +963,8 @@ class ViewModel extends BaseModel<AppState> {
   User currentUser;
   VoidCallback toHome;
   VoidCallback logout;
-  void Function(Doula, String, List<Phone>, String, String, String, bool, bool,
-      bool, String, int) updateDoulaAccount;
+  void Function(Doula, String, List<Phone>, String, String, bool) updateDoulaAccount;
+  void Function(Doula, bool, bool, String, int) updateCertification;
   Future<void> Function(Doula) doulaToDB;
 
 
@@ -798,6 +973,7 @@ class ViewModel extends BaseModel<AppState> {
     @required this.toHome,
     @required this.logout,
     @required this.updateDoulaAccount,
+    @required this.updateCertification,
     this.doulaToDB,
 
   }) : super(equals: [currentUser]);
@@ -816,27 +992,27 @@ class ViewModel extends BaseModel<AppState> {
           String name,
           List<Phone> phones,
           String bday,
-          String email,
           String bio,
-          bool photoRelease,
-          bool certified,
-          bool certInProgress,
-          String certProgram,
-          int birthsNeeded) =>
+          bool photoRelease) =>
           dispatch(UpdateDoulaUserAction(
             user,
             name: name,
             phones: phones,
             bday: bday,
-            email: email,
             bio: bio,
             photoRelease: photoRelease,
-            certified: certified,
-            certInProgress: certInProgress,
-            certProgram: certProgram,
-            birthsNeeded: birthsNeeded,
           )),
-      doulaToDB: (Doula user) => dispatchFuture(UpdateDoulaUserDocument(user)),
+      updateCertification: (Doula user, bool certified, bool certInProgress,
+        String certProgram, int birthsNeeded) =>
+        dispatch(UpdateDoulaUserAction(
+          user,
+          certified: certified,
+          certInProgress: certInProgress,
+          certProgram: certProgram,
+          birthsNeeded: birthsNeeded
+        )),
+      doulaToDB: (Doula user) =>
+          dispatchFuture(UpdateDoulaUserDocument(user)),
 
     );
   }

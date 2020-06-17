@@ -21,6 +21,7 @@ Map<String, Color> themeColors = {
   'darkGreen': const Color(0xFF013220),
   'orange': const Color(0xFFC35413),
   'red': const Color(0xFFDA291C),
+  'darkRed': const Color(0xFFF2004D),
   'hotPink': const Color(0xFFFBD2D7),
   'hItPink': const Color(0xFFFFD1DC),
   'magenta': const Color(0xFFC6007E),

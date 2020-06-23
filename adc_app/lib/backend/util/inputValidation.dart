@@ -142,7 +142,7 @@ List<Phone> convertPhones(List<dynamic> phoneList) {
   return phones;
 }
 
-// emergency contacts
+// emergency contacts -> firestore safe data structure
 List<Map<String, dynamic>> emgContactsToDB(List<EmergencyContact> ecs) {
   List<Map<String, dynamic>> array = List();
   if (ecs != null && ecs.length > 0) {

@@ -356,18 +356,13 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
 }
 
 class UpdateClientUserDocument extends ReduxAction<AppState> {
-  final Client user;
-
-  UpdateClientUserDocument(this.user)
-      : assert(user != null && user.userType == "client");
+  UpdateClientUserDocument();
 
   @override
   Future<AppState> reduce() async {
     final dbRef = Firestore.instance;
-    await dbRef.collection("users").document(user.userid).updateData({
-      "userid": user.userid,
-      "name": user.name,
-    });
+
+    Client user = state.currentUser as Client;
 
     await dbRef
         .collection("users")
@@ -388,7 +383,6 @@ class UpdateClientUserDocument extends ReduxAction<AppState> {
       "multiples": user.multiples,
       "epidural": user.epidural,
       "cesarean": user.cesarean,
-
     });
 
     return null;
@@ -400,20 +394,14 @@ class UpdateClientUserDocument extends ReduxAction<AppState> {
 }
 
 class UpdateDoulaUserDocument extends ReduxAction<AppState> {
-  final Doula user;
-
-  UpdateDoulaUserDocument(this.user)
-      : assert(user != null && user.userType == "doula");
+  UpdateDoulaUserDocument();
 
   @override
   Future<AppState> reduce() async {
+    Doula user = (state.currentUser as Doula);
     print(
         "Attempting to update this doula ${user.toString()} to the users collection");
     final dbRef = Firestore.instance;
-    await dbRef.collection("users").document(user.userid).updateData({
-      "userid": user.userid,
-      "name": user.name,
-    });
 
     await dbRef
         .collection("users")
@@ -421,9 +409,9 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
         .collection("userData")
         .document("specifics")
         .updateData({
+      "email": user.email,
       "phones": phonesToDB(user.phones),
       "bday": user.bday,
-      "email": user.email,
       "bio": user.bio,
       "certified": user.certified,
       "certInProgress": user.certInProgress,

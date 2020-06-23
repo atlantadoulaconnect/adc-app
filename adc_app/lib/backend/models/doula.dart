@@ -13,6 +13,7 @@ class Doula extends User {
   String certProgram;
   bool certified;
 
+  // contrary to the naming, this is the list of dates that the user is unavailable to doula
   List<String> availableDates;
   bool photoRelease;
 

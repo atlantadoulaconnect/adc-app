@@ -128,7 +128,7 @@ class LoginUserAction extends ReduxAction<AppState> {
           certified: specifics["certified"],
           email: specifics["email"],
           phones: convertPhones(specifics["phones"]),
-          availableDates: specifics["unavailableDates"]);
+          availableDates: convertStringArray(specifics["unavailableDates"]));
       msgState = msgState.copy(
           chats: convertStringSet(specifics["chats"]),
           appContacts: convertStringSet(specifics["appContacts"]));

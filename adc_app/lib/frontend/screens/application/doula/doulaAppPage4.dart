@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../../common.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -155,8 +157,12 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
             child: Text(
               date.day.toString(),
               style: TextStyle(
-                  color: themeColors["red"]
+                  color: themeColors["black"]
               ),
+            ),
+            decoration: BoxDecoration(
+              color: unavailableDates.contains(date) ? themeColors["gold"] : themeColors["lightGrey"],
+              shape: BoxShape.circle,
             ),
           );
         },
@@ -166,11 +172,12 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
             child: Text(
               date.day.toString(),
               style: TextStyle(
-                  color: themeColors["white"]
+                color: themeColors["mediumBlue"],
+                fontWeight: FontWeight.bold
               ),
             ),
             decoration: BoxDecoration(
-              color: themeColors["mediumBlue"],
+              color: unavailableDates.contains(date) ? themeColors["gold"] : themeColors["lightGrey"],
               shape: BoxShape.circle,
             ),
           );
@@ -181,12 +188,13 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
             child: Text(
               date.day.toString(),
               style: TextStyle(
-                color: themeColors["white"],
+                color: themeColors["black"],
               ),
             ),
             decoration: BoxDecoration(
-              color: themeColors["kellyGreen"],
+              color: unavailableDates.contains(date) ? themeColors["gold"] : themeColors["lightGrey"],
               shape: BoxShape.circle,
+              border: Border.all(color: themeColors["mediumBlue"], width: 2.0),
             ),
           );
         },

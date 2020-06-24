@@ -23,12 +23,15 @@ class ClientHomeScreen extends StatelessWidget {
           title: Text("Home"),
         ),
         drawer: Menu(),
-        body: Center(
-            child: Column(
+        body: Padding(
+          padding: const EdgeInsets.all(26.0),
+          child: Center(
+            child: ListView(
+              padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
           children: <Widget>[
             NotificationHandler(),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
               child: Text(
                   "Welcome, \n${currentUser != null ? currentUser.name : ""}",
                   textAlign: TextAlign.center,
@@ -38,7 +41,28 @@ class ClientHomeScreen extends StatelessWidget {
                   )),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0),
+                    side: BorderSide(color: themeColors['mediumBlue'], width: 3.0)),
+                onPressed: () async {
+                  await setProfileUser(
+                      currentUser.primaryDoula["userid"], "doula");
+                  toProfile();
+                },
+                color: themeColors['mediumBlue'],
+                textColor: Colors.white,
+                padding: EdgeInsets.all(15.0),
+                splashColor: themeColors['mediumBlue'],
+                child: Text(
+                  "See Doula's Profile",
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
@@ -55,7 +79,7 @@ class ClientHomeScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
@@ -76,7 +100,7 @@ class ClientHomeScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
@@ -93,7 +117,7 @@ class ClientHomeScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
@@ -112,7 +136,7 @@ class ClientHomeScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
@@ -135,7 +159,7 @@ class ClientHomeScreen extends StatelessWidget {
               ),
             ),
           ],
-        )));
+        ))));
   }
 }
 

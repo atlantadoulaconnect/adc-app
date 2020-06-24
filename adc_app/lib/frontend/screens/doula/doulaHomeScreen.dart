@@ -110,6 +110,7 @@ class DoulaHomeScreen extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 20,
                                       ),
+                                      textAlign: TextAlign.center,
                                     );
                                   },
                                 )

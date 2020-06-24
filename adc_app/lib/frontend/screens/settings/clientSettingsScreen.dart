@@ -13,13 +13,13 @@ class ClientSettingsScreen extends StatefulWidget {
   final VoidCallback toClientSettings;
 
   final void Function(Client, String, List<Phone>, String, bool)
-  updateClientAccount;
+      updateClientAccount;
   //user, birthLocation, birthType, DueDate, previousDeliveryTypes,
   //preterm, lowBirthWeight, multiples, epidural, cesarean
-  final void Function(Client, String, String, String, List<String>,
-      bool, bool, bool, bool, bool) updateBirthInformation;
+  final void Function(Client, String, String, String, List<String>, bool, bool,
+      bool, bool, bool) updateBirthInformation;
   final void Function(Client, List<EmergencyContact>) updateEmergencyContacts;
-  final Future<void> Function(Client) clientToDB;
+  final Future<void> Function() clientToDB;
 
   ClientSettingsScreen(
       this.currentUser,
@@ -39,13 +39,11 @@ class ClientSettingsScreen extends StatefulWidget {
 class ClientSettingsScreenState extends State<ClientSettingsScreen> {
   final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
 
-  void Function(Client, String, List<Phone>, String, bool)
-      updateClientAccount;
-  void Function(Client, String, String, String, List<String>,
-      bool, bool, bool, bool, bool) updateBirthInformation;
+  void Function(Client, String, List<Phone>, String, bool) updateClientAccount;
+  void Function(Client, String, String, String, List<String>, bool, bool, bool,
+      bool, bool) updateBirthInformation;
   void Function(Client, List<EmergencyContact>) updateEmergencyContacts;
-  Future<void> Function(Client) clientToDB;
-
+  Future<void> Function() clientToDB;
 
   VoidCallback toHome;
   VoidCallback toClientSettings;
@@ -74,15 +72,15 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
   TextEditingController dueDateCtrl;
 
   //TextEditingController deliveryTypesCtrl;
-  bool previousVaginalBirth = false, previousCesarean = false , previousVbac  = false;
+  bool previousVaginalBirth = false,
+      previousCesarean = false,
+      previousVbac = false;
   bool cesarean = false, epidural = false;
   bool homeVisit = false;
   int liveBirths;
   bool preterm = false, lowWeight = false;
   bool meetBefore = false;
   bool multiples = false;
-
-
 
   //general
   String userName;
@@ -98,7 +96,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
   String birthType;
   String dueDate;
 
-
   List<String> deliveryType;
 
   bool pushNotification = true;
@@ -111,8 +108,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
   bool statusReportNotification = true;
   List<EmergencyContact> emergencyContacts;
 
-
-
   @override
   void initState() {
     toHome = widget.toHome;
@@ -124,70 +119,70 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
     updateEmergencyContacts = widget.updateEmergencyContacts;
     clientToDB = widget.clientToDB;
 
-
     //String userType = currentUser != null ? currentUser.userType : 'unlogged';
 
     //if (currentUser != null) {
-      userName = currentUser.name != null ? currentUser.name : '';
-      phone = currentUser.phones != null
-          ? currentUser.phones.toString().trim().substring(1, 11)
-          : '';
-      email = currentUser.email != null ? currentUser.email : '';
+    userName = currentUser.name != null ? currentUser.name : '';
+    phone = currentUser.phones != null
+        ? currentUser.phones.toString().trim().substring(1, 11)
+        : '';
+    email = currentUser.email != null ? currentUser.email : '';
     //}
-
-
 
     //if (userType == 'client') {
     //ASSIGNING VALUES
-      dob = (currentUser as Client).bday;
-      int contactSize = (currentUser as Client).emergencyContacts != null
-          ? (currentUser as Client).emergencyContacts.length
-          : 0;
-      emergencyContacts = (currentUser as Client).emergencyContacts;
-      for (int i = 0; i < contactSize; i++) {
-        emergencyContacts[i] = (currentUser as Client).emergencyContacts[i];
+    dob = (currentUser as Client).bday;
+    int contactSize = (currentUser as Client).emergencyContacts != null
+        ? (currentUser as Client).emergencyContacts.length
+        : 0;
+    emergencyContacts = (currentUser as Client).emergencyContacts;
+    for (int i = 0; i < contactSize; i++) {
+      emergencyContacts[i] = (currentUser as Client).emergencyContacts[i];
+    }
+
+    birthLocation = (currentUser as Client).birthLocation;
+    birthType = (currentUser as Client).birthType;
+    dueDate = (currentUser as Client).dueDate;
+
+    int deliveryTypeSize = (currentUser as Client).deliveryTypes != null
+        ? (currentUser as Client).deliveryTypes.length
+        : 0;
+
+    for (int i = 0; i < deliveryTypeSize; i++) {
+      if ((currentUser as Client).deliveryTypes[i].toString() == 'vaginal') {
+        previousVaginalBirth = true;
       }
-
-      birthLocation = (currentUser as Client).birthLocation;
-      birthType = (currentUser as Client).birthType;
-      dueDate = (currentUser as Client).dueDate;
-
-      int deliveryTypeSize = (currentUser as Client).deliveryTypes != null
-          ? (currentUser as Client).deliveryTypes.length
-          : 0;
-
-      for (int i = 0; i < deliveryTypeSize; i++) {
-        if ((currentUser as Client).deliveryTypes[i].toString() == 'vaginal' ){
-          previousVaginalBirth = true;
-        }
-        if ((currentUser as Client).deliveryTypes[i].toString() == 'vbac' ){
-          previousVbac = true;
-        }
-        if ((currentUser as Client).deliveryTypes[i].toString() == 'cesarean' ){
-          previousCesarean = true;
-        }
-        //emergencyContacts[i] = (currentUser as Client).emergencyContacts[i];
+      if ((currentUser as Client).deliveryTypes[i].toString() == 'vbac') {
+        previousVbac = true;
       }
+      if ((currentUser as Client).deliveryTypes[i].toString() == 'cesarean') {
+        previousCesarean = true;
+      }
+      //emergencyContacts[i] = (currentUser as Client).emergencyContacts[i];
+    }
 
-      preterm = (currentUser as Client).preterm != null
-          ? (currentUser as Client).preterm : false;
-      //print('preterm: $preterm');
-      lowWeight = (currentUser as Client).lowWeight != null
-        ? (currentUser as Client).lowWeight : false;
-      multiples = (currentUser as Client).multiples != null
-          ? (currentUser as Client).multiples : false;
-      cesarean = (currentUser as Client).cesarean != null
-        ? (currentUser as Client).cesarean : false;
-      epidural = (currentUser as Client).epidural != null
-          ? (currentUser as Client).epidural : false;
-
-
+    preterm = (currentUser as Client).preterm != null
+        ? (currentUser as Client).preterm
+        : false;
+    //print('preterm: $preterm');
+    lowWeight = (currentUser as Client).lowWeight != null
+        ? (currentUser as Client).lowWeight
+        : false;
+    multiples = (currentUser as Client).multiples != null
+        ? (currentUser as Client).multiples
+        : false;
+    cesarean = (currentUser as Client).cesarean != null
+        ? (currentUser as Client).cesarean
+        : false;
+    epidural = (currentUser as Client).epidural != null
+        ? (currentUser as Client).epidural
+        : false;
 
 //      deliveryType = (currentUser as Client).deliveryTypes;
 //      print('deliveryType: ${deliveryType.toString}');
-      photoRelease = (currentUser as Client).photoRelease != null
-          ? (currentUser as Client).photoRelease
-          : false;
+    photoRelease = (currentUser as Client).photoRelease != null
+        ? (currentUser as Client).photoRelease
+        : false;
     //}
 
     firstNameCtrl = new TextEditingController(text: userName);
@@ -196,25 +191,26 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
     emailCtrl = new TextEditingController(text: email);
 
     //clients
-    emergencyContactNameCtrl = new TextEditingController(text:
-    (emergencyContacts[0] != null ? emergencyContacts[0].name : '')
-    );
-    emergencyContactRelationCtrl = new TextEditingController(text:
-    (emergencyContacts[0] != null ? emergencyContacts[0].relationship : '')
-    );
-    emergencyContactPhoneCtrl = new TextEditingController(text:
-    (emergencyContacts[0] != null ? emergencyContacts[0].phones.toString().trim().substring(1, 11) : '')
-    );
-    emergencyContactNameCtrl2 = new TextEditingController(text:
-    (emergencyContacts[1] != null ? emergencyContacts[1].name : '')
-    );
-    emergencyContactRelationCtrl2 = new TextEditingController(text:
-    (emergencyContacts[1] != null ? emergencyContacts[1].relationship : '')
-    );
-    emergencyContactPhoneCtrl2 = new TextEditingController(text:
-    (emergencyContacts[1] != null ? emergencyContacts[1].phones.toString().trim().substring(1, 11) : '')
-    );
-
+    emergencyContactNameCtrl = new TextEditingController(
+        text: (emergencyContacts[0] != null ? emergencyContacts[0].name : ''));
+    emergencyContactRelationCtrl = new TextEditingController(
+        text: (emergencyContacts[0] != null
+            ? emergencyContacts[0].relationship
+            : ''));
+    emergencyContactPhoneCtrl = new TextEditingController(
+        text: (emergencyContacts[0] != null
+            ? emergencyContacts[0].phones.toString().trim().substring(1, 11)
+            : ''));
+    emergencyContactNameCtrl2 = new TextEditingController(
+        text: (emergencyContacts[1] != null ? emergencyContacts[1].name : ''));
+    emergencyContactRelationCtrl2 = new TextEditingController(
+        text: (emergencyContacts[1] != null
+            ? emergencyContacts[1].relationship
+            : ''));
+    emergencyContactPhoneCtrl2 = new TextEditingController(
+        text: (emergencyContacts[1] != null
+            ? emergencyContacts[1].phones.toString().trim().substring(1, 11)
+            : ''));
 
     oldPasswordCtrl = new TextEditingController();
     newPasswordCtrl = new TextEditingController();
@@ -374,8 +370,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])
-              ),
+                  side: BorderSide(color: themeColors['yellow'])),
               onPressed: () async {
                 String clientName = firstNameCtrl.text.toString().trim();
                 print('clientName: $clientName');
@@ -385,15 +380,14 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                 print('phone: ${phoneNumCtrl.text.toString().trim()}');
                 phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
 
-                updateClientAccount(currentUser, clientName, phones, clientBday,
-                    photoRelease);
+                updateClientAccount(
+                    currentUser, clientName, phones, clientBday, photoRelease);
                 print('currentUser.name before: ${currentUser.name}');
-
-                clientToDB(currentUser);
+                setState(() {});
+                await clientToDB();
                 print('currentUser.name after: ${currentUser.name}');
 
-                toClientSettings;
-
+                toClientSettings();
               },
               color: themeColors['yellow'],
               textColor: Colors.black,
@@ -432,7 +426,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                 hintText: "********",
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
+                      // Based on passwordVisible state choose the icon
                       passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
@@ -465,7 +459,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
+                      // Based on passwordVisible state choose the icon
                       passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
@@ -498,7 +492,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
+                      // Based on passwordVisible state choose the icon
                       passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
@@ -520,16 +514,16 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])
-              ),
+                  side: BorderSide(color: themeColors['yellow'])),
               onPressed: () async {
                 if (oldPasswordCtrl.text.toString().trim() != '') {
                   print(
                       'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
                   AuthResult result = await FirebaseAuth.instance
                       .signInWithEmailAndPassword(
-                      email: currentUser.email,
-                      password: '${oldPasswordCtrl.text.toString().trim()}');
+                          email: currentUser.email,
+                          password:
+                              '${oldPasswordCtrl.text.toString().trim()}');
                   FirebaseUser user = result.user;
                   print('user: $user');
                   String userId = user.uid;
@@ -607,7 +601,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                 hintText: "********",
                 suffixIcon: IconButton(
                   icon: Icon(
-                    // Based on passwordVisible state choose the icon
+                      // Based on passwordVisible state choose the icon
                       passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: passwordVisible
                           ? themeColors["black"]
@@ -629,8 +623,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])
-              ),
+                  side: BorderSide(color: themeColors['yellow'])),
               onPressed: () async {
                 //TODO add contacts functionality
                 toHome();
@@ -660,10 +653,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
           padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
           child: Text(
             'Emergency Contact 1',
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-            ),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
@@ -729,10 +719,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
           padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
           child: Text(
             'Emergency Contact 2',
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-            ),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
@@ -798,8 +785,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
           child: RaisedButton(
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(5.0),
-                side: BorderSide(color: themeColors['yellow'])
-            ),
+                side: BorderSide(color: themeColors['yellow'])),
             onPressed: () async {
               List<Phone> phones1 = new List<Phone>();
               List<Phone> phones2 = new List<Phone>();
@@ -827,9 +813,9 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               ecs.add(ec2);
               print("ec1: $ecs");
               updateEmergencyContacts(currentUser, ecs);
-              clientToDB(currentUser);
+              setState(() {});
+              await clientToDB();
               //toHome();
-
             },
             color: themeColors['yellow'],
             textColor: Colors.black,
@@ -842,7 +828,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
             //onPressed: ,
           ),
         )
-
       ],
     ));
     clientCategoryExpansionTiles.add(ExpansionTile(
@@ -1013,7 +998,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                     )
                   ],
                 ),
-
               ],
             ),
           ),
@@ -1059,7 +1043,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                     )
                   ],
                 ),
-
               ],
             ),
           ),
@@ -1068,10 +1051,8 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])
-              ),
+                  side: BorderSide(color: themeColors['yellow'])),
               onPressed: () async {
-
                 String location = birthLocationCtrl.text.toString().trim();
                 String type = birthTypeCtrl.text.toString().trim();
                 String date = dueDateCtrl.text.toString().trim();
@@ -1087,13 +1068,21 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                   deliveries.add("vbac");
                 }
 
-                updateBirthInformation(currentUser, location, type, date,
-                  deliveries, preterm, lowWeight, multiples, epidural, cesarean);
-                clientToDB(currentUser);
-
+                updateBirthInformation(
+                    currentUser,
+                    location,
+                    type,
+                    date,
+                    deliveries,
+                    preterm,
+                    lowWeight,
+                    multiples,
+                    epidural,
+                    cesarean);
+                setState(() {});
+                await clientToDB();
 
                 //toClientSettings;
-
               },
               color: themeColors['yellow'],
               textColor: Colors.black,
@@ -1260,8 +1249,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
         child: RaisedButton(
           shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(5.0),
-              side: BorderSide(color: themeColors['emoryBlue'])
-          ),
+              side: BorderSide(color: themeColors['emoryBlue'])),
           onPressed: () async {
 //            String clientName = firstNameCtrl.text.toString().trim();
 //            String clientBday = dateOfBirthCtrl.text.toString().trim();
@@ -1282,9 +1270,9 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                     'changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
                 AuthResult result = await FirebaseAuth.instance
                     .signInWithEmailAndPassword(
-                    email: currentUser.email,
-                    password:
-                    '${changeEmailPasswordCtrl.text.toString().trim()}');
+                        email: currentUser.email,
+                        password:
+                            '${changeEmailPasswordCtrl.text.toString().trim()}');
                 FirebaseUser user = result.user;
                 print('user: $user');
                 String userId = user.uid;
@@ -1298,8 +1286,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               }
 //
             }
-
-
 
 //            updateClientAccount(currentUser, clientName, phones, clientBday,
 //                clientEmail, photoRelease);
@@ -1327,7 +1313,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
         ));
   }
 
-
   @override
   Widget build(BuildContext context) {
     Form settingsForm;
@@ -1347,14 +1332,15 @@ class ClientSettingsScreenConnector extends StatelessWidget {
     return StoreConnector<AppState, ViewModel>(
         model: ViewModel(),
         builder: (BuildContext context, ViewModel vm) => ClientSettingsScreen(
-            vm.currentUser,
-            vm.toHome,
-            vm.logout,
-            vm.updateClientAccount,
-            vm.updateBirthInformation,
-            vm.updateEmergencyContacts,
-            vm.clientToDB,
-            vm.toClientSettings,));
+              vm.currentUser,
+              vm.toHome,
+              vm.logout,
+              vm.updateClientAccount,
+              vm.updateBirthInformation,
+              vm.updateEmergencyContacts,
+              vm.clientToDB,
+              vm.toClientSettings,
+            ));
   }
 }
 
@@ -1366,13 +1352,11 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback logout;
   VoidCallback toClientSettings;
 
-  void Function(Client, String, List<Phone>, String, bool)
-      updateClientAccount;
-  void Function(Client, String, String, String, List<String>,
-      bool, bool, bool, bool, bool) updateBirthInformation;
+  void Function(Client, String, List<Phone>, String, bool) updateClientAccount;
+  void Function(Client, String, String, String, List<String>, bool, bool, bool,
+      bool, bool) updateBirthInformation;
   void Function(Client, List<EmergencyContact>) updateEmergencyContacts;
-  Future<void> Function(Client) clientToDB;
-
+  Future<void> Function() clientToDB;
 
   ViewModel.build({
     @required this.currentUser,
@@ -1383,7 +1367,6 @@ class ViewModel extends BaseModel<AppState> {
     @required this.updateEmergencyContacts,
     @required this.clientToDB,
     @required this.toClientSettings,
-
   }) : super(equals: [currentUser]);
 
   @override
@@ -1391,44 +1374,51 @@ class ViewModel extends BaseModel<AppState> {
     return ViewModel.build(
       currentUser: state.currentUser,
       toHome: () => dispatch(NavigateAction.pushNamed("/")),
-      toClientSettings: () => dispatch(NavigateAction.pushNamed("/clientSettings")),
+      toClientSettings: () =>
+          dispatch(NavigateAction.pushNamed("/clientSettings")),
       logout: () {
         print("logging out from settings");
         dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         dispatch(LogoutUserAction());
       },
-
       updateClientAccount: (Client user, String name, List<Phone> phones,
-          String bday, bool photoRelease) =>
+              String bday, bool photoRelease) =>
           dispatch(UpdateClientUserAction(
-            user,
-            name: name,
-            phones: phones,
-            bday: bday,
-            photoRelease: photoRelease,
-          )),
-      updateBirthInformation: (Client user, String birthLocation, String birthType, String dueDate, List<String> deliveryTypes,
-          bool preterm, bool lowWeight, bool multiples, bool epidural, bool cesarean) =>
+        user,
+        name: name,
+        phones: phones,
+        bday: bday,
+        photoRelease: photoRelease,
+      )),
+      updateBirthInformation: (Client user,
+              String birthLocation,
+              String birthType,
+              String dueDate,
+              List<String> deliveryTypes,
+              bool preterm,
+              bool lowWeight,
+              bool multiples,
+              bool epidural,
+              bool cesarean) =>
           dispatch(UpdateClientUserAction(
-            user,
-            birthLocation: birthLocation,
-            birthType: birthType,
-            dueDate: dueDate,
-            deliveryTypes: deliveryTypes,
-            preterm: preterm,
-            lowWeight: lowWeight,
-            multiples: multiples,
-            epidural: epidural,
-            cesarean: cesarean,
-          )),
-      updateEmergencyContacts: (Client user, List<EmergencyContact> emergencyContacts) =>
-        dispatch(UpdateClientUserAction(
-          user,
-          emergencyContacts: emergencyContacts,
-        )),
-      clientToDB: (Client user) =>
-          dispatchFuture(UpdateClientUserDocument(user)),
-
+        user,
+        birthLocation: birthLocation,
+        birthType: birthType,
+        dueDate: dueDate,
+        deliveryTypes: deliveryTypes,
+        preterm: preterm,
+        lowWeight: lowWeight,
+        multiples: multiples,
+        epidural: epidural,
+        cesarean: cesarean,
+      )),
+      updateEmergencyContacts:
+          (Client user, List<EmergencyContact> emergencyContacts) =>
+              dispatch(UpdateClientUserAction(
+        user,
+        emergencyContacts: emergencyContacts,
+      )),
+      clientToDB: () => dispatchFuture(UpdateClientUserDocument()),
     );
   }
 }

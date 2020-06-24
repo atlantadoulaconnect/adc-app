@@ -33,5 +33,6 @@ Map<String, Color> themeColors = {
   'coolGray2': const Color(0xFFD0D0CE),
   'coolGray1': const Color(0xFFD9D9D6),
   'lightGray': const Color(0xFFDEDEDE),
+  'lighterGray': const Color(0xFFE5E5EA),
   'white': const Color(0xFFFFFFFF),
 };

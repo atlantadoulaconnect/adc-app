@@ -12,12 +12,8 @@ class AdminSettingsScreen extends StatefulWidget {
   final void Function(Admin, String, String) updateAdminAccount;
   final Future<void> Function(Admin) adminToDB;
 
-  AdminSettingsScreen(
-      this.currentUser,
-      this.toHome,
-      this.logout,
-      this.updateAdminAccount,
-      this.adminToDB);
+  AdminSettingsScreen(this.currentUser, this.toHome, this.logout,
+      this.updateAdminAccount, this.adminToDB);
 //      : assert(currentUser != null && toHome != null && logout != null);
 
   @override
@@ -80,12 +76,10 @@ class AdminSettingsScreenState extends State<AdminSettingsScreen> {
       email = currentUser.email != null ? currentUser.email : '';
     }
 
-
     firstNameCtrl = new TextEditingController(text: userName);
     phoneNumCtrl = new TextEditingController(text: phone);
     dateOfBirthCtrl = new TextEditingController(text: dob);
     emailCtrl = new TextEditingController(text: email);
-
 
     oldPasswordCtrl = new TextEditingController();
     newPasswordCtrl = new TextEditingController();
@@ -394,8 +388,8 @@ class AdminSettingsScreenState extends State<AdminSettingsScreen> {
             String adminEmail = emailCtrl.text.toString().trim();
 
             updateAdminAccount(currentUser, adminName, adminEmail);
-
-            adminToDB(currentUser);
+            setState(() {});
+            await adminToDB(currentUser);
             toHome();
           },
           color: themeColors['yellow'],
@@ -417,7 +411,6 @@ class AdminSettingsScreenState extends State<AdminSettingsScreen> {
           children: adminCategoryExpansionTiles,
         ));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -475,17 +468,16 @@ class ViewModel extends BaseModel<AppState> {
         dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         dispatch(LogoutUserAction());
       },
-
       updateAdminAccount: (
-          Admin user,
-          String name,
-          String email,
-          ) =>
+        Admin user,
+        String name,
+        String email,
+      ) =>
           dispatch(UpdateAdminUserAction(
-            user,
-            name: name,
-            email: email,
-          )),
+        user,
+        name: name,
+        email: email,
+      )),
       adminToDB: (Admin user) => dispatchFuture(UpdateAdminUserDocument(user)),
     );
   }

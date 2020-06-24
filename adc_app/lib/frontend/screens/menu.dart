@@ -305,7 +305,6 @@ class CurrentMenu extends StatelessWidget {
   }
 
   Drawer doulaMenu() {
-    print("doula menu");
     return Drawer(
         child: Container(
             color: themeColors["mediumBlue"],
@@ -609,22 +608,23 @@ class Menu extends StatelessWidget {
         model: ViewModel(),
         builder: (BuildContext context, ViewModel vm) {
           return CurrentMenu(
-              currentUser: vm.currentUser,
-              toHome: vm.toHome,
-              toSignup: vm.toSignup,
-              toLogin: vm.toLogin,
-              toInfo: vm.toInfo,
-              toRecentMessages: vm.toRecentMessages,
-              toDoulas: vm.toDoulas,
-              toClients: vm.toClients,
-              logout: vm.logout,
-              toAdminHome: vm.toAdminHome,
-              toClientHome: vm.toClientHome,
-              toDoulaHome: vm.toDoulaHome,
-              toSettings: vm.toSettings,
-              toClientSettings: vm.toClientSettings,
-              toDoulaSettings: vm.toDoulaSettings,
-              toAdminSettings: vm.toAdminSettings,);
+            currentUser: vm.currentUser,
+            toHome: vm.toHome,
+            toSignup: vm.toSignup,
+            toLogin: vm.toLogin,
+            toInfo: vm.toInfo,
+            toRecentMessages: vm.toRecentMessages,
+            toDoulas: vm.toDoulas,
+            toClients: vm.toClients,
+            logout: vm.logout,
+            toAdminHome: vm.toAdminHome,
+            toClientHome: vm.toClientHome,
+            toDoulaHome: vm.toDoulaHome,
+            toSettings: vm.toSettings,
+            toClientSettings: vm.toClientSettings,
+            toDoulaSettings: vm.toDoulaSettings,
+            toAdminSettings: vm.toAdminSettings,
+          );
         });
   }
 }
@@ -649,24 +649,24 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toDoulaSettings;
   VoidCallback toAdminSettings;
 
-  ViewModel.build(
-      {@required this.currentUser,
-      @required this.toHome,
-      @required this.toSignup,
-      @required this.toLogin,
-      @required this.toInfo,
-      @required this.toRecentMessages,
-      @required this.toDoulas,
-      @required this.toClients,
-      @required this.logout,
-      @required this.toAdminHome,
-      @required this.toClientHome,
-      @required this.toDoulaHome,
-      @required this.toSettings,
-      @required this.toClientSettings,
-      @required this.toDoulaSettings,
-      @required this.toAdminSettings,})
-      : super(equals: [currentUser]);
+  ViewModel.build({
+    @required this.currentUser,
+    @required this.toHome,
+    @required this.toSignup,
+    @required this.toLogin,
+    @required this.toInfo,
+    @required this.toRecentMessages,
+    @required this.toDoulas,
+    @required this.toClients,
+    @required this.logout,
+    @required this.toAdminHome,
+    @required this.toClientHome,
+    @required this.toDoulaHome,
+    @required this.toSettings,
+    @required this.toClientSettings,
+    @required this.toDoulaSettings,
+    @required this.toAdminSettings,
+  }) : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
@@ -691,9 +691,12 @@ class ViewModel extends BaseModel<AppState> {
       toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),
       toDoulaHome: () => dispatch(NavigateAction.pushNamed("/doulaHome")),
       toSettings: () => dispatch(NavigateAction.pushNamed("/settings")),
-      toClientSettings: () => dispatch(NavigateAction.pushNamed("/clientSettings")),
-      toDoulaSettings: () => dispatch(NavigateAction.pushNamed("/doulaSettings")),
-      toAdminSettings: () => dispatch(NavigateAction.pushNamed("/adminSettings")),
+      toClientSettings: () =>
+          dispatch(NavigateAction.pushNamed("/clientSettings")),
+      toDoulaSettings: () =>
+          dispatch(NavigateAction.pushNamed("/doulaSettings")),
+      toAdminSettings: () =>
+          dispatch(NavigateAction.pushNamed("/adminSettings")),
     );
   }
 }

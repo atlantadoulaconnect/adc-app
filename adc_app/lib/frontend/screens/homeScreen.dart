@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                 "Log In",
                 style: TextStyle(
                     fontSize: 25.0,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
             ),

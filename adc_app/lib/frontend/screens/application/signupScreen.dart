@@ -137,9 +137,9 @@ class SignupScreenState extends State<SignupScreen> {
                   RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(50.0),
-                          side: BorderSide(color: themeColors['yellow'])),
-                      color: themeColors["yellow"],
-                      textColor: Colors.black,
+                          side: BorderSide(color: themeColors['lightBlue'])),
+                      color: themeColors["lightBlue"],
+                      textColor: Colors.white,
                       padding: EdgeInsets.all(15.0),
                       child: Text("SIGN UP"),
                       onPressed: () async {
@@ -157,16 +157,16 @@ class SignupScreenState extends State<SignupScreen> {
                 ])),
             SizedBox(height: 20),
             Text("Already have an account?"),
-            SizedBox(height: 5),
+            SizedBox(height: 20),
             RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(50.0),
-                    side: BorderSide(color: themeColors['lightBlue'])),
+                    side: BorderSide(color: themeColors['yellow'])),
                 onPressed: () {
                   toLogin();
                 },
-                color: themeColors["lightBlue"],
-                textColor: Colors.white,
+                color: themeColors["yellow"],
+                textColor: Colors.black,
                 padding: EdgeInsets.all(15.0),
                 child: Text("LOG IN")),
           ])),

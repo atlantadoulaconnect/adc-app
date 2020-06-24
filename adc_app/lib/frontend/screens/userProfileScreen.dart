@@ -1214,259 +1214,594 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   ListView doulaUser() {
-    String phonesString = profileUser.phones.join(", ");
-    Doula profileUserDoula = profileUser;
-    String availableDates = profileUserDoula.availableDates != null
-        ? profileUserDoula.availableDates.join(", ")
-        : "(no dates selected)";
+    if (profileUser.userType == "doula") {
+      String phonesString = profileUser.phones.join(", ");
+      Doula profileUserDoula = profileUser;
+      String availableDates = profileUserDoula.availableDates != null
+          ? profileUserDoula.availableDates.join(", ")
+          : "(no dates selected)";
 
-    return ListView(
-      children: <Widget>[
-        Padding(
-          padding:
-          EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        width: 3.0,
-                        color: themeColors["black"],
+      return ListView(
+        children: <Widget>[
+          Padding(
+            padding:
+            EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          width: 3.0,
+                          color: themeColors["black"],
+                        ),
                       ),
-                    ),
-                    child: Icon(
-                      IconData(0xe7fd, fontFamily: 'MaterialIcons'),
-                      color: Colors.black,
-                      size: 90,
-                    ),
-                  )),
-              Padding(
-                padding: EdgeInsets.only(left: 20, right: 20.0),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      profileUser.name,
-                      style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
+                      child: Icon(
+                        IconData(0xe7fd, fontFamily: 'MaterialIcons'),
+                        color: Colors.black,
+                        size: 90,
                       ),
-                    ),
-                    Text(
-                      userApproved ? "Approved" : "Not Approved",
-                      style: TextStyle(
-                          fontFamily: 'Roboto',
-                          color: themeColors['black'],
-                          fontStyle: FontStyle.italic,
-                          fontSize: 20,
-                          height: 1.5),
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
+                    )),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20.0),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        profileUser.name,
+                        style: TextStyle(
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        userApproved ? "Approved" : "Not Approved",
+                        style: TextStyle(
+                            fontFamily: 'Roboto',
+                            color: themeColors['black'],
+                            fontStyle: FontStyle.italic,
+                            fontSize: 20,
+                            height: 1.5),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('Personal Information',
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Personal Information',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  'Name: ${profileUser.name}',
                   style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.left),
-              Text(
-                'Name: ${profileUser.name}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Email: ${profileUser.email}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Phone(s): $phonesString',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Birthday (MM/YYYY): ${profileUserDoula.bday}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                '',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 12,
-                    height: 1.0),
-                textAlign: TextAlign.left,
-              ),
-              Text('Short Bio',
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Email: ${profileUser.email}',
                   style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.left),
-              Text(
-                '${profileUserDoula.bio}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Phone(s): $phonesString',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Birthday (MM/YYYY): ${profileUserDoula.bday}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+                Text('Short Bio',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  '${profileUserDoula.bio}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
 
-              // AVAILABILITY
-              Text(
-                '',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 12,
-                    height: 1.0),
-                textAlign: TextAlign.left,
-              ),
-              Text('Availability',
+                // AVAILABILITY
+                Text(
+                  '',
                   style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.left),
-              Text(
-                'I am not availabe on: $availableDates',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              // CERTIFICATION STATUS
-              Text(
-                '',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 12,
-                    height: 1.0),
-                textAlign: TextAlign.left,
-              ),
-              Text('Certification Status',
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+                Text('Availability',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  'I am not availabe on: $availableDates',
                   style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.left),
-              Text(
-                'Certified? ${boolStr(profileUserDoula.certified)}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Working towards Certification? ${boolStr(profileUserDoula.certInProgress)}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Certification Program: ${profileUserDoula.certProgram}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Number of documented births needed for certification: ${profileUserDoula.birthsNeeded}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                '',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 12,
-                    height: 1.0),
-                textAlign: TextAlign.left,
-              ),
-              Text('Photo Release',
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                // CERTIFICATION STATUS
+                Text(
+                  '',
                   style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['emoryBlue'],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.left),
-              Text(
-                '${boolStr(profileUserDoula.photoRelease)}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
-              ),
-            ],
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+                Text('Certification Status',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  'Certified? ${boolStr(profileUserDoula.certified)}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Working towards Certification? ${boolStr(profileUserDoula.certInProgress)}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Certification Program: ${profileUserDoula.certProgram}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Number of documented births needed for certification: ${profileUserDoula.birthsNeeded}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+                Text('Photo Release',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  '${boolStr(profileUserDoula.photoRelease)}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    } else {
+      String phonesString = profileUser.phones.join(", ");
+      Client profileUserClient = profileUser;
+      String deliveryTypes = "";
+      if (profileUserClient.deliveryTypes != null) {
+        deliveryTypes = profileUserClient.deliveryTypes.join(", ");
+      }
+      String emergencyContacts = "";
+      if (profileUserClient.emergencyContacts != null) {
+        emergencyContacts = profileUserClient.emergencyContacts.join("\n");
+      }
+
+      return ListView(
+        children: <Widget>[
+          Padding(
+            padding:
+            EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          width: 3.0,
+                          color: themeColors["black"],
+                        ),
+                      ),
+                      child: Icon(
+                        IconData(0xe7fd, fontFamily: 'MaterialIcons'),
+                        color: Colors.black,
+                        size: 90,
+                      ),
+                    )),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20.0),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        profileUser.name,
+                        style: TextStyle(
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        userApproved ? "Approved" : "Not Approved",
+                        style: TextStyle(
+                            fontFamily: 'Roboto',
+                            color: themeColors['black'],
+                            fontStyle: FontStyle.italic,
+                            fontSize: 20,
+                            height: 1.5),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Personal Information',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  'Name: ${profileUserClient.name}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Email: ${profileUserClient.email}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Phone(s): $phonesString',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  'Birthday (MM/YYYY): ${profileUserClient.bday}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+
+                // EMERGENCY CONTACTS
+
+                Text('Emergency Contacts',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  "$emergencyContacts",
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+                // CURRENT PREGNANCY DETAILS
+
+                Text('Current Pregnancy Details',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  "Due date: ${profileUserClient.dueDate}",
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  "Planned Birth Location: ${profileUserClient.birthLocation}",
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  "Birth Types: ${profileUserClient.birthType}",
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+
+                // PREVIOUS BIRTH DETAILS
+
+                Text('Previous Birth Details',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  "Number of Previous Live Births: ${profileUserClient.liveBirths}",
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Visibility(
+                  visible: profileUserClient.liveBirths > 0,
+                  child: Text(
+                    "Previous preterm baby? ${boolStr(profileUserClient.preterm)}",
+                    style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: themeColors['black'],
+                        fontSize: 18,
+                        height: 1.5),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Visibility(
+                  visible: profileUserClient.liveBirths > 0,
+                  child: Text(
+                    "Previous low weight baby? ${boolStr(profileUserClient.lowWeight)}",
+                    style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: themeColors['black'],
+                        fontSize: 18,
+                        height: 1.5),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Visibility(
+                  visible: profileUserClient.liveBirths > 0,
+                  child: Text(
+                    "Previous birth methods: $deliveryTypes",
+                    style: TextStyle(
+                        fontFamily: 'Roboto',
+                        color: themeColors['black'],
+                        fontSize: 18,
+                        height: 1.5),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+
+                // DOULA PREFERENCES
+                Text('Doula Preferences',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  "Meet doula before birth?: ${boolStr(profileUserClient.meetBefore)}",
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  "Doula post birth home visit?: ${boolStr(profileUserClient.homeVisit)}",
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 12,
+                      height: 1.0),
+                  textAlign: TextAlign.left,
+                ),
+
+                // PHOTO RELEASE
+
+                Text('Photo Release',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['emoryBlue'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.left),
+                Text(
+                  '${boolStr(profileUserClient.photoRelease)}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    }
+
   }
 
   // does a user get a profile when they haven't chosen a user type yet?
@@ -1488,7 +1823,11 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       case "client":
         {
           listview = clientUser();
-          title = "Your Profile";
+          if (profileUser.userid == currentUser.userid) {
+            title = "Your Profile";
+          } else {
+            title = "Your Doula's Profile";
+          }
         }
         break;
       case "doula":

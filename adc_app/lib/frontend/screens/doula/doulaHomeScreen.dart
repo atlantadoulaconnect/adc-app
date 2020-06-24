@@ -16,8 +16,35 @@ class DoulaHomeScreen extends StatelessWidget {
             toRecentMessages != null &&
             toInfo != null);
 
+
+  Widget buildItem(BuildContext context, DocumentSnapshot doc) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10.0),
+            side: BorderSide(color: themeColors['mediumBlue'])),
+        onPressed: () async {
+          await setProfileUser(
+              doc["clientId"], "client");
+          toProfile();
+        },
+        color: themeColors['mediumBlue'],
+        textColor: Colors.white,
+        padding: EdgeInsets.all(15.0),
+        splashColor: themeColors['mediumBlue'],
+        child: Text(
+          "See ${doc["clientName"]}'s Profile",
+          style: TextStyle(fontSize: 20.0),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> clientProfileButtons = new List<Widget>();
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Home"),
@@ -26,7 +53,8 @@ class DoulaHomeScreen extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(26.0),
           child: Center(
-              child: Column(
+              child: ListView(
+                padding: EdgeInsets.all(25.0),
             children: <Widget>[
               NotificationHandler(),
               Padding(
@@ -46,6 +74,61 @@ class DoulaHomeScreen extends StatelessWidget {
 //                    fontSize: 20.0,
 //                    fontWeight: FontWeight.bold,
 //                  )),
+              Padding(
+                  padding: EdgeInsets.only(top: 20.0, bottom: 8.0),
+                  child: Center(
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: Firestore.instance
+                            .collection("matches")
+                            .where("primaryDoulaId", isEqualTo: currentUser.userid)
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      themeColors["lightBlue"]),
+                                )
+                            );
+                          }
+                          return Text(
+                            "You have ${snapshot.data.documents.length} current client(s)",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          );
+                        },
+                      )
+                  )
+              ),
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 0.0),
+                  child: Container(
+                      child: StreamBuilder<QuerySnapshot>(
+                          stream: Firestore.instance
+                              .collection("matches")
+                              .where("primaryDoulaId", isEqualTo: currentUser.userid)
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData) {
+                              return Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        themeColors["lightBlue"]),
+                                  ));
+                            }
+                            return ListView.builder(
+                              padding: EdgeInsets.all(10.0),
+                              itemBuilder: (context, index) =>
+                                  buildItem(context, snapshot.data.documents[index]),
+                              itemCount: snapshot.data.documents.length,
+                              shrinkWrap: true,
+                            );
+                          }),
+                  ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: RaisedButton(

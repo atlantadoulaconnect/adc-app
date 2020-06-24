@@ -8,6 +8,7 @@ class DoulaSettingsScreen extends StatefulWidget {
   final User currentUser;
   final VoidCallback toHome;
   final VoidCallback logout;
+  final VoidCallback toConfirmSettings;
   final void Function(Doula, String, List<Phone>, String, String, bool)
     updateDoulaAccount;
   final void Function(Doula, bool, bool, String, int) updateCertification;
@@ -17,6 +18,7 @@ class DoulaSettingsScreen extends StatefulWidget {
   DoulaSettingsScreen(
       this.currentUser,
       this.toHome,
+      this.toConfirmSettings,
       this.logout,
       this.updateDoulaAccount,
       this.updateCertification,
@@ -34,6 +36,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
   Future<void> Function(Doula) doulaToDB;
 
   VoidCallback toHome;
+  VoidCallback toConfirmSettings;
 
   User currentUser;
 
@@ -77,6 +80,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
   @override
   void initState() {
     toHome = widget.toHome;
+    toConfirmSettings = widget.toConfirmSettings;
     currentUser = widget.currentUser;
 
     updateDoulaAccount = widget.updateDoulaAccount;
@@ -182,6 +186,27 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                 //Navigator.of(context, rootNavigator: true).pop('dialog');
               },
             ),
+          ],
+        );
+      },
+    );
+  }
+
+  updateAccountDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Your account was successfully updated"),
+          actions: <Widget>[
+
+            FlatButton(
+              child: Text("Okay"),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+            ),
+
           ],
         );
       },
@@ -300,26 +325,22 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               String doulaBday = dateOfBirthCtrl.text.toString().trim();
               String doulaBio = bioCtrl.text.toString();
               List<Phone> phones = List();
-              //print('phone: ${phoneNumCtrl.text.toString().trim()}');
-              phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
 
+              phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
+              print('bio before update: ${(currentUser as Doula).bio}');
               updateDoulaAccount(
                   currentUser,
-                  doulaName,
+                  firstNameCtrl.text.toString().trim(),
                   phones,
-                  doulaBday,
-                  doulaBio,
+                  dateOfBirthCtrl.text.toString().trim(),
+                  bioCtrl.text.toString(),
                   photoRelease);
-              doulaToDB(currentUser);
+              print('bio after update: ${(currentUser as Doula).bio}');
 
-//              updateClientAccount(currentUser, clientName, phones, clientBday,
-//                  photoRelease);
-//              print('currentUser.name before: ${currentUser.name}');
-//
-//              clientToDB(currentUser);
-//              print('currentUser.name after: ${currentUser.name}');
-//
-//              toClientSettings;
+              doulaToDB(currentUser);
+              updateAccountDialog(context);
+              print('bio after updated call: ${(currentUser as Doula).bio}');
+
 
             },
             color: themeColors['yellow'],
@@ -830,81 +851,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               borderRadius: new BorderRadius.circular(5.0),
               side: BorderSide(color: themeColors['emoryBlue'])),
           onPressed: () async {
-//            String doulaName = "${firstNameCtrl.text.toString().trim()}";
-//            String doulaBday = dateOfBirthCtrl.text.toString().trim();
-//            String doulaEmail = emailCtrl.text.toString().trim();
-//            String doulaBio = bioCtrl.text.toString();
-//            certProgram = certProgramCtrl.text.toString();
-//            List<Phone> phones = List();
-//            //print('phone: ${phoneNumCtrl.text.toString().trim()}');
-//            phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
-//
-//            birthsNeeded =
-//            int.parse(birthsNeededCtrl.text.toString().trim()) != null
-//                ? int.parse(birthsNeededCtrl.text.toString().trim())
-//                : 0;
-//
-//            print('doulaEmail: $doulaEmail');
-//            print('currentUser.email: ${currentUser.email}');
-//
-//            if (doulaEmail != currentUser.email) {
-//
-//              print(
-//                  'password: ${changeEmailPasswordCtrl.text.toString().trim()}');
-//              if (changeEmailPasswordCtrl.text.toString().trim() != '') {
-//                print(
-//                    'changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
-//                AuthResult result = await FirebaseAuth.instance
-//                    .signInWithEmailAndPassword(
-//                    email: currentUser.email,
-//                    password:
-//                    '${changeEmailPasswordCtrl.text.toString().trim()}');
-//                FirebaseUser user = result.user;
-//                print('user: $user');
-//                String userId = user.uid;
-//                print('userId: $userId');
-//                if (userId.length > 0 && userId != null) {
-//                  user.updateEmail(doulaEmail);
-//                  print('email was changed to: $doulaEmail');
-//                } else {
-//                  print('email was not changed');
-//                }
-//              }
-////
-//            }
-//
-//            if (oldPasswordCtrl.text.toString().trim() != '') {
-//              print(
-//                  'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
-//              AuthResult result = await FirebaseAuth.instance
-//                  .signInWithEmailAndPassword(
-//                  email: currentUser.email,
-//                  password: '${oldPasswordCtrl.text.toString().trim()}');
-//              FirebaseUser user = result.user;
-//              print('user: $user');
-//              String userId = user.uid;
-//              print('userId: $userId');
-//
-//              if (userId.length > 0 && userId != null) {
-//                if (newPasswordCtrl.text.toString() ==
-//                    confirmPasswordCtrl.text.toString()) {
-//                  user.updatePassword(newPasswordCtrl.text.toString());
-//                  print(
-//                      'password was changed to ${newPasswordCtrl.text.toString()}');
-//                }
-//              } else {
-//                //TODO add a pop up notification here
-//                print(
-//                    'password was NOT changed to ${newPasswordCtrl.text.toString()}');
-//              }
-//            }
-//            updateDoulaAccount(
-//                currentUser,
-//                doulaName,
-//                phones,
-//                doulaBday,
-//                doulaBio,
-//                photoRelease);
+
             doulaToDB(currentUser);
             toHome();
           },
@@ -950,6 +897,7 @@ class DoulaSettingsScreenConnector extends StatelessWidget {
         builder: (BuildContext context, ViewModel vm) => DoulaSettingsScreen(
             vm.currentUser,
             vm.toHome,
+            vm.toConfirmSettings,
             vm.logout,
             vm.updateDoulaAccount,
             vm.updateCertification,
@@ -962,6 +910,7 @@ class ViewModel extends BaseModel<AppState> {
 
   User currentUser;
   VoidCallback toHome;
+  VoidCallback toConfirmSettings;
   VoidCallback logout;
   void Function(Doula, String, List<Phone>, String, String, bool) updateDoulaAccount;
   void Function(Doula, bool, bool, String, int) updateCertification;
@@ -971,6 +920,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel.build({
     @required this.currentUser,
     @required this.toHome,
+    @required this.toConfirmSettings,
     @required this.logout,
     @required this.updateDoulaAccount,
     @required this.updateCertification,
@@ -983,6 +933,7 @@ class ViewModel extends BaseModel<AppState> {
     return ViewModel.build(
       currentUser: state.currentUser,
       toHome: () => dispatch(NavigateAction.pushNamed("/")),
+      toConfirmSettings: () => dispatch(NavigateAction.pushNamed("/confirmSettings")),
       logout: () {
         print("logging out from settings");
         dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
@@ -1012,7 +963,7 @@ class ViewModel extends BaseModel<AppState> {
           birthsNeeded: birthsNeeded
         )),
       doulaToDB: (Doula user) =>
-          dispatchFuture(UpdateDoulaUserDocument(user)),
+          dispatchFuture(UpdateDoulaUserDocument()),
 
     );
   }

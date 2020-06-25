@@ -13,6 +13,11 @@ class Client extends User {
   List<String> deliveryTypes;
   String dueDate;
 
+  String primaryDoulaId;
+  String primaryDoulaName;
+  String backupDoulaId;
+  String backupDoulaName;
+
   bool epidural;
   bool homeVisit;
   int liveBirths;
@@ -24,8 +29,6 @@ class Client extends User {
   bool preterm;
 
   List<EmergencyContact> emergencyContacts;
-  Map<String, String> primaryDoula; // {"name": "Debra D.", "userid": "ABCD123"}
-  Map<String, String> backupDoula;
 
   Client(
       {String userid,
@@ -38,8 +41,10 @@ class Client extends User {
       Set<String> appContacts,
       String status,
       this.bday,
-      this.primaryDoula,
-      this.backupDoula,
+      this.primaryDoulaId,
+      this.primaryDoulaName,
+      this.backupDoulaId,
+      this.backupDoulaName,
       this.dueDate,
       this.birthLocation,
       this.birthType,
@@ -82,8 +87,10 @@ class Client extends User {
       String email,
       bool phoneVerified,
       String bday,
-      Map<String, String> primaryDoula,
-      Map<String, String> backupDoula,
+      String primaryDoulaId,
+      String primaryDoulaName,
+      String backupDoulaId,
+      String backupDoulaName,
       String dueDate,
       String birthLocation,
       String birthType,
@@ -107,8 +114,10 @@ class Client extends User {
         phoneVerified: phoneVerified ?? this.phoneVerified,
         status: status ?? this.status,
         bday: bday ?? this.bday,
-        primaryDoula: primaryDoula ?? this.primaryDoula,
-        backupDoula: backupDoula ?? this.backupDoula,
+        primaryDoulaId: primaryDoulaId ?? this.primaryDoulaId,
+        primaryDoulaName: primaryDoulaName ?? this.primaryDoulaName,
+        backupDoulaId: backupDoulaId ?? this.backupDoulaId,
+        backupDoulaName: backupDoulaName ?? this.backupDoulaName,
         dueDate: dueDate ?? this.dueDate,
         birthLocation: birthLocation ?? this.birthLocation,
         birthType: birthType ?? this.birthType,
@@ -132,8 +141,10 @@ class Client extends User {
           other is Client &&
           runtimeType == other.runtimeType &&
           bday == other.bday &&
-          mapEquals(primaryDoula, other.primaryDoula) &&
-          mapEquals(backupDoula, other.backupDoula) &&
+          primaryDoulaId == other.primaryDoulaId &&
+          primaryDoulaName == other.primaryDoulaName &&
+          backupDoulaId == other.backupDoulaId &&
+          backupDoulaName == other.backupDoulaName &&
           dueDate == other.dueDate &&
           birthLocation == other.birthLocation &&
           birthType == other.birthType &&
@@ -153,8 +164,10 @@ class Client extends User {
   int get hashCode =>
       super.hashCode ^
       bday.hashCode ^
-      primaryDoula.hashCode ^
-      backupDoula.hashCode ^
+      primaryDoulaId.hashCode ^
+      primaryDoulaName.hashCode ^
+      backupDoulaId.hashCode ^
+      backupDoulaName.hashCode ^
       dueDate.hashCode ^
       birthLocation.hashCode ^
       birthType.hashCode ^

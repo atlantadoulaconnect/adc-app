@@ -84,8 +84,10 @@ class LoginUserAction extends ReduxAction<AppState> {
         phones: convertPhones(specifics["phones"]),
         photoRelease: specifics["photoRelease"],
         emergencyContacts: convertEmgContacts(specifics["emergencyContacts"]),
-        primaryDoula: convertDoulaMap(specifics["primaryDoula"]),
-        backupDoula: convertDoulaMap(specifics["backupDoula"]),
+        primaryDoulaId: specifics["primaryDoulaId"],
+        primaryDoulaName: specifics["primaryDoulaName"],
+        backupDoulaId: specifics["backupDoulaId"],
+        backupDoulaName: specifics["backupDoulaName"],
       );
       msgState = msgState.copy(
           chats: convertStringSet(specifics["chats"]),

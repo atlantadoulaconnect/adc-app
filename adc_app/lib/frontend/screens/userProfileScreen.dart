@@ -39,10 +39,10 @@ class UserProfileScreenState extends State<UserProfileScreen> {
     changeStatus = widget.changeStatus;
     userApproved = profileUser.status != 'submitted';
     userHasDoula = (profileUser is Client)
-        ? (profileUser as Client).primaryDoula != null
+        ? (profileUser as Client).primaryDoulaId != null
         : null;
     userHasBackupDoula = (profileUser is Client)
-        ? (profileUser as Client).backupDoula != null
+        ? (profileUser as Client).backupDoulaId != null
         : null;
     super.initState();
   }
@@ -455,7 +455,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                 ),
                 Text(
                   userHasDoula
-                      ? 'Assigned Doula: ${profileUserClient.primaryDoula["name"]}'
+                      ? 'Assigned Doula: ${profileUserClient.primaryDoulaName}'
                       : 'No Primary Doula Assigned',
                   style: TextStyle(
                       fontFamily: 'Roboto',
@@ -487,7 +487,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                         //TODO: need to show doulas and store selected assignment
                         setState(() {
                           toDoulasListMatching();
-                          userHasDoula = profileUserClient.primaryDoula != null;
+                          userHasDoula =
+                              profileUserClient.primaryDoulaId != null;
                         });
                       },
                       color: themeColors['emoryBlue'],
@@ -515,7 +516,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                 ),
                 Text(
                   userHasBackupDoula
-                      ? 'Assigned Backup Doula: ${profileUserClient.backupDoula["name"]}'
+                      ? 'Assigned Backup Doula: ${profileUserClient.backupDoulaName}'
                       : 'No Backup Doula Assigned',
                   style: TextStyle(
                       fontFamily: 'Roboto',
@@ -549,7 +550,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                         setState(() {
                           toDoulasListMatching();
                           userHasBackupDoula =
-                              profileUserClient.backupDoula != null;
+                              profileUserClient.backupDoulaId != null;
                         });
                       },
                       color: themeColors['emoryBlue'],
@@ -855,7 +856,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       children: <Widget>[
         Padding(
           padding:
-          EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+              EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -912,7 +913,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
             children: <Widget>[
               Text(
                 userHasDoula
-                    ? 'Assigned Doula: ${profileUserClient.primaryDoula["name"]}'
+                    ? 'Assigned Doula: ${profileUserClient.primaryDoulaName}'
                     : 'No Primary Doula Assigned',
                 style: TextStyle(
                     fontFamily: 'Roboto',
@@ -1225,7 +1226,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         children: <Widget>[
           Padding(
             padding:
-            EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+                EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -1484,7 +1485,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         children: <Widget>[
           Padding(
             padding:
-            EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+                EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -1801,7 +1802,6 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         ],
       );
     }
-
   }
 
   // does a user get a profile when they haven't chosen a user type yet?

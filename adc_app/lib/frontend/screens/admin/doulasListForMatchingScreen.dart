@@ -7,14 +7,19 @@ class DoulasListForMatchingScreen extends StatelessWidget {
   final VoidCallback toProfile;
   final User assignee;
   final Future<void> Function(String, String) setProfileUser;
-  final Future<void> Function(Client, Map<String, String>) setClientDoulas;
+  final Future<void> Function(Client, String, String) setClientDoulas;
   final Future<void> Function(User, String) changeStatus;
   final VoidCallback popScreen;
-  final Future<void> Function(Client, Map<String, String>) setBackupDoula;
+  final Future<void> Function(Client, String, String) setBackupDoula;
 
   DoulasListForMatchingScreen(
-      this.toProfile, this.setProfileUser, this.assignee, this.setClientDoulas,
-      this.changeStatus, this.popScreen, this.setBackupDoula)
+      this.toProfile,
+      this.setProfileUser,
+      this.assignee,
+      this.setClientDoulas,
+      this.changeStatus,
+      this.popScreen,
+      this.setBackupDoula)
       : assert(toProfile != null && setProfileUser != null);
 
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
@@ -31,12 +36,12 @@ class DoulasListForMatchingScreen extends StatelessWidget {
             child: MaterialButton(
               onPressed: () async {
                 //TODO: assign this doula to client
-                if ((assignee as Client).primaryDoula == null) {
-                  await setClientDoulas((assignee as Client),
-                      {"name": doc["name"], "userid": doc["userid"]});
+                if ((assignee as Client).primaryDoulaId == null) {
+                  await setClientDoulas(
+                      (assignee as Client), doc["userid"], doc["name"]);
                 } else {
-                  await setBackupDoula((assignee as Client),
-                      {"name": doc["name"], "userid": doc["userid"]});
+                  await setBackupDoula(
+                      (assignee as Client), doc["userid"], doc["name"]);
                   await changeStatus(assignee, "matched");
                 }
                 toProfile();
@@ -138,8 +143,13 @@ class DoulasListForMatchingScreenConnector extends StatelessWidget {
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) =>
           DoulasListForMatchingScreen(
-              vm.toProfile, vm.setProfileUser, vm.assignee, vm.setClientDoulas,
-              vm.changeStatus, vm.popScreen, vm.setBackupDoulas),
+              vm.toProfile,
+              vm.setProfileUser,
+              vm.assignee,
+              vm.setClientDoulas,
+              vm.changeStatus,
+              vm.popScreen,
+              vm.setBackupDoulas),
     );
   }
 }
@@ -150,10 +160,10 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toProfile;
   User assignee;
   Future<void> Function(String, String) setProfileUser;
-  Future<void> Function(Client, Map<String, String>) setClientDoulas;
+  Future<void> Function(Client, String, String) setClientDoulas;
   Future<void> Function(User, String) changeStatus;
   VoidCallback popScreen;
-  Future<void> Function(Client, Map<String, String>) setBackupDoulas;
+  Future<void> Function(Client, String, String) setBackupDoulas;
 
   ViewModel.build({
     @required this.toProfile,
@@ -169,17 +179,21 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
       assignee: state.profileUser,
-      toProfile: () => dispatch(NavigateAction.pushReplacementNamed("/userProfile")),
+      toProfile: () =>
+          dispatch(NavigateAction.pushReplacementNamed("/userProfile")),
       setProfileUser: (String userid, String userType) =>
           dispatchFuture(SetProfileUser(userid, userType)),
-      setClientDoulas: (Client client, Map<String, String> primaryDoula) =>
-          dispatchFuture(UpdateClientDoulas(client, primaryDoula)),
+      setClientDoulas:
+          (Client client, String primaryDoulaId, String primaryDoulaName) =>
+              dispatchFuture(
+                  UpdateClientDoulas(client, primaryDoulaId, primaryDoulaName)),
       changeStatus: (User user, String status) =>
           dispatchFuture(UpdateUserStatus(user, status)),
       popScreen: () => dispatch(NavigateAction.pop()),
-      setBackupDoulas: (Client client, Map<String, String> backupDoula) =>
-          dispatchFuture(UpdateClientBackupDoula(client, backupDoula)),
-
+      setBackupDoulas: (Client client, String backupDoulaId,
+              String backupDoulaName) =>
+          dispatchFuture(
+              UpdateClientBackupDoula(client, backupDoulaId, backupDoulaName)),
     );
   }
 }

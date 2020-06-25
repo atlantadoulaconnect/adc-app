@@ -13,8 +13,10 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
   final bool phoneVerified;
 
   final String bday;
-  final Map<String, String> primaryDoula;
-  final Map<String, String> backupDoula;
+  final String primaryDoulaId;
+  final String primaryDoulaName;
+  final String backupDoulaId;
+  final String backupDoulaName;
   final String dueDate;
   final String birthLocation;
   final String birthType;
@@ -40,8 +42,10 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
       this.email,
       this.phoneVerified,
       this.bday,
-      this.primaryDoula,
-      this.backupDoula,
+      this.primaryDoulaId,
+      this.primaryDoulaName,
+      this.backupDoulaId,
+      this.backupDoulaName,
       this.dueDate,
       this.birthLocation,
       this.birthType,
@@ -67,8 +71,10 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
         email: this.email,
         phoneVerified: this.phoneVerified,
         bday: this.bday,
-        primaryDoula: this.primaryDoula,
-        backupDoula: this.backupDoula,
+        primaryDoulaId: this.primaryDoulaId,
+        primaryDoulaName: this.primaryDoulaName,
+        backupDoulaId: this.backupDoulaId,
+        backupDoulaName: this.backupDoulaName,
         dueDate: this.dueDate,
         birthLocation: this.birthLocation,
         birthType: this.birthType,
@@ -249,22 +255,23 @@ class UpdateUserStatus extends ReduxAction<AppState> {
 // assigning the primary doula only
 class UpdateClientDoulas extends ReduxAction<AppState> {
   final Client client;
-  final Map<String, String> primaryDoula;
+  final String primaryDoulaId;
+  final String primaryDoulaName;
 
-  UpdateClientDoulas(this.client, this.primaryDoula)
-      : assert(client != null && primaryDoula != null);
+  UpdateClientDoulas(this.client, this.primaryDoulaId, this.primaryDoulaName)
+      : assert(client != null);
 
   @override
   Future<AppState> reduce() async {
     final dbRef = Firestore.instance;
-    Set<String> chats = state.messagesState.chats;
+    //Set<String> chats = state.messagesState.chats;
 
     // push the match to the database
     await dbRef.collection("matches").document(client.userid).setData({
       "clientName": client.userid,
       "clientId": client.name,
-      "primaryDoulaId": primaryDoula["userid"],
-      "primaryDoulaName": primaryDoula["name"]
+      "primaryDoulaId": primaryDoulaId,
+      "primaryDoulaName": primaryDoulaName
     });
 
     // add doula to the CLIENT's contact list
@@ -272,10 +279,10 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
         .collection("users")
         .document(client.userid)
         .collection("contacts")
-        .document(primaryDoula["userid"])
+        .document(primaryDoulaId)
         .setData({
-      "name": primaryDoula["name"],
-      "userid": primaryDoula["userid"],
+      "name": primaryDoulaName,
+      "userid": primaryDoulaId,
       "userType": "Doula",
       "isRecent": true
     });
@@ -283,7 +290,7 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
     // add client to the DOULA's contact list
     await dbRef
         .collection("users")
-        .document(primaryDoula["userid"])
+        .document(primaryDoulaId)
         .collection("contacts")
         .document(client.userid)
         .setData({
@@ -293,21 +300,23 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
       "isRecent": true
     });
 
-    client.primaryDoula = primaryDoula;
+    client.primaryDoulaId = primaryDoulaId;
+    client.primaryDoulaName = primaryDoulaName;
 
     return state.copy(
         profileUser: client,
-        messagesState: state.messagesState.addChat(primaryDoula["userid"]));
+        messagesState: state.messagesState.addChat(primaryDoulaId));
   }
 }
 
 // assigning the backup doula only
 class UpdateClientBackupDoula extends ReduxAction<AppState> {
   final Client client;
-  final Map<String, String> backupDoula;
+  final String backupDoulaId;
+  final String backupDoulaName;
 
-  UpdateClientBackupDoula(this.client, this.backupDoula)
-      : assert(client != null && backupDoula != null);
+  UpdateClientBackupDoula(this.client, this.backupDoulaId, this.backupDoulaName)
+      : assert(client != null);
 
   @override
   Future<AppState> reduce() async {
@@ -316,20 +325,18 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
 
     // push the match to the database
     // Note: this action is always invoked after the primary doula is set
-    await dbRef.collection("matches").document(client.userid).updateData({
-      "backupDoulaId": backupDoula["userid"],
-      "backupDoulaName": backupDoula["name"]
-    });
+    await dbRef.collection("matches").document(client.userid).updateData(
+        {"backupDoulaId": backupDoulaId, "backupDoulaName": backupDoulaName});
 
     // add doula to the CLIENT's contact list
     await dbRef
         .collection("users")
         .document(client.userid)
         .collection("contacts")
-        .document(backupDoula["userid"])
+        .document(backupDoulaId)
         .setData({
-      "name": backupDoula["name"],
-      "userid": backupDoula["userid"],
+      "name": backupDoulaName,
+      "userid": backupDoulaId,
       "userType": "Doula",
       "isRecent": true
     });
@@ -337,7 +344,7 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
     // add client to the DOULA's contact list
     await dbRef
         .collection("users")
-        .document(backupDoula["userid"])
+        .document(backupDoulaId)
         .collection("contacts")
         .document(client.userid)
         .setData({
@@ -347,11 +354,12 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
       "isRecent": true
     });
 
-    client.backupDoula = backupDoula;
+    client.backupDoulaId = backupDoulaId;
+    client.backupDoulaName = backupDoulaName;
 
     return state.copy(
         profileUser: client,
-        messagesState: state.messagesState.addChat(backupDoula["userid"]));
+        messagesState: state.messagesState.addChat(backupDoulaId));
   }
 }
 

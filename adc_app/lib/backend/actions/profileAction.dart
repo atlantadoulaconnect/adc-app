@@ -35,27 +35,29 @@ class SetProfileUser extends ReduxAction<AppState> {
     Client profiled = Client(userid: userId, userType: "client");
 
     return profiled.copy(
-        name: basics["name"],
-        status: basics["status"],
-        bday: specifics["bday"],
-        birthLocation: specifics["birthLocation"],
-        birthType: specifics["birthType"],
-        deliveryTypes: convertStringArray(specifics["deliveryTypes"]),
-        dueDate: specifics["dueDate"],
-        email: specifics["email"],
-        epidural: specifics["epidural"],
-        homeVisit: specifics["homeVisit"],
-        liveBirths: specifics["liveBirths"],
-        lowWeight: specifics["lowWeight"],
-        meetBefore: specifics["meetBefore"],
-        multiples: specifics["multiples"],
-        phones: convertPhones(specifics["phones"]),
-        photoRelease: specifics["photoRelease"],
-        primaryDoula: convertDoulaMap(specifics["primaryDoula"]),
-        backupDoula: convertDoulaMap(specifics["backupDoula"])
-        // emergency contacts
-        // primary and backup doulas
-        );
+      name: basics["name"],
+      status: basics["status"],
+      bday: specifics["bday"],
+      birthLocation: specifics["birthLocation"],
+      birthType: specifics["birthType"],
+      deliveryTypes: convertStringArray(specifics["deliveryTypes"]),
+      dueDate: specifics["dueDate"],
+      email: specifics["email"],
+      epidural: specifics["epidural"],
+      homeVisit: specifics["homeVisit"],
+      liveBirths: specifics["liveBirths"],
+      lowWeight: specifics["lowWeight"],
+      meetBefore: specifics["meetBefore"],
+      multiples: specifics["multiples"],
+      phones: convertPhones(specifics["phones"]),
+      photoRelease: specifics["photoRelease"],
+      primaryDoulaId: specifics["primaryDoulaId"],
+      primaryDoulaName: specifics["primaryDoulaName"],
+      backupDoulaId: specifics["backupDoulaId"],
+      backupDoulaName: specifics["backupDoulaName"],
+      // emergency contacts
+      // primary and backup doulas
+    );
   }
 
   Doula populateProfileDoula(

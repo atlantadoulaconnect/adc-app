@@ -20,12 +20,10 @@ Client _$ClientFromJson(Map<String, dynamic> json) {
         ?.toList(),
     status: json['status'] as String,
     bday: json['bday'] as String,
-    primaryDoula: (json['primaryDoula'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
-    ),
-    backupDoula: (json['backupDoula'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
-    ),
+    primaryDoulaId: json['primaryDoulaId'] as String,
+    primaryDoulaName: json['primaryDoulaName'] as String,
+    backupDoulaId: json['backupDoulaId'] as String,
+    backupDoulaName: json['backupDoulaName'] as String,
     dueDate: json['dueDate'] as String,
     birthLocation: json['birthLocation'] as String,
     birthType: json['birthType'] as String,
@@ -62,6 +60,10 @@ Map<String, dynamic> _$ClientToJson(Client instance) => <String, dynamic>{
       'cesarean': instance.cesarean,
       'deliveryTypes': instance.deliveryTypes,
       'dueDate': instance.dueDate,
+      'primaryDoulaId': instance.primaryDoulaId,
+      'primaryDoulaName': instance.primaryDoulaName,
+      'backupDoulaId': instance.backupDoulaId,
+      'backupDoulaName': instance.backupDoulaName,
       'epidural': instance.epidural,
       'homeVisit': instance.homeVisit,
       'liveBirths': instance.liveBirths,
@@ -72,6 +74,4 @@ Map<String, dynamic> _$ClientToJson(Client instance) => <String, dynamic>{
       'preterm': instance.preterm,
       'emergencyContacts':
           instance.emergencyContacts?.map((e) => e?.toJson())?.toList(),
-      'primaryDoula': instance.primaryDoula,
-      'backupDoula': instance.backupDoula,
     };

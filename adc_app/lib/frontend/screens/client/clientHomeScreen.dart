@@ -24,142 +24,143 @@ class ClientHomeScreen extends StatelessWidget {
         ),
         drawer: Menu(),
         body: Padding(
-          padding: const EdgeInsets.all(26.0),
-          child: Center(
-            child: ListView(
+            padding: const EdgeInsets.all(26.0),
+            child: Center(
+                child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-          children: <Widget>[
-            NotificationHandler(),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
-              child: Text(
-                  "Welcome, \n${currentUser != null ? currentUser.name : ""}",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 50.0,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['mediumBlue'], width: 3.0)),
-                onPressed: () async {
-                  await setProfileUser(
-                      currentUser.primaryDoula["userid"], "doula");
-                  toProfile();
-                },
-                color: themeColors['mediumBlue'],
-                textColor: Colors.white,
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['mediumBlue'],
-                child: Text(
-                  "See Doula's Profile",
-                  style: TextStyle(fontSize: 20.0),
+              children: <Widget>[
+                NotificationHandler(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 8.0),
+                  child: Text(
+                      "Welcome, \n${currentUser != null ? currentUser.name : ""}",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 50.0,
+                        fontWeight: FontWeight.bold,
+                      )),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['mediumBlue'])),
-                onPressed: toRecentMessages,
-                color: themeColors['mediumBlue'],
-                textColor: Colors.white,
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['mediumBlue'],
-                child: Text(
-                  "See Messages",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['mediumBlue'])),
-                onPressed: () async {
-                  await setProfileUser(
-                      currentUser.userid, currentUser.userType);
-                  toProfile();
-                },
-                color: themeColors['mediumBlue'],
-                textColor: Colors.white,
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['mediumBlue'],
-                child: Text(
-                  "See Profile",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['mediumBlue'])),
-                onPressed: toInfo,
-                color: themeColors['mediumBlue'],
-                textColor: Colors.white,
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['mediumBlue'],
-                child: Text(
-                  "Frequently Asked Questions",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(
-                        color: themeColors['darkPurple'], width: 2.0)),
-                //TODO change route to messaging doula
-                onPressed: toRecentMessages,
-                color: themeColors['hItPink'],
-                textColor: themeColors['darkPurple'],
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['hItPink'],
-                child: Text(
-                  "I'm going into labor!",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['yellow'])),
-                color: themeColors['yellow'],
-                textColor: Colors.white,
-                padding: EdgeInsets.all(15.0),
-                child: Text(
-                  "LOG OUT",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: themeColors['black'],
-                    fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        side: BorderSide(
+                            color: themeColors['mediumBlue'], width: 3.0)),
+                    onPressed: () async {
+                      await setProfileUser(currentUser.primaryDoulaId, "doula");
+                      toProfile();
+                    },
+                    color: themeColors['mediumBlue'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['mediumBlue'],
+                    child: Text(
+                      "See Doula's Profile",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
                   ),
                 ),
-                onPressed: () async {
-                  logout();
-                  toHome();
-                },
-              ),
-            ),
-          ],
-        ))));
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        side: BorderSide(color: themeColors['mediumBlue'])),
+                    onPressed: toRecentMessages,
+                    color: themeColors['mediumBlue'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['mediumBlue'],
+                    child: Text(
+                      "See Messages",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        side: BorderSide(color: themeColors['mediumBlue'])),
+                    onPressed: () async {
+                      await setProfileUser(
+                          currentUser.userid, currentUser.userType);
+                      toProfile();
+                    },
+                    color: themeColors['mediumBlue'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['mediumBlue'],
+                    child: Text(
+                      "See Profile",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        side: BorderSide(color: themeColors['mediumBlue'])),
+                    onPressed: toInfo,
+                    color: themeColors['mediumBlue'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['mediumBlue'],
+                    child: Text(
+                      "Frequently Asked Questions",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        side: BorderSide(
+                            color: themeColors['darkPurple'], width: 2.0)),
+                    //TODO change route to messaging doula
+                    onPressed: toRecentMessages,
+                    color: themeColors['hItPink'],
+                    textColor: themeColors['darkPurple'],
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['hItPink'],
+                    child: Text(
+                      "I'm going into labor!",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        side: BorderSide(color: themeColors['yellow'])),
+                    color: themeColors['yellow'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    child: Text(
+                      "LOG OUT",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: themeColors['black'],
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: () async {
+                      logout();
+                      toHome();
+                    },
+                  ),
+                ),
+              ],
+            ))));
   }
 }
 

@@ -406,7 +406,7 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
 
   @override
   Future<AppState> reduce() async {
-    Doula user = (state.currentUser as Doula);
+    Doula user = state.currentUser as Doula;
     print(
         "Attempting to update this doula ${user.toString()} to the users collection");
     final dbRef = Firestore.instance;

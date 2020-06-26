@@ -10,10 +10,9 @@ class DoulaSettingsScreen extends StatefulWidget {
   final VoidCallback logout;
   final VoidCallback toConfirmSettings;
   final void Function(Doula, String, List<Phone>, String, String, bool)
-    updateDoulaAccount;
+      updateDoulaAccount;
   final void Function(Doula, bool, bool, String, int) updateCertification;
-  final Future<void> Function(Doula) doulaToDB;
-
+  final Future<void> Function() doulaToDB;
 
   DoulaSettingsScreen(
       this.currentUser,
@@ -23,6 +22,7 @@ class DoulaSettingsScreen extends StatefulWidget {
       this.updateDoulaAccount,
       this.updateCertification,
       this.doulaToDB);
+
 //      : assert(currentUser != null && toHome != null && logout != null);
 
   @override
@@ -30,15 +30,21 @@ class DoulaSettingsScreen extends StatefulWidget {
 }
 
 class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
-  final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
-  void Function(Doula, String, List<Phone>, String, String, bool) updateDoulaAccount;
+  void Function(Doula, String, List<Phone>, String, String, bool)
+      updateDoulaAccount;
   void Function(Doula, bool, bool, String, int) updateCertification;
-  Future<void> Function(Doula) doulaToDB;
+  Future<void> Function() doulaToDB;
 
   VoidCallback toHome;
   VoidCallback toConfirmSettings;
 
   User currentUser;
+
+  final GlobalKey<FormState> _accountKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _pwdKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _emailKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _certKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _notificationsKey = GlobalKey<FormState>();
 
   TextEditingController firstNameCtrl;
   TextEditingController phoneNumCtrl;
@@ -110,7 +116,6 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
           ? (currentUser as Doula).photoRelease
           : false;
     }
-
 
     //controllers
     firstNameCtrl = new TextEditingController(text: userName);
@@ -199,692 +204,725 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
         return AlertDialog(
           title: Text("Your account was successfully updated"),
           actions: <Widget>[
-
             FlatButton(
               child: Text("Okay"),
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pop('dialog');
               },
             ),
-
           ],
         );
       },
     );
   }
 
-  Form doulaUser() {
-    final doulaCategoryExpansionTiles = List<Widget>();
-    doulaCategoryExpansionTiles.add(ExpansionTile(
-      title: Text(
-        'My Account',
-        style: TextStyle(
-          fontSize: 25,
-        ),
-      ),
-      children: <Widget>[
-        Text(
-          'Name',
-          style: TextStyle(
-            fontSize: 14,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Jane D.',
-            ),
-            controller: firstNameCtrl,
-            validator: nameValidator,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text(
-            'Phone Number',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: '6785201876',
-            ),
-            controller: phoneNumCtrl,
-            validator: phoneValidator,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text(
-            'Date of Birth',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: '01/09/1997',
-            ),
-            controller: dateOfBirthCtrl,
-            validator: phoneValidator,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text(
-            'Bio',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextField(
-            minLines: 5,
-            maxLines: 10,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Write a few sentences about yourself',
-            ),
-            controller: bioCtrl,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-          child: CheckboxListTile(
-            value: photoRelease,
-            title: Text("Photo Release Permission"),
-            onChanged: (bool value) {
-              setState(() {
-                photoRelease = value;
-              });
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RaisedButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(5.0),
-                side: BorderSide(color: themeColors['yellow'])
-            ),
-            onPressed: () async {
-              String doulaName = "${firstNameCtrl.text.toString().trim()}";
-              String doulaBday = dateOfBirthCtrl.text.toString().trim();
-              String doulaBio = bioCtrl.text.toString();
-              List<Phone> phones = List();
-
-              phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
-              print('bio before update: ${(currentUser as Doula).bio}');
-              updateDoulaAccount(
-                  currentUser,
-                  firstNameCtrl.text.toString().trim(),
-                  phones,
-                  dateOfBirthCtrl.text.toString().trim(),
-                  bioCtrl.text.toString(),
-                  photoRelease);
-              print('bio after update: ${(currentUser as Doula).bio}');
-
-              doulaToDB(currentUser);
-              updateAccountDialog(context);
-              print('bio after updated call: ${(currentUser as Doula).bio}');
-
-
-            },
-            color: themeColors['yellow'],
-            textColor: Colors.black,
-            //padding: EdgeInsets.all(15.0),
-            splashColor: themeColors['yellow'],
-            child: Text(
-              "Update Account",
-              style: TextStyle(fontSize: 15.0),
-            ),
-            //onPressed: ,
-          ),
-        )
-        //TODO add doula unavailable dates
-      ],
-    ));
-    doulaCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Password',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Enter Current Password',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "********",
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible ? Icons.visibility : Icons.visibility_off,
-                      color: passwordVisible
-                          ? themeColors["black"]
-                          : themeColors["coolGray5"]),
-                  onPressed: () {
-                    setState(() {
-                      passwordVisible = !passwordVisible;
-                    });
-                  },
-                ),
-              ),
-              obscureText: !passwordVisible,
-              controller: oldPasswordCtrl,
-              //validator: ,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Enter New Password',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible ? Icons.visibility : Icons.visibility_off,
-                      color: passwordVisible
-                          ? themeColors["black"]
-                          : themeColors["coolGray5"]),
-                  onPressed: () {
-                    setState(() {
-                      passwordVisible = !passwordVisible;
-                    });
-                  },
-                ),
-              ),
-              obscureText: !passwordVisible,
-              controller: newPasswordCtrl,
-              //validator: ,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Confirm New Password',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible ? Icons.visibility : Icons.visibility_off,
-                      color: passwordVisible
-                          ? themeColors["black"]
-                          : themeColors["coolGray5"]),
-                  onPressed: () {
-                    setState(() {
-                      passwordVisible = !passwordVisible;
-                    });
-                  },
-                ),
-              ),
-              obscureText: !passwordVisible,
-              controller: confirmPasswordCtrl,
-              validator: pwdValidator,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])
-              ),
-              onPressed: () async {
-                if (oldPasswordCtrl.text.toString().trim() != '') {
-                  print(
-                      'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
-                  AuthResult result = await FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                      email: currentUser.email,
-                      password: '${oldPasswordCtrl.text.toString().trim()}');
-                  FirebaseUser user = result.user;
-                  print('user: $user');
-                  String userId = user.uid;
-                  print('userId: $userId');
-
-                  if (userId.length > 0 && userId != null) {
-                    if (newPasswordCtrl.text.toString() ==
-                        confirmPasswordCtrl.text.toString()) {
-                      user.updatePassword(newPasswordCtrl.text.toString());
-                      passwordWasChanged(context);
-                      print(
-                          'password was changed to ${newPasswordCtrl.text.toString()}');
-                    }
-                  } else {
-                    //TODO add a pop up notification here
-                    print(
-                        'password was NOT changed to ${newPasswordCtrl.text.toString()}');
-                  }
-                }
-              },
-              color: themeColors['yellow'],
-              textColor: Colors.black,
-              //padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['yellow'],
-              child: Text(
-                "Update Password",
-                style: TextStyle(fontSize: 15.0),
-              ),
-              //onPressed: ,
-            ),
-          )
-        ]));
-    doulaCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Email',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text(
-              'Email Address',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'example@gmail.com',
-              ),
-              controller: emailCtrl,
-              validator: emailValidator,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Enter Current Password',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "********",
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    // Based on passwordVisible state choose the icon
-                      passwordVisible ? Icons.visibility : Icons.visibility_off,
-                      color: passwordVisible
-                          ? themeColors["black"]
-                          : themeColors["coolGray5"]),
-                  onPressed: () {
-                    setState(() {
-                      passwordVisible = !passwordVisible;
-                    });
-                  },
-                ),
-              ),
-              obscureText: !passwordVisible,
-              controller: changeEmailPasswordCtrl,
-              //validator: ,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])
-              ),
-              onPressed: () async {
-                //TODO add contacts functionality
-                toHome();
-              },
-              color: themeColors['yellow'],
-              textColor: Colors.black,
-              //padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['yellow'],
-              child: Text(
-                "Update Email",
-                style: TextStyle(fontSize: 15.0),
-              ),
-              //onPressed: ,
-            ),
-          )
-        ]));
-    doulaCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Certification',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: CheckboxListTile(
-              value: certified,
-              title: Text("Are you certified?"),
-              onChanged: (bool value) {
-                setState(() {
-                  certified = value;
-                });
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: CheckboxListTile(
-              value: certInProgress,
-              title: Text("Working towards certification?"),
-              onChanged: (bool value) {
-                setState(() {
-                  certInProgress = value;
-                });
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text(
-              'Certification Program',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'DONA, CAPPA, ICEA, Other',
-              ),
-              controller: certProgramCtrl,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Text('Births Needed for Certification:'),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(), hintText: '0'),
-                        controller: birthsNeededCtrl,
-                      ),
-                    ),
-                  ),
-                ]),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])
-              ),
-              onPressed: () async {
-
-                String programName = certProgramCtrl.text.toString().trim();
-                int numOfBirths = int.parse(birthsNeededCtrl.text.toString().trim());
-
-                updateCertification(currentUser, certified, certInProgress,
-                    programName, numOfBirths);
-                doulaToDB(currentUser);
-              },
-              color: themeColors['yellow'],
-              textColor: Colors.black,
-              //padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['yellow'],
-              child: Text(
-                "Update Certification",
-                style: TextStyle(fontSize: 15.0),
-              ),
-              //onPressed: ,
-            ),
-          )
-        ]));
-    doulaCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Notifications',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: pushNotification,
-              title: Text('Push Notifications'),
-              onChanged: (value) {
-                pushNotification = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: smsNotification,
-              title: Text('SMS Notifications'),
-              onChanged: (value) {
-                smsNotification = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: emailNotification,
-              title: Text('Email Notifications'),
-              onChanged: (value) {
-                emailNotification = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: matchWithClientNotification,
-              title: Text('Matched with Client'),
-              onChanged: (value) {
-                matchWithClientNotification = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: clientInLaborNotification,
-              title: Text('Client going into labor'),
-              onChanged: (value) {
-                clientInLaborNotification = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])
-              ),
-              onPressed: () async {
-                //TODO add notifications functionality
-                toHome();
-              },
-              color: themeColors['yellow'],
-              textColor: Colors.black,
-              //padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['yellow'],
-              child: Text(
-                "Update Notifications",
-                style: TextStyle(fontSize: 15.0),
-              ),
-              //onPressed: ,
-            ),
-          )
-        ]));
-    doulaCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Privacy',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        //TODO what else to add to privacy
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: true,
-              title: Text('Make Account Private'),
-              onChanged: (value) {},
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text('Link to Privacy Policy goes here'),
-          ),
-        ]));
-    doulaCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Send Feedback',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        //TODO what else to add to privacy
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text('Insert link here'),
-          ),
-        ]));
-    doulaCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Terms of Service',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text('Insert link here'),
-          ),
-        ]));
-    doulaCategoryExpansionTiles.add(Padding(
-      padding: const EdgeInsets.all(8),
-      child: Center(
-        child: Text(
-          'Version Number 1',
-          style: TextStyle(
-            fontSize: 20,
-          ),
-        ),
-      ),
-    ));
-    doulaCategoryExpansionTiles.add(Padding(
-      padding: const EdgeInsets.all(8),
-      child: Center(
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(5.0),
-              side: BorderSide(color: themeColors['emoryBlue'])),
-          onPressed: () async {
-
-            doulaToDB(currentUser);
-            toHome();
-          },
-          color: themeColors['emoryBlue'],
-          textColor: Colors.white,
-          padding: EdgeInsets.all(15.0),
-          splashColor: themeColors['emoryBlue'],
-          child: Text(
-            "Submit Changes",
-            style: TextStyle(fontSize: 20.0),
-          ),
-        ),
-      ),
-    ));
-
-    return Form(
-      key: _settingsKey,
-      autovalidate: false,
-      child: ListView(children: doulaCategoryExpansionTiles),
-    );
-  }
-
-
   @override
   Widget build(BuildContext context) {
-    Form settingsForm;
-    settingsForm = doulaUser();
-
     return Scaffold(
         appBar: AppBar(title: Text("Settings")),
         drawer: Menu(),
         body: Center(
-          child: settingsForm,
+          child: ListView(
+            children: <Widget>[
+              Form(
+                  key: _accountKey,
+                  autovalidate: false,
+                  child: ExpansionTile(
+                    title: Text(
+                      'My Account',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    children: <Widget>[
+                      Text(
+                        'Name',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Jane D.',
+                          ),
+                          controller: firstNameCtrl,
+                          validator: nameValidator,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+                        child: Text(
+                          'Phone Number',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: '6785201876',
+                          ),
+                          controller: phoneNumCtrl,
+                          validator: phoneValidator,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+                        child: Text(
+                          'Date of Birth',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: '01/09/1997',
+                          ),
+                          controller: dateOfBirthCtrl,
+                          validator: bdayValidator,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+                        child: Text(
+                          'Bio',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+                        child: TextField(
+                          minLines: 5,
+                          maxLines: 10,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Write a few sentences about yourself',
+                          ),
+                          controller: bioCtrl,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+                        child: CheckboxListTile(
+                          value: photoRelease,
+                          title: Text("Photo Release Permission"),
+                          onChanged: (bool value) {
+                            setState(() {
+                              photoRelease = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () async {
+                            final form = _accountKey.currentState;
+                            if (form.validate()) {
+                              form.save();
+                              String doulaName =
+                                  "${firstNameCtrl.text.toString().trim()}";
+                              String doulaBday =
+                                  dateOfBirthCtrl.text.toString().trim();
+                              String doulaBio = bioCtrl.text.toString();
+                              List<Phone> phones = List();
+
+                              phones.add(Phone(
+                                  phoneNumCtrl.text.toString().trim(), true));
+                              print(
+                                  'bio before update: ${(currentUser as Doula).bio}');
+                              updateDoulaAccount(
+                                  currentUser,
+                                  firstNameCtrl.text.toString().trim(),
+                                  phones,
+                                  dateOfBirthCtrl.text.toString().trim(),
+                                  bioCtrl.text.toString(),
+                                  photoRelease);
+                              print(
+                                  'bio after update: ${(currentUser as Doula).bio}');
+
+                              await doulaToDB();
+                              updateAccountDialog(context);
+                              print(
+                                  'bio after updated call: ${(currentUser as Doula).bio}');
+                            }
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.black,
+                          //padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "Update Account",
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                          //onPressed: ,
+                        ),
+                      )
+                      //TODO add doula unavailable dates
+                    ],
+                  )),
+              Form(
+                key: _pwdKey,
+                autovalidate: false,
+                child: ExpansionTile(
+                    title: Text(
+                      'Password',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Enter Current Password',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: "********",
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: passwordVisible
+                                      ? themeColors["black"]
+                                      : themeColors["coolGray5"]),
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              },
+                            ),
+                          ),
+                          obscureText: !passwordVisible,
+                          controller: oldPasswordCtrl,
+                          //validator: ,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Enter New Password',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: passwordVisible
+                                      ? themeColors["black"]
+                                      : themeColors["coolGray5"]),
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              },
+                            ),
+                          ),
+                          obscureText: !passwordVisible,
+                          controller: newPasswordCtrl,
+                          //validator: ,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Confirm New Password',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: passwordVisible
+                                      ? themeColors["black"]
+                                      : themeColors["coolGray5"]),
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              },
+                            ),
+                          ),
+                          obscureText: !passwordVisible,
+                          controller: confirmPasswordCtrl,
+                          validator: (val) {
+                            if (val != newPasswordCtrl.text)
+                              return "Passwords do not match.";
+                            return null;
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () async {
+                            final form = _pwdKey.currentState;
+                            if (form.validate()) {
+                              form.save();
+                              if (oldPasswordCtrl.text.toString().trim() !=
+                                  '') {
+                                print(
+                                    'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
+                                AuthResult result = await FirebaseAuth.instance
+                                    .signInWithEmailAndPassword(
+                                        email: currentUser.email,
+                                        password:
+                                            '${oldPasswordCtrl.text.toString().trim()}');
+                                FirebaseUser user = result.user;
+                                print('user: $user');
+                                String userId = user.uid;
+                                print('userId: $userId');
+
+                                if (userId.length > 0 && userId != null) {
+                                  if (newPasswordCtrl.text.toString() ==
+                                      confirmPasswordCtrl.text.toString()) {
+                                    user.updatePassword(
+                                        newPasswordCtrl.text.toString());
+                                    passwordWasChanged(context);
+                                    print(
+                                        'password was changed to ${newPasswordCtrl.text.toString()}');
+                                  }
+                                } else {
+                                  //TODO add a pop up notification here
+                                  print(
+                                      'password was NOT changed to ${newPasswordCtrl.text.toString()}');
+                                }
+                              }
+                            }
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.black,
+                          //padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "Update Password",
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                          //onPressed: ,
+                        ),
+                      )
+                    ]),
+              ),
+              Form(
+                key: _emailKey,
+                autovalidate: false,
+                child: ExpansionTile(
+                    title: Text(
+                      'Email',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+                        child: Text(
+                          'Email Address',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'example@gmail.com',
+                          ),
+                          controller: emailCtrl,
+                          validator: emailValidator,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Enter Current Password',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: "********",
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: passwordVisible
+                                      ? themeColors["black"]
+                                      : themeColors["coolGray5"]),
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              },
+                            ),
+                          ),
+                          obscureText: !passwordVisible,
+                          controller: changeEmailPasswordCtrl,
+                          //validator: ,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () async {
+                            //TODO add email changing functionality
+                            toHome();
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.black,
+                          //padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "Update Email",
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                          //onPressed: ,
+                        ),
+                      )
+                    ]),
+              ),
+              Form(
+                key: _certKey,
+                autovalidate: false,
+                child: ExpansionTile(
+                    title: Text(
+                      'Certification',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+                        child: CheckboxListTile(
+                          value: certified,
+                          title: Text("Are you certified?"),
+                          onChanged: (bool value) {
+                            setState(() {
+                              certified = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+                        child: CheckboxListTile(
+                          value: certInProgress,
+                          title: Text("Working towards certification?"),
+                          onChanged: (bool value) {
+                            setState(() {
+                              certInProgress = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+                        child: Text(
+                          'Certification Program',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'DONA, CAPPA, ICEA, Other',
+                          ),
+                          controller: certProgramCtrl,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Text('Births Needed for Certification:'),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: 50,
+                                  child: TextField(
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        hintText: '0'),
+                                    controller: birthsNeededCtrl,
+                                  ),
+                                ),
+                              ),
+                            ]),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () async {
+                            final form = _certKey.currentState;
+                            if (form.validate()) {
+                              form.save();
+                              String programName =
+                                  certProgramCtrl.text.toString().trim();
+                              int numOfBirths = int.parse(
+                                  birthsNeededCtrl.text.toString().trim());
+
+                              updateCertification(currentUser, certified,
+                                  certInProgress, programName, numOfBirths);
+                              await doulaToDB();
+                            }
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.black,
+                          //padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "Update Certification",
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                          //onPressed: ,
+                        ),
+                      )
+                    ]),
+              ),
+              Form(
+                key: _notificationsKey,
+                autovalidate: false,
+                child: ExpansionTile(
+                    title: Text(
+                      'Notifications',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+                        child: SwitchListTile(
+                          activeColor: themeColors['yellow'],
+                          value: pushNotification,
+                          title: Text('Push Notifications'),
+                          onChanged: (value) {
+                            pushNotification = value;
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+                        child: SwitchListTile(
+                          activeColor: themeColors['yellow'],
+                          value: smsNotification,
+                          title: Text('SMS Notifications'),
+                          onChanged: (value) {
+                            smsNotification = value;
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+                        child: SwitchListTile(
+                          activeColor: themeColors['yellow'],
+                          value: emailNotification,
+                          title: Text('Email Notifications'),
+                          onChanged: (value) {
+                            emailNotification = value;
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+                        child: SwitchListTile(
+                          activeColor: themeColors['yellow'],
+                          value: matchWithClientNotification,
+                          title: Text('Matched with Client'),
+                          onChanged: (value) {
+                            matchWithClientNotification = value;
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+                        child: SwitchListTile(
+                          activeColor: themeColors['yellow'],
+                          value: clientInLaborNotification,
+                          title: Text('Client going into labor'),
+                          onChanged: (value) {
+                            clientInLaborNotification = value;
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () async {
+                            //TODO add notifications functionality
+                            toHome();
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.black,
+                          //padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "Update Notifications",
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                          //onPressed: ,
+                        ),
+                      ),
+                      ExpansionTile(
+                          title: Text(
+                            'Privacy',
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
+                          ),
+                          //TODO what else to add to privacy
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+                              child: SwitchListTile(
+                                activeColor: themeColors['yellow'],
+                                value: true,
+                                title: Text('Make Account Private'),
+                                onChanged: (value) {},
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+                              child: Text('Link to Privacy Policy goes here'),
+                            ),
+                          ]),
+                      ExpansionTile(
+                          title: Text(
+                            'Send Feedback',
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
+                          ),
+                          //TODO what else to add to privacy
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+                              child: Text('Insert link here'),
+                            ),
+                          ]),
+                      ExpansionTile(
+                          title: Text(
+                            'Terms of Service',
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
+                          ),
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+                              child: Text('Insert link here'),
+                            ),
+                          ]),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Center(
+                          child: Text(
+                            'Version Number 1',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Center(
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5.0),
+                                side: BorderSide(
+                                    color: themeColors['emoryBlue'])),
+                            onPressed: () async {
+                              toHome();
+                            },
+                            color: themeColors['emoryBlue'],
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(15.0),
+                            splashColor: themeColors['emoryBlue'],
+                            child: Text(
+                              "Back to Home",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                      )
+                    ]),
+              ),
+            ],
+          ),
         ));
   }
 }
@@ -912,10 +950,10 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toHome;
   VoidCallback toConfirmSettings;
   VoidCallback logout;
-  void Function(Doula, String, List<Phone>, String, String, bool) updateDoulaAccount;
+  void Function(Doula, String, List<Phone>, String, String, bool)
+      updateDoulaAccount;
   void Function(Doula, bool, bool, String, int) updateCertification;
-  Future<void> Function(Doula) doulaToDB;
-
+  Future<void> Function() doulaToDB;
 
   ViewModel.build({
     @required this.currentUser,
@@ -925,7 +963,6 @@ class ViewModel extends BaseModel<AppState> {
     @required this.updateDoulaAccount,
     @required this.updateCertification,
     this.doulaToDB,
-
   }) : super(equals: [currentUser]);
 
   @override
@@ -933,38 +970,31 @@ class ViewModel extends BaseModel<AppState> {
     return ViewModel.build(
       currentUser: state.currentUser,
       toHome: () => dispatch(NavigateAction.pushNamed("/")),
-      toConfirmSettings: () => dispatch(NavigateAction.pushNamed("/confirmSettings")),
+      toConfirmSettings: () =>
+          dispatch(NavigateAction.pushNamed("/confirmSettings")),
       logout: () {
         print("logging out from settings");
         dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         dispatch(LogoutUserAction());
       },
-      updateDoulaAccount: (Doula user,
-          String name,
-          List<Phone> phones,
-          String bday,
-          String bio,
-          bool photoRelease) =>
+      updateDoulaAccount: (Doula user, String name, List<Phone> phones,
+              String bday, String bio, bool photoRelease) =>
           dispatch(UpdateDoulaUserAction(
-            user,
-            name: name,
-            phones: phones,
-            bday: bday,
-            bio: bio,
-            photoRelease: photoRelease,
-          )),
+        user,
+        name: name,
+        phones: phones,
+        bday: bday,
+        bio: bio,
+        photoRelease: photoRelease,
+      )),
       updateCertification: (Doula user, bool certified, bool certInProgress,
-        String certProgram, int birthsNeeded) =>
-        dispatch(UpdateDoulaUserAction(
-          user,
-          certified: certified,
-          certInProgress: certInProgress,
-          certProgram: certProgram,
-          birthsNeeded: birthsNeeded
-        )),
-      doulaToDB: (Doula user) =>
-          dispatchFuture(UpdateDoulaUserDocument()),
-
+              String certProgram, int birthsNeeded) =>
+          dispatch(UpdateDoulaUserAction(user,
+              certified: certified,
+              certInProgress: certInProgress,
+              certProgram: certProgram,
+              birthsNeeded: birthsNeeded)),
+      doulaToDB: () => dispatchFuture(UpdateDoulaUserDocument()),
     );
   }
 }

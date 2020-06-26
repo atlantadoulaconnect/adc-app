@@ -274,6 +274,17 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
       "primaryDoulaName": primaryDoulaName
     });
 
+    // push match to client's user doc
+    await dbRef
+        .collection("users")
+        .document(client.userid)
+        .collection("userData")
+        .document("specifics")
+        .setData({
+      "primaryDoulaId": primaryDoulaId,
+      "primaryDoulaName": primaryDoulaName
+    });
+
     // add doula to the CLIENT's contact list
     await dbRef
         .collection("users")
@@ -300,6 +311,7 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
       "isRecent": true
     });
 
+    // add match locally, for display on client's profile page
     client.primaryDoulaId = primaryDoulaId;
     client.primaryDoulaName = primaryDoulaName;
 
@@ -323,37 +335,23 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
     final dbRef = Firestore.instance;
     Set<String> chats = state.messagesState.chats;
 
-    // push the match to the database
+    // push the match to the collection in database
     // Note: this action is always invoked after the primary doula is set
     await dbRef.collection("matches").document(client.userid).updateData(
         {"backupDoulaId": backupDoulaId, "backupDoulaName": backupDoulaName});
 
-    // add doula to the CLIENT's contact list
+    // push match to client's user doc
     await dbRef
         .collection("users")
         .document(client.userid)
-        .collection("contacts")
-        .document(backupDoulaId)
+        .collection("userData")
+        .document("specifics")
         .setData({
-      "name": backupDoulaName,
-      "userid": backupDoulaId,
-      "userType": "Doula",
-      "isRecent": true
+      "backupDoulaId": backupDoulaId,
+      "backupDoulaName": backupDoulaName
     });
 
-    // add client to the DOULA's contact list
-    await dbRef
-        .collection("users")
-        .document(backupDoulaId)
-        .collection("contacts")
-        .document(client.userid)
-        .setData({
-      "name": client.name,
-      "userid": client.userid,
-      "userType": "Client",
-      "isRecent": true
-    });
-
+    // add match locally, for display on client's profile page
     client.backupDoulaId = backupDoulaId;
     client.backupDoulaName = backupDoulaName;
 

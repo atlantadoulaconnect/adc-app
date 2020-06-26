@@ -24,14 +24,14 @@ class HomeScreen extends StatelessWidget {
           child: Center(
               child: Column(children: <Widget>[
             NotificationHandler(),
-            Spacer(flex: 1),
+            Spacer(flex: 2),
             Text("Atlanta Doula Connect",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 50.0,
                   fontWeight: FontWeight.bold,
                 )),
-            Spacer(flex: 1),
+            Spacer(flex: 4),
             RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(50.0),
@@ -39,26 +39,30 @@ class HomeScreen extends StatelessWidget {
               onPressed: toSignup,
               color: themeColors['lightBlue'],
               textColor: Colors.white,
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
               splashColor: themeColors['lightBlue'],
               child: Text(
                 "Sign Up",
-                style: TextStyle(fontSize: 20.0),
+                style: TextStyle(fontSize: 25.0),
               ),
             ),
             Spacer(flex: 1),
             RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(50.0),
-                  side: BorderSide(color: themeColors['yellow'])),
+                  side: BorderSide(color: themeColors['yellow']),
+              ),
               onPressed: toLogin,
               color: themeColors['yellow'],
               textColor: Colors.black,
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
               splashColor: themeColors['yellow'],
               child: Text(
                 "Log In",
-                style: TextStyle(fontSize: 20.0),
+                style: TextStyle(
+                    fontSize: 25.0,
+                  color: Colors.black,
+                ),
               ),
             ),
             Spacer(flex: 1),
@@ -69,14 +73,14 @@ class HomeScreen extends StatelessWidget {
               onPressed: toInfo,
               color: themeColors['mediumBlue'],
               textColor: Colors.white,
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
               splashColor: themeColors['mediumBlue'],
               child: Text(
                 "Learn More",
-                style: TextStyle(fontSize: 20.0),
+                style: TextStyle(fontSize: 25.0),
               ),
             ),
-            Spacer(),
+            Spacer(flex: 4),
           ]))),
     );
   }

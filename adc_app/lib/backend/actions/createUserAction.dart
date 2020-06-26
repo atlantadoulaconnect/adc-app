@@ -197,6 +197,7 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
       "bday": user.bday,
       "email": user.email,
       "bio": user.bio,
+      "photoRelease": user.photoRelease,
       "certified": user.certified,
       "certInProgress": user.certInProgress,
       "certProgram": user.certProgram,

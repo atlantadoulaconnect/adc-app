@@ -370,6 +370,10 @@ class UpdateClientUserDocument extends ReduxAction<AppState> {
 
     Client user = state.currentUser as Client;
 
+    await dbRef.collection("users").document(user.userid).updateData({
+      "name": user.name
+    });
+
     await dbRef
         .collection("users")
         .document(user.userid)
@@ -379,6 +383,7 @@ class UpdateClientUserDocument extends ReduxAction<AppState> {
       "phones": phonesToDB(user.phones),
       "bday": user.bday,
       "email": user.email,
+      "photoRelease": user.photoRelease,
       "emergencyContacts": emgContactsToDB(user.emergencyContacts),
       "birthLocation": user.birthLocation,
       "birthType": user.birthType,
@@ -409,6 +414,10 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
         "Attempting to update this doula ${user.toString()} to the users collection");
     final dbRef = Firestore.instance;
 
+    await dbRef.collection("users").document(user.userid).updateData({
+      "name": user.name
+    });
+
     await dbRef
         .collection("users")
         .document(user.userid)
@@ -419,6 +428,7 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
       "phones": phonesToDB(user.phones),
       "bday": user.bday,
       "bio": user.bio,
+      "photoRelease": user.photoRelease,
       "certified": user.certified,
       "certInProgress": user.certInProgress,
       "certProgram": user.certProgram,

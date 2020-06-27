@@ -36,6 +36,7 @@ class DoulaHomeScreen extends StatelessWidget {
         child: Text(
           "See ${doc["clientName"]}'s Profile",
           style: TextStyle(fontSize: 20.0),
+          textAlign: TextAlign.center,
         ),
       ),
     );
@@ -199,6 +200,7 @@ class DoulaHomeScreen extends StatelessWidget {
                   child: Text(
                     "Frequently Asked Questions",
                     style: TextStyle(fontSize: 20.0),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),

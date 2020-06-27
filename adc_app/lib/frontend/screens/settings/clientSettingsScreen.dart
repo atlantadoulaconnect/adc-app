@@ -293,6 +293,25 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
     );
   }
 
+  updateAccountDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Your account was successfully updated"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Okay"),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Form clientUser() {
     final clientCategoryExpansionTiles = List<Widget>();
     clientCategoryExpansionTiles.add(ExpansionTile(
@@ -394,7 +413,8 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                 await clientToDB();
                 print('currentUser.name after: ${currentUser.name}');
 
-                toClientSettings();
+                updateAccountDialog(context);
+
               },
               color: themeColors['yellow'],
               textColor: Colors.black,
@@ -1419,26 +1439,22 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                               form.save();
                               String clientName =
                                   firstNameCtrl.text.toString().trim();
-                              print('clientName: $clientName');
+
                               String clientBday =
                                   dateOfBirthCtrl.text.toString().trim();
-                              print(
-                                  'bday: ${dateOfBirthCtrl.text.toString().trim()}');
+
                               List<Phone> phones = List();
-                              print(
-                                  'phone: ${phoneNumCtrl.text.toString().trim()}');
+
                               phones.add(Phone(
                                   phoneNumCtrl.text.toString().trim(), true));
 
                               updateClientAccount(currentUser, clientName,
                                   phones, clientBday, photoRelease);
-                              print(
-                                  'currentUser.name before: ${currentUser.name}');
-                              await clientToDB();
-                              print(
-                                  'currentUser.name after: ${currentUser.name}');
 
-                              toClientSettings();
+                              await clientToDB();
+
+                              updateAccountDialog(context);
+
                             }
                           },
                           color: themeColors['yellow'],
@@ -2367,18 +2383,11 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                         borderRadius: new BorderRadius.circular(5.0),
                         side: BorderSide(color: themeColors['emoryBlue'])),
                     onPressed: () async {
-//            String clientName = firstNameCtrl.text.toString().trim();
-//            String clientBday = dateOfBirthCtrl.text.toString().trim();
-//            print('bday: ${dateOfBirthCtrl.text.toString().trim()}');
-//
-//            List<Phone> phones = List();
-//            print('phone: ${phoneNumCtrl.text.toString().trim()}');
-//            phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
+
                       String clientEmail = emailCtrl.text.toString().trim();
 
                       if (clientEmail != currentUser.email) {
-//              print('dialog box open');
-//              confirmPasswordDialog(context);
+
                         print(
                             'password: ${changeEmailPasswordCtrl.text.toString().trim()}');
                         if (changeEmailPasswordCtrl.text.toString().trim() !=
@@ -2401,13 +2410,9 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                             print('email was not changed');
                           }
                         }
-//
                       }
 
-//            updateClientAccount(currentUser, clientName, phones, clientBday,
-//                clientEmail, photoRelease);
-//
-//            clientToDB(currentUser);
+
                       toHome();
                     },
                     color: themeColors['emoryBlue'],

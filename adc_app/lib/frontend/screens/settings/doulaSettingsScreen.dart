@@ -335,17 +335,13 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                             final form = _accountKey.currentState;
                             if (form.validate()) {
                               form.save();
-                              String doulaName =
-                                  "${firstNameCtrl.text.toString().trim()}";
-                              String doulaBday =
-                                  dateOfBirthCtrl.text.toString().trim();
-                              String doulaBio = bioCtrl.text.toString();
+
                               List<Phone> phones = List();
 
                               phones.add(Phone(
                                   phoneNumCtrl.text.toString().trim(), true));
                               print(
-                                  'bio before update: ${(currentUser as Doula).bio}');
+                                  'name before update: ${(currentUser as Doula).name}');
                               updateDoulaAccount(
                                   currentUser,
                                   firstNameCtrl.text.toString().trim(),
@@ -354,12 +350,12 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                                   bioCtrl.text.toString(),
                                   photoRelease);
                               print(
-                                  'bio after update: ${(currentUser as Doula).bio}');
+                                  'name after update: ${(currentUser as Doula).name}');
 
                               await doulaToDB();
                               updateAccountDialog(context);
                               print(
-                                  'bio after updated call: ${(currentUser as Doula).bio}');
+                                  'name after updated call: ${(currentUser as Doula).name}');
                             }
                           },
                           color: themeColors['yellow'],
@@ -836,91 +832,92 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                           //onPressed: ,
                         ),
                       ),
-                      ExpansionTile(
-                          title: Text(
-                            'Privacy',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                          //TODO what else to add to privacy
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-                              child: SwitchListTile(
-                                activeColor: themeColors['yellow'],
-                                value: true,
-                                title: Text('Make Account Private'),
-                                onChanged: (value) {},
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-                              child: Text('Link to Privacy Policy goes here'),
-                            ),
-                          ]),
-                      ExpansionTile(
-                          title: Text(
-                            'Send Feedback',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                          //TODO what else to add to privacy
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-                              child: Text('Insert link here'),
-                            ),
-                          ]),
-                      ExpansionTile(
-                          title: Text(
-                            'Terms of Service',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-                              child: Text('Insert link here'),
-                            ),
-                          ]),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Center(
-                          child: Text(
-                            'Version Number 1',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Center(
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(5.0),
-                                side: BorderSide(
-                                    color: themeColors['emoryBlue'])),
-                            onPressed: () async {
-                              toHome();
-                            },
-                            color: themeColors['emoryBlue'],
-                            textColor: Colors.white,
-                            padding: EdgeInsets.all(15.0),
-                            splashColor: themeColors['emoryBlue'],
-                            child: Text(
-                              "Back to Home",
-                              style: TextStyle(fontSize: 20.0),
-                            ),
-                          ),
-                        ),
-                      )
+
                     ]),
               ),
+              ExpansionTile(
+                  title: Text(
+                    'Privacy',
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                  //TODO what else to add to privacy
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+                      child: SwitchListTile(
+                        activeColor: themeColors['yellow'],
+                        value: true,
+                        title: Text('Make Account Private'),
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+                      child: Text('Link to Privacy Policy goes here'),
+                    ),
+                  ]),
+              ExpansionTile(
+                  title: Text(
+                    'Send Feedback',
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                  //TODO what else to add to privacy
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+                      child: Text('Insert link here'),
+                    ),
+                  ]),
+              ExpansionTile(
+                  title: Text(
+                    'Terms of Service',
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+                      child: Text('Insert link here'),
+                    ),
+                  ]),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Center(
+                  child: Text(
+                    'Version Number 1',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Center(
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(5.0),
+                        side: BorderSide(
+                            color: themeColors['emoryBlue'])),
+                    onPressed: () async {
+                      toHome();
+                    },
+                    color: themeColors['emoryBlue'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['emoryBlue'],
+                    child: Text(
+                      "Back to Home",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ));

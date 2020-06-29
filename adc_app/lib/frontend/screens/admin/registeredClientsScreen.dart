@@ -86,7 +86,7 @@ class RegisteredClientsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Registered Clients'),
+          title: Text('All Registered Clients'),
         ),
         body: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0),

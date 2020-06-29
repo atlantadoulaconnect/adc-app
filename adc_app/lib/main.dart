@@ -1,5 +1,6 @@
 
 import 'package:adc_app/frontend/screens/admin/activeMatchesListScreen.dart';
+import 'package:adc_app/frontend/screens/admin/allUsersScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:async_redux/async_redux.dart';
 import './backend/states/appState.dart';
@@ -135,6 +136,7 @@ class ADCApp extends StatelessWidget {
                 DoulasListForMatchingScreenConnector(),
             '/registeredClients': (context) =>
                 RegisteredClientsScreenConnector(),
+            '/allUsers' : (context) => AllUserScreenConnector(),
             '/activeMatches' : (context) => ActiveMatchesListScreenConnector(),
             '/userProfile': (context) => UserProfileScreenConnector(),
             '/pendingApps': (context) => PendingApplicationsScreenConnector(),

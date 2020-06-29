@@ -113,7 +113,9 @@ class HomeScreenConnector extends StatelessWidget {
                     vm.toHome,
                     vm.toPendingApps,
                     vm.toUnmatchedClients,
-                    vm.toActiveMatches);
+                    vm.toActiveMatches,
+                    vm.toAllUsers,
+                );
               }
               break;
             case "client":
@@ -166,6 +168,7 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toDoulaApp;
   VoidCallback toProfile;
   VoidCallback toActiveMatches;
+  VoidCallback toAllUsers;
   Future<void> Function(String, String) setProfileUser;
 
   ViewModel.build(
@@ -186,7 +189,8 @@ class ViewModel extends BaseModel<AppState> {
       @required this.updateDoula,
       @required this.setProfileUser,
       @required this.toProfile,
-      @required this.toActiveMatches,})
+      @required this.toActiveMatches,
+      @required this.toAllUsers,})
       : super(equals: [currentUser]);
 
   @override
@@ -215,6 +219,7 @@ class ViewModel extends BaseModel<AppState> {
         setProfileUser: (String userid, String userType) =>
             dispatchFuture(SetProfileUser(userid, userType)),
         toActiveMatches: () => dispatch(NavigateAction.pushNamed("/activeMatches")),
+        toAllUsers: () => dispatch(NavigateAction.pushNamed("/allUsers")),
     );
   }
 }

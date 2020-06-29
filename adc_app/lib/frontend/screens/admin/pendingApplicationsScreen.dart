@@ -84,7 +84,28 @@ class PendingApplicationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _Tabs = <Tab>[Tab(text: 'Doula'), Tab(text: 'Client')];
+    final _Tabs = <Tab>[
+      Tab(
+        child: Text(
+          'Doulas',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      Tab(
+        child: Text(
+          'Clients',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ];
     return DefaultTabController(
       length: _Tabs.length,
       child: Scaffold(

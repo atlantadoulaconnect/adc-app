@@ -7,9 +7,17 @@ class ActiveMatchesListScreen extends StatelessWidget {
   final VoidCallback toProfile;
   final Future<void> Function(String, String) setProfileUser;
 
+  final Future<void> Function(User, String) changeStatus;
+  final Future<void> Function(Client, String, String) setClientDoulas;
+  final Future<void> Function(Client, String, String) setBackupDoulas;
+  final Future<void> Function(String, String, String) removeClientDoulas;
+  final User profileUser;
+
   ActiveMatchesListScreen(this.toActiveMatches, this.toProfile,
-      this.setProfileUser) : assert(toActiveMatches != null &&
-          toProfile != null && setProfileUser != null);
+      this.setProfileUser, this.changeStatus, this.setClientDoulas,
+      this.setBackupDoulas, this.profileUser, this.removeClientDoulas)
+      : assert(toActiveMatches != null && toProfile != null
+                && setProfileUser != null);
 
   createAlertDialog(BuildContext context, String clientId, String clientName,
       String primaryDoulaId, String primaryDoulaName, String backupDoulaId,
@@ -115,7 +123,7 @@ class ActiveMatchesListScreen extends StatelessWidget {
               ),
               Center(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 40.0),
+                  padding: EdgeInsets.only(bottom: 30.0),
                   child: RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(15.0),
@@ -138,6 +146,95 @@ class ActiveMatchesListScreen extends StatelessWidget {
                       backupDoulaName != null ?
                       "View Profile" :
                       "Go to Client Profile",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 20.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(15.0),
+                        side: BorderSide(color: themeColors['red'])),
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      return showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Center(
+                                child: Text(
+                                    "Are you sure?",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ),
+//                              content: Text(
+//                                "",
+//                                style: TextStyle(
+//                                  fontSize: 15,
+//                                ),
+//                              ),
+                              actions: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 15.0, left: 12.0, right: 5.0, top: 10.0),
+                                  child: RaisedButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: new BorderRadius.circular(15.0),
+                                        side: BorderSide(color: themeColors['mediumBlue'])),
+                                    color: themeColors['mediumBlue'],
+                                    textColor: Colors.white,
+                                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+                                    splashColor: themeColors['mediumBlue'],
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      "Keep Match",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 17.0),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 15.0, right: 12.0, left: 5.0, top: 10.0),
+                                  child: RaisedButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: new BorderRadius.circular(15.0),
+                                        side: BorderSide(color: themeColors['red'])),
+                                    color: themeColors['red'],
+                                    textColor: Colors.white,
+                                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+                                    splashColor: themeColors['red'],
+                                    onPressed: () async {
+                                      Navigator.of(context).pop();
+                                      await removeClientDoulas(
+                                          clientId, clientName, primaryDoulaId);
+                                    },
+                                    child: Text(
+                                      "Delete Match",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 17.0),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                      );
+                    },
+                    color: themeColors['red'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['red'],
+                    child: Text(
+                      'Cancel This Match',
+                      textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 20.0),
                     ),
                   ),
@@ -293,7 +390,9 @@ class ActiveMatchesListScreenConnector extends StatelessWidget {
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) {
         return ActiveMatchesListScreen(vm.toActiveMatches,
-            vm.toProfile, vm.setProfileUser);
+            vm.toProfile, vm.setProfileUser, vm.changeStatus,
+            vm.setClientDoulas, vm.setBackupDoulas, vm.profileUser,
+            vm.removeClientDoulas);
       },
     );
   }
@@ -306,11 +405,21 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toProfile;
   Future<void> Function(String, String) setProfileUser;
 
+  Future<void> Function(User, String) changeStatus;
+  Future<void> Function(Client, String, String) setClientDoulas;
+  Future<void> Function(Client, String, String) setBackupDoulas;
+  Future<void> Function(String, String, String) removeClientDoulas;
+  User profileUser;
 
   ViewModel.build({
     @required this.toActiveMatches,
     @required this.toProfile,
     @required this.setProfileUser,
+    @required this.changeStatus,
+    @required this.setClientDoulas,
+    @required this.setBackupDoulas,
+    @required this.profileUser,
+    @required this.removeClientDoulas,
   });
 
   @override
@@ -319,7 +428,22 @@ class ViewModel extends BaseModel<AppState> {
       toActiveMatches: () => dispatch(NavigateAction.pushNamed("/activeMatches")),
       toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
       setProfileUser: (String userid, String userType) =>
-          dispatchFuture(SetProfileUser(userid, userType))
+          dispatchFuture(SetProfileUser(userid, userType)),
+      changeStatus: (User user, String status) =>
+          dispatchFuture(UpdateUserStatus(user, status)),
+      setClientDoulas:
+          (Client client, String primaryDoulaId, String primaryDoulaName) =>
+          dispatchFuture(
+              UpdateClientDoulas(client, primaryDoulaId, primaryDoulaName)),
+      setBackupDoulas: (Client client, String backupDoulaId,
+          String backupDoulaName) =>
+          dispatchFuture(
+              UpdateClientBackupDoula(client, backupDoulaId, backupDoulaName)),
+      profileUser: state.profileUser,
+      removeClientDoulas: (String clientId, String clientName,
+        String primaryDoulaId) =>
+        dispatchFuture(
+            RemoveClientDoulas(clientId, clientName, primaryDoulaId)),
     );
   }
 }

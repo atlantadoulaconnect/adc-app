@@ -361,6 +361,59 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
   }
 }
 
+// remove assigned doula and backup doula
+class RemoveClientDoulas extends ReduxAction<AppState> {
+  final String clientId;
+  final String clientName;
+  final String primaryDoulaId;
+
+  RemoveClientDoulas(this.clientId, this.clientName, this.primaryDoulaId)
+      : assert(clientId != null && clientName != null);
+
+  @override
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+
+    // remove the match from the database
+    await Firestore.instance.runTransaction((Transaction myTransaction) async {
+      await myTransaction.delete(dbRef.collection("matches")
+          .document(clientId));
+    });
+
+    // remove match from client's user doc
+    await dbRef
+        .collection("users")
+        .document(clientId)
+        .collection("userData")
+        .document("specifics")
+        .updateData({
+      "primaryDoulaId": FieldValue.delete(),
+      "primaryDoulaName": FieldValue.delete(),
+      "backupDoulaId": FieldValue.delete(),
+      "backupDoulaName": FieldValue.delete(),
+    });
+
+    // remove doula from the CLIENT's contact list
+    await Firestore.instance.runTransaction((Transaction myTransaction) async {
+      await myTransaction.delete(dbRef.collection("users").document(clientId)
+          .collection("contacts").document(primaryDoulaId));
+    });
+
+    // remove client from the DOULA's contact list
+    await Firestore.instance.runTransaction((Transaction myTransaction) async {
+      await myTransaction.delete(
+          dbRef.collection("users").document(primaryDoulaId)
+              .collection("contacts").document(clientId));
+    });
+
+    // update the client's status from matched to approved
+    await dbRef.collection("users").document(clientId).updateData({
+      "status": "approved",
+    });
+  }
+}
+
+
 class UpdateClientUserDocument extends ReduxAction<AppState> {
   UpdateClientUserDocument();
 

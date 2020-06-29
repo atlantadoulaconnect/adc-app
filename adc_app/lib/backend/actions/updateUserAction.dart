@@ -268,8 +268,8 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
 
     // push the match to the database
     await dbRef.collection("matches").document(client.userid).setData({
-      "clientName": client.userid,
-      "clientId": client.name,
+      "clientName": client.name,
+      "clientId": client.userid,
       "primaryDoulaId": primaryDoulaId,
       "primaryDoulaName": primaryDoulaName
     });
@@ -370,9 +370,10 @@ class UpdateClientUserDocument extends ReduxAction<AppState> {
 
     Client user = state.currentUser as Client;
 
-    await dbRef.collection("users").document(user.userid).updateData({
-      "name": user.name
-    });
+    await dbRef
+        .collection("users")
+        .document(user.userid)
+        .updateData({"name": user.name});
 
     await dbRef
         .collection("users")
@@ -414,9 +415,10 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
         "Attempting to update this doula ${user.toString()} to the users collection");
     final dbRef = Firestore.instance;
 
-    await dbRef.collection("users").document(user.userid).updateData({
-      "name": user.name
-    });
+    await dbRef
+        .collection("users")
+        .document(user.userid)
+        .updateData({"name": user.name});
 
     await dbRef
         .collection("users")

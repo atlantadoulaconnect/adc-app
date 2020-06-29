@@ -160,73 +160,8 @@ class ActiveMatchesListScreen extends StatelessWidget {
                         side: BorderSide(color: themeColors['red'])),
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      return showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Center(
-                                child: Text(
-                                    "Are you sure?",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25,
-                                  ),
-                                ),
-                              ),
-//                              content: Text(
-//                                "",
-//                                style: TextStyle(
-//                                  fontSize: 15,
-//                                ),
-//                              ),
-                              actions: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 15.0, left: 12.0, right: 5.0, top: 10.0),
-                                  child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: new BorderRadius.circular(15.0),
-                                        side: BorderSide(color: themeColors['mediumBlue'])),
-                                    color: themeColors['mediumBlue'],
-                                    textColor: Colors.white,
-                                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
-                                    splashColor: themeColors['mediumBlue'],
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(
-                                      "Keep Match",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 17.0),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 15.0, right: 12.0, left: 5.0, top: 10.0),
-                                  child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: new BorderRadius.circular(15.0),
-                                        side: BorderSide(color: themeColors['red'])),
-                                    color: themeColors['red'],
-                                    textColor: Colors.white,
-                                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
-                                    splashColor: themeColors['red'],
-                                    onPressed: () async {
-                                      Navigator.of(context).pop();
-                                      await removeClientDoulas(
-                                          clientId, clientName, primaryDoulaId);
-                                    },
-                                    child: Text(
-                                      "Delete Match",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 17.0),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
-                      );
+                      return confirmDeleteDoulaDialog(context, clientId, clientName,
+                          primaryDoulaId);
                     },
                     color: themeColors['red'],
                     textColor: Colors.white,
@@ -259,6 +194,138 @@ class ActiveMatchesListScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 20.0),
                     ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+    );
+  }
+
+  confirmDeleteDoulaDialog(BuildContext context, String clientId,
+      String clientName, String primaryDoulaId) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Center(
+              child: Text(
+                "Are you sure?",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(bottom: 15.0, left: 12.0, right: 5.0, top: 10.0),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(15.0),
+                      side: BorderSide(color: themeColors['mediumBlue'])),
+                  color: themeColors['mediumBlue'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+                  splashColor: themeColors['mediumBlue'],
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Keep Match",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 17.0),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 15.0, right: 12.0, left: 5.0, top: 10.0),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(15.0),
+                      side: BorderSide(color: themeColors['red'])),
+                  color: themeColors['red'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+                  splashColor: themeColors['red'],
+                  onPressed: () async {
+                    await removeClientDoulas(
+                        clientId, clientName, primaryDoulaId);
+                    Navigator.of(context).pop();
+                    return createNewMatchesDialog(
+                        context, clientId, clientName);
+                  },
+                  child: Text(
+                    "Delete Match",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 17.0),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+    );
+  }
+
+  createNewMatchesDialog(BuildContext context, String clientId,
+      String clientName) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Center(
+              child: Text(
+                "Do you want to make a new doula assignment for $clientName?",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(bottom: 15.0, left: 10.0, right: 5.0, top: 10.0),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(15.0),
+                      side: BorderSide(color: themeColors['yellow'])),
+                  color: themeColors['yellow'],
+                  textColor: Colors.black,
+                  padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+                  splashColor: themeColors['yellow'],
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Later",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 15.0, right: 10.0, left: 5.0, top: 10.0),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(15.0),
+                      side: BorderSide(color: themeColors['mediumBlue'])),
+                  color: themeColors['mediumBlue'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+                  splashColor: themeColors['mediumBlue'],
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    await setProfileUser(clientId, "client");
+                    toProfile();
+                  },
+                  child: Text(
+                    "Go to Client Profile",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20.0),
                   ),
                 ),
               ),

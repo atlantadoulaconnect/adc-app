@@ -61,7 +61,7 @@ class RegisteredDoulasScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               )),
                           Text(
-                            "Doula",
+                            doc["status"],
                             style: TextStyle(
                               fontSize: 20,
                             ),

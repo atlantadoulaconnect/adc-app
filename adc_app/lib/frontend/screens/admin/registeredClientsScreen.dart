@@ -61,7 +61,7 @@ class RegisteredClientsScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               )),
                           Text(
-                            "Client",
+                            doc["status"],
                             style: TextStyle(
                               fontSize: 20,
                             ),

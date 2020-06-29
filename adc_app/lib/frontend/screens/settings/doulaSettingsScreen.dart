@@ -5,7 +5,7 @@ import '../common.dart';
 // screen where users can change settings related to the TappableChipAttributes
 
 class DoulaSettingsScreen extends StatefulWidget {
-  final User currentUser;
+  final Doula currentUser;
   final VoidCallback toHome;
   final VoidCallback logout;
   final VoidCallback toConfirmSettings;
@@ -38,7 +38,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
   VoidCallback toHome;
   VoidCallback toConfirmSettings;
 
-  User currentUser;
+  Doula currentUser;
 
   final GlobalKey<FormState> _accountKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _pwdKey = GlobalKey<FormState>();
@@ -104,17 +104,15 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
     }
 
     if (userType == 'doula') {
-      dob = (currentUser as Doula).bday;
-      bio = (currentUser as Doula).bio;
-      certified = (currentUser as Doula).certified;
-      certInProgress = (currentUser as Doula).certInProgress;
-      certProgram = (currentUser as Doula).certProgram;
-      birthsNeeded = (currentUser as Doula).birthsNeeded != null
-          ? (currentUser as Doula).birthsNeeded
-          : 0;
-      photoRelease = (currentUser as Doula).photoRelease != null
-          ? (currentUser as Doula).photoRelease
-          : false;
+      dob = currentUser.bday;
+      bio = currentUser.bio;
+      certified = currentUser.certified;
+      certInProgress = currentUser.certInProgress;
+      certProgram = currentUser.certProgram;
+      birthsNeeded =
+          currentUser.birthsNeeded != null ? currentUser.birthsNeeded : 0;
+      photoRelease =
+          currentUser.photoRelease != null ? currentUser.photoRelease : false;
     }
 
     //controllers
@@ -340,8 +338,15 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
 
                               phones.add(Phone(
                                   phoneNumCtrl.text.toString().trim(), true));
-                              print(
-                                  'name before update: ${(currentUser as Doula).name}');
+                              print('name before update: ${currentUser.name}');
+                              currentUser.name =
+                                  firstNameCtrl.text.toString().trim();
+                              currentUser.phones = phones;
+                              currentUser.bday =
+                                  dateOfBirthCtrl.text.toString().trim();
+                              currentUser.bio = bioCtrl.text.toString();
+                              currentUser.photoRelease = photoRelease;
+
                               updateDoulaAccount(
                                   currentUser,
                                   firstNameCtrl.text.toString().trim(),
@@ -349,13 +354,12 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                                   dateOfBirthCtrl.text.toString().trim(),
                                   bioCtrl.text.toString(),
                                   photoRelease);
-                              print(
-                                  'name after update: ${(currentUser as Doula).name}');
+                              print('name after update: ${currentUser.name}');
 
                               await doulaToDB();
                               updateAccountDialog(context);
                               print(
-                                  'name after updated call: ${(currentUser as Doula).name}');
+                                  'name after updated call: ${currentUser.name}');
                             }
                           },
                           color: themeColors['yellow'],
@@ -727,9 +731,15 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                               int numOfBirths = int.parse(
                                   birthsNeededCtrl.text.toString().trim());
 
+                              currentUser.certProgram = programName;
+                              currentUser.birthsNeeded = numOfBirths;
+                              currentUser.certified = certified;
+                              currentUser.certInProgress = certInProgress;
+
                               updateCertification(currentUser, certified,
                                   certInProgress, programName, numOfBirths);
                               await doulaToDB();
+                              updateAccountDialog(context);
                             }
                           },
                           color: themeColors['yellow'],
@@ -832,7 +842,6 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                           //onPressed: ,
                         ),
                       ),
-
                     ]),
               ),
               ExpansionTile(
@@ -902,8 +911,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                   child: RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(
-                            color: themeColors['emoryBlue'])),
+                        side: BorderSide(color: themeColors['emoryBlue'])),
                     onPressed: () async {
                       toHome();
                     },
@@ -943,7 +951,7 @@ class DoulaSettingsScreenConnector extends StatelessWidget {
 class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
-  User currentUser;
+  Doula currentUser;
   VoidCallback toHome;
   VoidCallback toConfirmSettings;
   VoidCallback logout;
@@ -965,7 +973,7 @@ class ViewModel extends BaseModel<AppState> {
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-      currentUser: state.currentUser,
+      currentUser: state.currentUser as Doula,
       toHome: () => dispatch(NavigateAction.pushNamed("/")),
       toConfirmSettings: () =>
           dispatch(NavigateAction.pushNamed("/confirmSettings")),

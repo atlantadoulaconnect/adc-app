@@ -10,13 +10,14 @@ class AdminHomeScreen extends StatelessWidget {
   final VoidCallback toPendingApps;
   final VoidCallback toUnmatchedClients;
   final VoidCallback toActiveMatches;
+  final VoidCallback toAllUsers;
 
   int numPendingClients;
   int numPendingDoulas;
 
   AdminHomeScreen(this.currentUser, this.logout, this.toRegisteredDoulas,
       this.toRegisteredClients, this.toHome, this.toPendingApps,
-      this.toUnmatchedClients, this.toActiveMatches)
+      this.toUnmatchedClients, this.toActiveMatches, this.toAllUsers,)
       : assert(logout != null &&
             toRegisteredDoulas != null &&
             toRegisteredClients != null &&
@@ -161,6 +162,25 @@ class AdminHomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+//            Padding(
+//              padding: EdgeInsets.only(bottom: 25.0),
+//              child: RaisedButton(
+//                shape: RoundedRectangleBorder(
+//                    borderRadius: new BorderRadius.circular(10.0),
+//                    side: BorderSide(color: themeColors['mediumBlue'])),
+//                onPressed: () {
+//                  toRegisteredClients();
+//                },
+//                color: themeColors['mediumBlue'],
+//                textColor: Colors.white,
+//                padding: EdgeInsets.all(15.0),
+//                splashColor: themeColors['mediumBlue'],
+//                child: Text(
+//                  "All Registered Clients",
+//                  style: TextStyle(fontSize: 20.0),
+//                ),
+//              ),
+//            ),
             Padding(
               padding: EdgeInsets.only(bottom: 25.0),
               child: RaisedButton(
@@ -168,37 +188,37 @@ class AdminHomeScreen extends StatelessWidget {
                     borderRadius: new BorderRadius.circular(10.0),
                     side: BorderSide(color: themeColors['mediumBlue'])),
                 onPressed: () {
-                  toRegisteredClients();
+                  toAllUsers();
                 },
                 color: themeColors['mediumBlue'],
                 textColor: Colors.white,
                 padding: EdgeInsets.all(15.0),
                 splashColor: themeColors['mediumBlue'],
                 child: Text(
-                  "All Registered Clients",
+                  "All Users",
                   style: TextStyle(fontSize: 20.0),
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 30.0),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(15.0),
-                    side: BorderSide(color: themeColors['mediumBlue'])),
-                onPressed: () {
-                  toRegisteredDoulas();
-                },
-                color: themeColors['mediumBlue'],
-                textColor: Colors.white,
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['mediumBlue'],
-                child: Text(
-                  "All Registered Doulas",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ),
-            ),
+//            Padding(
+//              padding: EdgeInsets.only(bottom: 30.0),
+//              child: RaisedButton(
+//                shape: RoundedRectangleBorder(
+//                    borderRadius: new BorderRadius.circular(15.0),
+//                    side: BorderSide(color: themeColors['mediumBlue'])),
+//                onPressed: () {
+//                  toRegisteredDoulas();
+//                },
+//                color: themeColors['mediumBlue'],
+//                textColor: Colors.white,
+//                padding: EdgeInsets.all(15.0),
+//                splashColor: themeColors['mediumBlue'],
+//                child: Text(
+//                  "All Registered Doulas",
+//                  style: TextStyle(fontSize: 20.0),
+//                ),
+//              ),
+//            ),
             RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(15.0),
@@ -233,7 +253,7 @@ class AdminHomeScreenConnector extends StatelessWidget {
       builder: (BuildContext context, ViewModel vm) {
         return AdminHomeScreen(vm.currentUser, vm.logout, vm.toRegisteredDoulas,
             vm.toRegisteredClients, vm.toHome, vm.toPendingApps,
-            vm.toUnmatchedClients, vm.toActiveMatches);
+            vm.toUnmatchedClients, vm.toActiveMatches, vm.toAllUsers);
       },
     );
   }
@@ -250,6 +270,7 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toHome;
   VoidCallback toUnmatchedClients;
   VoidCallback toActiveMatches;
+  VoidCallback toAllUsers;
 
   ViewModel.build(
       {@required this.currentUser,
@@ -259,7 +280,8 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toHome,
       @required this.toPendingApps,
       @required this.toUnmatchedClients,
-      @required this.toActiveMatches,})
+      @required this.toActiveMatches,
+      @required this.toAllUsers,})
       : super(equals: []);
 
   @override
@@ -279,6 +301,7 @@ class ViewModel extends BaseModel<AppState> {
             dispatch(NavigateAction.pushNamed("/pendingApps")),
         toUnmatchedClients: () => dispatch(NavigateAction.pushNamed("/unmatchedClients")),
         toActiveMatches: () => dispatch(NavigateAction.pushNamed("/activeMatches")),
+        toAllUsers: () => dispatch(NavigateAction.pushNamed("/allUsers")),
     );
   }
 }

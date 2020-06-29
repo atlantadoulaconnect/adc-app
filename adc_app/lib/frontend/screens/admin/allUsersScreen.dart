@@ -1,13 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/rendering.dart';
-
 import '../common.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class RegisteredDoulasScreen extends StatelessWidget {
+//  applications of people who have applied to participate in the program
+//  but need to be accepted or denied by an admin
+class AllUsersScreen extends StatelessWidget {
   final VoidCallback toProfile;
   final Future<void> Function(String, String) setProfileUser;
 
-  RegisteredDoulasScreen(this.toProfile, this.setProfileUser)
+  AllUsersScreen(this.toProfile, this.setProfileUser)
       : assert(toProfile != null && setProfileUser != null);
 
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
@@ -82,46 +82,104 @@ class RegisteredDoulasScreen extends StatelessWidget {
             )));
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('All Registered Doulas'),
+    final _Tabs = <Tab>[
+      Tab(
+          child: Text(
+              'Doulas',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+      ),
+      Tab(
+        child: Text(
+          'Clients',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        body: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
-            child: Container(
-                child: StreamBuilder<QuerySnapshot>(
-                    stream: Firestore.instance
-                        .collection("users")
-                        .where("userType", isEqualTo: "doula")
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(
-                            child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              themeColors["lightBlue"]),
-                        ));
-                      }
-                      return ListView.builder(
-                        padding: EdgeInsets.all(10.0),
-                        itemBuilder: (context, index) =>
-                            buildItem(context, snapshot.data.documents[index]),
-                        itemCount: snapshot.data.documents.length,
-                      );
-                    }))));
+      ),
+    ];
+    return DefaultTabController(
+      length: _Tabs.length,
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text("All Users"),
+            bottom: TabBar(
+              tabs: _Tabs,
+            ),
+          ),
+          body: TabBarView(
+//          Padding(
+//              padding: const EdgeInsets.symmetric(vertical: 20.0),
+            children: [
+              Container(
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: Firestore.instance
+                          .collection("users")
+                          .where("userType", isEqualTo: "doula")
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    themeColors["lightBlue"]),
+                              ));
+                        }
+                        return ListView.builder(
+                          padding: EdgeInsets.all(10.0),
+                          itemBuilder: (context, index) => buildItem(
+                              context, snapshot.data.documents[index]),
+                          itemCount: snapshot.data.documents.length,
+                        );
+                      })
+              ),
+              Container(
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: Firestore.instance
+                          .collection("users")
+                          .where("userType", isEqualTo: "client")
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    themeColors["lightBlue"]),
+                              ));
+                        }
+                        return ListView.builder(
+                          padding: EdgeInsets.all(10.0),
+                          itemBuilder: (context, index) => buildItem(
+                              context, snapshot.data.documents[index]),
+                          itemCount: snapshot.data.documents.length,
+                        );
+                      }))
+            ],
+//          )
+          )),
+    );
   }
 }
 
-class RegisteredDoulasScreenConnector extends StatelessWidget {
+class AllUserScreenConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) =>
-          RegisteredDoulasScreen(vm.toProfile, vm.setProfileUser),
+      builder: (BuildContext context, ViewModel vm) {
+        return AllUsersScreen(vm.toProfile, vm.setProfileUser);
+      },
     );
   }
 }

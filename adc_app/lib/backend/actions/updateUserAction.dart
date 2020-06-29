@@ -280,7 +280,7 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
         .document(client.userid)
         .collection("userData")
         .document("specifics")
-        .setData({
+        .updateData({
       "primaryDoulaId": primaryDoulaId,
       "primaryDoulaName": primaryDoulaName
     });
@@ -346,7 +346,7 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
         .document(client.userid)
         .collection("userData")
         .document("specifics")
-        .setData({
+        .updateData({
       "backupDoulaId": backupDoulaId,
       "backupDoulaName": backupDoulaName
     });

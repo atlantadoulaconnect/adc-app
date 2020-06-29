@@ -95,7 +95,7 @@ class ClientHomeScreen extends StatelessWidget {
                     padding: EdgeInsets.all(15.0),
                     splashColor: themeColors['mediumBlue'],
                     child: Text(
-                      "See Profile",
+                      "See My Profile",
                       style: TextStyle(fontSize: 20.0),
                     ),
                   ),

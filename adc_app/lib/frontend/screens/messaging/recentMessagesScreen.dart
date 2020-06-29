@@ -119,7 +119,7 @@ class RecentMessagesScreen extends StatelessWidget {
             padding:
                 EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
             child: Center(
-                child: Column(
+                child: ListView(
               children: <Widget>[
                 Padding(
                     padding: const EdgeInsets.symmetric(
@@ -143,6 +143,7 @@ class RecentMessagesScreen extends StatelessWidget {
                           itemBuilder: (context, index) => buildItem(
                               context, snapshot.data.documents[index]),
                           itemCount: snapshot.data.documents.length,
+                          shrinkWrap: true,
                         );
                       },
                     )),

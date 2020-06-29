@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: toSignup,
               color: themeColors['lightBlue'],
               textColor: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+              padding: EdgeInsets.symmetric(vertical: 19.0, horizontal: 23.0),
               splashColor: themeColors['lightBlue'],
               child: Text(
                 "Sign Up",
@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: toLogin,
               color: themeColors['yellow'],
               textColor: Colors.black,
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+              padding: EdgeInsets.symmetric(vertical: 19.0, horizontal: 23.0),
               splashColor: themeColors['yellow'],
               child: Text(
                 "Log In",
@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: toInfo,
               color: themeColors['mediumBlue'],
               textColor: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+              padding: EdgeInsets.symmetric(vertical: 19.0, horizontal: 23.0),
               splashColor: themeColors['mediumBlue'],
               child: Text(
                 "Learn More",
@@ -112,7 +112,8 @@ class HomeScreenConnector extends StatelessWidget {
                     vm.toRegisteredClients,
                     vm.toHome,
                     vm.toPendingApps,
-                    vm.toUnmatchedClients);
+                    vm.toUnmatchedClients,
+                    vm.toActiveMatches);
               }
               break;
             case "client":
@@ -164,6 +165,7 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toClientApp;
   VoidCallback toDoulaApp;
   VoidCallback toProfile;
+  VoidCallback toActiveMatches;
   Future<void> Function(String, String) setProfileUser;
 
   ViewModel.build(
@@ -183,7 +185,8 @@ class ViewModel extends BaseModel<AppState> {
       @required this.updateClient,
       @required this.updateDoula,
       @required this.setProfileUser,
-      @required this.toProfile})
+      @required this.toProfile,
+      @required this.toActiveMatches,})
       : super(equals: [currentUser]);
 
   @override
@@ -211,6 +214,7 @@ class ViewModel extends BaseModel<AppState> {
         toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
         setProfileUser: (String userid, String userType) =>
             dispatchFuture(SetProfileUser(userid, userType)),
+        toActiveMatches: () => dispatch(NavigateAction.pushNamed("/activeMatches")),
     );
   }
 }

@@ -109,8 +109,11 @@ class LoginScreenState extends State<LoginScreen> {
                           side: BorderSide(color: themeColors['yellow'])),
                       color: themeColors["yellow"],
                       textColor: Colors.black,
-                      padding: EdgeInsets.all(15.0),
-                      child: Text("LOG IN"),
+                      padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 20.0),
+                      child: Text(
+                          "LOG IN",
+                          style: TextStyle(fontSize: 20.0),
+                      ),
                       onPressed: () async {
                         final form = _loginFormKey.currentState;
                         if (form.validate()) {
@@ -136,8 +139,11 @@ class LoginScreenState extends State<LoginScreen> {
                             side: BorderSide(color: themeColors['lightBlue'])),
                         color: themeColors["lightBlue"],
                         textColor: Colors.white,
-                        padding: EdgeInsets.all(15.0),
-                        child: Text("SIGN UP"),
+                        padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 20.0),
+                        child: Text(
+                            "SIGN UP",
+                            style: TextStyle(fontSize: 20.0),
+                        ),
                         onPressed: () {
                           toSignup();
                         }),

@@ -144,6 +144,7 @@ class ViewModel extends BaseModel<AppState> {
     return ViewModel.build(
         toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
         setProfileUser: (String userid, String userType) =>
-            dispatchFuture(SetProfileUser(userid, userType)));
+            dispatchFuture(SetProfileUser(userid, userType)),
+    );
   }
 }

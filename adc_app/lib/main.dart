@@ -1,4 +1,3 @@
-
 import 'package:adc_app/frontend/screens/admin/activeMatchesListScreen.dart';
 import 'package:adc_app/frontend/screens/admin/allUsersScreen.dart';
 import 'package:flutter/material.dart';
@@ -74,8 +73,11 @@ void main() async {
 
   await persistor.saveInitialState(state);
 
-  final Store<AppState> _store =
-      Store<AppState>(initialState: state, persistor: persistor);
+  final Store<AppState> _store = Store<AppState>(
+    initialState: state,
+    persistor: persistor,
+    modelObserver: DefaultModelObserver(),
+  );
   print("main: state of appstate: ${state.toString()}");
 
   NavigateAction.setNavigatorKey(navigatorKey);
@@ -136,8 +138,8 @@ class ADCApp extends StatelessWidget {
                 DoulasListForMatchingScreenConnector(),
             '/registeredClients': (context) =>
                 RegisteredClientsScreenConnector(),
-            '/allUsers' : (context) => AllUserScreenConnector(),
-            '/activeMatches' : (context) => ActiveMatchesListScreenConnector(),
+            '/allUsers': (context) => AllUserScreenConnector(),
+            '/activeMatches': (context) => ActiveMatchesListScreenConnector(),
             '/userProfile': (context) => UserProfileScreenConnector(),
             '/pendingApps': (context) => PendingApplicationsScreenConnector(),
             '/unmatchedClients': (context) => UnmatchedClientsScreenConnector(),

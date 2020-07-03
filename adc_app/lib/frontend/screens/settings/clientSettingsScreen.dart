@@ -414,7 +414,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                 print('currentUser.name after: ${currentUser.name}');
 
                 updateAccountDialog(context);
-
               },
               color: themeColors['yellow'],
               textColor: Colors.black,
@@ -1454,7 +1453,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                               await clientToDB();
 
                               updateAccountDialog(context);
-
                             }
                           },
                           color: themeColors['yellow'],
@@ -2383,11 +2381,9 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                         borderRadius: new BorderRadius.circular(5.0),
                         side: BorderSide(color: themeColors['emoryBlue'])),
                     onPressed: () async {
-
                       String clientEmail = emailCtrl.text.toString().trim();
 
                       if (clientEmail != currentUser.email) {
-
                         print(
                             'password: ${changeEmailPasswordCtrl.text.toString().trim()}');
                         if (changeEmailPasswordCtrl.text.toString().trim() !=
@@ -2412,7 +2408,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                         }
                       }
 
-
                       toHome();
                     },
                     color: themeColors['emoryBlue'],
@@ -2436,6 +2431,7 @@ class ClientSettingsScreenConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
+        debug: this,
         model: ViewModel(),
         builder: (BuildContext context, ViewModel vm) => ClientSettingsScreen(
               vm.currentUser,

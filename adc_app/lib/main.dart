@@ -78,7 +78,6 @@ void main() async {
     persistor: persistor,
     modelObserver: DefaultModelObserver(),
   );
-  print("main: state of appstate: ${state.toString()}");
 
   NavigateAction.setNavigatorKey(navigatorKey);
 
@@ -92,7 +91,6 @@ class ADCApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("ADCApp build: state of appstate: ${store.state.toString()}");
     return StoreProvider<AppState>(
         store: store,
         child: MaterialApp(
@@ -102,8 +100,7 @@ class ADCApp extends StatelessWidget {
           navigatorKey: navigatorKey,
           initialRoute: "/",
           routes: {
-            '/': (context) =>
-                HomeScreenConnector(), // TODO replace with splash screen, home -> /defaultHome
+            '/': (context) => HomeScreenConnector(),
             '/login': (context) => LoginScreenConnector(),
             '/signup': (context) => SignupScreenConnector(),
             '/appType': (context) => AppTypeScreenConnector(),
@@ -113,7 +110,6 @@ class ADCApp extends StatelessWidget {
             '/clientAppPage2': (context) => ClientAppPage2Connector(),
             '/clientAppPage3': (context) => ClientAppPage3Connector(),
             '/clientAppPage4': (context) => ClientAppPage4Connector(),
-
             '/clientAppPage5': (context) => ClientAppPage5Connector(),
             '/clientAppPage6': (context) => ClientAppPage6Connector(),
             '/clientAppConfirmation': (context) =>

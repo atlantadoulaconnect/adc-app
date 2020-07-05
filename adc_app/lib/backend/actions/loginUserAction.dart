@@ -1,3 +1,5 @@
+import 'package:adc_app/backend/util/UserErrorException.dart';
+
 import 'common.dart';
 import '../util/persistence.dart';
 
@@ -219,12 +221,12 @@ class LoginUserAction extends ReduxAction<AppState> {
       }
     } on PlatformException catch (e) {
       if (e.code == "ERROR_USER_NOT_FOUND") {
-        // TODO set sign up error
-        print("There is no account associated with this email address");
+        throw UserErrorException(
+            "There is no account associated with this email address");
       }
       if (e.code == "ERROR_WRONG_PASSWORD") {
-        // TODO set sign up error
-        print("Incorrect password was entered");
+        throw Exception("log in wrong password");
+        //throw UserException("Password was incorrect");
       }
     }
   }

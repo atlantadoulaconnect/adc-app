@@ -32,3 +32,4 @@ export '../../backend/states/messagesState.dart';
 
 // util
 export '../../backend/util/timeConversion.dart';
+export '../../backend/util/UserErrorException.dart';

@@ -6,8 +6,10 @@ class SignupScreen extends StatefulWidget {
   final VoidCallback toLogin;
   final VoidCallback toAppType;
   final bool isWaiting;
+  final void Function() popScreen;
 
-  SignupScreen(this.signUp, this.toLogin, this.toAppType, this.isWaiting);
+  SignupScreen(this.signUp, this.toLogin, this.toAppType, this.isWaiting,
+      this.popScreen);
 
   @override
   State<StatefulWidget> createState() {
@@ -21,6 +23,7 @@ class SignupScreenState extends State<SignupScreen> {
   Future<void> Function(String, String) signUp;
   VoidCallback toAppType;
   VoidCallback toLogin;
+  void Function() popScreen;
 
   TextEditingController _emailCtrl;
   TextEditingController _passCtrl;
@@ -34,6 +37,7 @@ class SignupScreenState extends State<SignupScreen> {
     signUp = widget.signUp;
     toAppType = widget.toAppType;
     toLogin = widget.toLogin;
+    popScreen = widget.popScreen;
     _emailCtrl = TextEditingController();
     _passCtrl = TextEditingController();
     _confirmPassCtrl = TextEditingController();
@@ -47,6 +51,25 @@ class SignupScreenState extends State<SignupScreen> {
     _passCtrl.dispose();
     _confirmPassCtrl.dispose();
     super.dispose();
+  }
+
+  signupErrorDialog(BuildContext context, String cause) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Sign up Error"),
+            content: Text(cause),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () {
+                  popScreen();
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -77,12 +100,11 @@ class SignupScreenState extends State<SignupScreen> {
                     decoration: InputDecoration(
                       labelText: "Password*",
                       hintText: "********",
-                      icon: new Icon(Icons.lock,
-                          color: themeColors["coolGray5"]
-                      ),
+                      icon:
+                          new Icon(Icons.lock, color: themeColors["coolGray5"]),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          // Based on passwordVisible state choose the icon
+                            // Based on passwordVisible state choose the icon
                             _passwordVisible
                                 ? Icons.visibility
                                 : Icons.visibility_off,
@@ -99,18 +121,16 @@ class SignupScreenState extends State<SignupScreen> {
                     controller: _passCtrl,
                     obscureText: !_passwordVisible,
                     validator: pwdValidator,
-
                   ),
                   TextFormField(
-                        decoration: InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Confirm Password*",
                         hintText: "********",
                         icon: new Icon(Icons.lock,
-                            color: themeColors["coolGray5"]
-                        ),
+                            color: themeColors["coolGray5"]),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            // Based on passwordVisible state choose the icon
+                              // Based on passwordVisible state choose the icon
                               _passwordVisible
                                   ? Icons.visibility
                                   : Icons.visibility_off,
@@ -146,12 +166,15 @@ class SignupScreenState extends State<SignupScreen> {
                         final form = _signupFormKey.currentState;
                         if (form.validate()) {
                           form.save();
+                          try {
+                            await signUp(_emailCtrl.text.toString().trim(),
+                                _passCtrl.text.toString().trim());
 
-                          await signUp(_emailCtrl.text.toString().trim(),
-                              _passCtrl.text.toString().trim());
-
-                          // Nav push to appType
-                          toAppType();
+                            // Nav push to appType
+                            toAppType();
+                          } on UserErrorException catch (e) {
+                            signupErrorDialog(context, e.msg);
+                          }
                         }
                       })
                 ])),
@@ -184,6 +207,7 @@ class SignupScreenConnector extends StatelessWidget {
         vm.toLogin,
         vm.toAppType,
         vm.isWaiting,
+        vm.popScreen,
       ),
     );
   }
@@ -196,22 +220,24 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toLogin;
   VoidCallback toAppType;
   bool isWaiting;
+  void Function() popScreen;
 
   ViewModel.build(
       {@required this.signUp,
       @required this.toLogin,
       @required this.toAppType,
-      @required this.isWaiting})
+      @required this.isWaiting,
+      @required this.popScreen})
       : super(equals: [isWaiting]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-      signUp: (String email, String password) =>
-          dispatchFuture(CreateUserAction(email, password)),
-      toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
-      toAppType: () => dispatch(NavigateAction.pushNamed("/appType")),
-      isWaiting: state.waiting,
-    );
+        signUp: (String email, String password) =>
+            dispatchFuture(CreateUserAction(email, password)),
+        toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
+        toAppType: () => dispatch(NavigateAction.pushNamed("/appType")),
+        isWaiting: state.waiting,
+        popScreen: () => dispatch(NavigateAction.pop()));
   }
 }

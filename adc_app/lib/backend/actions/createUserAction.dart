@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:adc_app/backend/util/UserErrorException.dart';
+
 import 'common.dart';
 
 // creates a user (email/password) with firebase
@@ -32,8 +34,7 @@ class CreateUserAction extends ReduxAction<AppState> {
       }
     } on PlatformException catch (e) {
       if (e.code == "ERROR_EMAIL_ALREADY_IN_USE") {
-        // TODO set sign up error
-        print("email already in use");
+        throw UserErrorException("Email is already in use");
       }
     }
 

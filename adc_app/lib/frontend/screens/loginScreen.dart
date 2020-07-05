@@ -6,8 +6,10 @@ class LoginScreen extends StatefulWidget {
   final VoidCallback toHome;
   final VoidCallback toSignup;
   final bool isWaiting;
+  final void Function() popScreen;
 
-  LoginScreen(this.login, this.toHome, this.toSignup, this.isWaiting);
+  LoginScreen(
+      this.login, this.toHome, this.toSignup, this.isWaiting, this.popScreen);
 
   @override
   State<StatefulWidget> createState() => LoginScreenState();
@@ -20,6 +22,7 @@ class LoginScreenState extends State<LoginScreen> {
   VoidCallback toHome;
   VoidCallback toSignup;
   bool isWaiting;
+  void Function() popScreen;
 
   TextEditingController _emailInputCtrl;
   TextEditingController _pwdInputCtrl;
@@ -32,6 +35,7 @@ class LoginScreenState extends State<LoginScreen> {
     toHome = widget.toHome;
     toSignup = widget.toSignup;
     isWaiting = widget.isWaiting;
+    popScreen = widget.popScreen;
 
     _emailInputCtrl = TextEditingController();
     _pwdInputCtrl = TextEditingController();
@@ -44,6 +48,24 @@ class LoginScreenState extends State<LoginScreen> {
     _emailInputCtrl.dispose();
     _pwdInputCtrl.dispose();
     super.dispose();
+  }
+
+  loginErrorDialog(BuildContext context, String cause) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Login Error"),
+            content: Text(cause),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    popScreen();
+                  }),
+            ],
+          );
+        });
   }
 
   @override
@@ -109,20 +131,23 @@ class LoginScreenState extends State<LoginScreen> {
                           side: BorderSide(color: themeColors['yellow'])),
                       color: themeColors["yellow"],
                       textColor: Colors.black,
-                      padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 20.0),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 18.0, horizontal: 20.0),
                       child: Text(
-                          "LOG IN",
-                          style: TextStyle(fontSize: 20.0),
+                        "LOG IN",
+                        style: TextStyle(fontSize: 20.0),
                       ),
                       onPressed: () async {
                         final form = _loginFormKey.currentState;
                         if (form.validate()) {
                           form.save();
-                          await login(_emailInputCtrl.text.toString().trim(),
-                              _pwdInputCtrl.text.toString().trim());
-                          // TODO check if
-                          print("exited await login going toHome");
-                          toHome();
+                          try {
+                            await login(_emailInputCtrl.text.toString().trim(),
+                                _pwdInputCtrl.text.toString().trim());
+                            toHome();
+                          } on UserErrorException catch (e) {
+                            loginErrorDialog(context, e.msg);
+                          }
                         }
                       },
                     ),
@@ -139,10 +164,11 @@ class LoginScreenState extends State<LoginScreen> {
                             side: BorderSide(color: themeColors['lightBlue'])),
                         color: themeColors["lightBlue"],
                         textColor: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 20.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 18.0, horizontal: 20.0),
                         child: Text(
-                            "SIGN UP",
-                            style: TextStyle(fontSize: 20.0),
+                          "SIGN UP",
+                          style: TextStyle(fontSize: 20.0),
                         ),
                         onPressed: () {
                           toSignup();
@@ -157,8 +183,8 @@ class LoginScreenConnector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) =>
-          LoginScreen(vm.login, vm.toHome, vm.toSignup, vm.isWaiting),
+      builder: (BuildContext context, ViewModel vm) => LoginScreen(
+          vm.login, vm.toHome, vm.toSignup, vm.isWaiting, vm.popScreen),
     );
   }
 }
@@ -170,48 +196,52 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toHome;
   VoidCallback toSignup;
   bool isWaiting;
+  void Function() popScreen;
 
   ViewModel.build(
       {@required this.login,
       @required this.toHome,
       @required this.toSignup,
-      @required this.isWaiting})
+      @required this.isWaiting,
+      @required this.popScreen})
       : super(equals: [isWaiting]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        login: (String email, String password) =>
-            dispatchFuture(LoginUserAction(email, password)),
-        toHome: () {
-          if (state.currentUser == null) {
-            dispatch(NavigateAction.pushNamed("/"));
-          } else {
-            switch (state.currentUser.userType) {
-              case "admin":
-                {
-                  dispatch(NavigateAction.pushNamed("/adminHome"));
-                }
-                break;
-              case "client":
-                {
-                  dispatch(NavigateAction.pushNamed("/clientHome"));
-                }
-                break;
-              case "doula":
-                {
-                  dispatch(NavigateAction.pushNamed("/doulaHome"));
-                }
-                break;
-              default:
-                {
-                  dispatch(NavigateAction.pushNamed("/"));
-                }
-                break;
-            }
+      login: (String email, String password) =>
+          dispatchFuture(LoginUserAction(email, password)),
+      toHome: () {
+        if (state.currentUser == null) {
+          dispatch(NavigateAction.pushNamed("/"));
+        } else {
+          switch (state.currentUser.userType) {
+            case "admin":
+              {
+                dispatch(NavigateAction.pushNamed("/adminHome"));
+              }
+              break;
+            case "client":
+              {
+                dispatch(NavigateAction.pushNamed("/clientHome"));
+              }
+              break;
+            case "doula":
+              {
+                dispatch(NavigateAction.pushNamed("/doulaHome"));
+              }
+              break;
+            default:
+              {
+                dispatch(NavigateAction.pushNamed("/"));
+              }
+              break;
           }
-        },
-        toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
-        isWaiting: state.waiting);
+        }
+      },
+      toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
+      isWaiting: state.waiting,
+      popScreen: () => dispatch(NavigateAction.pop()),
+    );
   }
 }

@@ -220,13 +220,34 @@ class LoginUserAction extends ReduxAction<AppState> {
         return null;
       }
     } on PlatformException catch (e) {
-      if (e.code == "ERROR_USER_NOT_FOUND") {
-        throw UserErrorException(
-            "There is no account associated with this email address");
-      }
-      if (e.code == "ERROR_WRONG_PASSWORD") {
-        throw Exception("log in wrong password");
-        //throw UserException("Password was incorrect");
+      // cases for diff types of errors
+      switch (e.code) {
+        case "ERROR_USER_NOT_FOUND":
+          {
+            throw UserErrorException(
+                "There is no account associated with this email address");
+          }
+          break;
+        case "ERROR_WRONG_PASSWORD":
+          {
+            throw UserErrorException("Incorrect password");
+          }
+          break;
+        case "ERROR_USER_DISABLED":
+          {
+            throw UserErrorException(
+                "This account has been disabled. Contact the admins to re-enable it");
+          }
+          break;
+        case "ERROR_TOO_MANY_REQUESTS":
+          {
+            throw UserErrorException(
+                "There have been too many login attempts. Wait and try again later.");
+          }
+        default:
+          {
+            throw UserErrorException("There was an internal error");
+          }
       }
     }
   }

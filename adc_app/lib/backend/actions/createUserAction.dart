@@ -33,8 +33,16 @@ class CreateUserAction extends ReduxAction<AppState> {
         return state.copy(currentUser: applicant);
       }
     } on PlatformException catch (e) {
-      if (e.code == "ERROR_EMAIL_ALREADY_IN_USE") {
-        throw UserErrorException("Email is already in use");
+      switch (e.code) {
+        case "ERROR_EMAIL_ALREADY_IN_USE":
+          {
+            throw UserErrorException("Email is already in use");
+          }
+          break;
+        default:
+          {
+            throw UserErrorException("There was an internal error");
+          }
       }
     }
 

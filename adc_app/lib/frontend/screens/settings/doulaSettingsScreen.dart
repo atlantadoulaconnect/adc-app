@@ -12,6 +12,7 @@ class DoulaSettingsScreen extends StatefulWidget {
   final void Function(Doula, String, List<Phone>, String, String, bool)
       updateDoulaAccount;
   final void Function(Doula, bool, bool, String, int) updateCertification;
+  final void Function(Doula, String) updateEmail;
   final Future<void> Function() doulaToDB;
 
   DoulaSettingsScreen(
@@ -21,6 +22,7 @@ class DoulaSettingsScreen extends StatefulWidget {
       this.logout,
       this.updateDoulaAccount,
       this.updateCertification,
+      this.updateEmail,
       this.doulaToDB);
 
 //      : assert(currentUser != null && toHome != null && logout != null);
@@ -33,6 +35,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
   void Function(Doula, String, List<Phone>, String, String, bool)
       updateDoulaAccount;
   void Function(Doula, bool, bool, String, int) updateCertification;
+  void Function(Doula, String) updateEmail;
   Future<void> Function() doulaToDB;
 
   VoidCallback toHome;
@@ -91,6 +94,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
 
     updateDoulaAccount = widget.updateDoulaAccount;
     updateCertification = widget.updateCertification;
+    updateEmail = widget.updateEmail;
     doulaToDB = widget.doulaToDB;
 
     String userType = currentUser != null ? currentUser.userType : 'unlogged';
@@ -625,8 +629,24 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                               borderRadius: new BorderRadius.circular(5.0),
                               side: BorderSide(color: themeColors['yellow'])),
                           onPressed: () async {
-                            //TODO add email changing functionality
-                            toHome();
+                            String newDoulaEmail = emailCtrl.text.toString().trim();
+                            String doulaPassword = changeEmailPasswordCtrl.text.toString().trim();
+                            print('new email: $newDoulaEmail  pw: $doulaPassword');
+
+                            AuthResult result = await FirebaseAuth.instance
+                                .signInWithEmailAndPassword(
+                                email: currentUser.email,
+                                password: doulaPassword);
+                            FirebaseUser user = result.user;
+                            print('user: $user');
+                            String userId = user.uid;
+                            print('userId: $userId');
+
+                            user.updateEmail(newDoulaEmail);
+                            updateEmail(currentUser, newDoulaEmail);
+                            await doulaToDB();
+                            print("Email was changed to: ${emailCtrl.text.toString().trim()}");
+                            updateAccountDialog(context);
                           },
                           color: themeColors['yellow'],
                           textColor: Colors.black,
@@ -945,6 +965,7 @@ class DoulaSettingsScreenConnector extends StatelessWidget {
             vm.logout,
             vm.updateDoulaAccount,
             vm.updateCertification,
+            vm.updateEmail,
             vm.doulaToDB));
   }
 }
@@ -959,6 +980,7 @@ class ViewModel extends BaseModel<AppState> {
   void Function(Doula, String, List<Phone>, String, String, bool)
       updateDoulaAccount;
   void Function(Doula, bool, bool, String, int) updateCertification;
+  void Function(Doula, String) updateEmail;
   Future<void> Function() doulaToDB;
 
   ViewModel.build({
@@ -968,6 +990,7 @@ class ViewModel extends BaseModel<AppState> {
     @required this.logout,
     @required this.updateDoulaAccount,
     @required this.updateCertification,
+    @required this.updateEmail,
     this.doulaToDB,
   }) : super(equals: [currentUser]);
 
@@ -1000,6 +1023,10 @@ class ViewModel extends BaseModel<AppState> {
               certInProgress: certInProgress,
               certProgram: certProgram,
               birthsNeeded: birthsNeeded)),
+      updateEmail: (Doula user, String email) =>
+          dispatch(UpdateDoulaUserAction(
+              user,
+              email: email)),
       doulaToDB: () => dispatchFuture(UpdateDoulaUserDocument()),
     );
   }

@@ -324,6 +324,7 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
                                 side: BorderSide(color: themeColors['yellow'])),
                             onPressed: () {
                               // TODO selecting calendar dates and adding to Doula
+                              unavailableDates.sort();
                               List<String> unavailableDatesAsString = new List<String>();
                               for (DateTime d in unavailableDates) {
                                 unavailableDatesAsString.add(formatDateYYYYMMDD(d));

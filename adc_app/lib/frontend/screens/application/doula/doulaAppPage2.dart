@@ -2,7 +2,7 @@ import 'package:adc_app/frontend/screens/common.dart';
 
 class DoulaAppPage2 extends StatefulWidget {
   final Doula currentUser;
-  final void Function(Doula, String) updateDoula;
+  final void Function(String) updateDoula;
   final VoidCallback toDoulaAppPage3;
   final void Function(bool) cancelApplication;
 
@@ -23,7 +23,7 @@ class DoulaAppPage2 extends StatefulWidget {
 class DoulaAppPage2State extends State<DoulaAppPage2> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Doula currentUser;
-  void Function(Doula, String) updateDoula;
+  void Function(String) updateDoula;
   VoidCallback toDoulaAppPage3;
   void Function(bool) cancelApplication;
 
@@ -191,8 +191,7 @@ class DoulaAppPage2State extends State<DoulaAppPage2> {
                             borderRadius: new BorderRadius.circular(10.0),
                             side: BorderSide(color: themeColors['yellow'])),
                         onPressed: () {
-                          updateDoula(
-                              currentUser, _bioCtrl.text.toString().trim());
+                          updateDoula(_bioCtrl.text.toString().trim());
                           toDoulaAppPage3();
                         },
                         color: themeColors['yellow'],
@@ -233,7 +232,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Doula currentUser;
-  void Function(Doula, String) updateDoula;
+  void Function(String) updateDoula;
   VoidCallback toDoulaAppPage3;
   void Function(bool) cancelApplication;
 
@@ -249,8 +248,7 @@ class ViewModel extends BaseModel<AppState> {
         currentUser: state.currentUser,
         toDoulaAppPage3: () =>
             dispatch(NavigateAction.pushNamed("/doulaAppPage3")),
-        updateDoula: (Doula user, String bio) =>
-            dispatch(UpdateDoulaUserAction(user, bio: bio)),
+        updateDoula: (String bio) => dispatch(UpdateDoulaUserAction(bio: bio)),
         cancelApplication: (bool confirmed) {
           dispatch(NavigateAction.pop());
           if (confirmed) {

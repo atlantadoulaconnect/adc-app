@@ -2,7 +2,7 @@ import '../../common.dart';
 
 class ClientAppPage4 extends StatefulWidget {
   final Client currentUser;
-  final void Function(Client, int, bool, bool, List<String>, bool) updateClient;
+  final void Function(int, bool, bool, List<String>, bool) updateClient;
   final VoidCallback toClientAppPage5;
   final void Function(bool) cancelApplication;
 
@@ -23,9 +23,18 @@ class ClientAppPage4 extends StatefulWidget {
 class ClientAppPage4State extends State<ClientAppPage4> {
   final GlobalKey<FormState> _c4formKey = GlobalKey<FormState>();
   Client currentUser;
-  void Function(Client, int, bool, bool, List<String>, bool) updateClient;
+  void Function(int, bool, bool, List<String>, bool) updateClient;
   VoidCallback toClientAppPage5;
   void Function(bool) cancelApplication;
+
+  List<DropdownMenuItem<String>> birthCount;
+  List<String> counts = ["0", "1", "2", "3", "4"];
+  String selectedBirthCount;
+
+  int pretermValue = 1;
+  int previousTwinsOrTriplets = 2;
+  int lowBirthWeightValue = 1;
+  bool vaginalBirth = false, cesarean = false, vbac = false;
 
   @override
   void initState() {
@@ -33,6 +42,9 @@ class ClientAppPage4State extends State<ClientAppPage4> {
     updateClient = widget.updateClient;
     toClientAppPage5 = widget.toClientAppPage5;
     cancelApplication = widget.cancelApplication;
+
+    loadData();
+    initialPlaceholders();
 
     super.initState();
   }
@@ -64,8 +76,23 @@ class ClientAppPage4State extends State<ClientAppPage4> {
     );
   }
 
-  List<DropdownMenuItem<String>> birthCount = [];
-  String selectedBirthCount;
+  void initialPlaceholders() {
+    selectedBirthCount =
+        currentUser.liveBirths != null ? counts[currentUser.liveBirths] : null;
+    pretermValue = currentUser.preterm == null || !currentUser.preterm ? 2 : 1;
+    lowBirthWeightValue =
+        currentUser.lowWeight == null || !currentUser.lowWeight ? 2 : 1;
+
+    if (currentUser.deliveryTypes != null &&
+        currentUser.deliveryTypes.isNotEmpty) {
+      vaginalBirth = currentUser.deliveryTypes.contains("vaginal");
+      cesarean = currentUser.deliveryTypes.contains("cesarean");
+      vbac = currentUser.deliveryTypes.contains("vbac");
+
+      previousTwinsOrTriplets =
+          currentUser.multiples == null || !currentUser.multiples ? 2 : 1;
+    }
+  }
 
   void loadData() {
     birthCount = [];
@@ -91,15 +118,8 @@ class ClientAppPage4State extends State<ClientAppPage4> {
     ));
   }
 
-  int pretermValue = 1;
-  int previousTwinsOrTriplets = 2;
-  int lowBirthWeightValue = 1;
-  bool vaginalBirth = false, cesarean = false, vbac = false;
-
   @override
   Widget build(BuildContext context) {
-    loadData();
-
     return Scaffold(
         appBar: AppBar(title: Text("Request a Doula")),
         body: Center(
@@ -151,13 +171,8 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                           hint: new Text('Previous Births'),
                           isExpanded: true,
                           onChanged: (value) {
-                            //print("value: $value");
                             setState(() {
                               selectedBirthCount = value;
-                              //print("birth count: " + selectedBirthCount);
-                              //if (selectedBirthCount.contains('1', 0)) {
-                              //DisplayPreviousBirthInfo();
-                              //}
                             });
                           },
                         ),
@@ -406,11 +421,9 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                               int births = int.parse(selectedBirthCount);
 
                               if (births == 0) {
-                                updateClient(currentUser, births, null, null,
-                                    null, null);
+                                updateClient(births, null, null, null, null);
                               } else {
                                 updateClient(
-                                    currentUser,
                                     births,
                                     pretermValue == 1,
                                     lowBirthWeightValue == 1,
@@ -455,7 +468,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Client currentUser;
-  void Function(Client, int, bool, bool, List<String>, bool) updateClient;
+  void Function(int, bool, bool, List<String>, bool) updateClient;
   VoidCallback toClientAppPage5;
   void Function(bool) cancelApplication;
 
@@ -468,13 +481,14 @@ class ViewModel extends BaseModel<AppState> {
 
   @override
   ViewModel fromStore() {
+    Client current = state.currentUser as Client;
     return ViewModel.build(
       currentUser: state.currentUser,
       toClientAppPage5: () =>
           dispatch(NavigateAction.pushNamed("/clientAppPage5")),
-      updateClient: (Client user, int liveBirths, bool preterm, bool lowWeight,
+      updateClient: (int liveBirths, bool preterm, bool lowWeight,
               List<String> deliveryTypes, bool multiples) =>
-          dispatch(UpdateClientUserAction(user,
+          dispatch(UpdateClientUserAction(
               liveBirths: liveBirths,
               preterm: preterm,
               lowWeight: lowWeight,

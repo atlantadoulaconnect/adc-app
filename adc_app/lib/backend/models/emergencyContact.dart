@@ -14,6 +14,8 @@ class EmergencyContact {
     this.phones = phones;
   }
 
+  EmergencyContact.empty() {}
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

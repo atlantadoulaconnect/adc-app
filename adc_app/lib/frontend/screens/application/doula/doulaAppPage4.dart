@@ -5,7 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 class DoulaAppPage4 extends StatefulWidget {
   final Doula currentUser;
-  final void Function(Doula, List<String>) updateDoula;
+  final void Function(List<String>) updateDoula;
   final VoidCallback toDoulaAppPage5;
   final void Function(bool) cancelApplication;
 
@@ -24,9 +24,8 @@ class DoulaAppPage4 extends StatefulWidget {
 }
 
 class DoulaAppPage4State extends State<DoulaAppPage4> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Doula currentUser;
-  void Function(Doula, List<String>) updateDoula;
+  void Function(List<String>) updateDoula;
   VoidCallback toDoulaAppPage5;
   void Function(bool) cancelApplication;
   CalendarController calendarController;
@@ -73,7 +72,6 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
 
   @override
   Widget build(BuildContext context) {
-
     TableCalendar myCal = TableCalendar(
       calendarController: calendarController,
       availableCalendarFormats: const {
@@ -102,7 +100,9 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
               date.day.toString(),
             ),
             decoration: BoxDecoration(
-              color: unavailableDates.contains(date) ? themeColors["gold"] : themeColors["lightGrey"],
+              color: unavailableDates.contains(date)
+                  ? themeColors["gold"]
+                  : themeColors["lightGrey"],
               shape: BoxShape.circle,
             ),
           );
@@ -112,9 +112,7 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
             alignment: Alignment.center,
             child: Text(
               date.day.toString(),
-              style: TextStyle(
-                  color: themeColors["coolGray5"]
-              ),
+              style: TextStyle(color: themeColors["coolGray5"]),
             ),
           );
         },
@@ -123,9 +121,7 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
             alignment: Alignment.center,
             child: Text(
               date.day.toString(),
-              style: TextStyle(
-                  color: themeColors["coolGray5"]
-              ),
+              style: TextStyle(color: themeColors["coolGray5"]),
             ),
           );
         },
@@ -134,9 +130,7 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
             alignment: Alignment.center,
             child: Text(
               date.day.toString(),
-              style: TextStyle(
-                  color: themeColors["coolGray5"]
-              ),
+              style: TextStyle(color: themeColors["coolGray5"]),
             ),
           );
         },
@@ -145,9 +139,7 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
             alignment: Alignment.center,
             child: Text(
               date.day.toString(),
-              style: TextStyle(
-                  color: themeColors["coolGray5"]
-              ),
+              style: TextStyle(color: themeColors["coolGray5"]),
             ),
           );
         },
@@ -156,12 +148,12 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
             alignment: Alignment.center,
             child: Text(
               date.day.toString(),
-              style: TextStyle(
-                  color: themeColors["black"]
-              ),
+              style: TextStyle(color: themeColors["black"]),
             ),
             decoration: BoxDecoration(
-              color: unavailableDates.contains(date) ? themeColors["gold"] : themeColors["lightGrey"],
+              color: unavailableDates.contains(date)
+                  ? themeColors["gold"]
+                  : themeColors["lightGrey"],
               shape: BoxShape.circle,
             ),
           );
@@ -172,12 +164,13 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
             child: Text(
               date.day.toString(),
               style: TextStyle(
-                color: themeColors["mediumBlue"],
-                fontWeight: FontWeight.bold
-              ),
+                  color: themeColors["mediumBlue"],
+                  fontWeight: FontWeight.bold),
             ),
             decoration: BoxDecoration(
-              color: unavailableDates.contains(date) ? themeColors["gold"] : themeColors["lightGrey"],
+              color: unavailableDates.contains(date)
+                  ? themeColors["gold"]
+                  : themeColors["lightGrey"],
               shape: BoxShape.circle,
             ),
           );
@@ -192,7 +185,9 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
               ),
             ),
             decoration: BoxDecoration(
-              color: unavailableDates.contains(date) ? themeColors["gold"] : themeColors["lightGrey"],
+              color: unavailableDates.contains(date)
+                  ? themeColors["gold"]
+                  : themeColors["lightGrey"],
               shape: BoxShape.circle,
               border: Border.all(color: themeColors["mediumBlue"], width: 2.0),
             ),
@@ -324,12 +319,13 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
                                 side: BorderSide(color: themeColors['yellow'])),
                             onPressed: () {
                               // TODO selecting calendar dates and adding to Doula
-                              unavailableDates.sort();
-                              List<String> unavailableDatesAsString = new List<String>();
+                              List<String> unavailableDatesAsString =
+                                  new List<String>();
                               for (DateTime d in unavailableDates) {
-                                unavailableDatesAsString.add(formatDateYYYYMMDD(d));
+                                unavailableDatesAsString
+                                    .add(formatDateYYYYMMDD(d));
                               }
-                              updateDoula(currentUser, unavailableDatesAsString);
+                              updateDoula(unavailableDatesAsString);
                               toDoulaAppPage5();
                             },
                             color: themeColors['yellow'],
@@ -370,7 +366,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Doula currentUser;
-  void Function(Doula, List<String>) updateDoula;
+  void Function(List<String>) updateDoula;
   VoidCallback toDoulaAppPage5;
   void Function(bool) cancelApplication;
 
@@ -384,8 +380,8 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        updateDoula: (Doula user, List<String> availableDates) =>
-            dispatch(UpdateDoulaUserAction(user, availableDates: availableDates)),
+        updateDoula: (List<String> availableDates) =>
+            dispatch(UpdateDoulaUserAction(availableDates: availableDates)),
         toDoulaAppPage5: () =>
             dispatch(NavigateAction.pushNamed("/doulaAppPage5")),
         cancelApplication: (bool confirmed) {

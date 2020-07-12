@@ -2,7 +2,7 @@ import '../../common.dart';
 
 class ClientAppPage3 extends StatefulWidget {
   final Client currentUser;
-  final void Function(Client, String, String, String, bool, bool) updateClient;
+  final void Function(String, String, String, bool, bool) updateClient;
   final VoidCallback toClientAppPage4;
   final void Function(bool) cancelApplication;
 
@@ -23,12 +23,31 @@ class ClientAppPage3 extends StatefulWidget {
 class ClientAppPage3State extends State<ClientAppPage3> {
   final GlobalKey<FormState> _c3formKey = GlobalKey<FormState>();
   Client currentUser;
-  void Function(Client, String, String, String, bool, bool) updateClient;
+  void Function(String, String, String, bool, bool) updateClient;
   VoidCallback toClientAppPage4;
   void Function(bool) cancelApplication;
 
   TextEditingController _dueDateCtrl;
-  TextEditingController _birthLocCtrl;
+
+  //drop down list
+  List<DropdownMenuItem<String>> birthType;
+  List<String> birthTypes = ["singleton", "twins", "triplets", "more"];
+  String selectedBirthType;
+
+  List<DropdownMenuItem<String>> birthLocation;
+  List<String> locations = [
+    "Grady",
+    "Emory Decatur",
+    "Northside",
+    "A Birthing Center",
+    "At Home",
+    "No plans",
+    "other"
+  ];
+
+  String selectedBirthLocation;
+  int epiduralValue;
+  int cSectionValue;
 
   @override
   void initState() {
@@ -36,7 +55,10 @@ class ClientAppPage3State extends State<ClientAppPage3> {
     updateClient = widget.updateClient;
     toClientAppPage4 = widget.toClientAppPage4;
     _dueDateCtrl = TextEditingController();
-    _birthLocCtrl = TextEditingController();
+
+    loadData();
+    initialPlaceholders();
+
     super.initState();
   }
 
@@ -67,71 +89,135 @@ class ClientAppPage3State extends State<ClientAppPage3> {
     );
   }
 
-  //drop down list
-  List<DropdownMenuItem<String>> birthType = [];
-  String selectedBirthType;
+  void initialPlaceholders() {
+    switch (currentUser.birthType) {
+      case "singleton":
+        {
+          selectedBirthType = birthTypes[0];
+        }
+        break;
+      case "twins":
+        {
+          selectedBirthType = birthTypes[1];
+        }
+        break;
+      case "triplets":
+        {
+          selectedBirthType = birthTypes[2];
+        }
+        break;
+      case "more":
+        {
+          selectedBirthType = birthTypes[3];
+        }
+        break;
+      default:
+        {
+          selectedBirthType = null;
+        }
+    }
 
-  List<DropdownMenuItem<String>> birthLocation = [];
-  String selectedBirthLocation;
-  int epiduralValue = 1;
-  int cSectionValue = 1;
+    switch (currentUser.birthLocation) {
+      case "Grady":
+        {
+          selectedBirthLocation = locations[0];
+        }
+        break;
+      case "Emory Decatur":
+        {
+          selectedBirthLocation = locations[1];
+        }
+        break;
+      case "Northside":
+        {
+          selectedBirthLocation = locations[2];
+        }
+        break;
+      case "A Birthing Center":
+        {
+          selectedBirthLocation = locations[3];
+        }
+        break;
+      case "At Home":
+        {
+          selectedBirthLocation = locations[4];
+        }
+        break;
+      case "No plans":
+        {
+          selectedBirthLocation = locations[5];
+        }
+        break;
+      case "other":
+        {
+          selectedBirthLocation = locations[6];
+        }
+        break;
+      default:
+        {
+          selectedBirthLocation = null;
+        }
+        break;
+    }
+
+    epiduralValue =
+        currentUser.epidural == null || currentUser.epidural ? 1 : 2;
+    cSectionValue =
+        currentUser.cesarean == null || currentUser.cesarean ? 1 : 2;
+  }
 
   void loadData() {
     birthType = [];
     birthType.add(new DropdownMenuItem(
       child: new Text('Singleton'),
-      value: 'singleton',
+      value: birthTypes[0],
     ));
     birthType.add(new DropdownMenuItem(
       child: new Text('Twins'),
-      value: 'twins',
+      value: birthTypes[1],
     ));
     birthType.add(new DropdownMenuItem(
       child: new Text('Triplets'),
-      value: 'triplets',
+      value: birthTypes[2],
     ));
     birthType.add(new DropdownMenuItem(
       child: new Text('4 or More'),
-      value: 'more',
+      value: birthTypes[3],
     ));
 
     birthLocation = [];
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Grady'),
-      value: 'Grady',
+      value: locations[0],
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Emory Decatur'),
-      value: 'Emory Decatur',
+      value: locations[1],
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Northside'),
-      value: 'Northside',
+      value: locations[2],
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('A Birthing Center'),
-      value: 'A Birthing Center',
+      value: locations[3],
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('At Home'),
-      value: 'At Home',
+      value: locations[4],
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('No plans'),
-      value: 'No plans',
+      value: locations[5],
     ));
     birthLocation.add(new DropdownMenuItem(
       child: new Text('Other (please specify below)'),
-      value: 'other',
+      value: locations[6],
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    birthType = [];
-    birthLocation = [];
-    loadData();
-
     return Scaffold(
         appBar: AppBar(
           title: Text("Request a Doula"),
@@ -174,7 +260,7 @@ class ClientAppPage3State extends State<ClientAppPage3> {
                             labelText: 'Due Date (MM/DD/YYYY)',
                             prefixIcon: Icon(Icons.cake),
                             suffixIcon: Icon(Icons.calendar_today)),
-                        controller: _dueDateCtrl,
+                        controller: _dueDateCtrl..text = currentUser.dueDate,
                         validator: (val) {
                           if (val.isEmpty) {
                             return "Please enter your due date.";
@@ -288,7 +374,7 @@ class ClientAppPage3State extends State<ClientAppPage3> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Are you expecting to have a caesarean section (C-Section)?',
+                      'Are you expecting to have a cesarean section (C-Section)?',
                       style: TextStyle(
                         fontSize: 16,
                       ),
@@ -372,7 +458,6 @@ class ClientAppPage3State extends State<ClientAppPage3> {
                               // TODO check other text controller if 'other' is chosen from dropdown
 
                               updateClient(
-                                  currentUser,
                                   _dueDateCtrl.text.toString().trim(),
                                   selectedBirthLocation,
                                   selectedBirthType,
@@ -414,7 +499,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Client currentUser;
-  void Function(Client, String, String, String, bool, bool) updateClient;
+  void Function(String, String, String, bool, bool) updateClient;
   VoidCallback toClientAppPage4;
   void Function(bool) cancelApplication;
 
@@ -431,9 +516,9 @@ class ViewModel extends BaseModel<AppState> {
       currentUser: state.currentUser,
       toClientAppPage4: () =>
           dispatch(NavigateAction.pushNamed("/clientAppPage4")),
-      updateClient: (Client user, String dueDate, String birthLocation,
-              String birthType, bool epidural, bool cesarean) =>
-          dispatch(UpdateClientUserAction(user,
+      updateClient: (String dueDate, String birthLocation, String birthType,
+              bool epidural, bool cesarean) =>
+          dispatch(UpdateClientUserAction(
               dueDate: dueDate,
               birthLocation: birthLocation,
               birthType: birthType,

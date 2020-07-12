@@ -3,7 +3,7 @@ import '../../../../backend/util/inputValidation.dart';
 
 class DoulaAppPage1 extends StatefulWidget {
   final Doula currentUser;
-  final void Function(Doula, String, String, List<Phone>) updateDoula;
+  final void Function(String, String, List<Phone>) updateDoula;
   final VoidCallback toDoulaAppPage2;
   final void Function(bool) cancelApplication;
 
@@ -24,7 +24,7 @@ class DoulaAppPage1 extends StatefulWidget {
 class DoulaAppPage1State extends State<DoulaAppPage1> {
   final GlobalKey<FormState> _d1formKey = GlobalKey<FormState>();
   Doula currentUser;
-  void Function(Doula, String, String, List<Phone>) updateDoula;
+  void Function(String, String, List<Phone>) updateDoula;
   VoidCallback toDoulaAppPage2;
   void Function(bool) cancelApplication;
 
@@ -235,8 +235,7 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                                           false));
                                     }
 
-                                    updateDoula(currentUser, displayName,
-                                        birthday, phones);
+                                    updateDoula(displayName, birthday, phones);
 
                                     toDoulaAppPage2();
                                   }
@@ -283,7 +282,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Doula currentUser;
-  void Function(Doula, String, String, List<Phone>) updateDoula;
+  void Function(String, String, List<Phone>) updateDoula;
   VoidCallback toDoulaAppPage2;
   void Function(bool) cancelApplication;
 
@@ -300,13 +299,11 @@ class ViewModel extends BaseModel<AppState> {
         toDoulaAppPage2: () =>
             dispatch(NavigateAction.pushNamed("/doulaAppPage2")),
         updateDoula: (
-          Doula user,
           String name,
           String bday,
           List<Phone> phones,
         ) =>
             dispatch(UpdateDoulaUserAction(
-              user,
               name: name,
               phones: phones,
               bday: bday,

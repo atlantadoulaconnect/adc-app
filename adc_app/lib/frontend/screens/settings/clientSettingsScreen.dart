@@ -12,13 +12,13 @@ class ClientSettingsScreen extends StatefulWidget {
   final VoidCallback logout;
   final VoidCallback toClientSettings;
 
-  final void Function(Client, String, List<Phone>, String, bool)
-      updateClientAccount;
+  final void Function(String, List<Phone>, String, bool) updateClientAccount;
   //user, birthLocation, birthType, DueDate, previousDeliveryTypes,
   //preterm, lowBirthWeight, multiples, epidural, cesarean
-  final void Function(Client, String, String, String, List<String>, bool, bool,
-      bool, bool, bool) updateBirthInformation;
-  final void Function(Client, List<EmergencyContact>) updateEmergencyContacts;
+  final void Function(
+          String, String, String, List<String>, bool, bool, bool, bool, bool)
+      updateBirthInformation;
+  final void Function(List<EmergencyContact>) updateEmergencyContacts;
   final Future<void> Function() clientToDB;
 
   ClientSettingsScreen(
@@ -39,10 +39,11 @@ class ClientSettingsScreen extends StatefulWidget {
 class ClientSettingsScreenState extends State<ClientSettingsScreen> {
   final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
 
-  void Function(Client, String, List<Phone>, String, bool) updateClientAccount;
-  void Function(Client, String, String, String, List<String>, bool, bool, bool,
-      bool, bool) updateBirthInformation;
-  void Function(Client, List<EmergencyContact>) updateEmergencyContacts;
+  void Function(String, List<Phone>, String, bool) updateClientAccount;
+  void Function(
+          String, String, String, List<String>, bool, bool, bool, bool, bool)
+      updateBirthInformation;
+  void Function(List<EmergencyContact>) updateEmergencyContacts;
   Future<void> Function() clientToDB;
 
   VoidCallback toHome;
@@ -407,7 +408,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                 phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
 
                 updateClientAccount(
-                    currentUser, clientName, phones, clientBday, photoRelease);
+                    clientName, phones, clientBday, photoRelease);
                 print('currentUser.name before: ${currentUser.name}');
                 setState(() {});
                 await clientToDB();
@@ -838,7 +839,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               ecs.add(ec1);
               ecs.add(ec2);
               print("ec1: $ecs");
-              updateEmergencyContacts(currentUser, ecs);
+              updateEmergencyContacts(ecs);
               setState(() {});
               await clientToDB();
               //toHome();
@@ -1094,17 +1095,8 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                   deliveries.add("vbac");
                 }
 
-                updateBirthInformation(
-                    currentUser,
-                    location,
-                    type,
-                    date,
-                    deliveries,
-                    preterm,
-                    lowWeight,
-                    multiples,
-                    epidural,
-                    cesarean);
+                updateBirthInformation(location, type, date, deliveries,
+                    preterm, lowWeight, multiples, epidural, cesarean);
                 setState(() {});
                 await clientToDB();
 
@@ -1447,8 +1439,8 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                               phones.add(Phone(
                                   phoneNumCtrl.text.toString().trim(), true));
 
-                              updateClientAccount(currentUser, clientName,
-                                  phones, clientBday, photoRelease);
+                              updateClientAccount(
+                                  clientName, phones, clientBday, photoRelease);
 
                               await clientToDB();
 
@@ -1926,7 +1918,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                             ecs.add(ec1);
                             ecs.add(ec2);
                             print("ec1: $ecs");
-                            updateEmergencyContacts(currentUser, ecs);
+                            updateEmergencyContacts(ecs);
                             setState(() {});
                             await clientToDB();
                           }
@@ -2194,7 +2186,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                               }
 
                               updateBirthInformation(
-                                  currentUser,
                                   location,
                                   type,
                                   date,
@@ -2454,10 +2445,11 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback logout;
   VoidCallback toClientSettings;
 
-  void Function(Client, String, List<Phone>, String, bool) updateClientAccount;
-  void Function(Client, String, String, String, List<String>, bool, bool, bool,
-      bool, bool) updateBirthInformation;
-  void Function(Client, List<EmergencyContact>) updateEmergencyContacts;
+  void Function(String, List<Phone>, String, bool) updateClientAccount;
+  void Function(
+          String, String, String, List<String>, bool, bool, bool, bool, bool)
+      updateBirthInformation;
+  void Function(List<EmergencyContact>) updateEmergencyContacts;
   Future<void> Function() clientToDB;
 
   ViewModel.build({
@@ -2483,17 +2475,15 @@ class ViewModel extends BaseModel<AppState> {
         dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         dispatch(LogoutUserAction());
       },
-      updateClientAccount: (Client user, String name, List<Phone> phones,
-              String bday, bool photoRelease) =>
-          dispatch(UpdateClientUserAction(
-        user,
+      updateClientAccount:
+          (String name, List<Phone> phones, String bday, bool photoRelease) =>
+              dispatch(UpdateClientUserAction(
         name: name,
         phones: phones,
         bday: bday,
         photoRelease: photoRelease,
       )),
-      updateBirthInformation: (Client user,
-              String birthLocation,
+      updateBirthInformation: (String birthLocation,
               String birthType,
               String dueDate,
               List<String> deliveryTypes,
@@ -2503,7 +2493,6 @@ class ViewModel extends BaseModel<AppState> {
               bool epidural,
               bool cesarean) =>
           dispatch(UpdateClientUserAction(
-        user,
         birthLocation: birthLocation,
         birthType: birthType,
         dueDate: dueDate,
@@ -2514,10 +2503,8 @@ class ViewModel extends BaseModel<AppState> {
         epidural: epidural,
         cesarean: cesarean,
       )),
-      updateEmergencyContacts:
-          (Client user, List<EmergencyContact> emergencyContacts) =>
-              dispatch(UpdateClientUserAction(
-        user,
+      updateEmergencyContacts: (List<EmergencyContact> emergencyContacts) =>
+          dispatch(UpdateClientUserAction(
         emergencyContacts: emergencyContacts,
       )),
       clientToDB: () => dispatchFuture(UpdateClientUserDocument()),

@@ -2,7 +2,7 @@ import '../../common.dart';
 
 class ClientAppPage6 extends StatefulWidget {
   final Client currentUser;
-  final void Function(Client, bool) updateClient;
+  final void Function(bool) updateClient;
   final VoidCallback toClientAppConfirmation;
   final void Function(bool) cancelApplication;
 
@@ -21,14 +21,12 @@ class ClientAppPage6 extends StatefulWidget {
 }
 
 class ClientAppPage6State extends State<ClientAppPage6> {
-  final GlobalKey<FormState> _c6formKey = GlobalKey<FormState>();
   Client currentUser;
-  void Function(Client, bool) updateClient;
+  void Function(bool) updateClient;
   VoidCallback toClientAppConfirmation;
   void Function(bool) cancelApplication;
 
-  bool photoReleasePermission = false;
-  bool statementAgree = false;
+  bool statementAgree;
 
   @override
   void initState() {
@@ -36,7 +34,17 @@ class ClientAppPage6State extends State<ClientAppPage6> {
     updateClient = widget.updateClient;
     toClientAppConfirmation = widget.toClientAppConfirmation;
     cancelApplication = widget.cancelApplication;
+
+    initialPlaceholders();
+
     super.initState();
+  }
+
+  void initialPlaceholders() {
+    statementAgree =
+        currentUser.photoRelease == null || !currentUser.photoRelease
+            ? false
+            : true;
   }
 
   confirmCancelDialog(BuildContext context) {
@@ -181,7 +189,7 @@ class ClientAppPage6State extends State<ClientAppPage6> {
                         borderRadius: new BorderRadius.circular(5.0),
                         side: BorderSide(color: themeColors['yellow'])),
                     onPressed: () {
-                      updateClient(currentUser, statementAgree);
+                      updateClient(statementAgree);
 
                       toClientAppConfirmation();
                     },
@@ -218,7 +226,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Client currentUser;
-  void Function(Client, bool) updateClient;
+  void Function(bool) updateClient;
   VoidCallback toClientAppConfirmation;
   void Function(bool) cancelApplication;
 
@@ -235,8 +243,8 @@ class ViewModel extends BaseModel<AppState> {
       currentUser: state.currentUser,
       toClientAppConfirmation: () =>
           dispatch(NavigateAction.pushNamed("/clientAppConfirmation")),
-      updateClient: (Client user, bool photoRelease) =>
-          dispatch(UpdateClientUserAction(user, photoRelease: photoRelease)),
+      updateClient: (bool photoRelease) =>
+          dispatch(UpdateClientUserAction(photoRelease: photoRelease)),
       cancelApplication: (bool confirmed) {
         dispatch(NavigateAction.pop());
         if (confirmed) {

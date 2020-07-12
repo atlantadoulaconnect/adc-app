@@ -3,7 +3,7 @@ import '../../../../backend/util/inputValidation.dart';
 
 class ClientAppPage2 extends StatefulWidget {
   final Client currentUser;
-  final void Function(Client, List<EmergencyContact>) updateClient;
+  final void Function(List<EmergencyContact>) updateClient;
   final VoidCallback toClientAppPage3;
   final void Function(bool) cancelApplication;
   final void Function(String) completePage;
@@ -26,7 +26,7 @@ class ClientAppPage2 extends StatefulWidget {
 class ClientAppPage2State extends State<ClientAppPage2> {
   final GlobalKey<FormState> _c2formKey = GlobalKey<FormState>();
   Client currentUser;
-  void Function(Client, List<EmergencyContact>) updateClient;
+  void Function(List<EmergencyContact>) updateClient;
   VoidCallback toClientAppPage3;
   void Function(bool) cancelApplication;
   void Function(String) completePage;
@@ -75,6 +75,40 @@ class ClientAppPage2State extends State<ClientAppPage2> {
     _altPhone2Ctrl.dispose();
 
     super.dispose();
+  }
+
+  // index: index of List<EmergencyContacts>
+  // value: type of placeholder (name, relationship)
+  dynamic emgContactsPlaceholder(int index, String value) {
+    if (currentUser.emergencyContacts != null &&
+        currentUser.emergencyContacts.length > index) {
+      // emergency contact exists for this index
+      switch (value) {
+        case "name":
+          {
+            return currentUser.emergencyContacts[index].name;
+          }
+          break;
+        case "relationship":
+          {
+            return currentUser.emergencyContacts[index].relationship;
+          }
+          break;
+        default:
+          {
+            // only other option is phone with format phoneX where x = index in list
+            List<Phone> phones = currentUser.emergencyContacts[index].phones;
+            int phoneIndex = int.parse(value.substring(value.length - 1));
+            if (phones != null && phones.length > phoneIndex) {
+              return currentUser
+                  .emergencyContacts[index].phones[phoneIndex].number;
+            }
+            return null;
+          }
+          break;
+      }
+    }
+    return null;
   }
 
   confirmCancelDialog(BuildContext context) {
@@ -161,7 +195,8 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                             labelText: 'Name of First Contact',
                             prefixIcon: Icon(Icons.person),
                           ),
-                          controller: _name1Ctrl,
+                          controller: _name1Ctrl
+                            ..text = emgContactsPlaceholder(0, "name"),
                           validator: nameValidator),
                     ),
                   ),
@@ -177,7 +212,8 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                           labelText: 'Relationship',
                           prefixIcon: Icon(Icons.people),
                         ),
-                        controller: _relationship1Ctrl,
+                        controller: _relationship1Ctrl
+                          ..text = emgContactsPlaceholder(0, "relationship"),
                         validator: (val) {
                           if (val.isEmpty) {
                             return "Please enter how this contact is related to you.";
@@ -199,7 +235,8 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                           labelText: 'Phone',
                           prefixIcon: Icon(Icons.phone),
                         ),
-                        controller: _phone1Ctrl,
+                        controller: _phone1Ctrl
+                          ..text = emgContactsPlaceholder(0, "phone0"),
                         validator: phoneValidator,
                       ),
                     ),
@@ -216,7 +253,8 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                           labelText: 'Phone 2 (Optional)',
                           prefixIcon: Icon(Icons.phone),
                         ),
-                        controller: _altPhone1Ctrl,
+                        controller: _altPhone1Ctrl
+                          ..text = emgContactsPlaceholder(0, "phone1"),
                         validator: altPhoneValidator,
                       ),
                     ),
@@ -245,7 +283,8 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                           labelText: 'Name of Second Contact',
                           prefixIcon: Icon(Icons.person),
                         ),
-                        controller: _name2Ctrl,
+                        controller: _name2Ctrl
+                          ..text = emgContactsPlaceholder(1, "name"),
                         validator: nameValidator,
                       ),
                     ),
@@ -262,7 +301,8 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                           labelText: 'Relationship',
                           prefixIcon: Icon(Icons.people),
                         ),
-                        controller: _relationship2Ctrl,
+                        controller: _relationship2Ctrl
+                          ..text = emgContactsPlaceholder(1, "relationship"),
                         validator: (val) {
                           if (val.isEmpty) {
                             return "Please enter how this contact is related to you.";
@@ -284,7 +324,8 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                           labelText: 'Phone',
                           prefixIcon: Icon(Icons.phone),
                         ),
-                        controller: _phone2Ctrl,
+                        controller: _phone2Ctrl
+                          ..text = emgContactsPlaceholder(1, "phone0"),
                         validator: phoneValidator,
                       ),
                     ),
@@ -301,7 +342,8 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                             labelText: 'Phone 2 (Optional)',
                             prefixIcon: Icon(Icons.phone),
                           ),
-                          controller: _altPhone2Ctrl,
+                          controller: _altPhone2Ctrl
+                            ..text = emgContactsPlaceholder(1, "phone1"),
                           validator: altPhoneValidator),
                     ),
                   ),
@@ -314,6 +356,81 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                               side:
                                   BorderSide(color: themeColors['lightBlue'])),
                           onPressed: () {
+                            // save only the valid inputs
+                            final form = _c2formKey.currentState;
+                            form.save();
+
+                            // EC1 controllers
+                            String ec1Name = _name1Ctrl.text.toString().trim();
+                            String ec1Rel =
+                                _relationship1Ctrl.text.toString().trim();
+                            String ec1Phone1 =
+                                _phone1Ctrl.text.toString().trim();
+                            String ec1Phone2 =
+                                _altPhone1Ctrl.text.toString().trim();
+
+                            List<EmergencyContact> ecs = List();
+                            List<Phone> ec1Phones = List();
+
+                            // validate phone entries as "not empty" and "legit US numbers"
+                            if (ec1Phone1.isNotEmpty &&
+                                phoneValidator(ec1Phone1) == null) {
+                              ec1Phones.add(Phone(ec1Phone1, true));
+                            }
+
+                            if (ec1Phone2.isNotEmpty &&
+                                phoneValidator(ec1Phone2) == null) {
+                              ec1Phones.add(Phone(ec1Phone2, false));
+                            }
+
+                            // save values for EC 1
+                            EmergencyContact ec1 = EmergencyContact.empty();
+                            // null value from validator means input is legit
+                            ec1.name =
+                                nameValidator(ec1Name) == null ? ec1Name : null;
+                            ec1.relationship = ec1Rel.isEmpty ? null : ec1Rel;
+                            ec1.phones =
+                                ec1Phones.length > 0 ? ec1Phones : null;
+
+                            ecs.add(ec1);
+
+                            // EC2 controllers
+
+                            String ec2Name = _name2Ctrl.text.toString().trim();
+                            String ec2Rel =
+                                _relationship2Ctrl.text.toString().trim();
+                            String ec2Phone1 =
+                                _phone2Ctrl.text.toString().trim();
+                            String ec2Phone2 =
+                                _altPhone2Ctrl.text.toString().trim();
+
+                            List<Phone> ec2Phones = List();
+
+                            // validate phone entries as "not empty" and "legit US numbers"
+                            if (ec2Phone1.isNotEmpty &&
+                                phoneValidator(ec2Phone1) == null) {
+                              ec2Phones.add(Phone(ec2Phone1, true));
+                            }
+
+                            if (ec2Phone2.isNotEmpty &&
+                                phoneValidator(ec2Phone2) == null) {
+                              ec2Phones.add(Phone(ec2Phone2, false));
+                            }
+
+                            // save values for EC 2
+                            EmergencyContact ec2 = EmergencyContact.empty();
+
+                            ec2.name =
+                                nameValidator(ec1Name) == null ? ec1Name : null;
+                            ec2.relationship = ec2Rel.isEmpty ? null : ec2Rel;
+                            ec2.phones =
+                                ec2Phones.length > 0 ? ec2Phones : null;
+
+                            ecs.add(ec2);
+
+                            // change currentUser in appstate
+                            updateClient(ecs);
+
                             Navigator.pop(context);
                           },
                           color: themeColors['lightBlue'],
@@ -394,7 +511,7 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                                 ecs.add(ec1);
                                 ecs.add(ec2);
 
-                                updateClient(currentUser, ecs);
+                                updateClient(ecs);
                                 completePage("clientAppPage2");
                                 toClientAppPage3();
                               }
@@ -423,7 +540,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Client currentUser;
-  void Function(Client, List<EmergencyContact>) updateClient;
+  void Function(List<EmergencyContact>) updateClient;
   VoidCallback toClientAppPage3;
   void Function(bool) cancelApplication;
   void Function(String) completePage;
@@ -442,8 +559,8 @@ class ViewModel extends BaseModel<AppState> {
         currentUser: state.currentUser,
         toClientAppPage3: () =>
             dispatch(NavigateAction.pushNamed("/clientAppPage3")),
-        updateClient: (Client user, List<EmergencyContact> contacts) =>
-            dispatch(UpdateClientUserAction(user, emergencyContacts: contacts)),
+        updateClient: (List<EmergencyContact> contacts) =>
+            dispatch(UpdateClientUserAction(emergencyContacts: contacts)),
         cancelApplication: (bool confirmed) {
           dispatch(NavigateAction.pop());
           if (confirmed) {

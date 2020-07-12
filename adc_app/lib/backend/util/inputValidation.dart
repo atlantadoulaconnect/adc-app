@@ -171,3 +171,21 @@ List<EmergencyContact> convertEmgContacts(List<dynamic> ecList) {
   }
   return null;
 }
+
+String getFirstName(String full) {
+  if (full.contains(" ")) {
+    List<String> names = full.split(" ");
+    return names.sublist(0, names.length - 1).join(" ");
+  }
+  // no space in name = only first name
+  return full;
+}
+
+String getLastInitial(String full) {
+  if (full.contains(" ")) {
+    List<String> names = full.split(" ");
+    return names[names.length - 1].substring(0, 1);
+  }
+  // no space in name = only first name; return empty string for last initial
+  return "";
+}

@@ -9,7 +9,7 @@ class AdminSettingsScreen extends StatefulWidget {
   final VoidCallback toHome;
   final VoidCallback logout;
 
-  final void Function(Admin, String, String) updateAdminAccount;
+  final void Function(String, String) updateAdminAccount;
   final Future<void> Function(Admin) adminToDB;
 
   AdminSettingsScreen(this.currentUser, this.toHome, this.logout,
@@ -22,7 +22,7 @@ class AdminSettingsScreen extends StatefulWidget {
 
 class AdminSettingsScreenState extends State<AdminSettingsScreen> {
   final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
-  void Function(Admin, String, String) updateAdminAccount;
+  void Function(String, String) updateAdminAccount;
   Future<void> Function(Admin) adminToDB;
 
   VoidCallback toHome;
@@ -387,7 +387,7 @@ class AdminSettingsScreenState extends State<AdminSettingsScreen> {
             String adminName = firstNameCtrl.text.toString().trim();
             String adminEmail = emailCtrl.text.toString().trim();
 
-            updateAdminAccount(currentUser, adminName, adminEmail);
+            updateAdminAccount(adminName, adminEmail);
             setState(() {});
             await adminToDB(currentUser);
             toHome();
@@ -447,7 +447,7 @@ class ViewModel extends BaseModel<AppState> {
   User currentUser;
   VoidCallback toHome;
   VoidCallback logout;
-  void Function(Admin, String, String) updateAdminAccount;
+  void Function(String, String) updateAdminAccount;
   Future<void> Function(Admin) adminToDB;
 
   ViewModel.build({
@@ -469,12 +469,10 @@ class ViewModel extends BaseModel<AppState> {
         dispatch(LogoutUserAction());
       },
       updateAdminAccount: (
-        Admin user,
         String name,
         String email,
       ) =>
           dispatch(UpdateAdminUserAction(
-        user,
         name: name,
         email: email,
       )),

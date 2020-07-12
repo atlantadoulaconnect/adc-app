@@ -3,14 +3,13 @@ import 'package:async_redux/async_redux.dart';
 import 'common.dart';
 
 class UpdateClientUserAction extends ReduxAction<AppState> {
-  final Client current;
-
   final String userid;
   final String userType;
   final String name;
   final List<Phone> phones;
   final String email;
   final bool phoneVerified;
+  final String userStatus;
 
   final String bday;
   final String primaryDoulaId;
@@ -34,13 +33,14 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
   final bool homeVisit;
   final bool photoRelease;
 
-  UpdateClientUserAction(this.current,
+  UpdateClientUserAction(
       {this.userid,
       this.userType,
       this.name,
       this.phones,
       this.email,
       this.phoneVerified,
+      this.userStatus,
       this.bday,
       this.primaryDoulaId,
       this.primaryDoulaName,
@@ -63,13 +63,14 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
 
   @override
   AppState reduce() {
-    Client updated = current.copy(
+    Client updated = (state.currentUser as Client).copy(
         userid: this.userid,
         userType: this.userType,
         name: this.name,
         phones: this.phones,
         email: this.email,
         phoneVerified: this.phoneVerified,
+        status: this.userStatus,
         bday: this.bday,
         primaryDoulaId: this.primaryDoulaId,
         primaryDoulaName: this.primaryDoulaName,
@@ -95,8 +96,6 @@ class UpdateClientUserAction extends ReduxAction<AppState> {
 }
 
 class UpdateDoulaUserAction extends ReduxAction<AppState> {
-  final Doula current;
-
   final String userid;
   final String userType;
 
@@ -106,6 +105,7 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
   final List<Phone> phones;
 
   final bool phoneVerified;
+  final String userStatus;
 
   final String bday;
   final bool emailVerified;
@@ -120,13 +120,14 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
 
   final List<Client> currentClients;
 
-  UpdateDoulaUserAction(this.current,
+  UpdateDoulaUserAction(
       {this.userid,
       this.userType,
       this.name,
       this.email,
       this.phones,
       this.phoneVerified,
+      this.userStatus,
       this.bday,
       this.emailVerified,
       this.bio,
@@ -140,30 +141,29 @@ class UpdateDoulaUserAction extends ReduxAction<AppState> {
 
   @override
   AppState reduce() {
-    Doula updated = current.copy(
-        userid: userid ?? this.userid,
-        userType: userType ?? this.userType,
-        name: name ?? this.name,
-        email: email ?? this.email,
-        phones: phones ?? this.phones,
-        phoneVerified: phoneVerified ?? this.phoneVerified,
-        bday: bday ?? this.bday,
-        emailVerified: emailVerified ?? this.emailVerified,
-        bio: bio ?? this.bio,
-        certified: certified ?? this.certified,
-        certInProgress: certInProgress ?? this.certInProgress,
-        certProgram: certProgram ?? this.certProgram,
-        birthsNeeded: birthsNeeded ?? this.birthsNeeded,
-        availableDates: availableDates ?? this.availableDates,
-        photoRelease: photoRelease ?? this.photoRelease,
-        currentClients: currentClients ?? this.currentClients);
+    Doula updated = (state.currentUser as Doula).copy(
+        userid: this.userid,
+        userType: this.userType,
+        name: this.name,
+        email: this.email,
+        phones: this.phones,
+        phoneVerified: this.phoneVerified,
+        status: this.userStatus,
+        bday: this.bday,
+        emailVerified: this.emailVerified,
+        bio: this.bio,
+        certified: this.certified,
+        certInProgress: this.certInProgress,
+        certProgram: this.certProgram,
+        birthsNeeded: this.birthsNeeded,
+        availableDates: this.availableDates,
+        photoRelease: this.photoRelease,
+        currentClients: this.currentClients);
     return state.copy(currentUser: updated);
   }
 }
 
 class UpdateAdminUserAction extends ReduxAction<AppState> {
-  final Admin current;
-
   final String userid;
   final String userType;
 
@@ -177,7 +177,7 @@ class UpdateAdminUserAction extends ReduxAction<AppState> {
   final String role;
   List<String> privileges;
 
-  UpdateAdminUserAction(this.current,
+  UpdateAdminUserAction(
       {this.userid,
       this.userType,
       this.name,
@@ -189,7 +189,7 @@ class UpdateAdminUserAction extends ReduxAction<AppState> {
 
   @override
   AppState reduce() {
-    Admin updated = current.copy(
+    Admin updated = (state.currentUser as Admin).copy(
         userid: userid ?? this.userid,
         userType: userType ?? this.userType,
         name: name ?? this.name,
@@ -234,19 +234,19 @@ class UpdateAdminUserDocument extends ReduxAction<AppState> {
 
 class UpdateUserStatus extends ReduxAction<AppState> {
   final User profile;
-  final String status;
+  final String userStatus;
 
-  UpdateUserStatus(this.profile, this.status)
-      : assert(profile != null && status != null);
+  UpdateUserStatus(this.profile, this.userStatus)
+      : assert(profile != null && userStatus != null);
 
   @override
   Future<AppState> reduce() async {
     final dbRef = Firestore.instance;
     await dbRef.collection("users").document(profile.userid).updateData({
-      "status": status,
+      "status": userStatus,
     });
 
-    profile.status = status;
+    profile.status = userStatus;
 
     return state.copy(profileUser: profile);
   }
@@ -376,8 +376,8 @@ class RemoveClientDoulas extends ReduxAction<AppState> {
 
     // remove the match from the database
     await Firestore.instance.runTransaction((Transaction myTransaction) async {
-      await myTransaction.delete(dbRef.collection("matches")
-          .document(clientId));
+      await myTransaction
+          .delete(dbRef.collection("matches").document(clientId));
     });
 
     // remove match from client's user doc
@@ -395,15 +395,20 @@ class RemoveClientDoulas extends ReduxAction<AppState> {
 
     // remove doula from the CLIENT's contact list
     await Firestore.instance.runTransaction((Transaction myTransaction) async {
-      await myTransaction.delete(dbRef.collection("users").document(clientId)
-          .collection("contacts").document(primaryDoulaId));
+      await myTransaction.delete(dbRef
+          .collection("users")
+          .document(clientId)
+          .collection("contacts")
+          .document(primaryDoulaId));
     });
 
     // remove client from the DOULA's contact list
     await Firestore.instance.runTransaction((Transaction myTransaction) async {
-      await myTransaction.delete(
-          dbRef.collection("users").document(primaryDoulaId)
-              .collection("contacts").document(clientId));
+      await myTransaction.delete(dbRef
+          .collection("users")
+          .document(primaryDoulaId)
+          .collection("contacts")
+          .document(clientId));
     });
 
     // update the client's status from matched to approved
@@ -412,7 +417,6 @@ class RemoveClientDoulas extends ReduxAction<AppState> {
     });
   }
 }
-
 
 class UpdateClientUserDocument extends ReduxAction<AppState> {
   UpdateClientUserDocument();
@@ -464,8 +468,6 @@ class UpdateDoulaUserDocument extends ReduxAction<AppState> {
   @override
   Future<AppState> reduce() async {
     Doula user = state.currentUser as Doula;
-    print(
-        "Attempting to update this doula ${user.toString()} to the users collection");
     final dbRef = Firestore.instance;
 
     await dbRef

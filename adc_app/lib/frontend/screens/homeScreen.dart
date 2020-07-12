@@ -49,8 +49,8 @@ class HomeScreen extends StatelessWidget {
             Spacer(flex: 1),
             RaisedButton(
               shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(50.0),
-                  side: BorderSide(color: themeColors['yellow']),
+                borderRadius: new BorderRadius.circular(50.0),
+                side: BorderSide(color: themeColors['yellow']),
               ),
               onPressed: toLogin,
               color: themeColors['yellow'],
@@ -60,7 +60,7 @@ class HomeScreen extends StatelessWidget {
               child: Text(
                 "Log In",
                 style: TextStyle(
-                    fontSize: 25.0,
+                  fontSize: 25.0,
                   color: Colors.black,
                 ),
               ),
@@ -106,28 +106,40 @@ class HomeScreenConnector extends StatelessWidget {
             case "admin":
               {
                 return AdminHomeScreen(
-                    vm.currentUser,
-                    vm.logout,
-                    vm.toRegisteredDoulas,
-                    vm.toRegisteredClients,
-                    vm.toHome,
-                    vm.toPendingApps,
-                    vm.toUnmatchedClients,
-                    vm.toActiveMatches,
-                    vm.toAllUsers,
+                  vm.currentUser,
+                  vm.logout,
+                  vm.toRegisteredDoulas,
+                  vm.toRegisteredClients,
+                  vm.toHome,
+                  vm.toPendingApps,
+                  vm.toUnmatchedClients,
+                  vm.toActiveMatches,
+                  vm.toAllUsers,
                 );
               }
               break;
             case "client":
               {
-                return ClientHomeScreen(vm.currentUser, vm.logout, vm.toHome,
-                    vm.toRecentMessages, vm.toInfo, vm.toProfile, vm.setProfileUser);
+                return ClientHomeScreen(
+                    vm.currentUser,
+                    vm.logout,
+                    vm.toHome,
+                    vm.toRecentMessages,
+                    vm.toInfo,
+                    vm.toProfile,
+                    vm.setProfileUser);
               }
               break;
             case "doula":
               {
-                return DoulaHomeScreen(vm.currentUser, vm.logout, vm.toHome,
-                    vm.toRecentMessages, vm.toInfo, vm.toProfile, vm.setProfileUser);
+                return DoulaHomeScreen(
+                    vm.currentUser,
+                    vm.logout,
+                    vm.toHome,
+                    vm.toRecentMessages,
+                    vm.toInfo,
+                    vm.toProfile,
+                    vm.setProfileUser);
               }
               break;
             case "none":
@@ -162,8 +174,8 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toRegisteredClients;
   VoidCallback toHome;
   VoidCallback toRecentMessages;
-  void Function(Client) updateClient;
-  void Function(Doula) updateDoula;
+  void Function(String, String) updateClient;
+  void Function(String, String) updateDoula;
   VoidCallback toClientApp;
   VoidCallback toDoulaApp;
   VoidCallback toProfile;
@@ -171,55 +183,68 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toAllUsers;
   Future<void> Function(String, String) setProfileUser;
 
-  ViewModel.build(
-      {@required this.currentUser,
-      @required this.toSignup,
-      @required this.toLogin,
-      @required this.toInfo,
-      @required this.logout,
-      @required this.toRegisteredDoulas,
-      @required this.toRegisteredClients,
-      @required this.toHome,
-      @required this.toPendingApps,
-      @required this.toUnmatchedClients,
-      @required this.toRecentMessages,
-      @required this.toClientApp,
-      @required this.toDoulaApp,
-      @required this.updateClient,
-      @required this.updateDoula,
-      @required this.setProfileUser,
-      @required this.toProfile,
-      @required this.toActiveMatches,
-      @required this.toAllUsers,})
-      : super(equals: [currentUser]);
+  ViewModel.build({
+    @required this.currentUser,
+    @required this.toSignup,
+    @required this.toLogin,
+    @required this.toInfo,
+    @required this.logout,
+    @required this.toRegisteredDoulas,
+    @required this.toRegisteredClients,
+    @required this.toHome,
+    @required this.toPendingApps,
+    @required this.toUnmatchedClients,
+    @required this.toRecentMessages,
+    @required this.toClientApp,
+    @required this.toDoulaApp,
+    @required this.updateClient,
+    @required this.updateDoula,
+    @required this.setProfileUser,
+    @required this.toProfile,
+    @required this.toActiveMatches,
+    @required this.toAllUsers,
+  }) : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-        currentUser: state.currentUser,
-        toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
-        toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
-        toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
-        logout: () => dispatchFuture(LogoutUserAction()),
-        toRegisteredDoulas: () =>
-            dispatch(NavigateAction.pushNamed("/registeredDoulas")),
-        toRegisteredClients: () =>
-            dispatch(NavigateAction.pushNamed("/registeredClients")),
-        toHome: () => dispatch(NavigateAction.pushNamed("/")),
-        toPendingApps: () => dispatch(NavigateAction.pushNamed("/pendingApps")),
-        toUnmatchedClients: () => dispatch(NavigateAction.pushNamed("/unmatchedClients")),
-        toRecentMessages: () =>
-            dispatch(NavigateAction.pushNamed("/recentMessages")),
-        toClientApp: () =>
-            dispatch(NavigateAction.pushNamed("/clientAppPage1")),
-        toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
-        updateClient: (Client user) => dispatch(UpdateClientUserAction(user)),
-        updateDoula: (Doula user) => dispatch(UpdateDoulaUserAction(user)),
-        toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
-        setProfileUser: (String userid, String userType) =>
-            dispatchFuture(SetProfileUser(userid, userType)),
-        toActiveMatches: () => dispatch(NavigateAction.pushNamed("/activeMatches")),
-        toAllUsers: () => dispatch(NavigateAction.pushNamed("/allUsers")),
+      currentUser: state.currentUser,
+      toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
+      toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
+      toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
+      logout: () => dispatchFuture(LogoutUserAction()),
+      toRegisteredDoulas: () =>
+          dispatch(NavigateAction.pushNamed("/registeredDoulas")),
+      toRegisteredClients: () =>
+          dispatch(NavigateAction.pushNamed("/registeredClients")),
+      toHome: () => dispatch(NavigateAction.pushNamed("/")),
+      toPendingApps: () => dispatch(NavigateAction.pushNamed("/pendingApps")),
+      toUnmatchedClients: () =>
+          dispatch(NavigateAction.pushNamed("/unmatchedClients")),
+      toRecentMessages: () =>
+          dispatch(NavigateAction.pushNamed("/recentMessages")),
+      toClientApp: () => dispatch(NavigateAction.pushNamed("/clientAppPage1")),
+      toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
+      updateClient: (String id, String email) {
+        dispatch(UpdateClientUserAction(
+            userType: "client",
+            userStatus: "incomplete",
+            userid: id,
+            email: email));
+      },
+      updateDoula: (String id, String email) {
+        dispatch(UpdateDoulaUserAction(
+            userType: "doula",
+            userStatus: "incomplete",
+            userid: id,
+            email: email));
+      }, // for appTypeScreen
+      toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+      setProfileUser: (String userid, String userType) =>
+          dispatchFuture(SetProfileUser(userid, userType)),
+      toActiveMatches: () =>
+          dispatch(NavigateAction.pushNamed("/activeMatches")),
+      toAllUsers: () => dispatch(NavigateAction.pushNamed("/allUsers")),
     );
   }
 }

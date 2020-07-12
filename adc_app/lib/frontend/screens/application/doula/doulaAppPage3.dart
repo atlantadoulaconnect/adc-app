@@ -2,7 +2,7 @@ import 'package:adc_app/frontend/screens/common.dart';
 
 class DoulaAppPage3 extends StatefulWidget {
   final Doula currentUser;
-  final void Function(Doula, bool, bool, String, int) updateDoula;
+  final void Function(bool, bool, String, int) updateDoula;
   final VoidCallback toDoulaAppPage4;
   final void Function(bool) cancelApplication;
 
@@ -23,7 +23,7 @@ class DoulaAppPage3 extends StatefulWidget {
 class DoulaAppPage3State extends State<DoulaAppPage3> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Doula currentUser;
-  void Function(Doula, bool, bool, String, int) updateDoula;
+  void Function(bool, bool, String, int) updateDoula;
   VoidCallback toDoulaAppPage4;
   void Function(bool) cancelApplication;
 
@@ -337,8 +337,8 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                                 dropdownValue == "" ? "none" : dropdownValue;
                             int births =
                                 int.parse(_birthsNeeded.text.toString().trim());
-                            updateDoula(currentUser, isCertified, inProgress,
-                                program, births);
+                            updateDoula(
+                                isCertified, inProgress, program, births);
 
                             toDoulaAppPage4();
                           },
@@ -379,7 +379,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Doula currentUser;
-  void Function(Doula, bool, bool, String, int) updateDoula;
+  void Function(bool, bool, String, int) updateDoula;
   VoidCallback toDoulaAppPage4;
   void Function(bool) cancelApplication;
 
@@ -393,9 +393,9 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        updateDoula: (Doula user, bool certified, bool inProgress,
-                String program, int birthsNeeded) =>
-            dispatch(UpdateDoulaUserAction(user,
+        updateDoula: (bool certified, bool inProgress, String program,
+                int birthsNeeded) =>
+            dispatch(UpdateDoulaUserAction(
                 certified: certified,
                 certInProgress: inProgress,
                 certProgram: program,

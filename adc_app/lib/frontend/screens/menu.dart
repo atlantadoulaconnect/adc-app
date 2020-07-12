@@ -21,6 +21,8 @@ class CurrentMenu extends StatelessWidget {
   final VoidCallback toClientSettings;
   final VoidCallback toDoulaSettings;
   final VoidCallback toAdminSettings;
+  final VoidCallback toClientApplication;
+  final VoidCallback toDoulaApplication;
 
   CurrentMenu(
       {this.currentUser,
@@ -38,7 +40,9 @@ class CurrentMenu extends StatelessWidget {
       this.toSettings,
       this.toClientSettings,
       this.toDoulaSettings,
-      this.toAdminSettings});
+      this.toAdminSettings,
+      this.toClientApplication,
+      this.toDoulaApplication});
 
   @override
   Widget build(BuildContext context) {
@@ -242,6 +246,20 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
+                    IconData(59485, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Request Form',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {
+                    toClientApplication();
+                    //toHome();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
                     IconData(59448, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
@@ -337,6 +355,20 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toRecentMessages,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59485, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Application Form',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {
+                    toDoulaApplication();
+                    //toHome();
+                  },
                 ),
                 ListTile(
                   leading: Icon(
@@ -624,6 +656,8 @@ class Menu extends StatelessWidget {
             toClientSettings: vm.toClientSettings,
             toDoulaSettings: vm.toDoulaSettings,
             toAdminSettings: vm.toAdminSettings,
+            toClientApplication: vm.toClientApplication,
+            toDoulaApplication: vm.toDoulaApplication,
           );
         });
   }
@@ -648,55 +682,63 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toClientSettings;
   VoidCallback toDoulaSettings;
   VoidCallback toAdminSettings;
+  VoidCallback toClientApplication;
+  VoidCallback toDoulaApplication;
 
-  ViewModel.build({
-    @required this.currentUser,
-    @required this.toHome,
-    @required this.toSignup,
-    @required this.toLogin,
-    @required this.toInfo,
-    @required this.toRecentMessages,
-    @required this.toDoulas,
-    @required this.toClients,
-    @required this.logout,
-    @required this.toAdminHome,
-    @required this.toClientHome,
-    @required this.toDoulaHome,
-    @required this.toSettings,
-    @required this.toClientSettings,
-    @required this.toDoulaSettings,
-    @required this.toAdminSettings,
-  }) : super(equals: [currentUser]);
+  ViewModel.build(
+      {@required this.currentUser,
+      @required this.toHome,
+      @required this.toSignup,
+      @required this.toLogin,
+      @required this.toInfo,
+      @required this.toRecentMessages,
+      @required this.toDoulas,
+      @required this.toClients,
+      @required this.logout,
+      @required this.toAdminHome,
+      @required this.toClientHome,
+      @required this.toDoulaHome,
+      @required this.toSettings,
+      @required this.toClientSettings,
+      @required this.toDoulaSettings,
+      @required this.toAdminSettings,
+      @required this.toClientApplication,
+      @required this.toDoulaApplication})
+      : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
-      currentUser: state.currentUser,
-      toHome: () {
-        dispatch(NavigateAction.pushNamed("/"));
-      },
-      toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
-      toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
-      toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
-      toRecentMessages: () =>
-          dispatch(NavigateAction.pushNamed("/recentMessages")),
-      toDoulas: () => dispatch(NavigateAction.pushNamed("/registeredDoulas")),
-      toClients: () => dispatch(NavigateAction.pushNamed("/registeredClients")),
-      logout: () {
-        print("logging out from menu");
-        dispatch(LogoutUserAction());
-        dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
-      },
-      toAdminHome: () => dispatch(NavigateAction.pushNamed("/adminHome")),
-      toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),
-      toDoulaHome: () => dispatch(NavigateAction.pushNamed("/doulaHome")),
-      toSettings: () => dispatch(NavigateAction.pushNamed("/settings")),
-      toClientSettings: () =>
-          dispatch(NavigateAction.pushNamed("/clientSettings")),
-      toDoulaSettings: () =>
-          dispatch(NavigateAction.pushNamed("/doulaSettings")),
-      toAdminSettings: () =>
-          dispatch(NavigateAction.pushNamed("/adminSettings")),
-    );
+        currentUser: state.currentUser,
+        toHome: () {
+          dispatch(NavigateAction.pushNamed("/"));
+        },
+        toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
+        toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
+        toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
+        toRecentMessages: () =>
+            dispatch(NavigateAction.pushNamed("/recentMessages")),
+        toDoulas: () => dispatch(NavigateAction.pushNamed("/registeredDoulas")),
+        toClients: () =>
+            dispatch(NavigateAction.pushNamed("/registeredClients")),
+        logout: () {
+          print("logging out from menu");
+          dispatch(LogoutUserAction());
+          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
+        },
+        toAdminHome: () => dispatch(NavigateAction.pushNamed("/adminHome")),
+        toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),
+        toDoulaHome: () => dispatch(NavigateAction.pushNamed("/doulaHome")),
+        toSettings: () => dispatch(NavigateAction.pushNamed("/settings")),
+        toClientSettings: () =>
+            dispatch(NavigateAction.pushNamed("/clientSettings")),
+        toDoulaSettings: () =>
+            dispatch(NavigateAction.pushNamed("/doulaSettings")),
+        toAdminSettings: () =>
+            dispatch(NavigateAction.pushNamed("/adminSettings")),
+        toClientApplication: () =>
+            dispatch(NavigateAction.pushNamed("/clientAppPage1")),
+        toDoulaApplication: () =>
+            dispatch(NavigateAction.pushNamed("/doulaAppPage1")));
   }
 }

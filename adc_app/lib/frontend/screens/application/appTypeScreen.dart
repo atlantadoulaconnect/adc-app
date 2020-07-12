@@ -2,8 +2,8 @@ import '../common.dart';
 
 class AppTypeScreen extends StatelessWidget {
   final User currentUser;
-  final void Function(Client) updateClient;
-  final void Function(Doula) updateDoula;
+  final void Function(String, String) updateClient;
+  final void Function(String, String) updateDoula;
   final VoidCallback toClientApp;
   final VoidCallback toDoulaApp;
 
@@ -51,12 +51,7 @@ class AppTypeScreen extends StatelessWidget {
                       ),
                       onPressed: () {
                         // replace current User with a Client in AppState
-                        Client user = Client(
-                            userType: "client",
-                            status: "incomplete",
-                            userid: currentUser.userid,
-                            email: currentUser.email);
-                        updateClient(user);
+                        updateClient(currentUser.userid, currentUser.email);
                         toClientApp();
                       }),
                 ),
@@ -75,12 +70,7 @@ class AppTypeScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 20.0),
                       ),
                       onPressed: () {
-                        Doula user = Doula(
-                            userType: "doula",
-                            status: "incomplete",
-                            userid: currentUser.userid,
-                            email: currentUser.email);
-                        updateDoula(user);
+                        updateDoula(currentUser.userid, currentUser.email);
                         toDoulaApp();
                       }),
                 ),
@@ -105,8 +95,8 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   User currentUser;
-  void Function(Client) updateClient;
-  void Function(Doula) updateDoula;
+  void Function(String, String) updateClient;
+  void Function(String, String) updateDoula;
   VoidCallback toClientApp;
   VoidCallback toDoulaApp;
 
@@ -125,13 +115,19 @@ class ViewModel extends BaseModel<AppState> {
         toClientApp: () =>
             dispatch(NavigateAction.pushNamed("/clientAppPage1")),
         toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
-        updateClient: (Client user) {
-          dispatch(UpdateClientUserAction(user));
-          dispatch(ClientInitFormAction());
+        updateClient: (String id, String email) {
+          dispatch(UpdateClientUserAction(
+              userType: "client",
+              userStatus: "incomplete",
+              userid: id,
+              email: email));
         },
-        updateDoula: (Doula user) {
-          dispatch(UpdateDoulaUserAction(user));
-          dispatch(DoulaInitFormAction());
+        updateDoula: (String id, String email) {
+          dispatch(UpdateDoulaUserAction(
+              userType: "doula",
+              userStatus: "incomplete",
+              userid: id,
+              email: email));
         });
   }
 }

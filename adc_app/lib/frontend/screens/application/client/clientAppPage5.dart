@@ -2,7 +2,7 @@ import '../../common.dart';
 
 class ClientAppPage5 extends StatefulWidget {
   final Client currentUser;
-  final void Function(Client, bool, bool) updateClient;
+  final void Function(bool, bool) updateClient;
   final VoidCallback toClientAppPage6;
   final void Function(bool) cancelApplication;
 
@@ -23,9 +23,12 @@ class ClientAppPage5 extends StatefulWidget {
 class ClientAppPage5State extends State<ClientAppPage5> {
   final GlobalKey<FormState> _c5formKey = GlobalKey<FormState>();
   Client currentUser;
-  void Function(Client, bool, bool) updateClient;
+  void Function(bool, bool) updateClient;
   VoidCallback toClientAppPage6;
   void Function(bool) cancelApplication;
+
+  int meetDoula;
+  int doulaVisit;
 
   @override
   void initState() {
@@ -33,11 +36,19 @@ class ClientAppPage5State extends State<ClientAppPage5> {
     updateClient = widget.updateClient;
     toClientAppPage6 = widget.toClientAppPage6;
     cancelApplication = widget.cancelApplication;
+
+    initialPlaceholders();
+
     super.initState();
   }
 
-  int meetDoula = 1;
-  int doulaVisit = 1;
+  void initialPlaceholders() {
+    meetDoula = currentUser.meetBefore != null
+        ? (currentUser.meetBefore ? 1 : 2)
+        : null;
+    doulaVisit =
+        currentUser.homeVisit != null ? (currentUser.homeVisit ? 1 : 2) : null;
+  }
 
   confirmCancelDialog(BuildContext context) {
     return showDialog(
@@ -219,8 +230,7 @@ class ClientAppPage5State extends State<ClientAppPage5> {
                             if (form.validate()) {
                               form.save();
 
-                              updateClient(
-                                  currentUser, meetDoula == 1, doulaVisit == 1);
+                              updateClient(meetDoula == 1, doulaVisit == 1);
 
                               toClientAppPage6();
                             }
@@ -259,7 +269,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Client currentUser;
-  void Function(Client, bool, bool) updateClient;
+  void Function(bool, bool) updateClient;
   VoidCallback toClientAppPage6;
   void Function(bool) cancelApplication;
 
@@ -276,9 +286,8 @@ class ViewModel extends BaseModel<AppState> {
       currentUser: state.currentUser,
       toClientAppPage6: () =>
           dispatch(NavigateAction.pushNamed("/clientAppPage6")),
-      updateClient: (Client user, bool meetBefore, bool homeVisit) => dispatch(
-          UpdateClientUserAction(user,
-              meetBefore: meetBefore, homeVisit: homeVisit)),
+      updateClient: (bool meetBefore, bool homeVisit) => dispatch(
+          UpdateClientUserAction(meetBefore: meetBefore, homeVisit: homeVisit)),
       cancelApplication: (bool confirmed) {
         dispatch(NavigateAction.pop());
         if (confirmed) {

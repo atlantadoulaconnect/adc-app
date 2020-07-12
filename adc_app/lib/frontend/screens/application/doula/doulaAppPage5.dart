@@ -2,7 +2,7 @@ import '../../common.dart';
 
 class DoulaAppPage5 extends StatefulWidget {
   final Doula currentUser;
-  final void Function(Doula, bool) updateDoula;
+  final void Function(bool) updateDoula;
   final VoidCallback toDoulaAppConfirmation;
   final void Function(bool) cancelApplication;
 
@@ -22,7 +22,7 @@ class DoulaAppPage5 extends StatefulWidget {
 
 class DoulaAppPage5State extends State<DoulaAppPage5> {
   Doula currentUser;
-  Function(Doula, bool) updatedoula;
+  Function(bool) updatedoula;
   VoidCallback toDoulaAppConfirmation;
   void Function(bool) cancelApplication;
 
@@ -196,7 +196,7 @@ class DoulaAppPage5State extends State<DoulaAppPage5> {
                               borderRadius: new BorderRadius.circular(10.0),
                               side: BorderSide(color: themeColors['yellow'])),
                           onPressed: () {
-                            updatedoula(currentUser, photoReleasePermission);
+                            updatedoula(photoReleasePermission);
                             toDoulaAppConfirmation();
                           },
                           color: themeColors['yellow'],
@@ -238,7 +238,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Doula currentUser;
-  void Function(Doula, bool) updateDoula;
+  void Function(bool) updateDoula;
   VoidCallback toDoulaAppConfirmation;
   void Function(bool) cancelApplication;
 
@@ -252,8 +252,8 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        updateDoula: (Doula user, bool photoRelease) =>
-            dispatch(UpdateDoulaUserAction(user, photoRelease: photoRelease)),
+        updateDoula: (bool photoRelease) =>
+            dispatch(UpdateDoulaUserAction(photoRelease: photoRelease)),
         toDoulaAppConfirmation: () =>
             dispatch(NavigateAction.pushNamed("/doulaAppConfirmation")),
         cancelApplication: (bool confirmed) {

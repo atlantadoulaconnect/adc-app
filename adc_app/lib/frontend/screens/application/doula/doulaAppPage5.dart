@@ -26,7 +26,7 @@ class DoulaAppPage5State extends State<DoulaAppPage5> {
   VoidCallback toDoulaAppConfirmation;
   void Function(bool) cancelApplication;
 
-  bool photoReleasePermission = false;
+  bool photoReleasePermission;
 
   @override
   void initState() {
@@ -34,6 +34,11 @@ class DoulaAppPage5State extends State<DoulaAppPage5> {
     updatedoula = widget.updateDoula;
     toDoulaAppConfirmation = widget.toDoulaAppConfirmation;
     cancelApplication = widget.cancelApplication;
+
+    photoReleasePermission =
+        (currentUser.photoRelease == null || !currentUser.photoRelease)
+            ? false
+            : true;
 
     super.initState();
   }

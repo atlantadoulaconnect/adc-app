@@ -29,9 +29,12 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
 
   TextEditingController _birthsNeeded;
 
-  List<bool> selectedCert = [false, true];
-  List<bool> selectedProgress = [true, false];
-  String dropdownValue = "";
+  List<bool> selectedCert;
+  List<bool> selectedProgress;
+
+  List<DropdownMenuItem<String>> certProgram;
+  List<String> certPrograms = ["", "DONA", "CAPPA", "ICEA", "Other"];
+  String selectedProgram;
 
   @override
   void initState() {
@@ -41,6 +44,7 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
     cancelApplication = widget.cancelApplication;
 
     _birthsNeeded = TextEditingController();
+    initialPlaceholders();
 
     super.initState();
   }
@@ -70,6 +74,40 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
         );
       },
     );
+  }
+
+  void initialPlaceholders() {
+    // toggle buttons
+    if (currentUser.certified == null) {
+      selectedCert = [false, true];
+    } else {
+      selectedCert = currentUser.certified ? [true, false] : [false, true];
+    }
+
+    if (currentUser.certInProgress == null) {
+      selectedProgress = [true, false];
+    } else {
+      selectedProgress =
+          currentUser.certInProgress ? [true, false] : [false, true];
+    }
+
+    certProgram = [];
+    certProgram.add(new DropdownMenuItem(
+      child: new Text('DONA'),
+      value: certPrograms[1],
+    ));
+    certProgram.add(new DropdownMenuItem(
+      child: new Text('CAPPA'),
+      value: certPrograms[2],
+    ));
+    certProgram.add(new DropdownMenuItem(
+      child: new Text('ICEA'),
+      value: certPrograms[3],
+    ));
+    certProgram.add(new DropdownMenuItem(
+      child: new Text('Other'),
+      value: certPrograms[4],
+    ));
   }
 
   @override
@@ -219,7 +257,7 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                         child: Container(
                           width: 80,
                           child: DropdownButton<String>(
-                            value: dropdownValue,
+                            value: selectedProgram,
                             icon: Icon(Icons.arrow_downward),
                             underline: Container(
                               height: 2,
@@ -227,7 +265,7 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                             ),
                             onChanged: (String newValue) {
                               setState(() {
-                                dropdownValue = newValue;
+                                selectedProgram = newValue;
                               });
                             },
                             items: <String>[
@@ -269,7 +307,10 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                     ),
-                    controller: _birthsNeeded,
+                    controller: _birthsNeeded
+                      ..text = currentUser.birthsNeeded != null
+                          ? "${currentUser.birthsNeeded}"
+                          : null,
                   ),
                 ),
               ),
@@ -333,8 +374,9 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                             // TODO input validation and error message
                             bool isCertified = selectedCert[0] == true;
                             bool inProgress = selectedProgress[0] == true;
-                            String program =
-                                dropdownValue == "" ? "none" : dropdownValue;
+                            String program = selectedProgram == ""
+                                ? "none"
+                                : selectedProgram;
                             int births =
                                 int.parse(_birthsNeeded.text.toString().trim());
                             updateDoula(

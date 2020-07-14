@@ -127,7 +127,7 @@ class DoulaAppPage2State extends State<DoulaAppPage2> {
                   maxLines: 12,
                   autocorrect: true,
                   keyboardType: TextInputType.text,
-                  controller: _bioCtrl,
+                  controller: _bioCtrl..text = currentUser.bio,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText:

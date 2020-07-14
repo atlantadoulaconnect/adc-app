@@ -224,3 +224,25 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
 
   void after() => dispatch(LoadingAction(false));
 }
+
+class CreateUserFromApp extends ReduxAction<AppState> {
+  final String userid;
+  final String email;
+  final String userType;
+  final String userStatus;
+
+  CreateUserFromApp({this.userid, this.email, this.userType, this.userStatus});
+
+  @override
+  AppState reduce() {
+    if (userType == "client") {
+      Client current = Client(
+          userid: userid, email: email, userType: userType, status: userStatus);
+      return state.copy(currentUser: current);
+    }
+
+    Doula current = Doula(
+        userid: userid, email: email, userType: userType, status: userStatus);
+    return state.copy(currentUser: current);
+  }
+}

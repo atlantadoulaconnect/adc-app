@@ -41,6 +41,8 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
     cancelApplication = widget.cancelApplication;
     calendarController = CalendarController();
     unavailableDates = List<DateTime>();
+
+    initialPlaceholders();
   }
 
   confirmCancelDialog(BuildContext context) {
@@ -69,6 +71,8 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
       },
     );
   }
+
+  void initialPlaceholders() {}
 
   @override
   Widget build(BuildContext context) {

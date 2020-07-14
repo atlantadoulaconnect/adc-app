@@ -38,13 +38,13 @@ Doula _$DoulaFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$DoulaToJson(Doula instance) => <String, dynamic>{
       'userid': instance.userid,
-      'status': instance.status,
       'userType': instance.userType,
       'name': instance.name,
       'email': instance.email,
       'phones': instance.phones?.map((e) => e?.toJson())?.toList(),
       'phoneVerified': instance.phoneVerified,
       'emailVerified': instance.emailVerified,
+      'status': instance.status,
       'bday': instance.bday,
       'bio': instance.bio,
       'birthsNeeded': instance.birthsNeeded,

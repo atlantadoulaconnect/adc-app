@@ -116,14 +116,14 @@ class ViewModel extends BaseModel<AppState> {
             dispatch(NavigateAction.pushNamed("/clientAppPage1")),
         toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
         updateClient: (String id, String email) {
-          dispatch(UpdateClientUserAction(
-              userType: "client",
-              userStatus: "incomplete",
+          dispatch(CreateUserFromApp(
               userid: id,
-              email: email));
+              email: email,
+              userType: "client",
+              userStatus: "incomplete"));
         },
         updateDoula: (String id, String email) {
-          dispatch(UpdateDoulaUserAction(
+          dispatch(CreateUserFromApp(
               userType: "doula",
               userStatus: "incomplete",
               userid: id,

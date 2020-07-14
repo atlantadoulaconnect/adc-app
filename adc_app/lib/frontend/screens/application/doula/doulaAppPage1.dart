@@ -136,7 +136,10 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                                 labelText: "First Name",
                                 hintText: "Jane",
                               ),
-                              controller: _firstNameCtrl,
+                              controller: _firstNameCtrl
+                                ..text = currentUser.name != null
+                                    ? getFirstName(currentUser.name)
+                                    : null,
                               validator: nameValidator,
                             ),
                           ),
@@ -146,7 +149,10 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                                 labelText: "Last Initial",
                                 hintText: "D",
                               ),
-                              controller: _lastInitCtrl,
+                              controller: _lastInitCtrl
+                                ..text = currentUser.name != null
+                                    ? getLastInitial(currentUser.name)
+                                    : null,
                               validator: singleLetterValidator,
                             ),
                           )
@@ -158,14 +164,19 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                           hintText: "(MM/YYYY)",
                         ),
                         keyboardType: TextInputType.datetime,
-                        controller: _bdayCtrl,
+                        controller: _bdayCtrl..text = currentUser.bday,
                         validator: bdayValidator,
                       ),
                       TextFormField(
                         decoration: InputDecoration(
                             labelText: "Phone", hintText: "4045553333"),
                         keyboardType: TextInputType.number,
-                        controller: _phoneCtrl,
+                        controller: _phoneCtrl
+                          ..text = currentUser.phones != null
+                              ? (currentUser.phones.length > 0
+                                  ? currentUser.phones[0].number
+                                  : null)
+                              : null,
                         validator: phoneValidator,
                       ),
                       TextFormField(
@@ -173,7 +184,12 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                               labelText: "Alternate Phone",
                               hintText: "6784447777"),
                           keyboardType: TextInputType.number,
-                          controller: _altPhoneCtrl,
+                          controller: _altPhoneCtrl
+                            ..text = currentUser.phones != null
+                                ? (currentUser.phones.length > 1
+                                    ? currentUser.phones[1].number
+                                    : null)
+                                : null,
                           validator: (val) {
                             if (val.isNotEmpty) {
                               return phoneValidator(val);

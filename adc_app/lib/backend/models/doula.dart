@@ -5,6 +5,7 @@ part 'doula.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Doula extends User {
   bool emailVerified;
+  String status;
 
   String bday;
   String bio;
@@ -107,6 +108,8 @@ class Doula extends User {
           runtimeType == other.runtimeType &&
           bday == other.bday &&
           emailVerified == other.emailVerified &&
+          phoneVerified == other.phoneVerified &&
+          status == other.status &&
           bio == other.bio &&
           certified == other.certified &&
           certInProgress == other.certInProgress &&
@@ -121,6 +124,8 @@ class Doula extends User {
       super.hashCode ^
       bday.hashCode ^
       emailVerified.hashCode ^
+      phoneVerified.hashCode ^
+      status.hashCode ^
       bio.hashCode ^
       certified.hashCode ^
       certInProgress.hashCode ^

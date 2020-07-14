@@ -13,6 +13,8 @@ class Client extends User {
   List<String> deliveryTypes;
   String dueDate;
 
+  String status;
+
   String primaryDoulaId;
   String primaryDoulaName;
   String backupDoulaId;
@@ -158,6 +160,7 @@ class Client extends User {
           multiples == other.multiples &&
           meetBefore == other.meetBefore &&
           homeVisit == other.homeVisit &&
+          status == other.status &&
           photoRelease == other.photoRelease;
 
   @override
@@ -181,7 +184,8 @@ class Client extends User {
       multiples.hashCode ^
       meetBefore.hashCode ^
       homeVisit.hashCode ^
-      photoRelease.hashCode;
+      photoRelease.hashCode ^
+      status.hashCode;
 
   @override
   String toString() {

@@ -139,25 +139,33 @@ class Client extends User {
         birthLocation != null &&
         birthType != null &&
         cesarean != null &&
-        deliveryTypes != null &&
         dueDate != null &&
         epidural != null &&
         homeVisit != null &&
         liveBirths != null &&
-        lowWeight != null &&
         meetBefore != null &&
-        multiples != null &&
         photoRelease != null &&
-        preterm != null &&
         emergencyContacts != null) {
       // strings not empty, lists not empty
       if (bday.isNotEmpty &&
           birthLocation.isNotEmpty &&
           birthType.isNotEmpty &&
-          deliveryTypes.isNotEmpty &&
           dueDate.isNotEmpty &&
           emergencyContacts.isNotEmpty) {
-        return true;
+        // if liveBirths > 0 check if those values were entered
+        if (liveBirths != null) {
+          if (liveBirths == 0) {
+            return true;
+          } else {
+            if (preterm != null &&
+                lowWeight != null &&
+                multiples != null &&
+                deliveryTypes != null &&
+                deliveryTypes.isNotEmpty) {
+              return true;
+            }
+          }
+        }
       }
     }
     return false;

@@ -111,7 +111,16 @@ class Doula extends User {
         photoRelease != null) {
       // strings not empty, lists not empty (except for availableDates which is optional)
       if (bday.isNotEmpty && bio.isNotEmpty) {
-        return true;
+        // if not certified, need certInProgress and birthsNeeded
+        if (certified != null) {
+          if (certified) {
+            return true;
+          } else {
+            if (certInProgress != null && birthsNeeded != null) {
+              return true;
+            }
+          }
+        }
       }
     }
     return false;

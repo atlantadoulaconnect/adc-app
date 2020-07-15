@@ -413,6 +413,19 @@ class ClientAppPage3State extends State<ClientAppPage3> {
                               side:
                                   BorderSide(color: themeColors['lightBlue'])),
                           onPressed: () {
+                            final form = _c3formKey.currentState;
+                            form.save();
+
+                            String dueDate =
+                                _dueDateCtrl.text.toString().trim();
+
+                            updateClient(
+                                (dueDate.isEmpty ? null : dueDate),
+                                selectedBirthLocation,
+                                selectedBirthType,
+                                epiduralValue == 1,
+                                cSectionValue == 1);
+
                             Navigator.pop(context);
                           },
                           color: themeColors['lightBlue'],

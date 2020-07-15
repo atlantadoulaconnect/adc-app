@@ -153,6 +153,8 @@ class ClientAppPage6State extends State<ClientAppPage6> {
                         borderRadius: new BorderRadius.circular(5.0),
                         side: BorderSide(color: themeColors['lightBlue'])),
                     onPressed: () {
+                      updateClient(statementAgree);
+
                       Navigator.pop(context);
                     },
                     color: themeColors['lightBlue'],

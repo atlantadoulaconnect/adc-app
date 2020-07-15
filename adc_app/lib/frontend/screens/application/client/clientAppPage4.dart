@@ -31,8 +31,8 @@ class ClientAppPage4State extends State<ClientAppPage4> {
   List<String> counts = ["0", "1", "2", "3", "4"];
   String selectedBirthCount;
 
-  int pretermValue = 1;
-  int previousTwinsOrTriplets = 2;
+  int pretermValue;
+  int previousTwinsOrTriplets;
   int lowBirthWeightValue = 1;
   bool vaginalBirth = false, cesarean = false, vbac = false;
 
@@ -83,14 +83,14 @@ class ClientAppPage4State extends State<ClientAppPage4> {
     lowBirthWeightValue =
         currentUser.lowWeight == null || !currentUser.lowWeight ? 2 : 1;
 
+    previousTwinsOrTriplets =
+        currentUser.multiples != null && currentUser.multiples ? 1 : 2;
+
     if (currentUser.deliveryTypes != null &&
         currentUser.deliveryTypes.isNotEmpty) {
       vaginalBirth = currentUser.deliveryTypes.contains("vaginal");
       cesarean = currentUser.deliveryTypes.contains("cesarean");
       vbac = currentUser.deliveryTypes.contains("vbac");
-
-      previousTwinsOrTriplets =
-          currentUser.multiples == null || !currentUser.multiples ? 2 : 1;
     }
   }
 
@@ -366,6 +366,35 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                               side:
                                   BorderSide(color: themeColors['lightBlue'])),
                           onPressed: () {
+                            final form = _c4formKey.currentState;
+                            form.save();
+
+                            List<String> deliveries = List();
+                            if (vaginalBirth) {
+                              deliveries.add("vaginal");
+                            }
+                            if (cesarean) {
+                              deliveries.add("cesarean");
+                            }
+                            if (vbac) {
+                              deliveries.add("vbac");
+                            }
+
+                            int births = selectedBirthCount == null
+                                ? 0
+                                : int.parse(selectedBirthCount);
+
+                            if (births == 0) {
+                              updateClient(births, null, null, null, null);
+                            } else {
+                              updateClient(
+                                  births,
+                                  pretermValue == 1,
+                                  lowBirthWeightValue == 1,
+                                  (deliveries.isEmpty ? null : deliveries),
+                                  previousTwinsOrTriplets == 1);
+                            }
+
                             Navigator.pop(context);
                           },
                           color: themeColors['lightBlue'],

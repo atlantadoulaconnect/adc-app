@@ -421,7 +421,7 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                             EmergencyContact ec2 = EmergencyContact.empty();
 
                             ec2.name =
-                                nameValidator(ec1Name) == null ? ec1Name : null;
+                                nameValidator(ec2Name) == null ? ec2Name : null;
                             ec2.relationship = ec2Rel.isEmpty ? null : ec2Rel;
                             ec2.phones =
                                 ec2Phones.length > 0 ? ec2Phones : null;

@@ -189,6 +189,13 @@ class ClientAppPage5State extends State<ClientAppPage5> {
                               side:
                                   BorderSide(color: themeColors['lightBlue'])),
                           onPressed: () {
+                            final form = _c5formKey.currentState;
+                            form.save();
+
+                            updateClient(
+                                meetDoula == null ? null : meetDoula == 1,
+                                doulaVisit == null ? null : doulaVisit == 1);
+
                             Navigator.pop(context);
                           },
                           color: themeColors['lightBlue'],

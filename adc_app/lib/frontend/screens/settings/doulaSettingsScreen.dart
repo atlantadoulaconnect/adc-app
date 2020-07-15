@@ -1,6 +1,7 @@
 import 'package:adc_app/backend/actions/common.dart';
 import 'package:adc_app/backend/util/inputValidation.dart';
 import '../common.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 // screen where users can change settings related to the TappableChipAttributes
 
@@ -12,6 +13,8 @@ class DoulaSettingsScreen extends StatefulWidget {
   final void Function(String, List<Phone>, String, String, bool)
       updateDoulaAccount;
   final void Function(bool, bool, String, int) updateCertification;
+  final void Function(List<String>) updateDoulaAvailability;
+  final void Function(String) updateEmail;
   final Future<void> Function() doulaToDB;
 
   DoulaSettingsScreen(
@@ -21,6 +24,8 @@ class DoulaSettingsScreen extends StatefulWidget {
       this.logout,
       this.updateDoulaAccount,
       this.updateCertification,
+      this.updateDoulaAvailability,
+      this.updateEmail,
       this.doulaToDB);
 
 //      : assert(currentUser != null && toHome != null && logout != null);
@@ -32,17 +37,23 @@ class DoulaSettingsScreen extends StatefulWidget {
 class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
   void Function(String, List<Phone>, String, String, bool) updateDoulaAccount;
   void Function(bool, bool, String, int) updateCertification;
+  void Function(List<String>) updateDoulaAvailability;
   Future<void> Function() doulaToDB;
+  void Function(String) updateEmail;
 
   VoidCallback toHome;
   VoidCallback toConfirmSettings;
 
   Doula currentUser;
 
+  final CalendarController calendarController = new CalendarController();
+  List<DateTime> unavailableDates;
+
   final GlobalKey<FormState> _accountKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _pwdKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _emailKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _certKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _availabilityKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _notificationsKey = GlobalKey<FormState>();
 
   TextEditingController firstNameCtrl;
@@ -90,6 +101,8 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
 
     updateDoulaAccount = widget.updateDoulaAccount;
     updateCertification = widget.updateCertification;
+    updateDoulaAvailability = widget.updateDoulaAvailability;
+    updateEmail = widget.updateEmail;
     doulaToDB = widget.doulaToDB;
 
     String userType = currentUser != null ? currentUser.userType : 'unlogged';
@@ -112,6 +125,15 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
           currentUser.birthsNeeded != null ? currentUser.birthsNeeded : 0;
       photoRelease =
           currentUser.photoRelease != null ? currentUser.photoRelease : false;
+
+      unavailableDates = List<DateTime>();
+      if (currentUser.availableDates != null) {
+        for (String s in currentUser.availableDates) {
+          DateTime temp = DateTime.parse(s);
+          temp = temp.add(Duration(hours: 8));
+          unavailableDates.add(temp.toUtc());
+        }
+      }
     }
 
     //controllers
@@ -194,12 +216,12 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
     );
   }
 
-  updateAccountDialog(BuildContext context) {
+  updateAccountDialog(BuildContext context, String code) {
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Your account was successfully updated"),
+          title: Text(code),
           actions: <Widget>[
             FlatButton(
               child: Text("Okay"),
@@ -215,6 +237,130 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TableCalendar myCal = TableCalendar(
+      calendarController: calendarController,
+      availableCalendarFormats: const {
+        CalendarFormat.month: 'Month',
+      },
+      calendarStyle: CalendarStyle(),
+      headerStyle: HeaderStyle(
+        centerHeaderTitle: true,
+      ),
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      startDay: DateTime.now(),
+      onDaySelected: (date, events) {
+        setState(() {
+          if (unavailableDates.contains(date)) {
+            unavailableDates.remove(date);
+          } else {
+            unavailableDates.add(date);
+          }
+        });
+      },
+      builders: CalendarBuilders(
+        dayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+            ),
+            decoration: BoxDecoration(
+              color: unavailableDates.contains(date)
+                  ? themeColors["gold"]
+                  : themeColors["lightGrey"],
+              shape: BoxShape.circle,
+            ),
+          );
+        },
+        outsideDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(color: themeColors["coolGray5"]),
+            ),
+          );
+        },
+        outsideHolidayDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(color: themeColors["coolGray5"]),
+            ),
+          );
+        },
+        outsideWeekendDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(color: themeColors["coolGray5"]),
+            ),
+          );
+        },
+        unavailableDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(color: themeColors["coolGray5"]),
+            ),
+          );
+        },
+        weekendDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(color: themeColors["black"]),
+            ),
+            decoration: BoxDecoration(
+              color: unavailableDates.contains(date)
+                  ? themeColors["gold"]
+                  : themeColors["lightGrey"],
+              shape: BoxShape.circle,
+            ),
+          );
+        },
+        todayDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(
+                  color: themeColors["mediumBlue"],
+                  fontWeight: FontWeight.bold),
+            ),
+            decoration: BoxDecoration(
+              color: unavailableDates.contains(date)
+                  ? themeColors["gold"]
+                  : themeColors["lightGrey"],
+              shape: BoxShape.circle,
+            ),
+          );
+        },
+        selectedDayBuilder: (context, date, events) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(
+                color: themeColors["black"],
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: unavailableDates.contains(date)
+                  ? themeColors["gold"]
+                  : themeColors["lightGrey"],
+              shape: BoxShape.circle,
+              border: Border.all(color: themeColors["mediumBlue"], width: 2.0),
+            ),
+          );
+        },
+      ),
+    );
+
     return Scaffold(
         appBar: AppBar(title: Text("Settings")),
         drawer: Menu(),
@@ -355,7 +501,8 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                               print('name after update: ${currentUser.name}');
 
                               await doulaToDB();
-                              updateAccountDialog(context);
+                              updateAccountDialog(context,
+                                  'Your account was updated successfully');
                               print(
                                   'name after updated call: ${currentUser.name}');
                             }
@@ -623,8 +770,47 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                               borderRadius: new BorderRadius.circular(5.0),
                               side: BorderSide(color: themeColors['yellow'])),
                           onPressed: () async {
-                            //TODO add email changing functionality
-                            toHome();
+                            final form = _emailKey.currentState;
+                            form.save();
+                            String newDoulaEmail =
+                                emailCtrl.text.toString().trim();
+
+                            if (form.validate() &&
+                                newDoulaEmail != currentUser.email) {
+                              // form validation and sanity check
+                              String doulaPassword = changeEmailPasswordCtrl
+                                  .text
+                                  .toString()
+                                  .trim();
+                              print(
+                                  'new email: $newDoulaEmail  pw: $doulaPassword');
+
+                              try {
+                                AuthResult result = await FirebaseAuth.instance
+                                    .signInWithEmailAndPassword(
+                                        email: currentUser.email,
+                                        password: doulaPassword);
+                                FirebaseUser user = result.user;
+                                print('user: $user');
+                                String userId = user.uid;
+                                print('userId: $userId');
+
+                                user.updateEmail(newDoulaEmail);
+                                updateEmail(newDoulaEmail);
+                                await doulaToDB();
+                                print(
+                                    "Email was changed to: ${emailCtrl.text.toString().trim()}");
+                                updateAccountDialog(context,
+                                    'Your account was updated successfully!');
+                              } on Exception catch (e) {
+                                print('its coming here: $e');
+                                String error = e.toString();
+                                updateAccountDialog(
+                                    context,
+                                    error.substring(error.indexOf(',') + 1,
+                                        error.lastIndexOf(',')));
+                              }
+                            }
                           },
                           color: themeColors['yellow'],
                           textColor: Colors.black,
@@ -734,10 +920,19 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                               currentUser.certified = certified;
                               currentUser.certInProgress = certInProgress;
 
-                              updateCertification(certified, certInProgress,
-                                  programName, numOfBirths);
-                              await doulaToDB();
-                              updateAccountDialog(context);
+                              try {
+                                updateCertification(certified, certInProgress,
+                                    programName, numOfBirths);
+                                await doulaToDB();
+                                updateAccountDialog(context,
+                                    'Your account was updated successfully');
+                              } on Exception catch (e) {
+                                String error = e.toString();
+                                updateAccountDialog(
+                                    context,
+                                    error.substring(error.indexOf(',') + 1,
+                                        error.lastIndexOf(',')));
+                              }
                             }
                           },
                           color: themeColors['yellow'],
@@ -746,6 +941,83 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                           splashColor: themeColors['yellow'],
                           child: Text(
                             "Update Certification",
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                          //onPressed: ,
+                        ),
+                      )
+                    ]),
+              ),
+              Form(
+                key: _availabilityKey,
+                autovalidate: false,
+                child: ExpansionTile(
+                    title: Text(
+                      'Availability',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(2, 8, 8, 2),
+                        child: Text(
+                          'Please select the dates when you \nare NOT available:',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 350,
+                            width: 320,
+                            color: themeColors["lightGrey"],
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: myCal,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                              side: BorderSide(color: themeColors['yellow'])),
+                          onPressed: () async {
+                            final form = _availabilityKey.currentState;
+                            if (form.validate()) {
+                              form.save();
+                              unavailableDates.sort();
+                              List<String> unavailableDatesAsString =
+                                  new List<String>();
+                              for (DateTime d in unavailableDates) {
+                                unavailableDatesAsString
+                                    .add(formatDateYYYYMMDD(d));
+                              }
+                              currentUser.availableDates =
+                                  unavailableDatesAsString;
+
+                              updateDoulaAvailability(unavailableDatesAsString);
+
+                              await doulaToDB();
+                              updateAccountDialog(context,
+                                  "Your account was updated successfully");
+                            }
+                          },
+                          color: themeColors['yellow'],
+                          textColor: Colors.black,
+                          //padding: EdgeInsets.all(15.0),
+                          splashColor: themeColors['yellow'],
+                          child: Text(
+                            "Update Availability",
                             style: TextStyle(fontSize: 15.0),
                           ),
                           //onPressed: ,
@@ -943,6 +1215,8 @@ class DoulaSettingsScreenConnector extends StatelessWidget {
             vm.logout,
             vm.updateDoulaAccount,
             vm.updateCertification,
+            vm.updateDoulaAvailability,
+            vm.updateEmail,
             vm.doulaToDB));
   }
 }
@@ -956,6 +1230,8 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback logout;
   void Function(String, List<Phone>, String, String, bool) updateDoulaAccount;
   void Function(bool, bool, String, int) updateCertification;
+  void Function(List<String>) updateDoulaAvailability;
+  void Function(String) updateEmail;
   Future<void> Function() doulaToDB;
 
   ViewModel.build({
@@ -965,6 +1241,8 @@ class ViewModel extends BaseModel<AppState> {
     @required this.logout,
     @required this.updateDoulaAccount,
     @required this.updateCertification,
+    @required this.updateDoulaAvailability,
+    @required this.updateEmail,
     this.doulaToDB,
   }) : super(equals: [currentUser]);
 
@@ -996,6 +1274,10 @@ class ViewModel extends BaseModel<AppState> {
               certInProgress: certInProgress,
               certProgram: certProgram,
               birthsNeeded: birthsNeeded)),
+      updateDoulaAvailability: (List<String> availableDates) =>
+          dispatch(UpdateDoulaUserAction(availableDates: availableDates)),
+      updateEmail: (String email) =>
+          dispatch(UpdateDoulaUserAction(email: email)),
       doulaToDB: () => dispatchFuture(UpdateDoulaUserDocument()),
     );
   }

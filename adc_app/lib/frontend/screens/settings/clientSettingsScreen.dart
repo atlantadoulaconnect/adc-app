@@ -19,6 +19,7 @@ class ClientSettingsScreen extends StatefulWidget {
           String, String, String, List<String>, bool, bool, bool, bool, bool)
       updateBirthInformation;
   final void Function(List<EmergencyContact>) updateEmergencyContacts;
+  final void Function(Client, String) updateEmail;
   final Future<void> Function() clientToDB;
 
   ClientSettingsScreen(
@@ -28,6 +29,7 @@ class ClientSettingsScreen extends StatefulWidget {
       this.updateClientAccount,
       this.updateBirthInformation,
       this.updateEmergencyContacts,
+      this.updateEmail,
       this.clientToDB,
       this.toClientSettings);
 //      : assert(currentUser != null && toHome != null && logout != null);
@@ -44,6 +46,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
           String, String, String, List<String>, bool, bool, bool, bool, bool)
       updateBirthInformation;
   void Function(List<EmergencyContact>) updateEmergencyContacts;
+  void Function(Client, String) updateEmail;
   Future<void> Function() clientToDB;
 
   VoidCallback toHome;
@@ -125,6 +128,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
     updateClientAccount = widget.updateClientAccount;
     updateBirthInformation = widget.updateBirthInformation;
     updateEmergencyContacts = widget.updateEmergencyContacts;
+    updateEmail = widget.updateEmail;
     clientToDB = widget.clientToDB;
 
     //String userType = currentUser != null ? currentUser.userType : 'unlogged';
@@ -294,15 +298,15 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
     );
   }
 
-  updateAccountDialog(BuildContext context) {
+  updateAccountDialog(BuildContext context, String code) {
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Your account was successfully updated"),
+          title: Text(code),
           actions: <Widget>[
             FlatButton(
-              child: Text("Okay"),
+              child: Text('Okay'),
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pop('dialog');
               },
@@ -313,1022 +317,1022 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
     );
   }
 
-  Form clientUser() {
-    final clientCategoryExpansionTiles = List<Widget>();
-    clientCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'My Account',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        children: <Widget>[
-          Text(
-            'Name',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Jane D.',
-              ),
-              controller: firstNameCtrl,
-              validator: nameValidator,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text(
-              'Phone Number',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '6785201876',
-              ),
-              controller: phoneNumCtrl,
-              validator: phoneValidator,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text(
-              'Date of Birth',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '01/09/1997',
-              ),
-              controller: dateOfBirthCtrl,
-              validator: phoneValidator,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: CheckboxListTile(
-              value: photoRelease,
-              title: Text("Photo Release Permission"),
-              onChanged: (bool value) {
-                setState(() {
-                  photoRelease = value;
-                });
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])),
-              onPressed: () async {
-                String clientName = firstNameCtrl.text.toString().trim();
-                print('clientName: $clientName');
-                String clientBday = dateOfBirthCtrl.text.toString().trim();
-                print('bday: ${dateOfBirthCtrl.text.toString().trim()}');
-                List<Phone> phones = List();
-                print('phone: ${phoneNumCtrl.text.toString().trim()}');
-                phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
-
-                updateClientAccount(
-                    clientName, phones, clientBday, photoRelease);
-                print('currentUser.name before: ${currentUser.name}');
-                setState(() {});
-                await clientToDB();
-                print('currentUser.name after: ${currentUser.name}');
-
-                updateAccountDialog(context);
-              },
-              color: themeColors['yellow'],
-              textColor: Colors.black,
-              //padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['yellow'],
-              child: Text(
-                "Update Account",
-                style: TextStyle(fontSize: 15.0),
-              ),
-              //onPressed: ,
-            ),
-          )
-        ]));
-    clientCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Password',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Enter Current Password',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "********",
-                suffixIcon: IconButton(
-                  icon: Icon(
-                      // Based on passwordVisible state choose the icon
-                      passwordVisible ? Icons.visibility : Icons.visibility_off,
-                      color: passwordVisible
-                          ? themeColors["black"]
-                          : themeColors["coolGray5"]),
-                  onPressed: () {
-                    setState(() {
-                      passwordVisible = !passwordVisible;
-                    });
-                  },
-                ),
-              ),
-              obscureText: !passwordVisible,
-              controller: oldPasswordCtrl,
-              //validator: ,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Enter New Password',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                      // Based on passwordVisible state choose the icon
-                      passwordVisible ? Icons.visibility : Icons.visibility_off,
-                      color: passwordVisible
-                          ? themeColors["black"]
-                          : themeColors["coolGray5"]),
-                  onPressed: () {
-                    setState(() {
-                      passwordVisible = !passwordVisible;
-                    });
-                  },
-                ),
-              ),
-              obscureText: !passwordVisible,
-              controller: newPasswordCtrl,
-              //validator: ,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Confirm New Password',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                      // Based on passwordVisible state choose the icon
-                      passwordVisible ? Icons.visibility : Icons.visibility_off,
-                      color: passwordVisible
-                          ? themeColors["black"]
-                          : themeColors["coolGray5"]),
-                  onPressed: () {
-                    setState(() {
-                      passwordVisible = !passwordVisible;
-                    });
-                  },
-                ),
-              ),
-              obscureText: !passwordVisible,
-              controller: confirmPasswordCtrl,
-              validator: pwdValidator,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])),
-              onPressed: () async {
-                if (oldPasswordCtrl.text.toString().trim() != '') {
-                  print(
-                      'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
-                  AuthResult result = await FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                          email: currentUser.email,
-                          password:
-                              '${oldPasswordCtrl.text.toString().trim()}');
-                  FirebaseUser user = result.user;
-                  print('user: $user');
-                  String userId = user.uid;
-                  print('userId: $userId');
-
-                  if (userId.length > 0 && userId != null) {
-                    if (newPasswordCtrl.text.toString() ==
-                        confirmPasswordCtrl.text.toString()) {
-                      user.updatePassword(newPasswordCtrl.text.toString());
-                      passwordWasChanged(context);
-                      print(
-                          'password was changed to ${newPasswordCtrl.text.toString()}');
-                    }
-                  } else {
-                    //TODO add a pop up notification here
-                    print(
-                        'password was NOT changed to ${newPasswordCtrl.text.toString()}');
-                  }
-                }
-              },
-              color: themeColors['yellow'],
-              textColor: Colors.black,
-              //padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['yellow'],
-              child: Text(
-                "Update Password",
-                style: TextStyle(fontSize: 15.0),
-              ),
-              //onPressed: ,
-            ),
-          )
-        ]));
-    clientCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Email',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text(
-              'Email Address',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'example@gmail.com',
-              ),
-              controller: emailCtrl,
-              validator: emailValidator,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Enter Current Password',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "********",
-                suffixIcon: IconButton(
-                  icon: Icon(
-                      // Based on passwordVisible state choose the icon
-                      passwordVisible ? Icons.visibility : Icons.visibility_off,
-                      color: passwordVisible
-                          ? themeColors["black"]
-                          : themeColors["coolGray5"]),
-                  onPressed: () {
-                    setState(() {
-                      passwordVisible = !passwordVisible;
-                    });
-                  },
-                ),
-              ),
-              obscureText: !passwordVisible,
-              controller: changeEmailPasswordCtrl,
-              //validator: ,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])),
-              onPressed: () async {
-                //TODO add contacts functionality
-                toHome();
-              },
-              color: themeColors['yellow'],
-              textColor: Colors.black,
-              //padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['yellow'],
-              child: Text(
-                "Update Email",
-                style: TextStyle(fontSize: 15.0),
-              ),
-              //onPressed: ,
-            ),
-          )
-        ]));
-    clientCategoryExpansionTiles.add(ExpansionTile(
-      title: Text(
-        'Emergency Contacts',
-        style: TextStyle(
-          fontSize: 25,
-        ),
-      ),
-      children: <Widget>[
-        //Contact1
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text(
-            'Emergency Contact 1',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text(
-            'Name',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Robert',
-            ),
-            controller: emergencyContactNameCtrl,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text(
-            'Relationship',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Father',
-            ),
-            controller: emergencyContactRelationCtrl,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text(
-            'Phone',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: '6785201876',
-            ),
-            controller: emergencyContactPhoneCtrl,
-            validator: phoneValidator,
-          ),
-        ),
-        //Contact2
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text(
-            'Emergency Contact 2',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text(
-            'Name',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Robert',
-            ),
-            controller: emergencyContactNameCtrl2,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text(
-            'Relationship',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Father',
-            ),
-            controller: emergencyContactRelationCtrl2,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-          child: Text(
-            'Phone',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: '6785201876',
-            ),
-            controller: emergencyContactPhoneCtrl2,
-            validator: phoneValidator,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RaisedButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(5.0),
-                side: BorderSide(color: themeColors['yellow'])),
-            onPressed: () async {
-              List<Phone> phones1 = new List<Phone>();
-              List<Phone> phones2 = new List<Phone>();
-
-              if (emergencyContactPhoneCtrl.text.isNotEmpty) {
-                phones1.add(Phone(
-                    emergencyContactPhoneCtrl.text.toString().trim(), true));
-              }
-              if (emergencyContactPhoneCtrl2.text.isNotEmpty) {
-                phones2.add(Phone(
-                    emergencyContactPhoneCtrl2.text.toString().trim(), true));
-              }
-
-              EmergencyContact ec1 = EmergencyContact(
-                  emergencyContactNameCtrl.text.toString().trim(),
-                  emergencyContactRelationCtrl.text.toString().trim(),
-                  phones1);
-              EmergencyContact ec2 = EmergencyContact(
-                  emergencyContactNameCtrl2.text.toString().trim(),
-                  emergencyContactRelationCtrl2.text.toString().trim(),
-                  phones2);
-
-              List<EmergencyContact> ecs = new List<EmergencyContact>();
-              ecs.add(ec1);
-              ecs.add(ec2);
-              print("ec1: $ecs");
-              updateEmergencyContacts(ecs);
-              setState(() {});
-              await clientToDB();
-              //toHome();
-            },
-            color: themeColors['yellow'],
-            textColor: Colors.black,
-            //padding: EdgeInsets.all(15.0),
-            splashColor: themeColors['yellow'],
-            child: Text(
-              "Update Contacts",
-              style: TextStyle(fontSize: 15.0),
-            ),
-            //onPressed: ,
-          ),
-        )
-      ],
-    ));
-    clientCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Birth Information',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        children: <Widget>[
-          Text(
-            'Birth Location',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Grady',
-              ),
-              controller: birthLocationCtrl,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text(
-              'Birth Type',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '"Singleton", "Twins", "Triplets", "more"',
-              ),
-              controller: birthTypeCtrl,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text(
-              'Due Date',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '01/09/1997',
-              ),
-              controller: dueDateCtrl,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text(
-              'Previous Delivery Types',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Vaginal Birth"),
-                    Checkbox(
-                      value: previousVaginalBirth,
-                      onChanged: (bool value) {
-                        setState(() {
-                          previousVaginalBirth = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Cesaerean"),
-                    Checkbox(
-                      value: previousCesarean,
-                      onChanged: (bool value) {
-                        setState(() {
-                          previousCesarean = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("VBAC"),
-                    Checkbox(
-                      value: previousVbac,
-                      onChanged: (bool value) {
-                        setState(() {
-                          previousVbac = value;
-                        });
-                      },
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Preterm"),
-                    Checkbox(
-                      value: preterm,
-                      onChanged: (bool value) {
-                        setState(() {
-                          preterm = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Low Birth Weight"),
-                    Checkbox(
-                      value: lowWeight,
-                      onChanged: (bool value) {
-                        setState(() {
-                          lowWeight = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Twins/Triplets"),
-                    Checkbox(
-                      value: multiples,
-                      onChanged: (bool value) {
-                        setState(() {
-                          multiples = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text(
-              'Current Birth Plan',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Epidural"),
-                    Checkbox(
-                      value: epidural,
-                      onChanged: (bool value) {
-                        setState(() {
-                          epidural = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Cesarean (C-Section)"),
-                    Checkbox(
-                      value: cesarean,
-                      onChanged: (bool value) {
-                        setState(() {
-                          cesarean = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])),
-              onPressed: () async {
-                String location = birthLocationCtrl.text.toString().trim();
-                String type = birthTypeCtrl.text.toString().trim();
-                String date = dueDateCtrl.text.toString().trim();
-
-                List<String> deliveries = List();
-                if (previousVaginalBirth) {
-                  deliveries.add("vaginal");
-                }
-                if (previousCesarean) {
-                  deliveries.add("cesarean");
-                }
-                if (previousVbac) {
-                  deliveries.add("vbac");
-                }
-
-                updateBirthInformation(location, type, date, deliveries,
-                    preterm, lowWeight, multiples, epidural, cesarean);
-                setState(() {});
-                await clientToDB();
-
-                //toClientSettings;
-              },
-              color: themeColors['yellow'],
-              textColor: Colors.black,
-              //padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['yellow'],
-              child: Text(
-                "Update Birth Information",
-                style: TextStyle(fontSize: 15.0),
-              ),
-              //onPressed: ,
-            ),
-          )
-        ]));
-    clientCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Notifications',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: pushNotification,
-              title: Text('Push Notifications'),
-              onChanged: (value) {
-                pushNotification = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: smsNotification,
-              title: Text('SMS Notifications'),
-              onChanged: (value) {
-                smsNotification = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: emailNotification,
-              title: Text('Email Notifications'),
-              onChanged: (value) {
-                emailNotification = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: matchWithDoulaNotification,
-              title: Text('Matched with Doula'),
-              onChanged: (value) {
-                matchWithDoulaNotification = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: statusReportNotification,
-              title: Text('Status Report Reminders'),
-              onChanged: (value) {
-                statusReportNotification = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                  side: BorderSide(color: themeColors['yellow'])),
-              onPressed: () async {
-                //TODO add notifications functionality
-                toHome();
-              },
-              color: themeColors['yellow'],
-              textColor: Colors.black,
-              //padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['yellow'],
-              child: Text(
-                "Update Notifications",
-                style: TextStyle(fontSize: 15.0),
-              ),
-              //onPressed: ,
-            ),
-          )
-        ]));
-    clientCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Privacy',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        //TODO what else to add to privacy
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-            child: SwitchListTile(
-              activeColor: themeColors['yellow'],
-              value: true,
-              title: Text('Make Account Private'),
-              onChanged: (value) {},
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text('Link to Privacy Policy goes here'),
-          ),
-        ]));
-    clientCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Send Feedback',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        //TODO what else to add to privacy
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text('Insert link here'),
-          ),
-        ]));
-    clientCategoryExpansionTiles.add(ExpansionTile(
-        title: Text(
-          'Terms of Service',
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
-            child: Text('Insert link here'),
-          ),
-        ]));
-    clientCategoryExpansionTiles.add(Padding(
-      padding: const EdgeInsets.all(8),
-      child: Center(
-        child: Text(
-          'Version Number 1',
-          style: TextStyle(
-            fontSize: 20,
-          ),
-        ),
-      ),
-    ));
-    clientCategoryExpansionTiles.add(Padding(
-      padding: const EdgeInsets.all(8),
-      child: Center(
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(5.0),
-              side: BorderSide(color: themeColors['emoryBlue'])),
-          onPressed: () async {
-//            String clientName = firstNameCtrl.text.toString().trim();
-//            String clientBday = dateOfBirthCtrl.text.toString().trim();
-//            print('bday: ${dateOfBirthCtrl.text.toString().trim()}');
+//  Form clientUser() {
+//    final clientCategoryExpansionTiles = List<Widget>();
+//    clientCategoryExpansionTiles.add(ExpansionTile(
+//        title: Text(
+//          'My Account',
+//          style: TextStyle(
+//            fontSize: 25,
+//          ),
+//        ),
+//        children: <Widget>[
+//          Text(
+//            'Name',
+//            style: TextStyle(
+//              fontSize: 14,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//            child: TextFormField(
+//              decoration: InputDecoration(
+//                border: OutlineInputBorder(),
+//                hintText: 'Jane D.',
+//              ),
+//              controller: firstNameCtrl,
+//              validator: nameValidator,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//            child: Text(
+//              'Phone Number',
+//              style: TextStyle(
+//                fontSize: 14,
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//            child: TextFormField(
+//              decoration: InputDecoration(
+//                border: OutlineInputBorder(),
+//                hintText: '6785201876',
+//              ),
+//              controller: phoneNumCtrl,
+//              validator: phoneValidator,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//            child: Text(
+//              'Date of Birth',
+//              style: TextStyle(
+//                fontSize: 14,
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//            child: TextFormField(
+//              decoration: InputDecoration(
+//                border: OutlineInputBorder(),
+//                hintText: '01/09/1997',
+//              ),
+//              controller: dateOfBirthCtrl,
+//              validator: phoneValidator,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+//            child: CheckboxListTile(
+//              value: photoRelease,
+//              title: Text("Photo Release Permission"),
+//              onChanged: (bool value) {
+//                setState(() {
+//                  photoRelease = value;
+//                });
+//              },
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: RaisedButton(
+//              shape: RoundedRectangleBorder(
+//                  borderRadius: new BorderRadius.circular(5.0),
+//                  side: BorderSide(color: themeColors['yellow'])),
+//              onPressed: () async {
+//                String clientName = firstNameCtrl.text.toString().trim();
+//                print('clientName: $clientName');
+//                String clientBday = dateOfBirthCtrl.text.toString().trim();
+//                print('bday: ${dateOfBirthCtrl.text.toString().trim()}');
+//                List<Phone> phones = List();
+//                print('phone: ${phoneNumCtrl.text.toString().trim()}');
+//                phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
 //
-//            List<Phone> phones = List();
-//            print('phone: ${phoneNumCtrl.text.toString().trim()}');
-//            phones.add(Phone(phoneNumCtrl.text.toString().trim(), true));
-            String clientEmail = emailCtrl.text.toString().trim();
-
-            if (clientEmail != currentUser.email) {
-//              print('dialog box open');
-//              confirmPasswordDialog(context);
-              print(
-                  'password: ${changeEmailPasswordCtrl.text.toString().trim()}');
-              if (changeEmailPasswordCtrl.text.toString().trim() != '') {
-                print(
-                    'changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
-                AuthResult result = await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                        email: currentUser.email,
-                        password:
-                            '${changeEmailPasswordCtrl.text.toString().trim()}');
-                FirebaseUser user = result.user;
-                print('user: $user');
-                String userId = user.uid;
-                print('userId: $userId');
-                if (userId.length > 0 && userId != null) {
-                  user.updateEmail(clientEmail);
-                  print('email was changed to: $clientEmail');
-                } else {
-                  print('email was not changed');
-                }
-              }
+//                updateClientAccount(
+//                    currentUser, clientName, phones, clientBday, photoRelease);
+//                print('currentUser.name before: ${currentUser.name}');
+//                setState(() {});
+//                await clientToDB();
+//                print('currentUser.name after: ${currentUser.name}');
 //
-            }
-
-//            updateClientAccount(currentUser, clientName, phones, clientBday,
-//                clientEmail, photoRelease);
+//                updateAccountDialog(context);
 //
-//            clientToDB(currentUser);
-            toHome();
-          },
-          color: themeColors['emoryBlue'],
-          textColor: Colors.white,
-          padding: EdgeInsets.all(15.0),
-          splashColor: themeColors['emoryBlue'],
-          child: Text(
-            "Back to Home",
-            style: TextStyle(fontSize: 20.0),
-          ),
-        ),
-      ),
-    ));
-
-    return Form(
-        key: _settingsKey,
-        autovalidate: false,
-        child: ListView(
-          children: clientCategoryExpansionTiles,
-        ));
-  }
+//              },
+//              color: themeColors['yellow'],
+//              textColor: Colors.black,
+//              //padding: EdgeInsets.all(15.0),
+//              splashColor: themeColors['yellow'],
+//              child: Text(
+//                "Update Account",
+//                style: TextStyle(fontSize: 15.0),
+//              ),
+//              //onPressed: ,
+//            ),
+//          )
+//        ]));
+//    clientCategoryExpansionTiles.add(ExpansionTile(
+//        title: Text(
+//          'Password',
+//          style: TextStyle(
+//            fontSize: 25,
+//          ),
+//        ),
+//        children: <Widget>[
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: Text(
+//              'Enter Current Password',
+//              style: TextStyle(
+//                fontSize: 14,
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
+//            child: TextFormField(
+//              decoration: InputDecoration(
+//                border: OutlineInputBorder(),
+//                hintText: "********",
+//                suffixIcon: IconButton(
+//                  icon: Icon(
+//                      // Based on passwordVisible state choose the icon
+//                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+//                      color: passwordVisible
+//                          ? themeColors["black"]
+//                          : themeColors["coolGray5"]),
+//                  onPressed: () {
+//                    setState(() {
+//                      passwordVisible = !passwordVisible;
+//                    });
+//                  },
+//                ),
+//              ),
+//              obscureText: !passwordVisible,
+//              controller: oldPasswordCtrl,
+//              //validator: ,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: Text(
+//              'Enter New Password',
+//              style: TextStyle(
+//                fontSize: 14,
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
+//            child: TextFormField(
+//              decoration: InputDecoration(
+//                border: OutlineInputBorder(),
+//                suffixIcon: IconButton(
+//                  icon: Icon(
+//                      // Based on passwordVisible state choose the icon
+//                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+//                      color: passwordVisible
+//                          ? themeColors["black"]
+//                          : themeColors["coolGray5"]),
+//                  onPressed: () {
+//                    setState(() {
+//                      passwordVisible = !passwordVisible;
+//                    });
+//                  },
+//                ),
+//              ),
+//              obscureText: !passwordVisible,
+//              controller: newPasswordCtrl,
+//              //validator: ,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: Text(
+//              'Confirm New Password',
+//              style: TextStyle(
+//                fontSize: 14,
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
+//            child: TextFormField(
+//              decoration: InputDecoration(
+//                border: OutlineInputBorder(),
+//                suffixIcon: IconButton(
+//                  icon: Icon(
+//                      // Based on passwordVisible state choose the icon
+//                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+//                      color: passwordVisible
+//                          ? themeColors["black"]
+//                          : themeColors["coolGray5"]),
+//                  onPressed: () {
+//                    setState(() {
+//                      passwordVisible = !passwordVisible;
+//                    });
+//                  },
+//                ),
+//              ),
+//              obscureText: !passwordVisible,
+//              controller: confirmPasswordCtrl,
+//              validator: pwdValidator,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: RaisedButton(
+//              shape: RoundedRectangleBorder(
+//                  borderRadius: new BorderRadius.circular(5.0),
+//                  side: BorderSide(color: themeColors['yellow'])),
+//              onPressed: () async {
+//                if (oldPasswordCtrl.text.toString().trim() != '') {
+//                  print(
+//                      'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
+//                  AuthResult result = await FirebaseAuth.instance
+//                      .signInWithEmailAndPassword(
+//                          email: currentUser.email,
+//                          password:
+//                              '${oldPasswordCtrl.text.toString().trim()}');
+//                  FirebaseUser user = result.user;
+//                  print('user: $user');
+//                  String userId = user.uid;
+//                  print('userId: $userId');
+//
+//                  if (userId.length > 0 && userId != null) {
+//                    if (newPasswordCtrl.text.toString() ==
+//                        confirmPasswordCtrl.text.toString()) {
+//                      user.updatePassword(newPasswordCtrl.text.toString());
+//                      passwordWasChanged(context);
+//                      print(
+//                          'password was changed to ${newPasswordCtrl.text.toString()}');
+//                    }
+//                  } else {
+//                    //TODO add a pop up notification here
+//                    print(
+//                        'password was NOT changed to ${newPasswordCtrl.text.toString()}');
+//                  }
+//                }
+//              },
+//              color: themeColors['yellow'],
+//              textColor: Colors.black,
+//              //padding: EdgeInsets.all(15.0),
+//              splashColor: themeColors['yellow'],
+//              child: Text(
+//                "Update Password",
+//                style: TextStyle(fontSize: 15.0),
+//              ),
+//              //onPressed: ,
+//            ),
+//          )
+//        ]));
+//    clientCategoryExpansionTiles.add(ExpansionTile(
+//        title: Text(
+//          'Email',
+//          style: TextStyle(
+//            fontSize: 25,
+//          ),
+//        ),
+//        children: <Widget>[
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//            child: Text(
+//              'Email Address',
+//              style: TextStyle(
+//                fontSize: 14,
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//            child: TextFormField(
+//              decoration: InputDecoration(
+//                border: OutlineInputBorder(),
+//                hintText: 'example@gmail.com',
+//              ),
+//              controller: emailCtrl,
+//              validator: emailValidator,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: Text(
+//              'Enter Current Password',
+//              style: TextStyle(
+//                fontSize: 14,
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(14, 2, 8, 0),
+//            child: TextFormField(
+//              decoration: InputDecoration(
+//                border: OutlineInputBorder(),
+//                hintText: "********",
+//                suffixIcon: IconButton(
+//                  icon: Icon(
+//                      // Based on passwordVisible state choose the icon
+//                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+//                      color: passwordVisible
+//                          ? themeColors["black"]
+//                          : themeColors["coolGray5"]),
+//                  onPressed: () {
+//                    setState(() {
+//                      passwordVisible = !passwordVisible;
+//                    });
+//                  },
+//                ),
+//              ),
+//              obscureText: !passwordVisible,
+//              controller: changeEmailPasswordCtrl,
+//              //validator: ,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: RaisedButton(
+//              shape: RoundedRectangleBorder(
+//                  borderRadius: new BorderRadius.circular(5.0),
+//                  side: BorderSide(color: themeColors['yellow'])),
+//              onPressed: () async {
+//                //TODO add contacts functionality
+//                toHome();
+//              },
+//              color: themeColors['yellow'],
+//              textColor: Colors.black,
+//              //padding: EdgeInsets.all(15.0),
+//              splashColor: themeColors['yellow'],
+//              child: Text(
+//                "Update Email",
+//                style: TextStyle(fontSize: 15.0),
+//              ),
+//              //onPressed: ,
+//            ),
+//          )
+//        ]));
+//    clientCategoryExpansionTiles.add(ExpansionTile(
+//      title: Text(
+//        'Emergency Contacts',
+//        style: TextStyle(
+//          fontSize: 25,
+//        ),
+//      ),
+//      children: <Widget>[
+//        //Contact1
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//          child: Text(
+//            'Emergency Contact 1',
+//            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//          child: Text(
+//            'Name',
+//            style: TextStyle(
+//              fontSize: 14,
+//            ),
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//          child: TextFormField(
+//            decoration: InputDecoration(
+//              border: OutlineInputBorder(),
+//              hintText: 'Robert',
+//            ),
+//            controller: emergencyContactNameCtrl,
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//          child: Text(
+//            'Relationship',
+//            style: TextStyle(
+//              fontSize: 14,
+//            ),
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//          child: TextFormField(
+//            decoration: InputDecoration(
+//              border: OutlineInputBorder(),
+//              hintText: 'Father',
+//            ),
+//            controller: emergencyContactRelationCtrl,
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//          child: Text(
+//            'Phone',
+//            style: TextStyle(
+//              fontSize: 14,
+//            ),
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//          child: TextFormField(
+//            decoration: InputDecoration(
+//              border: OutlineInputBorder(),
+//              hintText: '6785201876',
+//            ),
+//            controller: emergencyContactPhoneCtrl,
+//            validator: phoneValidator,
+//          ),
+//        ),
+//        //Contact2
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//          child: Text(
+//            'Emergency Contact 2',
+//            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//          child: Text(
+//            'Name',
+//            style: TextStyle(
+//              fontSize: 14,
+//            ),
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//          child: TextFormField(
+//            decoration: InputDecoration(
+//              border: OutlineInputBorder(),
+//              hintText: 'Robert',
+//            ),
+//            controller: emergencyContactNameCtrl2,
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//          child: Text(
+//            'Relationship',
+//            style: TextStyle(
+//              fontSize: 14,
+//            ),
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//          child: TextFormField(
+//            decoration: InputDecoration(
+//              border: OutlineInputBorder(),
+//              hintText: 'Father',
+//            ),
+//            controller: emergencyContactRelationCtrl2,
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//          child: Text(
+//            'Phone',
+//            style: TextStyle(
+//              fontSize: 14,
+//            ),
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//          child: TextFormField(
+//            decoration: InputDecoration(
+//              border: OutlineInputBorder(),
+//              hintText: '6785201876',
+//            ),
+//            controller: emergencyContactPhoneCtrl2,
+//            validator: phoneValidator,
+//          ),
+//        ),
+//        Padding(
+//          padding: const EdgeInsets.all(8.0),
+//          child: RaisedButton(
+//            shape: RoundedRectangleBorder(
+//                borderRadius: new BorderRadius.circular(5.0),
+//                side: BorderSide(color: themeColors['yellow'])),
+//            onPressed: () async {
+//              List<Phone> phones1 = new List<Phone>();
+//              List<Phone> phones2 = new List<Phone>();
+//
+//              if (emergencyContactPhoneCtrl.text.isNotEmpty) {
+//                phones1.add(Phone(
+//                    emergencyContactPhoneCtrl.text.toString().trim(), true));
+//              }
+//              if (emergencyContactPhoneCtrl2.text.isNotEmpty) {
+//                phones2.add(Phone(
+//                    emergencyContactPhoneCtrl2.text.toString().trim(), true));
+//              }
+//
+//              EmergencyContact ec1 = EmergencyContact(
+//                  emergencyContactNameCtrl.text.toString().trim(),
+//                  emergencyContactRelationCtrl.text.toString().trim(),
+//                  phones1);
+//              EmergencyContact ec2 = EmergencyContact(
+//                  emergencyContactNameCtrl2.text.toString().trim(),
+//                  emergencyContactRelationCtrl2.text.toString().trim(),
+//                  phones2);
+//
+//              List<EmergencyContact> ecs = new List<EmergencyContact>();
+//              ecs.add(ec1);
+//              ecs.add(ec2);
+//              print("ec1: $ecs");
+//              updateEmergencyContacts(currentUser, ecs);
+//              setState(() {});
+//              await clientToDB();
+//              //toHome();
+//            },
+//            color: themeColors['yellow'],
+//            textColor: Colors.black,
+//            //padding: EdgeInsets.all(15.0),
+//            splashColor: themeColors['yellow'],
+//            child: Text(
+//              "Update Contacts",
+//              style: TextStyle(fontSize: 15.0),
+//            ),
+//            //onPressed: ,
+//          ),
+//        )
+//      ],
+//    ));
+//    clientCategoryExpansionTiles.add(ExpansionTile(
+//        title: Text(
+//          'Birth Information',
+//          style: TextStyle(
+//            fontSize: 25,
+//          ),
+//        ),
+//        children: <Widget>[
+//          Text(
+//            'Birth Location',
+//            style: TextStyle(
+//              fontSize: 14,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//            child: TextFormField(
+//              decoration: InputDecoration(
+//                border: OutlineInputBorder(),
+//                hintText: 'Grady',
+//              ),
+//              controller: birthLocationCtrl,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//            child: Text(
+//              'Birth Type',
+//              style: TextStyle(
+//                fontSize: 14,
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//            child: TextFormField(
+//              decoration: InputDecoration(
+//                border: OutlineInputBorder(),
+//                hintText: '"Singleton", "Twins", "Triplets", "more"',
+//              ),
+//              controller: birthTypeCtrl,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//            child: Text(
+//              'Due Date',
+//              style: TextStyle(
+//                fontSize: 14,
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+//            child: TextFormField(
+//              decoration: InputDecoration(
+//                border: OutlineInputBorder(),
+//                hintText: '01/09/1997',
+//              ),
+//              controller: dueDateCtrl,
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//            child: Text(
+//              'Previous Delivery Types',
+//              style: TextStyle(
+//                fontSize: 14,
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: Row(
+//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//              children: <Widget>[
+//                Column(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Text("Vaginal Birth"),
+//                    Checkbox(
+//                      value: previousVaginalBirth,
+//                      onChanged: (bool value) {
+//                        setState(() {
+//                          previousVaginalBirth = value;
+//                        });
+//                      },
+//                    )
+//                  ],
+//                ),
+//                Column(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Text("Cesaerean"),
+//                    Checkbox(
+//                      value: previousCesarean,
+//                      onChanged: (bool value) {
+//                        setState(() {
+//                          previousCesarean = value;
+//                        });
+//                      },
+//                    )
+//                  ],
+//                ),
+//                Column(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Text("VBAC"),
+//                    Checkbox(
+//                      value: previousVbac,
+//                      onChanged: (bool value) {
+//                        setState(() {
+//                          previousVbac = value;
+//                        });
+//                      },
+//                    )
+//                  ],
+//                )
+//              ],
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: Row(
+//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//              children: <Widget>[
+//                Column(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Text("Preterm"),
+//                    Checkbox(
+//                      value: preterm,
+//                      onChanged: (bool value) {
+//                        setState(() {
+//                          preterm = value;
+//                        });
+//                      },
+//                    )
+//                  ],
+//                ),
+//                Column(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Text("Low Birth Weight"),
+//                    Checkbox(
+//                      value: lowWeight,
+//                      onChanged: (bool value) {
+//                        setState(() {
+//                          lowWeight = value;
+//                        });
+//                      },
+//                    )
+//                  ],
+//                ),
+//                Column(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Text("Twins/Triplets"),
+//                    Checkbox(
+//                      value: multiples,
+//                      onChanged: (bool value) {
+//                        setState(() {
+//                          multiples = value;
+//                        });
+//                      },
+//                    )
+//                  ],
+//                ),
+//              ],
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//            child: Text(
+//              'Current Birth Plan',
+//              style: TextStyle(
+//                fontSize: 14,
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: Row(
+//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//              children: <Widget>[
+//                Column(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Text("Epidural"),
+//                    Checkbox(
+//                      value: epidural,
+//                      onChanged: (bool value) {
+//                        setState(() {
+//                          epidural = value;
+//                        });
+//                      },
+//                    )
+//                  ],
+//                ),
+//                Column(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Text("Cesarean (C-Section)"),
+//                    Checkbox(
+//                      value: cesarean,
+//                      onChanged: (bool value) {
+//                        setState(() {
+//                          cesarean = value;
+//                        });
+//                      },
+//                    )
+//                  ],
+//                ),
+//              ],
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: RaisedButton(
+//              shape: RoundedRectangleBorder(
+//                  borderRadius: new BorderRadius.circular(5.0),
+//                  side: BorderSide(color: themeColors['yellow'])),
+//              onPressed: () async {
+//                String location = birthLocationCtrl.text.toString().trim();
+//                String type = birthTypeCtrl.text.toString().trim();
+//                String date = dueDateCtrl.text.toString().trim();
+//
+//                List<String> deliveries = List();
+//                if (previousVaginalBirth) {
+//                  deliveries.add("vaginal");
+//                }
+//                if (previousCesarean) {
+//                  deliveries.add("cesarean");
+//                }
+//                if (previousVbac) {
+//                  deliveries.add("vbac");
+//                }
+//
+//                updateBirthInformation(
+//                    currentUser,
+//                    location,
+//                    type,
+//                    date,
+//                    deliveries,
+//                    preterm,
+//                    lowWeight,
+//                    multiples,
+//                    epidural,
+//                    cesarean);
+//                setState(() {});
+//                await clientToDB();
+//
+//                //toClientSettings;
+//              },
+//              color: themeColors['yellow'],
+//              textColor: Colors.black,
+//              //padding: EdgeInsets.all(15.0),
+//              splashColor: themeColors['yellow'],
+//              child: Text(
+//                "Update Birth Information",
+//                style: TextStyle(fontSize: 15.0),
+//              ),
+//              //onPressed: ,
+//            ),
+//          )
+//        ]));
+//    clientCategoryExpansionTiles.add(ExpansionTile(
+//        title: Text(
+//          'Notifications',
+//          style: TextStyle(
+//            fontSize: 25,
+//          ),
+//        ),
+//        children: <Widget>[
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+//            child: SwitchListTile(
+//              activeColor: themeColors['yellow'],
+//              value: pushNotification,
+//              title: Text('Push Notifications'),
+//              onChanged: (value) {
+//                pushNotification = value;
+//              },
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+//            child: SwitchListTile(
+//              activeColor: themeColors['yellow'],
+//              value: smsNotification,
+//              title: Text('SMS Notifications'),
+//              onChanged: (value) {
+//                smsNotification = value;
+//              },
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+//            child: SwitchListTile(
+//              activeColor: themeColors['yellow'],
+//              value: emailNotification,
+//              title: Text('Email Notifications'),
+//              onChanged: (value) {
+//                emailNotification = value;
+//              },
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+//            child: SwitchListTile(
+//              activeColor: themeColors['yellow'],
+//              value: matchWithDoulaNotification,
+//              title: Text('Matched with Doula'),
+//              onChanged: (value) {
+//                matchWithDoulaNotification = value;
+//              },
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+//            child: SwitchListTile(
+//              activeColor: themeColors['yellow'],
+//              value: statusReportNotification,
+//              title: Text('Status Report Reminders'),
+//              onChanged: (value) {
+//                statusReportNotification = value;
+//              },
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.all(8.0),
+//            child: RaisedButton(
+//              shape: RoundedRectangleBorder(
+//                  borderRadius: new BorderRadius.circular(5.0),
+//                  side: BorderSide(color: themeColors['yellow'])),
+//              onPressed: () async {
+//                //TODO add notifications functionality
+//                toHome();
+//              },
+//              color: themeColors['yellow'],
+//              textColor: Colors.black,
+//              //padding: EdgeInsets.all(15.0),
+//              splashColor: themeColors['yellow'],
+//              child: Text(
+//                "Update Notifications",
+//                style: TextStyle(fontSize: 15.0),
+//              ),
+//              //onPressed: ,
+//            ),
+//          )
+//        ]));
+//    clientCategoryExpansionTiles.add(ExpansionTile(
+//        title: Text(
+//          'Privacy',
+//          style: TextStyle(
+//            fontSize: 25,
+//          ),
+//        ),
+//        //TODO what else to add to privacy
+//        children: <Widget>[
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
+//            child: SwitchListTile(
+//              activeColor: themeColors['yellow'],
+//              value: true,
+//              title: Text('Make Account Private'),
+//              onChanged: (value) {},
+//            ),
+//          ),
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//            child: Text('Link to Privacy Policy goes here'),
+//          ),
+//        ]));
+//    clientCategoryExpansionTiles.add(ExpansionTile(
+//        title: Text(
+//          'Send Feedback',
+//          style: TextStyle(
+//            fontSize: 25,
+//          ),
+//        ),
+//        //TODO what else to add to privacy
+//        children: <Widget>[
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//            child: Text('Insert link here'),
+//          ),
+//        ]));
+//    clientCategoryExpansionTiles.add(ExpansionTile(
+//        title: Text(
+//          'Terms of Service',
+//          style: TextStyle(
+//            fontSize: 25,
+//          ),
+//        ),
+//        children: <Widget>[
+//          Padding(
+//            padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
+//            child: Text('Insert link here'),
+//          ),
+//        ]));
+//    clientCategoryExpansionTiles.add(Padding(
+//      padding: const EdgeInsets.all(8),
+//      child: Center(
+//        child: Text(
+//          'Version Number 1',
+//          style: TextStyle(
+//            fontSize: 20,
+//          ),
+//        ),
+//      ),
+//    ));
+//    clientCategoryExpansionTiles.add(Padding(
+//      padding: const EdgeInsets.all(8),
+//      child: Center(
+//        child: RaisedButton(
+//          shape: RoundedRectangleBorder(
+//              borderRadius: new BorderRadius.circular(5.0),
+//              side: BorderSide(color: themeColors['emoryBlue'])),
+//          onPressed: () async {
+//
+//            String clientEmail = emailCtrl.text.toString().trim();
+//
+//            if (clientEmail != currentUser.email) {
+////              print('dialog box open');
+////              confirmPasswordDialog(context);
+//              print(
+//                  'password: ${changeEmailPasswordCtrl.text.toString().trim()}');
+//              if (changeEmailPasswordCtrl.text.toString().trim() != '') {
+//                print(
+//                    'changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
+//                AuthResult result = await FirebaseAuth.instance
+//                    .signInWithEmailAndPassword(
+//                        email: currentUser.email,
+//                        password:
+//                            '${changeEmailPasswordCtrl.text.toString().trim()}');
+//                FirebaseUser user = result.user;
+//                print('user: $user');
+//                String userId = user.uid;
+//                print('userId: $userId');
+//                if (userId.length > 0 && userId != null) {
+//                  user.updateEmail(clientEmail);
+//                  print('email was changed to: $clientEmail');
+//                } else {
+//                  print('email was not changed');
+//                }
+//              }
+////
+//            }
+//
+//            toHome();
+//          },
+//          color: themeColors['emoryBlue'],
+//          textColor: Colors.white,
+//          padding: EdgeInsets.all(15.0),
+//          splashColor: themeColors['emoryBlue'],
+//          child: Text(
+//            "Back to Home",
+//            style: TextStyle(fontSize: 20.0),
+//          ),
+//        ),
+//      ),
+//    ));
+//
+//    return Form(
+//        key: _settingsKey,
+//        autovalidate: false,
+//        child: ListView(
+//          children: clientCategoryExpansionTiles,
+//        ));
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -1444,7 +1448,8 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
 
                               await clientToDB();
 
-                              updateAccountDialog(context);
+                              updateAccountDialog(context,
+                                  'Your account was updated successfully');
                             }
                           },
                           color: themeColors['yellow'],
@@ -1709,8 +1714,46 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                               borderRadius: new BorderRadius.circular(5.0),
                               side: BorderSide(color: themeColors['yellow'])),
                           onPressed: () async {
-                            //TODO add contacts functionality
-                            toHome();
+                            final form = _emailKey.currentState;
+                            form.save();
+                            String newClientEmail =
+                                emailCtrl.text.toString().trim();
+
+                            if (form.validate() &&
+                                newClientEmail != currentUser.email) {
+                              // form validation and sanity check
+                              String clientPassword = changeEmailPasswordCtrl
+                                  .text
+                                  .toString()
+                                  .trim();
+                              print(
+                                  'new email: $newClientEmail  pw: $clientPassword');
+                              try {
+                                AuthResult result = await FirebaseAuth.instance
+                                    .signInWithEmailAndPassword(
+                                        email: currentUser.email,
+                                        password: clientPassword);
+                                FirebaseUser user = result.user;
+                                print('user: $user');
+                                String userId = user.uid;
+                                print('userId: $userId');
+
+                                user.updateEmail(newClientEmail);
+                                updateEmail(currentUser,
+                                    emailCtrl.text.toString().trim());
+                                await clientToDB();
+                                print(
+                                    "Email was changed to: ${emailCtrl.text.toString().trim()}");
+                                updateAccountDialog(context,
+                                    'Your account was updated successfully');
+                              } on Exception catch (e) {
+                                String error = e.toString();
+                                updateAccountDialog(
+                                    context,
+                                    error.substring(error.indexOf(',') + 1,
+                                        error.lastIndexOf(',')));
+                              }
+                            }
                           },
                           color: themeColors['yellow'],
                           textColor: Colors.black,
@@ -2431,6 +2474,7 @@ class ClientSettingsScreenConnector extends StatelessWidget {
               vm.updateClientAccount,
               vm.updateBirthInformation,
               vm.updateEmergencyContacts,
+              vm.updateEmail,
               vm.clientToDB,
               vm.toClientSettings,
             ));
@@ -2450,6 +2494,7 @@ class ViewModel extends BaseModel<AppState> {
           String, String, String, List<String>, bool, bool, bool, bool, bool)
       updateBirthInformation;
   void Function(List<EmergencyContact>) updateEmergencyContacts;
+  void Function(Client, String) updateEmail;
   Future<void> Function() clientToDB;
 
   ViewModel.build({
@@ -2459,6 +2504,7 @@ class ViewModel extends BaseModel<AppState> {
     @required this.updateClientAccount,
     @required this.updateBirthInformation,
     @required this.updateEmergencyContacts,
+    @required this.updateEmail,
     @required this.clientToDB,
     @required this.toClientSettings,
   }) : super(equals: [currentUser]);
@@ -2503,6 +2549,8 @@ class ViewModel extends BaseModel<AppState> {
         epidural: epidural,
         cesarean: cesarean,
       )),
+      updateEmail: (Client user, String email) =>
+          dispatch(UpdateClientUserAction(email: email)),
       updateEmergencyContacts: (List<EmergencyContact> emergencyContacts) =>
           dispatch(UpdateClientUserAction(
         emergencyContacts: emergencyContacts,

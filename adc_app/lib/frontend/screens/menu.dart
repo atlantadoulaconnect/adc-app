@@ -23,6 +23,7 @@ class CurrentMenu extends StatelessWidget {
   final VoidCallback toAdminSettings;
   final VoidCallback toClientApplication;
   final VoidCallback toDoulaApplication;
+  final VoidCallback toAppType;
 
   CurrentMenu(
       {this.currentUser,
@@ -42,7 +43,8 @@ class CurrentMenu extends StatelessWidget {
       this.toDoulaSettings,
       this.toAdminSettings,
       this.toClientApplication,
-      this.toDoulaApplication});
+      this.toDoulaApplication,
+      this.toAppType});
 
   @override
   Widget build(BuildContext context) {
@@ -244,19 +246,24 @@ class CurrentMenu extends StatelessWidget {
                       )),
                   onTap: toRecentMessages,
                 ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59485, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
+                Visibility(
+                  visible: (currentUser.status == null ||
+                          currentUser.status == "incomplete") &&
+                      (currentUser as Client).completedApplication(),
+                  child: ListTile(
+                    leading: Icon(
+                      IconData(59485, fontFamily: 'MaterialIcons'),
+                      color: Colors.white,
+                    ),
+                    title: Text('Request Form',
+                        style: TextStyle(
+                          color: Colors.white,
+                        )),
+                    onTap: () {
+                      toClientApplication();
+                      //toHome();
+                    },
                   ),
-                  title: Text('Request Form',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: () {
-                    toClientApplication();
-                    //toHome();
-                  },
                 ),
                 ListTile(
                   leading: Icon(
@@ -323,6 +330,7 @@ class CurrentMenu extends StatelessWidget {
   }
 
   Drawer doulaMenu() {
+    print("init user status: ${currentUser.status}");
     return Drawer(
         child: Container(
             color: themeColors["mediumBlue"],
@@ -356,19 +364,24 @@ class CurrentMenu extends StatelessWidget {
                       )),
                   onTap: toRecentMessages,
                 ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59485, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
+                Visibility(
+                  visible: (currentUser.status == null ||
+                          currentUser.status == "incomplete") &&
+                      (currentUser as Doula).completedApplication(),
+                  child: ListTile(
+                    leading: Icon(
+                      IconData(59485, fontFamily: 'MaterialIcons'),
+                      color: Colors.white,
+                    ),
+                    title: Text('Application Form',
+                        style: TextStyle(
+                          color: Colors.white,
+                        )),
+                    onTap: () {
+                      toDoulaApplication();
+                      //toHome();
+                    },
                   ),
-                  title: Text('Application Form',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: () {
-                    toDoulaApplication();
-                    //toHome();
-                  },
                 ),
                 ListTile(
                   leading: Icon(
@@ -468,6 +481,20 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toRecentMessages,
+                ),
+                ListTile(
+                  leading: Icon(
+                    IconData(59485, fontFamily: 'MaterialIcons'),
+                    color: Colors.white,
+                  ),
+                  title: Text('Start Application',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  onTap: () {
+                    toAppType();
+                    //toHome();
+                  },
                 ),
                 ListTile(
                   leading: Icon(
@@ -658,6 +685,7 @@ class Menu extends StatelessWidget {
             toAdminSettings: vm.toAdminSettings,
             toClientApplication: vm.toClientApplication,
             toDoulaApplication: vm.toDoulaApplication,
+            toAppType: vm.toAppType,
           );
         });
   }
@@ -684,6 +712,7 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toAdminSettings;
   VoidCallback toClientApplication;
   VoidCallback toDoulaApplication;
+  VoidCallback toAppType;
 
   ViewModel.build(
       {@required this.currentUser,
@@ -703,7 +732,8 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toDoulaSettings,
       @required this.toAdminSettings,
       @required this.toClientApplication,
-      @required this.toDoulaApplication})
+      @required this.toDoulaApplication,
+      @required this.toAppType})
       : super(equals: [currentUser]);
 
   @override
@@ -739,6 +769,7 @@ class ViewModel extends BaseModel<AppState> {
         toClientApplication: () =>
             dispatch(NavigateAction.pushNamed("/clientAppPage1")),
         toDoulaApplication: () =>
-            dispatch(NavigateAction.pushNamed("/doulaAppPage1")));
+            dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
+        toAppType: () => dispatch(NavigateAction.pushNamed("/appType")));
   }
 }

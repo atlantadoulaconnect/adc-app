@@ -13,8 +13,6 @@ class Client extends User {
   List<String> deliveryTypes;
   String dueDate;
 
-  String status;
-
   String primaryDoulaId;
   String primaryDoulaName;
   String backupDoulaId;
@@ -37,11 +35,11 @@ class Client extends User {
       String userType,
       String name,
       String email,
+      String status,
       bool phoneVerified,
       List<Phone> phones,
       Set<String> chats,
       Set<String> appContacts,
-      String status,
       this.bday,
       this.primaryDoulaId,
       this.primaryDoulaName,
@@ -114,7 +112,6 @@ class Client extends User {
         phones: phones ?? this.phones,
         email: email ?? this.email,
         phoneVerified: phoneVerified ?? this.phoneVerified,
-        status: status ?? this.status,
         bday: bday ?? this.bday,
         primaryDoulaId: primaryDoulaId ?? this.primaryDoulaId,
         primaryDoulaName: primaryDoulaName ?? this.primaryDoulaName,
@@ -134,6 +131,36 @@ class Client extends User {
         meetBefore: meetBefore ?? this.meetBefore,
         homeVisit: homeVisit ?? this.homeVisit,
         photoRelease: photoRelease ?? this.photoRelease);
+  }
+
+  bool completedApplication() {
+    // nothing can null
+    if (bday != null &&
+        birthLocation != null &&
+        birthType != null &&
+        cesarean != null &&
+        deliveryTypes != null &&
+        dueDate != null &&
+        epidural != null &&
+        homeVisit != null &&
+        liveBirths != null &&
+        lowWeight != null &&
+        meetBefore != null &&
+        multiples != null &&
+        photoRelease != null &&
+        preterm != null &&
+        emergencyContacts != null) {
+      // strings not empty, lists not empty
+      if (bday.isNotEmpty &&
+          birthLocation.isNotEmpty &&
+          birthType.isNotEmpty &&
+          deliveryTypes.isNotEmpty &&
+          dueDate.isNotEmpty &&
+          emergencyContacts.isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @override
@@ -184,8 +211,7 @@ class Client extends User {
       multiples.hashCode ^
       meetBefore.hashCode ^
       homeVisit.hashCode ^
-      photoRelease.hashCode ^
-      status.hashCode;
+      photoRelease.hashCode;
 
   @override
   String toString() {

@@ -5,7 +5,6 @@ part 'doula.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Doula extends User {
   bool emailVerified;
-  String status;
 
   String bday;
   String bio;
@@ -100,6 +99,24 @@ class Doula extends User {
         currentClients: currentClients ?? this.currentClients);
   }
 
+  bool completedApplication() {
+    // nothing can null
+    if (bday != null &&
+        bio != null &&
+        birthsNeeded != null &&
+        certInProgress != null &&
+        certProgram != null &&
+        certified != null &&
+        availableDates != null &&
+        photoRelease != null) {
+      // strings not empty, lists not empty (except for availableDates which is optional)
+      if (bday.isNotEmpty && bio.isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -109,7 +126,6 @@ class Doula extends User {
           bday == other.bday &&
           emailVerified == other.emailVerified &&
           phoneVerified == other.phoneVerified &&
-          status == other.status &&
           bio == other.bio &&
           certified == other.certified &&
           certInProgress == other.certInProgress &&
@@ -125,7 +141,6 @@ class Doula extends User {
       bday.hashCode ^
       emailVerified.hashCode ^
       phoneVerified.hashCode ^
-      status.hashCode ^
       bio.hashCode ^
       certified.hashCode ^
       certInProgress.hashCode ^

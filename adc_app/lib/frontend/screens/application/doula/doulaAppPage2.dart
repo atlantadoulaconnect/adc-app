@@ -117,25 +117,28 @@ class DoulaAppPage2State extends State<DoulaAppPage2> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: 300.0,
-                height: 250.0,
-                child: TextField(
-                  // TODO validate this user input, show error message
-                  minLines: 12,
-                  maxLines: 12,
-                  autocorrect: true,
-                  keyboardType: TextInputType.text,
-                  controller: _bioCtrl..text = currentUser.bio,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText:
-                        'What do you want your clients \nto know about you?',
+                padding: const EdgeInsets.all(8.0),
+                child: Form(
+                  key: _formKey,
+                  autovalidate: false,
+                  child: Container(
+                    width: 300.0,
+                    height: 250.0,
+                    child: TextField(
+                      // TODO validate this user input, show error message
+                      minLines: 12,
+                      maxLines: 12,
+                      autocorrect: true,
+                      keyboardType: TextInputType.text,
+                      controller: _bioCtrl..text = currentUser.bio,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText:
+                            'What do you want your clients \nto know about you?',
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
+                )),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -148,7 +151,13 @@ class DoulaAppPage2State extends State<DoulaAppPage2> {
                             borderRadius: new BorderRadius.circular(10.0),
                             side: BorderSide(color: themeColors['mediumBlue'])),
                         onPressed: () {
-                          // inputted information is lost when previous is pressed
+                          final form = _formKey.currentState;
+                          form.save();
+
+                          String bio = _bioCtrl.text.toString().trim();
+
+                          updateDoula(bio.isEmpty ? null : bio);
+
                           Navigator.pop(context);
                         },
                         color: themeColors['mediumBlue'],
@@ -191,6 +200,9 @@ class DoulaAppPage2State extends State<DoulaAppPage2> {
                             borderRadius: new BorderRadius.circular(10.0),
                             side: BorderSide(color: themeColors['yellow'])),
                         onPressed: () {
+                          final form = _formKey.currentState;
+                          form.save();
+
                           updateDoula(_bioCtrl.text.toString().trim());
                           toDoulaAppPage3();
                         },

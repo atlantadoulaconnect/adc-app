@@ -158,6 +158,8 @@ class DoulaAppPage5State extends State<DoulaAppPage5> {
                                   BorderSide(color: themeColors['mediumBlue'])),
                           onPressed: () {
                             // information will be lost
+                            updatedoula(photoReleasePermission);
+
                             Navigator.pop(context);
                           },
                           color: themeColors['mediumBlue'],

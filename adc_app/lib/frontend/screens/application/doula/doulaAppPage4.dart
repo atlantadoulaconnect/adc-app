@@ -279,6 +279,16 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
                                     color: themeColors['mediumBlue'])),
                             onPressed: () {
                               // info will be lost
+                              List<String> unavailableDatesAsString =
+                                  new List<String>();
+                              for (DateTime d in unavailableDates) {
+                                unavailableDatesAsString
+                                    .add(formatDateYYYYMMDD(d));
+                              }
+                              updateDoula(unavailableDatesAsString.isEmpty
+                                  ? null
+                                  : unavailableDatesAsString);
+
                               Navigator.pop(context);
                             },
                             color: themeColors['mediumBlue'],

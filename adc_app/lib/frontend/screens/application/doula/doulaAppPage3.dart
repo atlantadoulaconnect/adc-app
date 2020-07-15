@@ -93,6 +93,10 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
 
     certProgram = [];
     certProgram.add(new DropdownMenuItem(
+      child: new Text(""),
+      value: certPrograms[0],
+    ));
+    certProgram.add(new DropdownMenuItem(
       child: new Text('DONA'),
       value: certPrograms[1],
     ));
@@ -112,6 +116,12 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        "selected program: ${selectedProgram == null}\ncertProgram: ${certProgram.length}");
+    for (DropdownMenuItem d in certProgram) {
+      print("${d.value}");
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Doula Application'),
@@ -255,35 +265,17 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                       ),
                       Flexible(
                         child: Container(
-                          width: 80,
-                          child: DropdownButton<String>(
-                            value: selectedProgram,
-                            icon: Icon(Icons.arrow_downward),
-                            underline: Container(
-                              height: 2,
-                              color: themeColors['emoryBlue'],
-                            ),
-                            onChanged: (String newValue) {
-                              setState(() {
-                                selectedProgram = newValue;
-                              });
-                            },
-                            items: <String>[
-                              '',
-                              'DONA',
-                              'CAPPA',
-                              'ICEA',
-                              'Other'
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              // TODO if Other is selected then an  option to type that program
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      )
+                            width: 80,
+                            child: DropdownButton(
+                              value: selectedProgram,
+                              items: certProgram,
+                              isExpanded: true,
+                              onChanged: (value) {
+                                selectedProgram = value;
+                                setState(() {});
+                              },
+                            )),
+                      ),
                     ]),
               ),
               Padding(
@@ -327,7 +319,19 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                               side:
                                   BorderSide(color: themeColors['mediumBlue'])),
                           onPressed: () {
-                            // info won't be saved
+                            bool isCertified = selectedCert[0] == true;
+                            bool inProgress = selectedProgress[0] == true;
+                            String program = selectedProgram == ""
+                                ? "none"
+                                : selectedProgram;
+                            String selBirths =
+                                _birthsNeeded.text.toString().trim();
+                            int births =
+                                int.parse(selBirths.isEmpty ? "0" : selBirths);
+
+                            updateDoula(
+                                isCertified, inProgress, program, births);
+
                             Navigator.pop(context);
                           },
                           color: themeColors['mediumBlue'],
@@ -377,8 +381,11 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                             String program = selectedProgram == ""
                                 ? "none"
                                 : selectedProgram;
+
+                            String selBirths =
+                                _birthsNeeded.text.toString().trim();
                             int births =
-                                int.parse(_birthsNeeded.text.toString().trim());
+                                int.parse(selBirths.isEmpty ? "0" : selBirths);
                             updateDoula(
                                 isCertified, inProgress, program, births);
 

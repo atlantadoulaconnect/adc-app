@@ -149,6 +149,9 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
 //          ? state.messagesState.chats.toList()
 //          : null,
     });
+
+    return state.copy(
+        currentUser: (state.currentUser as Client).copy(status: "submitted"));
   }
 
   void before() => dispatch(LoadingAction(true));
@@ -216,8 +219,8 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
 //      "chats": state.messagesState.chats != null ? state.messagesState.chats.toList() : null,
     });
 
-    // TODO applicationState, update application state to submitted
-    return null;
+    return state.copy(
+        currentUser: (state.currentUser as Doula).copy(status: "submitted"));
   }
 
   void before() => dispatch(LoadingAction(true));

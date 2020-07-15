@@ -1,6 +1,7 @@
 import 'package:adc_app/backend/actions/messageAction.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../common.dart';
 
@@ -65,13 +66,29 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 ),
               ),
               SizedBox(height: 8.0),
-              Text(
-                msg.content,
-                style: TextStyle(
-                  color: isMe ? themeColors["white"] : themeColors["emoryBlue"],
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
+              FlatButton(
+                padding: EdgeInsets.all(0.0),
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      msg.content,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: isMe ? themeColors["white"] : themeColors["emoryBlue"],
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
+                onPressed: () async {
+                  if (await canLaunch(msg.content)) {
+                    await launch(msg.content);
+                  }
+                },
               ),
             ],
           ),

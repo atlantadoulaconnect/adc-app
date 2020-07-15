@@ -24,6 +24,7 @@ String formatDateYYYYMMDD(DateTime date) {
 }
 
 
+
 // Returns Today, Yesterday, day of the week, or Mon. DD, YYYY
 // Returns Mon. DD, YYYY if timestamp is more than a week before today
 String formatDateRelative(Timestamp timestamp) {

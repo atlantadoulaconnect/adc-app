@@ -297,15 +297,15 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
     );
   }
 
-  updateAccountDialog(BuildContext context) {
+  updateAccountDialog(BuildContext context, String code) {
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Your account was successfully updated"),
+          title: Text(code),
           actions: <Widget>[
             FlatButton(
-              child: Text("Okay"),
+              child: Text('Okay'),
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pop('dialog');
               },
@@ -1447,7 +1447,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
 
                               await clientToDB();
 
-                              updateAccountDialog(context);
+                              updateAccountDialog(context, 'Your account was updated successfully');
 
                             }
                           },
@@ -1716,21 +1716,30 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                             String newClientEmail = emailCtrl.text.toString().trim();
                             String clientPassword = changeEmailPasswordCtrl.text.toString().trim();
                             print('new email: $newClientEmail  pw: $clientPassword');
+                            try {
 
-                            AuthResult result = await FirebaseAuth.instance
-                                .signInWithEmailAndPassword(
-                                email: currentUser.email,
-                                password: clientPassword);
-                            FirebaseUser user = result.user;
-                            print('user: $user');
-                            String userId = user.uid;
-                            print('userId: $userId');
+                              AuthResult result = await FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(
+                                  email: currentUser.email,
+                                  password: clientPassword);
+                              FirebaseUser user = result.user;
+                              print('user: $user');
+                              String userId = user.uid;
+                              print('userId: $userId');
 
-                            user.updateEmail(newClientEmail);
-                            updateEmail(currentUser, emailCtrl.text.toString().trim());
-                            await clientToDB();
-                            print("Email was changed to: ${emailCtrl.text.toString().trim()}");
-                            updateAccountDialog(context);
+
+                              user.updateEmail(newClientEmail);
+                              updateEmail(currentUser, emailCtrl.text.toString()
+                                  .trim());
+                              await clientToDB();
+                              print("Email was changed to: ${emailCtrl.text
+                                  .toString().trim()}");
+                              updateAccountDialog(context, 'Your account was updated successfully');
+                            } on Exception catch (e) {
+                              String error = e.toString();
+                              updateAccountDialog(context, error.substring(error.indexOf(',') + 1,
+                                  error.lastIndexOf(',')));
+                            }
 
                           },
                           color: themeColors['yellow'],

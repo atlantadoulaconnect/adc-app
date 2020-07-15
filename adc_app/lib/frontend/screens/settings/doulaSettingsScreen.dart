@@ -199,12 +199,12 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
     );
   }
 
-  updateAccountDialog(BuildContext context) {
+  updateAccountDialog(BuildContext context, String code) {
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Your account was successfully updated"),
+          title: Text(code),
           actions: <Widget>[
             FlatButton(
               child: Text("Okay"),
@@ -361,7 +361,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                               print('name after update: ${currentUser.name}');
 
                               await doulaToDB();
-                              updateAccountDialog(context);
+                              updateAccountDialog(context, 'Your account was updated successfully');
                               print(
                                   'name after updated call: ${currentUser.name}');
                             }
@@ -633,20 +633,29 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                             String doulaPassword = changeEmailPasswordCtrl.text.toString().trim();
                             print('new email: $newDoulaEmail  pw: $doulaPassword');
 
-                            AuthResult result = await FirebaseAuth.instance
-                                .signInWithEmailAndPassword(
-                                email: currentUser.email,
-                                password: doulaPassword);
-                            FirebaseUser user = result.user;
-                            print('user: $user');
-                            String userId = user.uid;
-                            print('userId: $userId');
+                            try {
+                              AuthResult result = await FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(
+                                  email: currentUser.email,
+                                  password: doulaPassword);
+                              FirebaseUser user = result.user;
+                              print('user: $user');
+                              String userId = user.uid;
+                              print('userId: $userId');
 
-                            user.updateEmail(newDoulaEmail);
-                            updateEmail(currentUser, newDoulaEmail);
-                            await doulaToDB();
-                            print("Email was changed to: ${emailCtrl.text.toString().trim()}");
-                            updateAccountDialog(context);
+                              user.updateEmail(newDoulaEmail);
+                              updateEmail(currentUser, newDoulaEmail);
+                              await doulaToDB();
+                              print("Email was changed to: ${emailCtrl.text
+                                  .toString().trim()}");
+                              updateAccountDialog(context,
+                                  'Your account was updated successfully!');
+                            }  on Exception catch (e) {
+                              print('its coming here: $e');
+                              String error = e.toString();
+                              updateAccountDialog(context, error.substring(error.indexOf(',') + 1,
+                                  error.lastIndexOf(',')));
+                            }
                           },
                           color: themeColors['yellow'],
                           textColor: Colors.black,
@@ -744,6 +753,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                               side: BorderSide(color: themeColors['yellow'])),
                           onPressed: () async {
                             final form = _certKey.currentState;
+
                             if (form.validate()) {
                               form.save();
                               String programName =
@@ -756,10 +766,16 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                               currentUser.certified = certified;
                               currentUser.certInProgress = certInProgress;
 
-                              updateCertification(currentUser, certified,
-                                  certInProgress, programName, numOfBirths);
-                              await doulaToDB();
-                              updateAccountDialog(context);
+                              try {
+                                updateCertification(currentUser, certified,
+                                    certInProgress, programName, numOfBirths);
+                                await doulaToDB();
+                                updateAccountDialog(context, 'Your account was updated successfully');
+                              } on Exception catch (e) {
+                                String error = e.toString();
+                                updateAccountDialog(context, error.substring(error.indexOf(',') + 1,
+                                    error.lastIndexOf(',')));
+                              }
                             }
                           },
                           color: themeColors['yellow'],

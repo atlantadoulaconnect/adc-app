@@ -249,7 +249,7 @@ class CurrentMenu extends StatelessWidget {
                 Visibility(
                   visible: (currentUser.status == null ||
                           currentUser.status == "incomplete") &&
-                      (currentUser as Client).completedApplication(),
+                      !(currentUser as Client).completedApplication(),
                   child: ListTile(
                     leading: Icon(
                       IconData(59485, fontFamily: 'MaterialIcons'),
@@ -367,7 +367,7 @@ class CurrentMenu extends StatelessWidget {
                 Visibility(
                   visible: (currentUser.status == null ||
                           currentUser.status == "incomplete") &&
-                      (currentUser as Doula).completedApplication(),
+                      !(currentUser as Doula).completedApplication(),
                   child: ListTile(
                     leading: Icon(
                       IconData(59485, fontFamily: 'MaterialIcons'),

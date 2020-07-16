@@ -49,7 +49,7 @@ String bdayValidator(String value) {
 String phoneValidator(String value) {
   Pattern pattern = r'\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*';
   RegExp regex = new RegExp(pattern);
-  if (!regex.hasMatch(value)) {
+  if (!regex.hasMatch(value) || value.length != 10) {
     return 'Please enter a valid phone number';
   } else {
     return null;

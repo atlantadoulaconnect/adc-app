@@ -264,7 +264,7 @@ class LogoutUserAction extends ReduxAction<AppState> {
   Future<AppState> reduce() async {
     String userid = state.currentUser.userid;
     print("Attempting to logout user with email: ${state.currentUser.email}");
-    print("state bf fb auth signout: ${state.toString()}");
+    print("state b/f fb auth signout: ${state.toString()}");
     try {
       await FirebaseAuth.instance.signOut();
       print("FirebaseAuth signout success");
@@ -275,7 +275,7 @@ class LogoutUserAction extends ReduxAction<AppState> {
         File initializer = File("${dir.path}/initializer.json");
         initializer.writeAsStringSync(jsonEncode(init));
 
-        // save to local storage
+        // save currentState to local storage
         File userFile = File("${dir.path}/$userid.json");
         userFile.writeAsStringSync(jsonEncode(state.toJson()));
       });

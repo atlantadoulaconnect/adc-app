@@ -144,7 +144,6 @@ class CreateClientUserDocument extends ReduxAction<AppState> {
       "homeVisit": user.homeVisit,
       "photoRelease": user.photoRelease,
       "emergencyContacts": emgContactsToDB(user.emergencyContacts),
-      "appContacts": state.messagesState.appContacts,
 //      "chats": state.messagesState.chats != null
 //          ? state.messagesState.chats.toList()
 //          : null,
@@ -215,7 +214,6 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
       "certProgram": user.certProgram,
       "birthsNeeded": user.birthsNeeded,
       "unavailableDates": user.availableDates,
-      "appContacts": state.messagesState.appContacts,
 //      "chats": state.messagesState.chats != null ? state.messagesState.chats.toList() : null,
     });
 
@@ -228,6 +226,7 @@ class CreateDoulaUserDocument extends ReduxAction<AppState> {
   void after() => dispatch(LoadingAction(false));
 }
 
+// Creates the User object to be used by the local appState
 class CreateUserFromApp extends ReduxAction<AppState> {
   final String userid;
   final String email;

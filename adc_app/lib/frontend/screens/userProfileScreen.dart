@@ -36,6 +36,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   final void Function(String) addThread;
   final VoidCallback toMessages;
 
+
+
   UserProfileScreenState(this.toDoulasListMatching, this.setPeer,
                           this.addThread, this.toMessages);
 
@@ -69,6 +71,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       String availableDates = profileUserDoula.availableDates != null
           ? profileUserDoula.availableDates.join(", ")
           : "(no dates selected)";
+
+
 
       return ListView(
         children: <Widget>[
@@ -861,6 +865,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         emergencyContacts = profileUserClient.emergencyContacts.join("\n");
       }
 
+
       return ListView(
         children: <Widget>[
           Padding(
@@ -895,7 +900,6 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       Text(
                         profileUser.name,
                         style: TextStyle(
-                          fontSize: 35,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -1557,7 +1561,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       Text(
                         profileUser.name,
                         style: TextStyle(
-                          fontSize: 35,
+                          fontSize: MediaQuery.of(context).size.width * .08,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -1817,7 +1821,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       Text(
                         profileUser.name,
                         style: TextStyle(
-                          fontSize: 35,
+                          fontSize: MediaQuery.of(context).size.width * .08,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

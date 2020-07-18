@@ -41,24 +41,28 @@ class ClientHomeScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       )),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-                        side: BorderSide(
-                            color: themeColors['mediumBlue'], width: 3.0)),
-                    onPressed: () async {
-                      await setProfileUser(currentUser.primaryDoulaId, "doula");
-                      toProfile();
-                    },
-                    color: themeColors['mediumBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['mediumBlue'],
-                    child: Text(
-                      "See Doula's Profile",
-                      style: TextStyle(fontSize: 20.0),
+                Visibility(
+                  visible: currentUser.primaryDoulaId != null,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10.0),
+                          side: BorderSide(
+                              color: themeColors['mediumBlue'], width: 3.0)),
+                      onPressed: () async {
+                        await setProfileUser(
+                            currentUser.primaryDoulaId, "doula");
+                        toProfile();
+                      },
+                      color: themeColors['mediumBlue'],
+                      textColor: Colors.white,
+                      padding: EdgeInsets.all(15.0),
+                      splashColor: themeColors['mediumBlue'],
+                      child: Text(
+                        "See Doula's Profile",
+                        style: TextStyle(fontSize: 20.0),
+                      ),
                     ),
                   ),
                 ),

@@ -3,7 +3,7 @@ import '../../common.dart';
 class ClientAppConfirmationPage extends StatelessWidget {
   final Client currentUser;
   final VoidCallback toRequestSent;
-  final Future<void> Function(Client) userToDB;
+  final Future<void> Function() userToDB;
   final void Function(bool) cancelApplication;
 
   String phonesString;
@@ -341,7 +341,7 @@ class ClientAppConfirmationPage extends StatelessWidget {
                       onPressed: () async {
                         // add application document
                         // add user to users collection
-                        userToDB(currentUser);
+                        userToDB();
                         toRequestSent();
                       },
                       color: themeColors['yellow'],
@@ -380,7 +380,7 @@ class ViewModel extends BaseModel<AppState> {
 
   Client currentUser;
   VoidCallback toRequestSent;
-  Future<void> Function(Client) userToDB;
+  Future<void> Function() userToDB;
   void Function(bool) cancelApplication;
 
   ViewModel.build(
@@ -394,7 +394,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
       currentUser: state.currentUser,
-      userToDB: (Client user) => dispatchFuture(CreateClientUserDocument(user)),
+      userToDB: () => dispatchFuture(SubmitClientUser()),
       toRequestSent: () => dispatch(NavigateAction.pushNamed("/requestSent")),
       cancelApplication: (bool confirmed) {
         dispatch(NavigateAction.pop());

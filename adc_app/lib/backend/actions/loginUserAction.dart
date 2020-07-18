@@ -265,6 +265,89 @@ class LogoutUserAction extends ReduxAction<AppState> {
     String userid = state.currentUser.userid;
     print("Attempting to logout user with email: ${state.currentUser.email}");
     print("state b/f fb auth signout: ${state.toString()}");
+
+    print(
+        "LOGOUT ACTION usertype: ${state.currentUser.userType} status: ${state.currentUser.status}");
+
+    if (state.currentUser.userType != null &&
+        state.currentUser.status == "incomplete") {
+      print("LOGOUT ACTION usertype not null, status incomplete");
+      final dbRef = Firestore.instance;
+      switch (state.currentUser.userType) {
+        case "client":
+          {
+            Client user = state.currentUser as Client;
+            await dbRef.collection("users").document(user.userid).setData({
+              "userid": user.userid,
+              "status": "incomplete",
+              "name": user.name,
+              "userType": user.userType,
+            });
+
+            await dbRef
+                .collection("users")
+                .document(user.userid)
+                .collection("userData")
+                .document("specifics")
+                .setData({
+              "phones": phonesToDB(user.phones),
+              "bday": user.bday,
+              "email": user.email,
+              "dueDate": user.dueDate,
+              "birthLocation": user.birthLocation,
+              "birthType": user.birthType,
+              "epidural": user.epidural,
+              "cesarean": user.cesarean,
+              "liveBirths": user.liveBirths,
+              "preterm": user.preterm,
+              "lowWeight": user.lowWeight,
+              "deliveryTypes": user.deliveryTypes,
+              "multiples": user.multiples,
+              "meetBefore": user.meetBefore,
+              "homeVisit": user.homeVisit,
+              "photoRelease": user.photoRelease,
+              "emergencyContacts": emgContactsToDB(user.emergencyContacts),
+            });
+          }
+          break;
+        case "doula":
+          {
+            print("LOGOUT ACTION switch case doula");
+            Doula user = state.currentUser as Doula;
+            await dbRef.collection("users").document(user.userid).setData({
+              "userid": user.userid,
+              "status": "incomplete",
+              "name": user.name,
+              "userType": user.userType,
+            });
+
+            await dbRef
+                .collection("users")
+                .document(user.userid)
+                .collection("userData")
+                .document("specifics")
+                .setData({
+              "phones": phonesToDB(user.phones),
+              "bday": user.bday,
+              "email": user.email,
+              "bio": user.bio,
+              "photoRelease": user.photoRelease,
+              "certified": user.certified,
+              "certInProgress": user.certInProgress,
+              "certProgram": user.certProgram,
+              "birthsNeeded": user.birthsNeeded,
+              "unavailableDates": user.availableDates,
+            });
+          }
+          break;
+        default:
+          {
+            print(
+                "LOGOUT ACTION. User type is not null but is: ${state.currentUser.userType}");
+          }
+      }
+    }
+
     try {
       await FirebaseAuth.instance.signOut();
       print("FirebaseAuth signout success");

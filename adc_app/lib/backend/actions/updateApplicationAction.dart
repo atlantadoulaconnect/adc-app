@@ -57,11 +57,28 @@ class CancelApplicationAction extends ReduxAction<AppState> {
   CancelApplicationAction();
 
   @override
-  AppState reduce() {
+  Future<AppState> reduce() async {
     print("user cancelled application");
     User updated = User(state.currentUser.userid, state.currentUser.email);
     updated.status = "incomplete";
 
-    return state.copy(currentUser: updated, pages: null);
+    final dbRef = Firestore.instance;
+
+    // add user to the collection of users
+    await dbRef
+        .collection("users")
+        .document(state.currentUser.userid)
+        .setData({"userid": state.currentUser.userid, "status": "incomplete"});
+
+    await dbRef
+        .collection("users")
+        .document(state.currentUser.userid)
+        .collection("userData")
+        .document("specifics")
+        .setData({
+      "email": state.currentUser.email,
+    });
+
+    return state.copy(currentUser: updated);
   }
 }

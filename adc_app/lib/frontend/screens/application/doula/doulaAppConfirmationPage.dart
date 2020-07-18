@@ -3,7 +3,7 @@ import '../../common.dart';
 class DoulaAppConfirmationPage extends StatelessWidget {
   final Doula currentUser;
   final VoidCallback toRequestSent;
-  final Future<void> Function(Doula) userToDB;
+  final Future<void> Function() userToDB;
   final void Function(bool) cancelApplication;
 
   String phonesString;
@@ -149,8 +149,7 @@ class DoulaAppConfirmationPage extends StatelessWidget {
                     fontSize: 25,
                     height: 1.5,
                   ),
-                  textAlign: TextAlign.left
-              ),
+                  textAlign: TextAlign.left),
               Text(
                 'I am not availabe on: $availableDates',
                 style: TextStyle(
@@ -283,7 +282,7 @@ class DoulaAppConfirmationPage extends StatelessWidget {
                         onPressed: () async {
                           // add application document
                           // add user to users collection
-                          userToDB(currentUser);
+                          userToDB();
                           toRequestSent();
                         },
                         color: themeColors['yellow'],
@@ -320,7 +319,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Doula currentUser;
-  Future<void> Function(Doula) userToDB;
+  Future<void> Function() userToDB;
   VoidCallback toRequestSent;
   void Function(bool) cancelApplication;
 
@@ -335,7 +334,7 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        userToDB: (Doula user) => dispatchFuture(CreateDoulaUserDocument(user)),
+        userToDB: () => dispatchFuture(SubmitDoulaUser()),
         toRequestSent: () => dispatch(NavigateAction.pushNamed("/requestSent")),
         cancelApplication: (bool confirmed) {
           dispatch(NavigateAction.pop());

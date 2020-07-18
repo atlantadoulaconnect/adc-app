@@ -23,13 +23,45 @@ class CreateUserAction extends ReduxAction<AppState> {
       print("User created with id: $userId");
 
       if (userId != null && userId.length > 0) {
-        // add Admin as first contact and chat
+        // adding user to firestore
+        final dbRef = Firestore.instance;
+
+        // add user to the collection of users
+        await dbRef
+            .collection("users")
+            .document(userId)
+            .setData({"userid": userId, "status": "incomplete"});
+
+        // get the admin info
+        QuerySnapshot adminQuery = await Firestore.instance
+            .collection("users")
+            .where("userType", isEqualTo: "admin")
+            .getDocuments();
+        DocumentSnapshot admin = adminQuery.documents[0];
+
+        // add admin to CLIENT's contact list
+        await dbRef
+            .collection("users")
+            .document(userId)
+            .collection("contacts")
+            .document(admin["userid"])
+            .setData({
+          "name": admin["name"],
+          "userid": admin["userid"],
+          "userType": admin["userType"],
+          "isRecent": true
+        });
+
+        await dbRef
+            .collection("users")
+            .document(userId)
+            .collection("userData")
+            .document("specifics")
+            .setData({
+          "email": email,
+        });
 
         User applicant = new User(userId, email);
-
-        print("adding admin as first contact");
-
-        print("new user: ${applicant.toString()}");
         return state.copy(currentUser: applicant);
       }
     } on PlatformException catch (e) {
@@ -79,154 +111,8 @@ class CreateAdminUserDocument extends ReduxAction<AppState> {
   void after() => dispatch(LoadingAction(false));
 }
 
-// adds an client document to firestore
-class CreateClientUserDocument extends ReduxAction<AppState> {
-  final Client user;
-
-  CreateClientUserDocument(this.user)
-      : assert(user != null && user.userType == "client");
-
-  @override
-  Future<AppState> reduce() async {
-    print(
-        "Attempting to add this client ${user.toString()} to the users collection");
-
-    final dbRef = Firestore.instance;
-
-    // add user to the collection of users
-    await dbRef.collection("users").document(user.userid).setData({
-      "userid": user.userid,
-      "status": "submitted",
-      "name": user.name,
-      "userType": user.userType,
-    });
-
-    // get the admin info
-    QuerySnapshot adminQuery = await Firestore.instance
-        .collection("users")
-        .where("userType", isEqualTo: "admin")
-        .getDocuments();
-    DocumentSnapshot admin = adminQuery.documents[0];
-
-    // add admin to CLIENT's contact list
-    await dbRef
-        .collection("users")
-        .document(user.userid)
-        .collection("contacts")
-        .document(admin["userid"])
-        .setData({
-      "name": admin["name"],
-      "userid": admin["userid"],
-      "userType": admin["userType"],
-      "isRecent": true
-    });
-
-    await dbRef
-        .collection("users")
-        .document(user.userid)
-        .collection("userData")
-        .document("specifics")
-        .setData({
-      "phones": phonesToDB(user.phones),
-      "bday": user.bday,
-      "email": user.email,
-      "dueDate": user.dueDate,
-      "birthLocation": user.birthLocation,
-      "birthType": user.birthType,
-      "epidural": user.epidural,
-      "cesarean": user.cesarean,
-      "liveBirths": user.liveBirths,
-      "preterm": user.preterm,
-      "lowWeight": user.lowWeight,
-      "deliveryTypes": user.deliveryTypes,
-      "multiples": user.multiples,
-      "meetBefore": user.meetBefore,
-      "homeVisit": user.homeVisit,
-      "photoRelease": user.photoRelease,
-      "emergencyContacts": emgContactsToDB(user.emergencyContacts),
-//      "chats": state.messagesState.chats != null
-//          ? state.messagesState.chats.toList()
-//          : null,
-    });
-
-    return state.copy(
-        currentUser: (state.currentUser as Client).copy(status: "submitted"));
-  }
-
-  void before() => dispatch(LoadingAction(true));
-
-  void after() => dispatch(LoadingAction(false));
-}
-
-// adds an doula document to firestore
-class CreateDoulaUserDocument extends ReduxAction<AppState> {
-  final Doula user;
-
-  CreateDoulaUserDocument(this.user)
-      : assert(user != null && user.userType == "doula");
-
-  @override
-  Future<AppState> reduce() async {
-    print(
-        "Attempting to add this doula ${user.toString()} to the users collection");
-
-    final dbRef = Firestore.instance;
-    await dbRef.collection("users").document(user.userid).setData({
-      "userid": user.userid,
-      "status": "submitted",
-      "name": user.name,
-      "userType": user.userType,
-    });
-
-    QuerySnapshot adminQuery = await Firestore.instance
-        .collection("users")
-        .where("userType", isEqualTo: "admin")
-        .getDocuments();
-    DocumentSnapshot admin = adminQuery.documents[0];
-
-    await dbRef
-        .collection("users")
-        .document(user.userid)
-        .collection("contacts")
-        .document(admin["userid"])
-        .setData({
-      "name": admin["name"],
-      "userid": admin["userid"],
-      "userType": "Admin",
-      "isRecent": true
-    });
-
-    // handle special cases: phones, UNavailable dates
-
-    await dbRef
-        .collection("users")
-        .document(user.userid)
-        .collection("userData")
-        .document("specifics")
-        .setData({
-      "phones": phonesToDB(user.phones),
-      "bday": user.bday,
-      "email": user.email,
-      "bio": user.bio,
-      "photoRelease": user.photoRelease,
-      "certified": user.certified,
-      "certInProgress": user.certInProgress,
-      "certProgram": user.certProgram,
-      "birthsNeeded": user.birthsNeeded,
-      "unavailableDates": user.availableDates,
-//      "chats": state.messagesState.chats != null ? state.messagesState.chats.toList() : null,
-    });
-
-    return state.copy(
-        currentUser: (state.currentUser as Doula).copy(status: "submitted"));
-  }
-
-  void before() => dispatch(LoadingAction(true));
-
-  void after() => dispatch(LoadingAction(false));
-}
-
 // Creates the User object to be used by the local appState
+// invoked when a user selects an application from the AppType page
 class CreateUserFromApp extends ReduxAction<AppState> {
   final String userid;
   final String email;
@@ -247,4 +133,99 @@ class CreateUserFromApp extends ReduxAction<AppState> {
         userid: userid, email: email, userType: userType, status: userStatus);
     return state.copy(currentUser: current);
   }
+
+  void before() => dispatch(LoadingAction(true));
+
+  void after() => dispatch(LoadingAction(false));
+}
+
+class SubmitClientUser extends ReduxAction<AppState> {
+  SubmitClientUser();
+
+  @override
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+
+    Client user = state.currentUser as Client;
+
+    // udpate userType and status
+    await dbRef.collection("users").document(user.userid).updateData({
+      "status": "submitted",
+      "name": user.name,
+      "userType": user.userType,
+    });
+
+    await dbRef
+        .collection("users")
+        .document(user.userid)
+        .collection("userData")
+        .document("specifics")
+        .updateData({
+      "phones": phonesToDB(user.phones),
+      "bday": user.bday,
+      "email": user.email,
+      "dueDate": user.dueDate,
+      "birthLocation": user.birthLocation,
+      "birthType": user.birthType,
+      "epidural": user.epidural,
+      "cesarean": user.cesarean,
+      "liveBirths": user.liveBirths,
+      "preterm": user.preterm,
+      "lowWeight": user.lowWeight,
+      "deliveryTypes": user.deliveryTypes,
+      "multiples": user.multiples,
+      "meetBefore": user.meetBefore,
+      "homeVisit": user.homeVisit,
+      "photoRelease": user.photoRelease,
+      "emergencyContacts": emgContactsToDB(user.emergencyContacts),
+    });
+
+    return state.copy(
+        currentUser: (state.currentUser as Client).copy(status: "submitted"));
+  }
+
+  void before() => dispatch(LoadingAction(true));
+
+  void after() => dispatch(LoadingAction(false));
+}
+
+class SubmitDoulaUser extends ReduxAction<AppState> {
+  SubmitDoulaUser();
+
+  Future<AppState> reduce() async {
+    final dbRef = Firestore.instance;
+
+    Doula user = state.currentUser as Doula;
+
+    await dbRef.collection("users").document(user.userid).updateData({
+      "status": "submitted",
+      "name": user.name,
+      "userType": user.userType,
+    });
+
+    await dbRef
+        .collection("users")
+        .document(user.userid)
+        .collection("userData")
+        .document("specifics")
+        .updateData({
+      "phones": phonesToDB(user.phones),
+      "bday": user.bday,
+      "email": user.email,
+      "bio": user.bio,
+      "photoRelease": user.photoRelease,
+      "certified": user.certified,
+      "certInProgress": user.certInProgress,
+      "certProgram": user.certProgram,
+      "birthsNeeded": user.birthsNeeded,
+      "unavailableDates": user.availableDates,
+    });
+
+    return state.copy(
+        currentUser: (state.currentUser as Doula).copy(status: "submitted"));
+  }
+
+  void before() => dispatch(LoadingAction(true));
+
+  void after() => dispatch(LoadingAction(false));
 }

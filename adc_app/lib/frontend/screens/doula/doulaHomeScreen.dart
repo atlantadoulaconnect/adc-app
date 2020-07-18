@@ -16,7 +16,6 @@ class DoulaHomeScreen extends StatelessWidget {
             toRecentMessages != null &&
             toInfo != null);
 
-
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -25,8 +24,7 @@ class DoulaHomeScreen extends StatelessWidget {
             borderRadius: new BorderRadius.circular(10.0),
             side: BorderSide(color: themeColors['seaGreen'], width: 3.0)),
         onPressed: () async {
-          await setProfileUser(
-              doc["clientId"], "client");
+          await setProfileUser(doc["clientId"], "client");
           toProfile();
         },
         color: themeColors['kellyGreen'],
@@ -55,13 +53,13 @@ class DoulaHomeScreen extends StatelessWidget {
           padding: const EdgeInsets.all(26.0),
           child: Center(
               child: ListView(
-                padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
             children: <Widget>[
               NotificationHandler(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                    "Welcome ${currentUser != null ? currentUser.name : ""}",
+                    "Welcome${currentUser != null && currentUser.name != null ? ", ${currentUser.name}" : ""}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 50.0,
@@ -79,12 +77,12 @@ class DoulaHomeScreen extends StatelessWidget {
                 padding: EdgeInsets.all(10.0),
                 child: Container(
                     decoration: BoxDecoration(
-                        color: themeColors["lighterGray"],
-                        borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                        border: Border.all(
-                          color: themeColors["coolGray2"],
-                          width: 3.0,
-                        ),
+                      color: themeColors["lighterGray"],
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                      border: Border.all(
+                        color: themeColors["coolGray2"],
+                        width: 3.0,
+                      ),
                     ),
                     child: Column(
                       children: <Widget>[
@@ -92,52 +90,52 @@ class DoulaHomeScreen extends StatelessWidget {
                             padding: EdgeInsets.only(top: 20.0, bottom: 8.0),
                             child: Center(
                                 child: StreamBuilder<QuerySnapshot>(
-                                  stream: Firestore.instance
-                                      .collection("matches")
-                                      .where("primaryDoulaId", isEqualTo: currentUser.userid)
-                                      .snapshots(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    if (!snapshot.hasData) {
-                                      return Center(
-                                          child: CircularProgressIndicator(
-                                            valueColor: AlwaysStoppedAnimation<Color>(
-                                                themeColors["lightBlue"]),
-                                          )
-                                      );
-                                    }
-                                    return Text(
-                                      "You have ${snapshot.data.documents.length} current client(s):",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    );
-                                  },
-                                )
-                            )
-                        ),
+                              stream: Firestore.instance
+                                  .collection("matches")
+                                  .where("primaryDoulaId",
+                                      isEqualTo: currentUser.userid)
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                      child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        themeColors["lightBlue"]),
+                                  ));
+                                }
+                                return Text(
+                                  "You have ${snapshot.data.documents.length} current client(s):",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                );
+                              },
+                            ))),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 0.0),
                           child: Container(
                             child: StreamBuilder<QuerySnapshot>(
                                 stream: Firestore.instance
                                     .collection("matches")
-                                    .where("primaryDoulaId", isEqualTo: currentUser.userid)
+                                    .where("primaryDoulaId",
+                                        isEqualTo: currentUser.userid)
                                     .snapshots(),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<QuerySnapshot> snapshot) {
                                   if (!snapshot.hasData) {
                                     return Center(
                                         child: CircularProgressIndicator(
-                                          valueColor: AlwaysStoppedAnimation<Color>(
-                                              themeColors["lightBlue"]),
-                                        ));
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          themeColors["lightBlue"]),
+                                    ));
                                   }
                                   return ListView.builder(
                                     padding: EdgeInsets.all(20.0),
-                                    itemBuilder: (context, index) =>
-                                        buildItem(context, snapshot.data.documents[index]),
+                                    itemBuilder: (context, index) => buildItem(
+                                        context,
+                                        snapshot.data.documents[index]),
                                     itemCount: snapshot.data.documents.length,
                                     shrinkWrap: true,
                                   );
@@ -145,8 +143,7 @@ class DoulaHomeScreen extends StatelessWidget {
                           ),
                         ),
                       ],
-                    )
-                ),
+                    )),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

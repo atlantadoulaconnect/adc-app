@@ -34,7 +34,7 @@ class ClientHomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       vertical: 15.0, horizontal: 8.0),
                   child: Text(
-                      "Welcome, \n${currentUser != null ? currentUser.name : ""}",
+                      "Welcome${currentUser != null && currentUser.name != null ? ", ${currentUser.name}" : ""}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 50.0,

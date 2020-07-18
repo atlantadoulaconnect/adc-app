@@ -295,7 +295,8 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: toClientSettings,
+                  onTap: (currentUser as Client).completedApplication() == true
+                      ? toClientSettings : toSettings,
                 ),
                 ListTile(
                   leading: Icon(
@@ -413,7 +414,8 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: toDoulaSettings,
+                  onTap: (currentUser as Doula).completedApplication() == true
+                      ? toDoulaSettings : toSettings,
                 ),
                 ListTile(
                   leading: Icon(

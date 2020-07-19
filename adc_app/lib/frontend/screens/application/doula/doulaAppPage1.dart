@@ -46,6 +46,26 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
     _bdayCtrl = TextEditingController();
     _phoneCtrl = TextEditingController();
     _altPhoneCtrl = TextEditingController();
+
+    _firstNameCtrl
+      ..text = currentUser.name != null ? getFirstName(currentUser.name) : null;
+    _lastInitCtrl
+      ..text =
+          currentUser.name != null ? getLastInitial(currentUser.name) : null;
+    _bdayCtrl..text = currentUser.bday;
+    _phoneCtrl
+      ..text = currentUser.phones != null
+          ? (currentUser.phones.length > 0
+              ? currentUser.phones[0].number
+              : null)
+          : null;
+    _altPhoneCtrl
+      ..text = currentUser.phones != null
+          ? (currentUser.phones.length > 1
+              ? currentUser.phones[1].number
+              : null)
+          : null;
+
     super.initState();
   }
 
@@ -170,10 +190,7 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                                     labelText: "First Name",
                                     hintText: "Jane",
                                   ),
-                                  controller: _firstNameCtrl
-                                    ..text = currentUser.name != null
-                                        ? getFirstName(currentUser.name)
-                                        : null,
+                                  controller: _firstNameCtrl,
                                   validator: nameValidator,
                                 ),
                               ),
@@ -183,10 +200,7 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                                     labelText: "Last Initial",
                                     hintText: "D",
                                   ),
-                                  controller: _lastInitCtrl
-                                    ..text = currentUser.name != null
-                                        ? getLastInitial(currentUser.name)
-                                        : null,
+                                  controller: _lastInitCtrl,
                                   validator: singleLetterValidator,
                                 ),
                               )
@@ -198,19 +212,14 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                               hintText: "(MM/YYYY)",
                             ),
                             keyboardType: TextInputType.datetime,
-                            controller: _bdayCtrl..text = currentUser.bday,
+                            controller: _bdayCtrl,
                             validator: bdayValidator,
                           ),
                           TextFormField(
                             decoration: InputDecoration(
                                 labelText: "Phone", hintText: "4045553333"),
                             keyboardType: TextInputType.number,
-                            controller: _phoneCtrl
-                              ..text = currentUser.phones != null
-                                  ? (currentUser.phones.length > 0
-                                      ? currentUser.phones[0].number
-                                      : null)
-                                  : null,
+                            controller: _phoneCtrl,
                             validator: phoneValidator,
                           ),
                           TextFormField(
@@ -218,12 +227,7 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                                   labelText: "Alternate Phone",
                                   hintText: "6784447777"),
                               keyboardType: TextInputType.number,
-                              controller: _altPhoneCtrl
-                                ..text = currentUser.phones != null
-                                    ? (currentUser.phones.length > 1
-                                        ? currentUser.phones[1].number
-                                        : null)
-                                    : null,
+                              controller: _altPhoneCtrl,
                               validator: (val) {
                                 if (val.isNotEmpty) {
                                   return phoneValidator(val);

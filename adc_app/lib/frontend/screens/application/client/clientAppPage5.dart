@@ -77,184 +77,195 @@ class ClientAppPage5State extends State<ClientAppPage5> {
     );
   }
 
+  void saveValidInputs() {
+    final form = _c5formKey.currentState;
+    form.save();
+
+    updateClient(meetDoula == null ? null : meetDoula == 1,
+        doulaVisit == null ? null : doulaVisit == 1);
+  }
+
+  Future<bool> _onBackPressed() {
+    saveValidInputs();
+    return Future<bool>.value(true);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Request a Doula")),
-      body: Center(
-          child: Form(
-              key: _c5formKey,
-              autovalidate: false,
-              child: ListView(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Doula Preferences',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          color: themeColors['emoryBlue'],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                        ),
-                        textAlign: TextAlign.center),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 250,
-                      child: LinearProgressIndicator(
-                        backgroundColor: themeColors['skyBlue'],
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            themeColors['mediumBlue']),
-                        value: 0.8,
-                      ),
-                    ),
-                  ),
-                  //meet your doula?
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      'Would you like to meet your doula in person before delivery? ',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
-                    child: Row(children: <Widget>[
-                      Radio(
-                        value: 1,
-                        groupValue: meetDoula,
-                        onChanged: (T) {
-                          setState(() {
-                            meetDoula = T;
-                          });
-                        },
-                      ),
-                      Text('Yes'),
-                      Radio(
-                        value: 2,
-                        groupValue: meetDoula,
-                        onChanged: (T) {
-                          setState(() {
-                            meetDoula = T;
-                          });
-                        },
-                      ),
-                      Text('No'),
-                    ]),
-                  ),
-                  //doula home visit?
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      'Would you like your doula to make a home visit after delivery? ',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
-                    child: Row(children: <Widget>[
-                      Radio(
-                        value: 1,
-                        groupValue: doulaVisit,
-                        onChanged: (T) {
-                          setState(() {
-                            doulaVisit = T;
-                          });
-                        },
-                      ),
-                      Text('Yes'),
-                      Radio(
-                        value: 2,
-                        groupValue: doulaVisit,
-                        onChanged: (T) {
-                          setState(() {
-                            doulaVisit = T;
-                          });
-                        },
-                      ),
-                      Text('No'),
-                    ]),
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(5.0),
-                              side:
-                                  BorderSide(color: themeColors['lightBlue'])),
-                          onPressed: () {
-                            final form = _c5formKey.currentState;
-                            form.save();
-
-                            updateClient(
-                                meetDoula == null ? null : meetDoula == 1,
-                                doulaVisit == null ? null : doulaVisit == 1);
-
-                            Navigator.pop(context);
-                          },
-                          color: themeColors['lightBlue'],
-                          textColor: Colors.white,
-                          padding: EdgeInsets.all(15.0),
-                          splashColor: themeColors['lightBlue'],
-                          child: Text(
-                            "PREVIOUS",
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                        ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(10.0),
-                              side:
-                                  BorderSide(color: themeColors['coolGray5'])),
-                          onPressed: () {
-                            // dialog to confirm cancellation
-                            confirmCancelDialog(context);
-                          },
-                          color: themeColors['coolGray5'],
-                          textColor: Colors.white,
-                          padding: EdgeInsets.all(15.0),
-                          splashColor: themeColors['coolGray5'],
-                          child: Text(
-                            "CANCEL",
+    return WillPopScope(
+        onWillPop: _onBackPressed,
+        child: Scaffold(
+          appBar: AppBar(title: Text("Request a Doula")),
+          body: Center(
+              child: Form(
+                  key: _c5formKey,
+                  autovalidate: false,
+                  child: ListView(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Doula Preferences',
                             style: TextStyle(
-                              fontSize: 20.0,
-                              color: themeColors['black'],
+                              fontFamily: 'Roboto',
+                              color: themeColors['emoryBlue'],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
                             ),
+                            textAlign: TextAlign.center),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: 250,
+                          child: LinearProgressIndicator(
+                            backgroundColor: themeColors['skyBlue'],
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                themeColors['mediumBlue']),
+                            value: 0.8,
                           ),
                         ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(5.0),
-                              side: BorderSide(color: themeColors['yellow'])),
-                          onPressed: () {
-                            final form = _c5formKey.currentState;
-                            if (form.validate()) {
-                              form.save();
-
-                              updateClient(meetDoula == 1, doulaVisit == 1);
-
-                              toClientAppPage6();
-                            }
-                          },
-                          color: themeColors['yellow'],
-                          textColor: Colors.black,
-                          padding: EdgeInsets.all(15.0),
-                          splashColor: themeColors['yellow'],
-                          child: Text(
-                            "NEXT",
-                            style: TextStyle(fontSize: 20.0),
+                      ),
+                      //meet your doula?
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          'Would you like to meet your doula in person before delivery? ',
+                          style: TextStyle(
+                            fontSize: 16,
                           ),
                         ),
-                      ]),
-                ],
-              ))),
-    );
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                        child: Row(children: <Widget>[
+                          Radio(
+                            value: 1,
+                            groupValue: meetDoula,
+                            onChanged: (T) {
+                              setState(() {
+                                meetDoula = T;
+                              });
+                            },
+                          ),
+                          Text('Yes'),
+                          Radio(
+                            value: 2,
+                            groupValue: meetDoula,
+                            onChanged: (T) {
+                              setState(() {
+                                meetDoula = T;
+                              });
+                            },
+                          ),
+                          Text('No'),
+                        ]),
+                      ),
+                      //doula home visit?
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          'Would you like your doula to make a home visit after delivery? ',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                        child: Row(children: <Widget>[
+                          Radio(
+                            value: 1,
+                            groupValue: doulaVisit,
+                            onChanged: (T) {
+                              setState(() {
+                                doulaVisit = T;
+                              });
+                            },
+                          ),
+                          Text('Yes'),
+                          Radio(
+                            value: 2,
+                            groupValue: doulaVisit,
+                            onChanged: (T) {
+                              setState(() {
+                                doulaVisit = T;
+                              });
+                            },
+                          ),
+                          Text('No'),
+                        ]),
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(5.0),
+                                  side: BorderSide(
+                                      color: themeColors['lightBlue'])),
+                              onPressed: () {
+                                saveValidInputs();
+
+                                Navigator.pop(context);
+                              },
+                              color: themeColors['lightBlue'],
+                              textColor: Colors.white,
+                              padding: EdgeInsets.all(15.0),
+                              splashColor: themeColors['lightBlue'],
+                              child: Text(
+                                "PREVIOUS",
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                            ),
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(10.0),
+                                  side: BorderSide(
+                                      color: themeColors['coolGray5'])),
+                              onPressed: () {
+                                // dialog to confirm cancellation
+                                confirmCancelDialog(context);
+                              },
+                              color: themeColors['coolGray5'],
+                              textColor: Colors.white,
+                              padding: EdgeInsets.all(15.0),
+                              splashColor: themeColors['coolGray5'],
+                              child: Text(
+                                "CANCEL",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: themeColors['black'],
+                                ),
+                              ),
+                            ),
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(5.0),
+                                  side:
+                                      BorderSide(color: themeColors['yellow'])),
+                              onPressed: () {
+                                final form = _c5formKey.currentState;
+                                if (form.validate()) {
+                                  form.save();
+
+                                  updateClient(meetDoula == 1, doulaVisit == 1);
+
+                                  toClientAppPage6();
+                                }
+                              },
+                              color: themeColors['yellow'],
+                              textColor: Colors.black,
+                              padding: EdgeInsets.all(15.0),
+                              splashColor: themeColors['yellow'],
+                              child: Text(
+                                "NEXT",
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                            ),
+                          ]),
+                    ],
+                  ))),
+        ));
   }
 }
 

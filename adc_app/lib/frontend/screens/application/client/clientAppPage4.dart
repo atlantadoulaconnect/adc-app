@@ -118,364 +118,387 @@ class ClientAppPage4State extends State<ClientAppPage4> {
     ));
   }
 
+  void saveValidInputs() {
+    final form = _c4formKey.currentState;
+    form.save();
+
+    List<String> deliveries = List();
+    if (vaginalBirth) {
+      deliveries.add("vaginal");
+    }
+    if (cesarean) {
+      deliveries.add("cesarean");
+    }
+    if (vbac) {
+      deliveries.add("vbac");
+    }
+
+    int births = selectedBirthCount == null ? 0 : int.parse(selectedBirthCount);
+
+    if (births == 0) {
+      updateClient(births, null, null, null, null);
+    } else {
+      updateClient(
+          births,
+          pretermValue == 1,
+          lowBirthWeightValue == 1,
+          (deliveries.isEmpty ? null : deliveries),
+          previousTwinsOrTriplets == 1);
+    }
+  }
+
+  Future<bool> _onBackPressed() {
+    saveValidInputs();
+
+    return Future<bool>.value(true);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text("Request a Doula")),
-        body: Center(
-          child: Form(
-              key: _c4formKey,
-              autovalidate: false,
-              child: ListView(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Previous Birth Details',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          color: themeColors['emoryBlue'],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                        ),
-                        textAlign: TextAlign.center),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 250,
-                      child: LinearProgressIndicator(
-                        backgroundColor: themeColors['skyBlue'],
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            themeColors['mediumBlue']),
-                        value: 0.6,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Number of previous live births:',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  // drop down menu for births
-                  Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: ButtonTheme(
-                        alignedDropdown: true,
-                        child: DropdownButton(
-                          value: selectedBirthCount,
-                          items: birthCount,
-                          hint: new Text('Previous Births'),
-                          isExpanded: true,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedBirthCount = value;
-                            });
-                          },
-                        ),
-                      )),
-
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Were any of your previous life births: ',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-
-                  //preterm
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
-                    child: Text(
-                      'Preterm (< 37 weeks of pregnancy): ',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
-                    child: Row(children: <Widget>[
-                      Radio(
-                        value: 1,
-                        groupValue: pretermValue,
-                        onChanged: (T) {
-                          setState(() {
-                            pretermValue = T;
-                          });
-                        },
-                      ),
-                      Text('Yes'),
-                      Radio(
-                        value: 2,
-                        groupValue: pretermValue,
-                        onChanged: (T) {
-                          setState(() {
-                            pretermValue = T;
-                          });
-                        },
-                      ),
-                      Text('No'),
-                    ]),
-                  ),
-
-                  //low birth weight
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
-                    child: Text(
-                      'Low Birth Weight (< 5 lbs. 8 oz. or 2,500g):',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
-                    child: Row(children: <Widget>[
-                      Radio(
-                        value: 1,
-                        groupValue: lowBirthWeightValue,
-                        onChanged: (T) {
-                          setState(() {
-                            lowBirthWeightValue = T;
-                          });
-                        },
-                      ),
-                      Text('Yes'),
-                      Radio(
-                        value: 2,
-                        groupValue: lowBirthWeightValue,
-                        onChanged: (T) {
-                          setState(() {
-                            lowBirthWeightValue = T;
-                          });
-                        },
-                      ),
-                      Text('No'),
-                    ]),
-                  ),
-
-                  //Previous Birth Types
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Previous Birth Types (check all that apply): ',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Vaginal Birth"),
-                            Checkbox(
-                              value: vaginalBirth,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  vaginalBirth = value;
-                                });
-                              },
-                            )
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Cesaerean"),
-                            Checkbox(
-                              value: cesarean,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  cesarean = value;
-                                });
-                              },
-                            )
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("VBAC"),
-                            Checkbox(
-                              value: vbac,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  vbac = value;
-                                });
-                              },
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-
-                  //previous twins or triplets
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      'Have you previously had twins or triplets? ',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
-                    child: Row(children: <Widget>[
-                      Radio(
-                        value: 1,
-                        groupValue: previousTwinsOrTriplets,
-                        onChanged: (T) {
-                          setState(() {
-                            previousTwinsOrTriplets = T;
-                          });
-                        },
-                      ),
-                      Text('Yes'),
-                      Radio(
-                        value: 2,
-                        groupValue: previousTwinsOrTriplets,
-                        onChanged: (T) {
-                          setState(() {
-                            previousTwinsOrTriplets = T;
-                          });
-                        },
-                      ),
-                      Text('No'),
-                    ]),
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(5.0),
-                              side:
-                                  BorderSide(color: themeColors['lightBlue'])),
-                          onPressed: () {
-                            final form = _c4formKey.currentState;
-                            form.save();
-
-                            List<String> deliveries = List();
-                            if (vaginalBirth) {
-                              deliveries.add("vaginal");
-                            }
-                            if (cesarean) {
-                              deliveries.add("cesarean");
-                            }
-                            if (vbac) {
-                              deliveries.add("vbac");
-                            }
-
-                            int births = selectedBirthCount == null
-                                ? 0
-                                : int.parse(selectedBirthCount);
-
-                            if (births == 0) {
-                              updateClient(births, null, null, null, null);
-                            } else {
-                              updateClient(
-                                  births,
-                                  pretermValue == 1,
-                                  lowBirthWeightValue == 1,
-                                  (deliveries.isEmpty ? null : deliveries),
-                                  previousTwinsOrTriplets == 1);
-                            }
-
-                            Navigator.pop(context);
-                          },
-                          color: themeColors['lightBlue'],
-                          textColor: Colors.white,
-                          padding: EdgeInsets.all(15.0),
-                          splashColor: themeColors['lightBlue'],
-                          child: Text(
-                            "PREVIOUS",
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                        ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(10.0),
-                              side:
-                                  BorderSide(color: themeColors['coolGray5'])),
-                          onPressed: () {
-                            // dialog to confirm cancellation
-                            confirmCancelDialog(context);
-                          },
-                          color: themeColors['coolGray5'],
-                          textColor: Colors.white,
-                          padding: EdgeInsets.all(15.0),
-                          splashColor: themeColors['coolGray5'],
-                          child: Text(
-                            "CANCEL",
+    return WillPopScope(
+        onWillPop: _onBackPressed,
+        child: Scaffold(
+            appBar: AppBar(title: Text("Request a Doula")),
+            body: Center(
+              child: Form(
+                  key: _c4formKey,
+                  autovalidate: false,
+                  child: ListView(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Previous Birth Details',
                             style: TextStyle(
-                              fontSize: 20.0,
-                              color: themeColors['black'],
+                              fontFamily: 'Roboto',
+                              color: themeColors['emoryBlue'],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
                             ),
+                            textAlign: TextAlign.center),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: 250,
+                          child: LinearProgressIndicator(
+                            backgroundColor: themeColors['skyBlue'],
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                themeColors['mediumBlue']),
+                            value: 0.6,
                           ),
                         ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(5.0),
-                              side: BorderSide(color: themeColors['yellow'])),
-                          onPressed: () {
-                            final form = _c4formKey.currentState;
-                            if (form.validate()) {
-                              form.save();
-
-                              List<String> deliveries = List();
-                              if (vaginalBirth) {
-                                deliveries.add("vaginal");
-                              }
-                              if (cesarean) {
-                                deliveries.add("cesarean");
-                              }
-                              if (vbac) {
-                                deliveries.add("vbac");
-                              }
-
-                              int births = int.parse(selectedBirthCount);
-
-                              if (births == 0) {
-                                updateClient(births, null, null, null, null);
-                              } else {
-                                updateClient(
-                                    births,
-                                    pretermValue == 1,
-                                    lowBirthWeightValue == 1,
-                                    deliveries,
-                                    previousTwinsOrTriplets == 1);
-                              }
-
-                              toClientAppPage5();
-                            }
-                          },
-                          color: themeColors['yellow'],
-                          textColor: Colors.black,
-                          padding: EdgeInsets.all(15.0),
-                          splashColor: themeColors['yellow'],
-                          child: Text(
-                            "NEXT",
-                            style: TextStyle(fontSize: 20.0),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Number of previous live births:',
+                          style: TextStyle(
+                            fontSize: 16,
                           ),
                         ),
-                      ])
-                ],
-              )),
-        ));
+                      ),
+                      // drop down menu for births
+                      Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: ButtonTheme(
+                            alignedDropdown: true,
+                            child: DropdownButton(
+                              value: selectedBirthCount,
+                              items: birthCount,
+                              hint: new Text('Previous Births'),
+                              isExpanded: true,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedBirthCount = value;
+                                });
+                              },
+                            ),
+                          )),
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Were any of your previous life births: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+
+                      //preterm
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+                        child: Text(
+                          'Preterm (< 37 weeks of pregnancy): ',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                        child: Row(children: <Widget>[
+                          Radio(
+                            value: 1,
+                            groupValue: pretermValue,
+                            onChanged: (T) {
+                              setState(() {
+                                pretermValue = T;
+                              });
+                            },
+                          ),
+                          Text('Yes'),
+                          Radio(
+                            value: 2,
+                            groupValue: pretermValue,
+                            onChanged: (T) {
+                              setState(() {
+                                pretermValue = T;
+                              });
+                            },
+                          ),
+                          Text('No'),
+                        ]),
+                      ),
+
+                      //low birth weight
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+                        child: Text(
+                          'Low Birth Weight (< 5 lbs. 8 oz. or 2,500g):',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                        child: Row(children: <Widget>[
+                          Radio(
+                            value: 1,
+                            groupValue: lowBirthWeightValue,
+                            onChanged: (T) {
+                              setState(() {
+                                lowBirthWeightValue = T;
+                              });
+                            },
+                          ),
+                          Text('Yes'),
+                          Radio(
+                            value: 2,
+                            groupValue: lowBirthWeightValue,
+                            onChanged: (T) {
+                              setState(() {
+                                lowBirthWeightValue = T;
+                              });
+                            },
+                          ),
+                          Text('No'),
+                        ]),
+                      ),
+
+                      //Previous Birth Types
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Previous Birth Types (check all that apply): ',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text("Vaginal Birth"),
+                                Checkbox(
+                                  value: vaginalBirth,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      vaginalBirth = value;
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text("Cesaerean"),
+                                Checkbox(
+                                  value: cesarean,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      cesarean = value;
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text("VBAC"),
+                                Checkbox(
+                                  value: vbac,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      vbac = value;
+                                    });
+                                  },
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+
+                      //previous twins or triplets
+//                      Padding(
+//                        padding: const EdgeInsets.all(1.0),
+//                        child: Text(
+//                          'Please select how you previously gave birth',
+//                          style: TextStyle(
+//                            fontSize: 16,
+//                            color: themeColors["red"],
+//                          ),
+//                          textAlign: TextAlign.center,
+//                        ),
+//                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          'Have you previously had twins or triplets? ',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                        child: Row(children: <Widget>[
+                          Radio(
+                            value: 1,
+                            groupValue: previousTwinsOrTriplets,
+                            onChanged: (T) {
+                              setState(() {
+                                previousTwinsOrTriplets = T;
+                              });
+                            },
+                          ),
+                          Text('Yes'),
+                          Radio(
+                            value: 2,
+                            groupValue: previousTwinsOrTriplets,
+                            onChanged: (T) {
+                              setState(() {
+                                previousTwinsOrTriplets = T;
+                              });
+                            },
+                          ),
+                          Text('No'),
+                        ]),
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(5.0),
+                                  side: BorderSide(
+                                      color: themeColors['lightBlue'])),
+                              onPressed: () {
+                                saveValidInputs();
+
+                                Navigator.pop(context);
+                              },
+                              color: themeColors['lightBlue'],
+                              textColor: Colors.white,
+                              padding: EdgeInsets.all(15.0),
+                              splashColor: themeColors['lightBlue'],
+                              child: Text(
+                                "PREVIOUS",
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                            ),
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(10.0),
+                                  side: BorderSide(
+                                      color: themeColors['coolGray5'])),
+                              onPressed: () {
+                                // dialog to confirm cancellation
+                                confirmCancelDialog(context);
+                              },
+                              color: themeColors['coolGray5'],
+                              textColor: Colors.white,
+                              padding: EdgeInsets.all(15.0),
+                              splashColor: themeColors['coolGray5'],
+                              child: Text(
+                                "CANCEL",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: themeColors['black'],
+                                ),
+                              ),
+                            ),
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(5.0),
+                                  side:
+                                      BorderSide(color: themeColors['yellow'])),
+                              onPressed: () {
+                                final form = _c4formKey.currentState;
+                                if (form.validate()) {
+                                  form.save();
+
+                                  List<String> deliveries = List();
+                                  if (vaginalBirth) {
+                                    deliveries.add("vaginal");
+                                  }
+                                  if (cesarean) {
+                                    deliveries.add("cesarean");
+                                  }
+                                  if (vbac) {
+                                    deliveries.add("vbac");
+                                  }
+
+                                  int births = int.parse(selectedBirthCount);
+
+                                  if (births == 0) {
+                                    updateClient(
+                                        births, null, null, null, null);
+                                  } else {
+                                    updateClient(
+                                        births,
+                                        pretermValue == 1,
+                                        lowBirthWeightValue == 1,
+                                        deliveries,
+                                        previousTwinsOrTriplets == 1);
+                                  }
+
+                                  toClientAppPage5();
+                                }
+                              },
+                              color: themeColors['yellow'],
+                              textColor: Colors.black,
+                              padding: EdgeInsets.all(15.0),
+                              splashColor: themeColors['yellow'],
+                              child: Text(
+                                "NEXT",
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                            ),
+                          ])
+                    ],
+                  )),
+            )));
   }
 }
 
@@ -510,7 +533,6 @@ class ViewModel extends BaseModel<AppState> {
 
   @override
   ViewModel fromStore() {
-    Client current = state.currentUser as Client;
     return ViewModel.build(
       currentUser: state.currentUser,
       toClientAppPage5: () =>

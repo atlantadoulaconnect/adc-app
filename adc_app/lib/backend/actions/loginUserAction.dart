@@ -270,7 +270,8 @@ class LogoutUserAction extends ReduxAction<AppState> {
         "LOGOUT ACTION usertype: ${state.currentUser.userType} status: ${state.currentUser.status}");
 
     if (state.currentUser.userType != null &&
-        state.currentUser.status == "incomplete") {
+        (state.currentUser.status == "incomplete" ||
+            state.currentUser.status == null)) {
       print("LOGOUT ACTION usertype not null, status incomplete");
       final dbRef = Firestore.instance;
       switch (state.currentUser.userType) {

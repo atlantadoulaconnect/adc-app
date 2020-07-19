@@ -155,30 +155,53 @@ class SubmitClientUser extends ReduxAction<AppState> {
       "userType": user.userType,
     });
 
-    await dbRef
-        .collection("users")
-        .document(user.userid)
-        .collection("userData")
-        .document("specifics")
-        .updateData({
-      "phones": phonesToDB(user.phones),
-      "bday": user.bday,
-      "email": user.email,
-      "dueDate": user.dueDate,
-      "birthLocation": user.birthLocation,
-      "birthType": user.birthType,
-      "epidural": user.epidural,
-      "cesarean": user.cesarean,
-      "liveBirths": user.liveBirths,
-      "preterm": user.preterm,
-      "lowWeight": user.lowWeight,
-      "deliveryTypes": user.deliveryTypes,
-      "multiples": user.multiples,
-      "meetBefore": user.meetBefore,
-      "homeVisit": user.homeVisit,
-      "photoRelease": user.photoRelease,
-      "emergencyContacts": emgContactsToDB(user.emergencyContacts),
-    });
+    if (user.liveBirths > 0) {
+      await dbRef
+          .collection("users")
+          .document(user.userid)
+          .collection("userData")
+          .document("specifics")
+          .updateData({
+        "phones": phonesToDB(user.phones),
+        "bday": user.bday,
+        "email": user.email,
+        "dueDate": user.dueDate,
+        "birthLocation": user.birthLocation,
+        "birthType": user.birthType,
+        "epidural": user.epidural,
+        "cesarean": user.cesarean,
+        "liveBirths": user.liveBirths,
+        "preterm": user.preterm,
+        "lowWeight": user.lowWeight,
+        "deliveryTypes": user.deliveryTypes,
+        "multiples": user.multiples,
+        "meetBefore": user.meetBefore,
+        "homeVisit": user.homeVisit,
+        "photoRelease": user.photoRelease,
+        "emergencyContacts": emgContactsToDB(user.emergencyContacts),
+      });
+    } else {
+      await dbRef
+          .collection("users")
+          .document(user.userid)
+          .collection("userData")
+          .document("specifics")
+          .updateData({
+        "phones": phonesToDB(user.phones),
+        "bday": user.bday,
+        "email": user.email,
+        "dueDate": user.dueDate,
+        "birthLocation": user.birthLocation,
+        "birthType": user.birthType,
+        "epidural": user.epidural,
+        "cesarean": user.cesarean,
+        "liveBirths": user.liveBirths,
+        "meetBefore": user.meetBefore,
+        "homeVisit": user.homeVisit,
+        "photoRelease": user.photoRelease,
+        "emergencyContacts": emgContactsToDB(user.emergencyContacts),
+      });
+    }
 
     return state.copy(
         currentUser: (state.currentUser as Client).copy(status: "submitted"));

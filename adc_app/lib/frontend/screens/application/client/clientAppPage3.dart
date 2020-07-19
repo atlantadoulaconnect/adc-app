@@ -1,3 +1,5 @@
+import 'package:adc_app/backend/actions/common.dart';
+
 import '../../common.dart';
 
 class ClientAppPage3 extends StatefulWidget {
@@ -28,6 +30,7 @@ class ClientAppPage3State extends State<ClientAppPage3> {
   void Function(bool) cancelApplication;
 
   TextEditingController _dueDateCtrl;
+  TextEditingController otherLocCtrl;
 
   //drop down list
   List<DropdownMenuItem<String>> birthType;
@@ -42,7 +45,7 @@ class ClientAppPage3State extends State<ClientAppPage3> {
     "A Birthing Center",
     "At Home",
     "No plans",
-    "other"
+    "Other"
   ];
 
   String selectedBirthLocation;
@@ -54,8 +57,11 @@ class ClientAppPage3State extends State<ClientAppPage3> {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
     toClientAppPage4 = widget.toClientAppPage4;
+
     _dueDateCtrl = TextEditingController();
     _dueDateCtrl..text = currentUser.dueDate;
+
+    otherLocCtrl = TextEditingController();
 
     loadData();
     initialPlaceholders();
@@ -69,8 +75,14 @@ class ClientAppPage3State extends State<ClientAppPage3> {
 
     String dueDate = _dueDateCtrl.text.toString().trim();
 
-    updateClient((dueDate.isEmpty ? null : dueDate), selectedBirthLocation,
-        selectedBirthType, epiduralValue == 1, cSectionValue == 1);
+    updateClient(
+        (dueDate.isEmpty ? null : dueDate),
+        selectedBirthLocation == locations[6]
+            ? otherLocCtrl.text.toString().trim()
+            : selectedBirthLocation,
+        selectedBirthType,
+        epiduralValue == 1,
+        cSectionValue == 1);
   }
 
   Future<bool> _onBackPressed() {
@@ -164,14 +176,20 @@ class ClientAppPage3State extends State<ClientAppPage3> {
           selectedBirthLocation = locations[5];
         }
         break;
-      case "other":
+      case "Other":
         {
           selectedBirthLocation = locations[6];
         }
         break;
       default:
         {
-          selectedBirthLocation = null;
+          if (currentUser.birthLocation != null) {
+            // location doesn't match the dropdowns, was a custom input
+            selectedBirthLocation = locations[6];
+            otherLocCtrl..text = currentUser.birthLocation;
+          } else {
+            selectedBirthLocation = null;
+          }
         }
         break;
     }
@@ -309,20 +327,26 @@ class ClientAppPage3State extends State<ClientAppPage3> {
                               isExpanded: true,
                               onChanged: (value) {
                                 selectedBirthLocation = value;
-                                setState(() {});
+                                setState(() {
+                                  selectedBirthLocation = value;
+                                });
                               },
                             ),
                           )),
-                      //if other, please specify
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: 200.0,
-                          child: TextField(
-                            autocorrect: false,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'If other, please specify',
+                      Visibility(
+                        visible: selectedBirthLocation == locations[6],
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: 200.0,
+                            child: TextFormField(
+                              autocorrect: false,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'If other, please specify',
+                              ),
+                              controller: otherLocCtrl,
+                              validator: nameValidator,
                             ),
                           ),
                         ),
@@ -475,12 +499,11 @@ class ClientAppPage3State extends State<ClientAppPage3> {
                                 if (form.validate()) {
                                   form.save();
 
-                                  // TODO capture and check input from dropdowns. Error messages if nothing is chosen
-                                  // TODO check other text controller if 'other' is chosen from dropdown
-
                                   updateClient(
                                       _dueDateCtrl.text.toString().trim(),
-                                      selectedBirthLocation,
+                                      selectedBirthLocation == locations[6]
+                                          ? otherLocCtrl.text.toString().trim()
+                                          : selectedBirthLocation,
                                       selectedBirthType,
                                       epiduralValue == 1,
                                       cSectionValue == 1);

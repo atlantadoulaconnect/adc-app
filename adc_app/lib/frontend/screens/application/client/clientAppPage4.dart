@@ -1,3 +1,5 @@
+import 'package:adc_app/backend/actions/common.dart';
+
 import '../../common.dart';
 
 class ClientAppPage4 extends StatefulWidget {
@@ -42,6 +44,9 @@ class ClientAppPage4State extends State<ClientAppPage4> {
     updateClient = widget.updateClient;
     toClientAppPage5 = widget.toClientAppPage5;
     cancelApplication = widget.cancelApplication;
+
+    print(
+        "PREV BIRTHS. initState(). currentUser preterm: ${currentUser.preterm}");
 
     loadData();
     initialPlaceholders();
@@ -136,6 +141,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
     int births = selectedBirthCount == null ? 0 : int.parse(selectedBirthCount);
 
     if (births == 0) {
+      print("NO BIRTHS");
       updateClient(births, null, null, null, null);
     } else {
       updateClient(
@@ -215,147 +221,166 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                             ),
                           )),
 
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Were any of your previous life births: ',
-                          style: TextStyle(
-                            fontSize: 16,
+                      Visibility(
+                        visible: int.parse(selectedBirthCount) > 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Were any of your previous life births: ',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
 
                       //preterm
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
-                        child: Text(
-                          'Preterm (< 37 weeks of pregnancy): ',
-                          style: TextStyle(
-                            fontSize: 16,
+                      Visibility(
+                        visible: int.parse(selectedBirthCount) > 0,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+                          child: Text(
+                            'Preterm (< 37 weeks of pregnancy): ',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
-                        child: Row(children: <Widget>[
-                          Radio(
-                            value: 1,
-                            groupValue: pretermValue,
-                            onChanged: (T) {
-                              setState(() {
-                                pretermValue = T;
-                              });
-                            },
-                          ),
-                          Text('Yes'),
-                          Radio(
-                            value: 2,
-                            groupValue: pretermValue,
-                            onChanged: (T) {
-                              setState(() {
-                                pretermValue = T;
-                              });
-                            },
-                          ),
-                          Text('No'),
-                        ]),
-                      ),
+                      Visibility(
+                          visible: int.parse(selectedBirthCount) > 0,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                            child: Row(children: <Widget>[
+                              Radio(
+                                value: 1,
+                                groupValue: pretermValue,
+                                onChanged: (T) {
+                                  setState(() {
+                                    pretermValue = T;
+                                  });
+                                },
+                              ),
+                              Text('Yes'),
+                              Radio(
+                                value: 2,
+                                groupValue: pretermValue,
+                                onChanged: (T) {
+                                  setState(() {
+                                    pretermValue = T;
+                                  });
+                                },
+                              ),
+                              Text('No'),
+                            ]),
+                          )),
 
                       //low birth weight
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
-                        child: Text(
-                          'Low Birth Weight (< 5 lbs. 8 oz. or 2,500g):',
-                          style: TextStyle(
-                            fontSize: 16,
+                      Visibility(
+                        visible: int.parse(selectedBirthCount) > 0,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+                          child: Text(
+                            'Low Birth Weight (< 5 lbs. 8 oz. or 2,500g):',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
-                        child: Row(children: <Widget>[
-                          Radio(
-                            value: 1,
-                            groupValue: lowBirthWeightValue,
-                            onChanged: (T) {
-                              setState(() {
-                                lowBirthWeightValue = T;
-                              });
-                            },
-                          ),
-                          Text('Yes'),
-                          Radio(
-                            value: 2,
-                            groupValue: lowBirthWeightValue,
-                            onChanged: (T) {
-                              setState(() {
-                                lowBirthWeightValue = T;
-                              });
-                            },
-                          ),
-                          Text('No'),
-                        ]),
-                      ),
+                      Visibility(
+                          visible: int.parse(selectedBirthCount) > 0,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                            child: Row(children: <Widget>[
+                              Radio(
+                                value: 1,
+                                groupValue: lowBirthWeightValue,
+                                onChanged: (T) {
+                                  setState(() {
+                                    lowBirthWeightValue = T;
+                                  });
+                                },
+                              ),
+                              Text('Yes'),
+                              Radio(
+                                value: 2,
+                                groupValue: lowBirthWeightValue,
+                                onChanged: (T) {
+                                  setState(() {
+                                    lowBirthWeightValue = T;
+                                  });
+                                },
+                              ),
+                              Text('No'),
+                            ]),
+                          )),
 
                       //Previous Birth Types
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Previous Birth Types (check all that apply): ',
-                          style: TextStyle(
-                            fontSize: 16,
+                      Visibility(
+                        visible: int.parse(selectedBirthCount) > 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Previous Birth Types (check all that apply): ',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
 
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text("Vaginal Birth"),
-                                Checkbox(
-                                  value: vaginalBirth,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      vaginalBirth = value;
-                                    });
-                                  },
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text("Cesaerean"),
-                                Checkbox(
-                                  value: cesarean,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      cesarean = value;
-                                    });
-                                  },
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text("VBAC"),
-                                Checkbox(
-                                  value: vbac,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      vbac = value;
-                                    });
-                                  },
-                                )
-                              ],
-                            )
-                          ],
+                      Visibility(
+                        visible: int.parse(selectedBirthCount) > 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Vaginal Birth"),
+                                  Checkbox(
+                                    value: vaginalBirth,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        vaginalBirth = value;
+                                      });
+                                    },
+                                  )
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Cesaerean"),
+                                  Checkbox(
+                                    value: cesarean,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        cesarean = value;
+                                      });
+                                    },
+                                  )
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("VBAC"),
+                                  Checkbox(
+                                    value: vbac,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        vbac = value;
+                                      });
+                                    },
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
 
@@ -371,40 +396,45 @@ class ClientAppPage4State extends State<ClientAppPage4> {
 //                          textAlign: TextAlign.center,
 //                        ),
 //                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Text(
-                          'Have you previously had twins or triplets? ',
-                          style: TextStyle(
-                            fontSize: 16,
+                      Visibility(
+                        visible: int.parse(selectedBirthCount) > 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            'Have you previously had twins or triplets? ',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
-                        child: Row(children: <Widget>[
-                          Radio(
-                            value: 1,
-                            groupValue: previousTwinsOrTriplets,
-                            onChanged: (T) {
-                              setState(() {
-                                previousTwinsOrTriplets = T;
-                              });
-                            },
-                          ),
-                          Text('Yes'),
-                          Radio(
-                            value: 2,
-                            groupValue: previousTwinsOrTriplets,
-                            onChanged: (T) {
-                              setState(() {
-                                previousTwinsOrTriplets = T;
-                              });
-                            },
-                          ),
-                          Text('No'),
-                        ]),
-                      ),
+                      Visibility(
+                          visible: int.parse(selectedBirthCount) > 0,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
+                            child: Row(children: <Widget>[
+                              Radio(
+                                value: 1,
+                                groupValue: previousTwinsOrTriplets,
+                                onChanged: (T) {
+                                  setState(() {
+                                    previousTwinsOrTriplets = T;
+                                  });
+                                },
+                              ),
+                              Text('Yes'),
+                              Radio(
+                                value: 2,
+                                groupValue: previousTwinsOrTriplets,
+                                onChanged: (T) {
+                                  setState(() {
+                                    previousTwinsOrTriplets = T;
+                                  });
+                                },
+                              ),
+                              Text('No'),
+                            ]),
+                          )),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[

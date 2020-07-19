@@ -43,6 +43,7 @@ class DoulaHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> clientProfileButtons = new List<Widget>();
+    print('app status: ${currentUser.completedApplication()}');
 
     return Scaffold(
         appBar: AppBar(

@@ -414,7 +414,7 @@ class CurrentMenu extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onTap: (currentUser as Doula).completedApplication() == true
+                  onTap: (currentUser as Doula).status != 'incomplete'
                       ? toDoulaSettings : toSettings,
                 ),
                 ListTile(

@@ -21,7 +21,7 @@ class DoulaAppPage3 extends StatefulWidget {
 }
 
 class DoulaAppPage3State extends State<DoulaAppPage3> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Doula currentUser;
   void Function(bool, bool, String, int) updateDoula;
   VoidCallback toDoulaAppPage4;
@@ -33,7 +33,7 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
   List<bool> selectedProgress;
 
   List<DropdownMenuItem<String>> certProgram;
-  List<String> certPrograms = ["", "DONA", "CAPPA", "ICEA", "Other"];
+  List<String> certPrograms = ["DONA", "CAPPA", "ICEA", "Other"];
   String selectedProgram;
 
   @override
@@ -90,7 +90,7 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
     }
 
     if (currentUser.certInProgress == null) {
-      selectedProgress = [true, false];
+      selectedProgress = [false, true];
     } else {
       selectedProgress =
           currentUser.certInProgress ? [true, false] : [false, true];
@@ -98,33 +98,34 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
 
     certProgram = [];
     certProgram.add(new DropdownMenuItem(
-      child: new Text(""),
+      child: new Text('DONA'),
       value: certPrograms[0],
     ));
     certProgram.add(new DropdownMenuItem(
-      child: new Text('DONA'),
+      child: new Text('CAPPA'),
       value: certPrograms[1],
     ));
     certProgram.add(new DropdownMenuItem(
-      child: new Text('CAPPA'),
+      child: new Text('ICEA'),
       value: certPrograms[2],
     ));
     certProgram.add(new DropdownMenuItem(
-      child: new Text('ICEA'),
-      value: certPrograms[3],
-    ));
-    certProgram.add(new DropdownMenuItem(
       child: new Text('Other'),
-      value: certPrograms[4],
+      value: certPrograms[3],
     ));
   }
 
   void saveValidInputs() {
     bool isCertified = selectedCert[0] == true;
     bool inProgress = selectedProgress[0] == true;
-    String program = selectedProgram == "" ? "none" : selectedProgram;
+    String program;
     String selBirths = _birthsNeeded.text.toString().trim();
-    int births = int.parse(selBirths.isEmpty ? "0" : selBirths);
+    int births;
+
+    if (inProgress) {
+      program = selectedProgram == "" ? "none" : selectedProgram;
+      births = int.parse(selBirths.isEmpty ? "0" : selBirths);
+    }
 
     updateDoula(isCertified, inProgress, program, births);
   }
@@ -271,58 +272,67 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Flexible(
-                          child: Text(
-                            'Certification Program:',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                Visibility(
+                  visible: selectedProgress[0],
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Flexible(
+                            child: Text(
+                              'Certification Program:',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
                             ),
                           ),
-                        ),
-                        Flexible(
-                          child: Container(
-                              width: 80,
-                              child: DropdownButton(
-                                value: selectedProgram,
-                                items: certProgram,
-                                isExpanded: true,
-                                onChanged: (value) {
-                                  selectedProgram = value;
-                                  setState(() {});
-                                },
-                              )),
-                        ),
-                      ]),
+                          Flexible(
+                            child: Container(
+                                width: 80,
+                                child: DropdownButton(
+                                  value: selectedProgram,
+                                  items: certProgram,
+                                  isExpanded: true,
+                                  onChanged: (value) {
+                                    selectedProgram = value;
+                                    setState(() {});
+                                  },
+                                )),
+                          ),
+                        ]),
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Number of documented births needed until you are certified:',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                Visibility(
+                  visible: selectedProgress[0],
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Number of documented births needed until you are certified:',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Container(
-                    width: 205.0,
-                    child: TextField(
-                      autocorrect: false,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                Visibility(
+                  visible: selectedProgress[0],
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      width: 205.0,
+                      child: TextField(
+                        autocorrect: false,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                        controller: _birthsNeeded,
                       ),
-                      controller: _birthsNeeded,
                     ),
                   ),
                 ),
@@ -387,14 +397,20 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
                               // TODO input validation and error message
                               bool isCertified = selectedCert[0] == true;
                               bool inProgress = selectedProgress[0] == true;
-                              String program = selectedProgram == ""
-                                  ? "none"
-                                  : selectedProgram;
-
+                              String program;
                               String selBirths =
                                   _birthsNeeded.text.toString().trim();
-                              int births = int.parse(
-                                  selBirths.isEmpty ? "0" : selBirths);
+                              int births;
+
+                              if (inProgress) {
+                                program = selectedProgram == ""
+                                    ? "none"
+                                    : selectedProgram;
+
+                                births = int.parse(
+                                    selBirths.isEmpty ? "0" : selBirths);
+                              }
+
                               updateDoula(
                                   isCertified, inProgress, program, births);
 

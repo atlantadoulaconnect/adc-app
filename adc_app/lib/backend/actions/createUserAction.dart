@@ -201,6 +201,10 @@ class SubmitClientUser extends ReduxAction<AppState> {
         "photoRelease": user.photoRelease,
         "emergencyContacts": emgContactsToDB(user.emergencyContacts),
       });
+      user.preterm = null;
+      user.lowWeight = null;
+      user.deliveryTypes = null;
+      user.multiples = null;
     }
 
     return state.copy(
@@ -226,23 +230,44 @@ class SubmitDoulaUser extends ReduxAction<AppState> {
       "userType": user.userType,
     });
 
-    await dbRef
-        .collection("users")
-        .document(user.userid)
-        .collection("userData")
-        .document("specifics")
-        .updateData({
-      "phones": phonesToDB(user.phones),
-      "bday": user.bday,
-      "email": user.email,
-      "bio": user.bio,
-      "photoRelease": user.photoRelease,
-      "certified": user.certified,
-      "certInProgress": user.certInProgress,
-      "certProgram": user.certProgram,
-      "birthsNeeded": user.birthsNeeded,
-      "unavailableDates": user.availableDates,
-    });
+    if (user.certInProgress) {
+      await dbRef
+          .collection("users")
+          .document(user.userid)
+          .collection("userData")
+          .document("specifics")
+          .updateData({
+        "phones": phonesToDB(user.phones),
+        "bday": user.bday,
+        "email": user.email,
+        "bio": user.bio,
+        "photoRelease": user.photoRelease,
+        "certified": user.certified,
+        "certInProgress": user.certInProgress,
+        "certProgram": user.certProgram,
+        "birthsNeeded": user.birthsNeeded,
+        "unavailableDates": user.availableDates,
+      });
+    } else {
+      await dbRef
+          .collection("users")
+          .document(user.userid)
+          .collection("userData")
+          .document("specifics")
+          .updateData({
+        "phones": phonesToDB(user.phones),
+        "bday": user.bday,
+        "email": user.email,
+        "bio": user.bio,
+        "photoRelease": user.photoRelease,
+        "certified": user.certified,
+        "certInProgress": user.certInProgress,
+        "unavailableDates": user.availableDates,
+      });
+
+      user.certProgram = null;
+      user.birthsNeeded = null;
+    }
 
     return state.copy(
         currentUser: (state.currentUser as Doula).copy(status: "submitted"));

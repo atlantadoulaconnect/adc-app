@@ -9,12 +9,15 @@ class ClientHomeScreen extends StatelessWidget {
   final VoidCallback toProfile;
   final Future<void> Function(String, String) setProfileUser;
 
+
   ClientHomeScreen(this.currentUser, this.logout, this.toHome,
       this.toRecentMessages, this.toInfo, this.toProfile, this.setProfileUser)
       : assert(logout != null &&
             toHome != null &&
             toRecentMessages != null &&
             toInfo != null);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -167,6 +170,8 @@ class ClientHomeScreen extends StatelessWidget {
             ))));
   }
 }
+
+
 
 class ClientHomeScreenConnector extends StatelessWidget {
   @override

@@ -187,23 +187,29 @@ class DoulaAppConfirmationPage extends StatelessWidget {
                     height: 1.5),
                 textAlign: TextAlign.left,
               ),
-              Text(
-                'Certification Program: ${currentUser.certProgram}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
+              Visibility(
+                visible: currentUser.certInProgress,
+                child: Text(
+                  'Certification Program: ${currentUser.certProgram}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
               ),
-              Text(
-                'Number of documented births needed until you are certified: ${currentUser.birthsNeeded}',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: themeColors['black'],
-                    fontSize: 18,
-                    height: 1.5),
-                textAlign: TextAlign.left,
+              Visibility(
+                visible: currentUser.certInProgress,
+                child: Text(
+                  'Number of documented births needed until you are certified: ${currentUser.birthsNeeded}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: themeColors['black'],
+                      fontSize: 18,
+                      height: 1.5),
+                  textAlign: TextAlign.left,
+                ),
               ),
               // AVAILABLE DATES
               //              Text('Availability',

@@ -11,7 +11,7 @@ class RequestSentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String message = currentUser.userType == "client"
         ? "Your request for a doula has been sent!"
-        : "";
+        : "Your application to become a volunteer doula for Atlanta Doula Connect has been sent!";
 
     return Scaffold(
         appBar: AppBar(title: Text("Application Sent")),
@@ -29,8 +29,9 @@ class RequestSentScreen extends StatelessWidget {
                     fontFamily: 'Roboto',
                     color: themeColors['emoryBlue'],
                     fontWeight: FontWeight.bold,
-                    fontSize: 25,
+                    fontSize: 35,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
               Spacer(),

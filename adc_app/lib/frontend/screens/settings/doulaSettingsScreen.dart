@@ -128,7 +128,13 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
 
       unavailableDates = List<DateTime>();
       if (currentUser.availableDates != null) {
+        // formats dates
         for (String s in currentUser.availableDates) {
+          s = s.replaceAll('-', '');
+          if (s.length == 7) {
+            s = s.substring(0, 6) + '0' + s.substring(6);
+          }
+          print('new date: $s');
           DateTime temp = DateTime.parse(s);
           temp = temp.add(Duration(hours: 8));
           unavailableDates.add(temp.toUtc());

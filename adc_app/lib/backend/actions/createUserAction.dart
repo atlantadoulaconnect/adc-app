@@ -155,30 +155,57 @@ class SubmitClientUser extends ReduxAction<AppState> {
       "userType": user.userType,
     });
 
-    await dbRef
-        .collection("users")
-        .document(user.userid)
-        .collection("userData")
-        .document("specifics")
-        .updateData({
-      "phones": phonesToDB(user.phones),
-      "bday": user.bday,
-      "email": user.email,
-      "dueDate": user.dueDate,
-      "birthLocation": user.birthLocation,
-      "birthType": user.birthType,
-      "epidural": user.epidural,
-      "cesarean": user.cesarean,
-      "liveBirths": user.liveBirths,
-      "preterm": user.preterm,
-      "lowWeight": user.lowWeight,
-      "deliveryTypes": user.deliveryTypes,
-      "multiples": user.multiples,
-      "meetBefore": user.meetBefore,
-      "homeVisit": user.homeVisit,
-      "photoRelease": user.photoRelease,
-      "emergencyContacts": emgContactsToDB(user.emergencyContacts),
-    });
+    if (user.liveBirths > 0) {
+      await dbRef
+          .collection("users")
+          .document(user.userid)
+          .collection("userData")
+          .document("specifics")
+          .updateData({
+        "phones": phonesToDB(user.phones),
+        "bday": user.bday,
+        "email": user.email,
+        "dueDate": user.dueDate,
+        "birthLocation": user.birthLocation,
+        "birthType": user.birthType,
+        "epidural": user.epidural,
+        "cesarean": user.cesarean,
+        "liveBirths": user.liveBirths,
+        "preterm": user.preterm,
+        "lowWeight": user.lowWeight,
+        "deliveryTypes": user.deliveryTypes,
+        "multiples": user.multiples,
+        "meetBefore": user.meetBefore,
+        "homeVisit": user.homeVisit,
+        "photoRelease": user.photoRelease,
+        "emergencyContacts": emgContactsToDB(user.emergencyContacts),
+      });
+    } else {
+      await dbRef
+          .collection("users")
+          .document(user.userid)
+          .collection("userData")
+          .document("specifics")
+          .updateData({
+        "phones": phonesToDB(user.phones),
+        "bday": user.bday,
+        "email": user.email,
+        "dueDate": user.dueDate,
+        "birthLocation": user.birthLocation,
+        "birthType": user.birthType,
+        "epidural": user.epidural,
+        "cesarean": user.cesarean,
+        "liveBirths": user.liveBirths,
+        "meetBefore": user.meetBefore,
+        "homeVisit": user.homeVisit,
+        "photoRelease": user.photoRelease,
+        "emergencyContacts": emgContactsToDB(user.emergencyContacts),
+      });
+      user.preterm = null;
+      user.lowWeight = null;
+      user.deliveryTypes = null;
+      user.multiples = null;
+    }
 
     return state.copy(
         currentUser: (state.currentUser as Client).copy(status: "submitted"));
@@ -203,23 +230,44 @@ class SubmitDoulaUser extends ReduxAction<AppState> {
       "userType": user.userType,
     });
 
-    await dbRef
-        .collection("users")
-        .document(user.userid)
-        .collection("userData")
-        .document("specifics")
-        .updateData({
-      "phones": phonesToDB(user.phones),
-      "bday": user.bday,
-      "email": user.email,
-      "bio": user.bio,
-      "photoRelease": user.photoRelease,
-      "certified": user.certified,
-      "certInProgress": user.certInProgress,
-      "certProgram": user.certProgram,
-      "birthsNeeded": user.birthsNeeded,
-      "unavailableDates": user.availableDates,
-    });
+    if (user.certInProgress) {
+      await dbRef
+          .collection("users")
+          .document(user.userid)
+          .collection("userData")
+          .document("specifics")
+          .updateData({
+        "phones": phonesToDB(user.phones),
+        "bday": user.bday,
+        "email": user.email,
+        "bio": user.bio,
+        "photoRelease": user.photoRelease,
+        "certified": user.certified,
+        "certInProgress": user.certInProgress,
+        "certProgram": user.certProgram,
+        "birthsNeeded": user.birthsNeeded,
+        "unavailableDates": user.availableDates,
+      });
+    } else {
+      await dbRef
+          .collection("users")
+          .document(user.userid)
+          .collection("userData")
+          .document("specifics")
+          .updateData({
+        "phones": phonesToDB(user.phones),
+        "bday": user.bday,
+        "email": user.email,
+        "bio": user.bio,
+        "photoRelease": user.photoRelease,
+        "certified": user.certified,
+        "certInProgress": user.certInProgress,
+        "unavailableDates": user.availableDates,
+      });
+
+      user.certProgram = null;
+      user.birthsNeeded = null;
+    }
 
     return state.copy(
         currentUser: (state.currentUser as Doula).copy(status: "submitted"));

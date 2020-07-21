@@ -1,3 +1,5 @@
+import 'package:adc_app/backend/actions/common.dart';
+
 import '../../common.dart';
 
 class ClientAppPage3 extends StatefulWidget {
@@ -28,6 +30,7 @@ class ClientAppPage3State extends State<ClientAppPage3> {
   void Function(bool) cancelApplication;
 
   TextEditingController _dueDateCtrl;
+  TextEditingController otherLocCtrl;
 
   //drop down list
   List<DropdownMenuItem<String>> birthType;
@@ -42,7 +45,7 @@ class ClientAppPage3State extends State<ClientAppPage3> {
     "A Birthing Center",
     "At Home",
     "No plans",
-    "other"
+    "Other"
   ];
 
   String selectedBirthLocation;
@@ -54,12 +57,37 @@ class ClientAppPage3State extends State<ClientAppPage3> {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
     toClientAppPage4 = widget.toClientAppPage4;
+
     _dueDateCtrl = TextEditingController();
+    _dueDateCtrl..text = currentUser.dueDate;
+
+    otherLocCtrl = TextEditingController();
 
     loadData();
     initialPlaceholders();
 
     super.initState();
+  }
+
+  void saveValidInputs() {
+    final form = _c3formKey.currentState;
+    form.save();
+
+    String dueDate = _dueDateCtrl.text.toString().trim();
+
+    updateClient(
+        (dueDate.isEmpty ? null : dueDate),
+        selectedBirthLocation == locations[6]
+            ? otherLocCtrl.text.toString().trim()
+            : selectedBirthLocation,
+        selectedBirthType,
+        epiduralValue == 1,
+        cSectionValue == 1);
+  }
+
+  Future<bool> _onBackPressed() {
+    saveValidInputs();
+    return Future<bool>.value(true);
   }
 
   confirmCancelDialog(BuildContext context) {
@@ -148,14 +176,20 @@ class ClientAppPage3State extends State<ClientAppPage3> {
           selectedBirthLocation = locations[5];
         }
         break;
-      case "other":
+      case "Other":
         {
           selectedBirthLocation = locations[6];
         }
         break;
       default:
         {
-          selectedBirthLocation = null;
+          if (currentUser.birthLocation != null) {
+            // location doesn't match the dropdowns, was a custom input
+            selectedBirthLocation = locations[6];
+            otherLocCtrl..text = currentUser.birthLocation;
+          } else {
+            selectedBirthLocation = null;
+          }
         }
         break;
     }
@@ -218,279 +252,276 @@ class ClientAppPage3State extends State<ClientAppPage3> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Request a Doula"),
-        ),
-        body: Center(
-            child: Form(
-                key: _c3formKey,
-                autovalidate: false,
-                child: ListView(children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Current Pregnancy Details',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          color: themeColors['emoryBlue'],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                        ),
-                        textAlign: TextAlign.center),
-                  ),
-                  // progress bar
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                          width: 250,
-                          child: LinearProgressIndicator(
-                              backgroundColor: themeColors['skyBlue'],
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  themeColors['mediumBlue']),
-                              value: 0.4))),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 300.0,
-                      child: TextFormField(
-                        autocorrect: false,
-                        keyboardType: TextInputType.datetime,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Due Date (MM/DD/YYYY)',
-                            prefixIcon: Icon(Icons.cake),
-                            suffixIcon: Icon(Icons.calendar_today)),
-                        controller: _dueDateCtrl..text = currentUser.dueDate,
-                        validator: (val) {
-                          if (val.isEmpty) {
-                            return "Please enter your due date.";
-                          }
-                          return null;
-                        },
+    return WillPopScope(
+        onWillPop: _onBackPressed,
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text("Request a Doula"),
+            ),
+            body: Center(
+                child: Form(
+                    key: _c3formKey,
+                    autovalidate: false,
+                    child: ListView(children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Current Pregnancy Details',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              color: themeColors['emoryBlue'],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                            ),
+                            textAlign: TextAlign.center),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Select your planned birth location:',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  // drop down menu for birth location
-                  Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ButtonTheme(
-                        alignedDropdown: true,
-                        child: DropdownButton(
-                          value: selectedBirthLocation,
-                          items: birthLocation,
-                          hint: new Text('Birth Location'),
-                          isExpanded: true,
-                          onChanged: (value) {
-                            selectedBirthLocation = value;
-                            setState(() {});
-                          },
-                        ),
-                      )),
-                  //if other, please specify
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 200.0,
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'If other, please specify',
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Select your birth type:',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  // drop down menu for birth type
-                  Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ButtonTheme(
-                        alignedDropdown: true,
-                        child: DropdownButton(
-                          value: selectedBirthType,
-                          items: birthType,
-                          hint: new Text('Birth Type'),
-                          isExpanded: true,
-                          onChanged: (value) {
-                            selectedBirthType = value;
-                            setState(() {
-//                          if (selectedBirthCount == '0') {
-//
-//                          }
-                            });
-                          },
-                        ),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Are you planning on having an epidural?',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  Row(
-                      //mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Radio(
-                          value: 1,
-                          groupValue: epiduralValue,
-                          onChanged: (T) {
-                            setState(() {
-                              epiduralValue = T;
-                            });
-                          },
-                        ),
-                        Text('Yes'),
-                        Radio(
-                          value: 2,
-                          groupValue: epiduralValue,
-                          onChanged: (T) {
-                            setState(() {
-                              epiduralValue = T;
-                            });
-                          },
-                        ),
-                        Text('No'),
-                      ]),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Are you expecting to have a cesarean section (C-Section)?',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  Row(
-                      //mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Radio(
-                          value: 1,
-                          groupValue: cSectionValue,
-                          onChanged: (T) {
-                            setState(() {
-                              cSectionValue = T;
-                            });
-                          },
-                        ),
-                        Text('Yes'),
-                        Radio(
-                          value: 2,
-                          groupValue: cSectionValue,
-                          onChanged: (T) {
-                            setState(() {
-                              cSectionValue = T;
-                            });
-                          },
-                        ),
-                        Text('No'),
-                      ]),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(5.0),
-                              side:
-                                  BorderSide(color: themeColors['lightBlue'])),
-                          onPressed: () {
-                            final form = _c3formKey.currentState;
-                            form.save();
-
-                            String dueDate =
-                                _dueDateCtrl.text.toString().trim();
-
-                            updateClient(
-                                (dueDate.isEmpty ? null : dueDate),
-                                selectedBirthLocation,
-                                selectedBirthType,
-                                epiduralValue == 1,
-                                cSectionValue == 1);
-
-                            Navigator.pop(context);
-                          },
-                          color: themeColors['lightBlue'],
-                          textColor: Colors.white,
-                          padding: EdgeInsets.all(15.0),
-                          splashColor: themeColors['lightBlue'],
-                          child: Text(
-                            "PREVIOUS",
-                            style: TextStyle(fontSize: 20.0),
+                      // progress bar
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                              width: 250,
+                              child: LinearProgressIndicator(
+                                  backgroundColor: themeColors['skyBlue'],
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      themeColors['mediumBlue']),
+                                  value: 0.4))),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: 300.0,
+                          child: TextFormField(
+                            autocorrect: false,
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Due Date (MM/DD/YYYY)',
+                                prefixIcon: Icon(Icons.cake),
+                                suffixIcon: Icon(Icons.calendar_today)),
+                            controller: _dueDateCtrl,
+                            validator: (val) {
+                              if (val.isEmpty) {
+                                return "Please enter your due date.";
+                              }
+                              return null;
+                            },
                           ),
                         ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(10.0),
-                              side:
-                                  BorderSide(color: themeColors['coolGray5'])),
-                          onPressed: () {
-                            // dialog to confirm cancellation
-                            confirmCancelDialog(context);
-                          },
-                          color: themeColors['coolGray5'],
-                          textColor: Colors.white,
-                          padding: EdgeInsets.all(15.0),
-                          splashColor: themeColors['coolGray5'],
-                          child: Text(
-                            "CANCEL",
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              color: themeColors['black'],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Select your planned birth location:',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      // drop down menu for birth location
+                      Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: ButtonTheme(
+                            alignedDropdown: true,
+                            child: DropdownButton(
+                              value: selectedBirthLocation,
+                              items: birthLocation,
+                              hint: new Text('Birth Location'),
+                              isExpanded: true,
+                              onChanged: (value) {
+                                selectedBirthLocation = value;
+                                setState(() {
+                                  selectedBirthLocation = value;
+                                });
+                              },
+                            ),
+                          )),
+                      Visibility(
+                        visible: selectedBirthLocation == locations[6],
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: 200.0,
+                            child: TextFormField(
+                              autocorrect: false,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'If other, please specify',
+                              ),
+                              controller: otherLocCtrl,
+                              validator: nameValidator,
                             ),
                           ),
                         ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(5.0),
-                              side: BorderSide(color: themeColors['yellow'])),
-                          onPressed: () {
-                            final form = _c3formKey.currentState;
-                            if (form.validate()) {
-                              form.save();
-
-                              // TODO capture and check input from dropdowns. Error messages if nothing is chosen
-                              // TODO check other text controller if 'other' is chosen from dropdown
-
-                              updateClient(
-                                  _dueDateCtrl.text.toString().trim(),
-                                  selectedBirthLocation,
-                                  selectedBirthType,
-                                  epiduralValue == 1,
-                                  cSectionValue == 1);
-                            }
-
-                            toClientAppPage4();
-                          },
-                          color: themeColors['yellow'],
-                          textColor: Colors.black,
-                          padding: EdgeInsets.all(15.0),
-                          splashColor: themeColors['yellow'],
-                          child: Text(
-                            "NEXT",
-                            style: TextStyle(fontSize: 20.0),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Select your birth type:',
+                          style: TextStyle(
+                            fontSize: 16,
                           ),
                         ),
-                      ])
-                ]))));
+                      ),
+                      // drop down menu for birth type
+                      Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: ButtonTheme(
+                            alignedDropdown: true,
+                            child: DropdownButton(
+                              value: selectedBirthType,
+                              items: birthType,
+                              hint: new Text('Birth Type'),
+                              isExpanded: true,
+                              onChanged: (value) {
+                                selectedBirthType = value;
+                                setState(() {
+//                          if (selectedBirthCount == '0') {
+//
+//                          }
+                                });
+                              },
+                            ),
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Are you planning on having an epidural?',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Row(
+                          //mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Radio(
+                              value: 1,
+                              groupValue: epiduralValue,
+                              onChanged: (T) {
+                                setState(() {
+                                  epiduralValue = T;
+                                });
+                              },
+                            ),
+                            Text('Yes'),
+                            Radio(
+                              value: 2,
+                              groupValue: epiduralValue,
+                              onChanged: (T) {
+                                setState(() {
+                                  epiduralValue = T;
+                                });
+                              },
+                            ),
+                            Text('No'),
+                          ]),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Are you expecting to have a cesarean section (C-Section)?',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Row(
+                          //mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Radio(
+                              value: 1,
+                              groupValue: cSectionValue,
+                              onChanged: (T) {
+                                setState(() {
+                                  cSectionValue = T;
+                                });
+                              },
+                            ),
+                            Text('Yes'),
+                            Radio(
+                              value: 2,
+                              groupValue: cSectionValue,
+                              onChanged: (T) {
+                                setState(() {
+                                  cSectionValue = T;
+                                });
+                              },
+                            ),
+                            Text('No'),
+                          ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(5.0),
+                                  side: BorderSide(
+                                      color: themeColors['lightBlue'])),
+                              onPressed: () {
+                                saveValidInputs();
+
+                                Navigator.pop(context);
+                              },
+                              color: themeColors['lightBlue'],
+                              textColor: Colors.white,
+                              padding: EdgeInsets.all(15.0),
+                              splashColor: themeColors['lightBlue'],
+                              child: Text(
+                                "PREVIOUS",
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                            ),
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(10.0),
+                                  side: BorderSide(
+                                      color: themeColors['coolGray5'])),
+                              onPressed: () {
+                                // dialog to confirm cancellation
+                                confirmCancelDialog(context);
+                              },
+                              color: themeColors['coolGray5'],
+                              textColor: Colors.white,
+                              padding: EdgeInsets.all(15.0),
+                              splashColor: themeColors['coolGray5'],
+                              child: Text(
+                                "CANCEL",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: themeColors['black'],
+                                ),
+                              ),
+                            ),
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(5.0),
+                                  side:
+                                      BorderSide(color: themeColors['yellow'])),
+                              onPressed: () {
+                                final form = _c3formKey.currentState;
+                                if (form.validate()) {
+                                  form.save();
+
+                                  updateClient(
+                                      _dueDateCtrl.text.toString().trim(),
+                                      selectedBirthLocation == locations[6]
+                                          ? otherLocCtrl.text.toString().trim()
+                                          : selectedBirthLocation,
+                                      selectedBirthType,
+                                      epiduralValue == 1,
+                                      cSectionValue == 1);
+                                }
+
+                                toClientAppPage4();
+                              },
+                              color: themeColors['yellow'],
+                              textColor: Colors.black,
+                              padding: EdgeInsets.all(15.0),
+                              splashColor: themeColors['yellow'],
+                              child: Text(
+                                "NEXT",
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                            ),
+                          ])
+                    ])))));
   }
 }
 

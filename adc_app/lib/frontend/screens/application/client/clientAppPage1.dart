@@ -54,6 +54,30 @@ class ClientAppPage1State extends State<ClientAppPage1> {
     _bdayCtrl = TextEditingController();
     _phoneCtrl = TextEditingController();
     _altPhoneCtrl = TextEditingController();
+
+    _firstNameCtrl
+      ..text = currentUser.name != null ? getFirstName(currentUser.name) : null;
+
+    _lastInitCtrl
+      ..text =
+          currentUser.name != null ? getLastInitial(currentUser.name) : null;
+
+    _bdayCtrl..text = currentUser.bday;
+
+    _phoneCtrl
+      ..text = currentUser.phones != null
+          ? (currentUser.phones.length > 0
+              ? currentUser.phones[0].number
+              : null)
+          : null;
+
+    _altPhoneCtrl
+      ..text = currentUser.phones != null
+          ? (currentUser.phones.length > 1
+              ? currentUser.phones[1].number
+              : null)
+          : null;
+
     super.initState();
   }
 
@@ -180,10 +204,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                                 labelText: "First Name",
                                 hintText: "Jane",
                               ),
-                              controller: _firstNameCtrl
-                                ..text = currentUser.name != null
-                                    ? getFirstName(currentUser.name)
-                                    : null,
+                              controller: _firstNameCtrl,
                               validator: nameValidator,
                             ),
                           ),
@@ -197,10 +218,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                               labelText: "Last Initial",
                               hintText: "D",
                             ),
-                            controller: _lastInitCtrl
-                              ..text = currentUser.name != null
-                                  ? getLastInitial(currentUser.name)
-                                  : null,
+                            controller: _lastInitCtrl,
                             validator: singleLetterValidator,
                           ),
                         ),
@@ -219,7 +237,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                             labelText: 'Birthday (MM/YYYY)',
                             prefixIcon: Icon(Icons.cake),
                             suffixIcon: Icon(Icons.calendar_today)),
-                        controller: _bdayCtrl..text = currentUser.bday,
+                        controller: _bdayCtrl,
                         validator: bdayValidator,
                       ),
                     ),
@@ -237,12 +255,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                           prefixIcon: Icon(Icons.phone),
                         ),
                         // if there's a phone list and that list is not empty then the first element is the initial value
-                        controller: _phoneCtrl
-                          ..text = currentUser.phones != null
-                              ? (currentUser.phones.length > 0
-                                  ? currentUser.phones[0].number
-                                  : null)
-                              : null,
+                        controller: _phoneCtrl,
                         validator: phoneValidator,
                       ),
                     ),
@@ -259,12 +272,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                           labelText: 'Phone 2 (Optional)',
                           prefixIcon: Icon(Icons.phone),
                         ),
-                        controller: _altPhoneCtrl
-                          ..text = currentUser.phones != null
-                              ? (currentUser.phones.length > 1
-                                  ? currentUser.phones[1].number
-                                  : null)
-                              : null,
+                        controller: _altPhoneCtrl,
                         validator: altPhoneValidator,
                       ),
                     ),

@@ -186,6 +186,7 @@ String getLastInitial(String full) {
     List<String> names = full.split(" ");
     return names[names.length - 1].substring(0, 1);
   }
+
   // no space in name = only first name; return empty string for last initial
-  return "";
+  return null;
 }

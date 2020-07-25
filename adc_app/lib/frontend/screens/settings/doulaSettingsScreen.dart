@@ -134,7 +134,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
           if (s.length == 7) {
             s = s.substring(0, 6) + '0' + s.substring(6);
           }
-          print('new date: $s');
+
           DateTime temp = DateTime.parse(s);
           temp = temp.add(Duration(hours: 8));
           unavailableDates.add(temp.toUtc());
@@ -256,10 +256,10 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
       startDay: DateTime.now(),
       onDaySelected: (date, events) {
         setState(() {
-          if (unavailableDates.contains(date)) {
+          if (unavailableDates.contains(date.toUtc())) {
             unavailableDates.remove(date);
           } else {
-            unavailableDates.add(date);
+            unavailableDates.add(date.toUtc());
           }
         });
       },
@@ -271,7 +271,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               date.day.toString(),
             ),
             decoration: BoxDecoration(
-              color: unavailableDates.contains(date)
+              color: unavailableDates.contains(date.toUtc())
                   ? themeColors["gold"]
                   : themeColors["lightGrey"],
               shape: BoxShape.circle,
@@ -322,7 +322,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               style: TextStyle(color: themeColors["black"]),
             ),
             decoration: BoxDecoration(
-              color: unavailableDates.contains(date)
+              color: unavailableDates.contains(date.toUtc())
                   ? themeColors["gold"]
                   : themeColors["lightGrey"],
               shape: BoxShape.circle,
@@ -339,7 +339,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                   fontWeight: FontWeight.bold),
             ),
             decoration: BoxDecoration(
-              color: unavailableDates.contains(date)
+              color: unavailableDates.contains(date.toUtc())
                   ? themeColors["gold"]
                   : themeColors["lightGrey"],
               shape: BoxShape.circle,
@@ -356,7 +356,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               ),
             ),
             decoration: BoxDecoration(
-              color: unavailableDates.contains(date)
+              color: unavailableDates.contains(date.toUtc())
                   ? themeColors["gold"]
                   : themeColors["lightGrey"],
               shape: BoxShape.circle,

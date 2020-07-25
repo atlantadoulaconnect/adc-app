@@ -39,13 +39,15 @@ class AdminHomeScreen extends StatelessWidget {
         ),
         drawer: Menu(),
         body: Center(
-            child: Column(
-          children: <Widget>[
+          child: ListView(
+            padding: EdgeInsets.all(10),
+            children: <Widget>[
             NotificationHandler(),
             Padding(
               padding: EdgeInsets.only(top: 40.0, bottom: 20.0),
               child: Text(
                 "Welcome${currentUser != null && currentUser.name != null ? ", ${currentUser.name}" : ""}",
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 40,
@@ -70,40 +72,40 @@ class AdminHomeScreen extends StatelessWidget {
                         EdgeInsets.only(left: 25.0, right: 25.0, top: 20.0),
                     child: Center(
                         child: Container(
-                            child: StreamBuilder<QuerySnapshot>(
-                      stream: Firestore.instance
-                          .collection("users")
-                          .where("status", isEqualTo: "submitted")
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(
-                              child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                themeColors["lightBlue"]),
-                          ));
-                        }
-                        int clients = 0;
-                        int doulas = 0;
+                          child: StreamBuilder<QuerySnapshot>(
+                            stream: Firestore.instance
+                            .collection("users")
+                            .where("status", isEqualTo: "submitted")
+                            .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData) {
+                              return Center(
+                                  child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    themeColors["lightBlue"]),
+                              ));
+                            }
+                            int clients = 0;
+                            int doulas = 0;
 
-                        for (int i = 0;
-                            i < snapshot.data.documents.length;
-                            i++) {
-                          DocumentSnapshot ds = snapshot.data.documents[i];
-                          if (ds["userType"] == "client") {
-                            clients++;
-                          } else if (ds["userType"] == "doula") {
-                            doulas++;
-                          }
-                        }
+                            for (int i = 0;
+                                i < snapshot.data.documents.length;
+                                i++) {
+                              DocumentSnapshot ds = snapshot.data.documents[i];
+                              if (ds["userType"] == "client") {
+                                clients++;
+                              } else if (ds["userType"] == "doula") {
+                                doulas++;
+                              }
+                            }
 
-                        return Text(
-                          "$doulas Pending Doula Application(s)\n$clients Pending Client Application(s)\n",
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        );
+                            return Text(
+                              "$doulas Pending Doula Application(s)\n$clients Pending Client Application(s)\n",
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            );
                       },
                     ))),
                   ),
@@ -130,7 +132,7 @@ class AdminHomeScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: 25.0),
+              padding: EdgeInsets.fromLTRB(15.0, 5, 15, 5),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(15.0),
@@ -149,7 +151,7 @@ class AdminHomeScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: 25.0),
+              padding: EdgeInsets.fromLTRB(15.0, 5, 15, 5),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(15.0),
@@ -187,7 +189,7 @@ class AdminHomeScreen extends StatelessWidget {
 //              ),
 //            ),
             Padding(
-              padding: EdgeInsets.only(bottom: 25.0),
+              padding: EdgeInsets.fromLTRB(15.0, 5, 15, 5),
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
@@ -224,26 +226,29 @@ class AdminHomeScreen extends StatelessWidget {
 //                ),
 //              ),
 //            ),
-            RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(15.0),
-                  side: BorderSide(color: themeColors['yellow'])),
-              color: themeColors['yellow'],
-              textColor: Colors.white,
-              padding: EdgeInsets.all(15.0),
-              splashColor: themeColors['mediumBlue'],
-              child: Text(
-                "LOG OUT",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: themeColors['black'],
-                  fontWeight: FontWeight.bold,
+            Padding(
+              padding: EdgeInsets.fromLTRB(15.0, 5, 15, 5),
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(15.0),
+                    side: BorderSide(color: themeColors['yellow'])),
+                color: themeColors['yellow'],
+                textColor: Colors.white,
+                padding: EdgeInsets.all(15.0),
+                splashColor: themeColors['mediumBlue'],
+                child: Text(
+                  "LOG OUT",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: themeColors['black'],
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
+                onPressed: () async {
+                  logout();
+                  toHome();
+                },
               ),
-              onPressed: () async {
-                logout();
-                toHome();
-              },
             ),
           ],
         )));

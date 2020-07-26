@@ -382,7 +382,7 @@ class AdminSettingsScreenState extends State<AdminSettingsScreen> {
         child: RaisedButton(
           shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(5.0),
-              side: BorderSide(color: themeColors['yellow'])),
+              side: BorderSide(color: themeColors['mediumBlue'])),
           onPressed: () async {
             String adminName = firstNameCtrl.text.toString().trim();
             String adminEmail = emailCtrl.text.toString().trim();
@@ -392,10 +392,10 @@ class AdminSettingsScreenState extends State<AdminSettingsScreen> {
             await adminToDB(currentUser);
             toHome();
           },
-          color: themeColors['yellow'],
-          textColor: Colors.black,
+          color: themeColors['mediumBlue'],
+          textColor: Colors.white,
           padding: EdgeInsets.all(15.0),
-          splashColor: themeColors['yellow'],
+          splashColor: themeColors['mediumBlue'],
           child: Text(
             "Submit Changes",
             style: TextStyle(fontSize: 20.0),

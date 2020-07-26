@@ -86,8 +86,15 @@ String pwdValidator(String value) {
   if (value.length < 8) {
     return 'Password must be longer than 8 characters';
   } else {
-    return null;
+    if (value.contains(new RegExp('[0-9]'),0) == false) {
+      return 'Password must contain at least one number';
+    } else if (value.contains(new RegExp('[^a-zA-Z0-9]'),0) == false) {
+      return 'Password must contain at least one character';
+    } else {
+      return null;
+    }
   }
+
 }
 
 // Methods for safely transferring data between app and db

@@ -75,12 +75,12 @@ class SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Create an Account")),
-        drawer: Menu(),
-        body: Container(
+       appBar: AppBar(title: Text("Create an Account")),
+       drawer: Menu(),
+       body: Container(
           padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-              child: Column(children: <Widget>[
+         child: SingleChildScrollView(
+           child: Column(children: <Widget>[
             Text("Sign Up"),
             Form(
                 key: _signupFormKey,

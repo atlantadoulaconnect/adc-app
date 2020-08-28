@@ -9,15 +9,12 @@ class ClientHomeScreen extends StatelessWidget {
   final VoidCallback toProfile;
   final Future<void> Function(String, String) setProfileUser;
 
-
   ClientHomeScreen(this.currentUser, this.logout, this.toHome,
       this.toRecentMessages, this.toInfo, this.toProfile, this.setProfileUser)
       : assert(logout != null &&
             toHome != null &&
             toRecentMessages != null &&
             toInfo != null);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -86,24 +83,29 @@ class ClientHomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-                        side: BorderSide(color: themeColors['mediumBlue'])),
-                    onPressed: () async {
-                      await setProfileUser(
-                          currentUser.userid, currentUser.userType);
-                      toProfile();
-                    },
-                    color: themeColors['mediumBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['mediumBlue'],
-                    child: Text(
-                      "See My Profile",
-                      style: TextStyle(fontSize: 20.0),
+                Visibility(
+                  visible: (currentUser.status != null &&
+                          currentUser.status == "submitted") ||
+                      currentUser.completedApplication(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10.0),
+                          side: BorderSide(color: themeColors['mediumBlue'])),
+                      onPressed: () async {
+                        await setProfileUser(
+                            currentUser.userid, currentUser.userType);
+                        toProfile();
+                      },
+                      color: themeColors['mediumBlue'],
+                      textColor: Colors.white,
+                      padding: EdgeInsets.all(15.0),
+                      splashColor: themeColors['mediumBlue'],
+                      child: Text(
+                        "See My Profile",
+                        style: TextStyle(fontSize: 20.0),
+                      ),
                     ),
                   ),
                 ),
@@ -170,8 +172,6 @@ class ClientHomeScreen extends StatelessWidget {
             ))));
   }
 }
-
-
 
 class ClientHomeScreenConnector extends StatelessWidget {
   @override

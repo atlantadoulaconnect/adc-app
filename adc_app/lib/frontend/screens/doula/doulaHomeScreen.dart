@@ -53,28 +53,32 @@ class DoulaHomeScreen extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(26.0),
           child: Center(
-            child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-              children: <Widget>[
-                NotificationHandler(),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                      "Welcome${currentUser != null && currentUser.name != null ? ", ${currentUser.name}" : ""}",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 50.0,
-                        fontWeight: FontWeight.bold,
-                      )),
-                ),
-                //TODO ADD IN CLIENT NAME AFTER MATCHING PAGE IS UP
-  //              Text("Current Client: ",
-  //                  textAlign: TextAlign.center,
-  //                  style: TextStyle(
-  //                    fontSize: 20.0,
-  //                    fontWeight: FontWeight.bold,
-  //                  )),
-                Padding(
+              child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+            children: <Widget>[
+              NotificationHandler(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                    "Welcome${currentUser != null && currentUser.name != null ? ", ${currentUser.name}" : ""}",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 50.0,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+              //TODO ADD IN CLIENT NAME AFTER MATCHING PAGE IS UP
+              //              Text("Current Client: ",
+              //                  textAlign: TextAlign.center,
+              //                  style: TextStyle(
+              //                    fontSize: 20.0,
+              //                    fontWeight: FontWeight.bold,
+              //                  )),
+              Visibility(
+                visible: (currentUser.status != null &&
+                        currentUser.status == "submitted") ||
+                    currentUser.completedApplication(),
+                child: Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Container(
                       decoration: BoxDecoration(
@@ -128,15 +132,16 @@ class DoulaHomeScreen extends StatelessWidget {
                                     if (!snapshot.hasData) {
                                       return Center(
                                           child: CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                            themeColors["lightBlue"]),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                themeColors["lightBlue"]),
                                       ));
                                     }
                                     return ListView.builder(
                                       padding: EdgeInsets.all(20.0),
-                                      itemBuilder: (context, index) => buildItem(
-                                          context,
-                                          snapshot.data.documents[index]),
+                                      itemBuilder: (context, index) =>
+                                          buildItem(context,
+                                              snapshot.data.documents[index]),
                                       itemCount: snapshot.data.documents.length,
                                       shrinkWrap: true,
                                     );
@@ -146,24 +151,29 @@ class DoulaHomeScreen extends StatelessWidget {
                         ],
                       )),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-                        side: BorderSide(color: themeColors['mediumBlue'])),
-                    onPressed: toRecentMessages,
-                    color: themeColors['mediumBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['mediumBlue'],
-                    child: Text(
-                      "See Messages",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: themeColors['mediumBlue'])),
+                  onPressed: toRecentMessages,
+                  color: themeColors['mediumBlue'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  splashColor: themeColors['mediumBlue'],
+                  child: Text(
+                    "See Messages",
+                    style: TextStyle(fontSize: 20.0),
                   ),
                 ),
-                Padding(
+              ),
+              Visibility(
+                visible: (currentUser.status != null &&
+                        currentUser.status == "submitted") ||
+                    currentUser.completedApplication(),
+                child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: RaisedButton(
                     shape: RoundedRectangleBorder(
@@ -184,49 +194,50 @@ class DoulaHomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-                        side: BorderSide(color: themeColors['mediumBlue'])),
-                    onPressed: toInfo,
-                    color: themeColors['mediumBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['mediumBlue'],
-                    child: Text(
-                      "Frequently Asked Questions",
-                      style: TextStyle(fontSize: 20.0),
-                      textAlign: TextAlign.center,
-                    ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: themeColors['mediumBlue'])),
+                  onPressed: toInfo,
+                  color: themeColors['mediumBlue'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  splashColor: themeColors['mediumBlue'],
+                  child: Text(
+                    "Frequently Asked Questions",
+                    style: TextStyle(fontSize: 20.0),
+                    textAlign: TextAlign.center,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-                        side: BorderSide(color: themeColors['yellow'])),
-                    color: themeColors['yellow'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    child: Text(
-                      "LOG OUT",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: themeColors['black'],
-                        fontWeight: FontWeight.bold,
-                      ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: themeColors['yellow'])),
+                  color: themeColors['yellow'],
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  child: Text(
+                    "LOG OUT",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: themeColors['black'],
+                      fontWeight: FontWeight.bold,
                     ),
-                    onPressed: () async {
-                      logout();
-                      toHome();
-                    },
                   ),
+                  onPressed: () async {
+                    logout();
+                    toHome();
+                  },
                 ),
-              ],
-            )),
+              ),
+            ],
+          )),
         ));
   }
 }

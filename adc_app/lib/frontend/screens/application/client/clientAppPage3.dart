@@ -507,9 +507,9 @@ class ClientAppPage3State extends State<ClientAppPage3> {
                                       selectedBirthType,
                                       epiduralValue == 1,
                                       cSectionValue == 1);
-                                }
 
-                                toClientAppPage4();
+                                  toClientAppPage4();
+                                }
                               },
                               color: themeColors['yellow'],
                               textColor: Colors.black,

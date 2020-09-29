@@ -137,6 +137,12 @@ class RecentMessagesScreen extends StatelessWidget {
                             valueColor: AlwaysStoppedAnimation<Color>(
                                 themeColors["lightBlue"]),
                           ));
+                        } else if (snapshot.data.documents.length == 0) {
+                          return Padding(
+                              child: Center(
+                                  child: Text("You have no recent messages",
+                                      style: TextStyle(fontSize: 25.0))),
+                              padding: EdgeInsets.fromLTRB(15, 0, 15, 15));
                         }
                         return ListView.builder(
                           padding: EdgeInsets.all(10.0),

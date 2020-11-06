@@ -105,7 +105,7 @@ class CurrentMenu extends StatelessWidget {
                     child: Text("Welcome, Admin")),
                 ListTile(
                   leading: Icon(
-                    IconData(59530, fontFamily: 'MaterialIcons'),
+                    IconData(59322, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Home',
@@ -116,7 +116,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
+                    IconData(59262, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Messages',
@@ -127,7 +127,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57921, fontFamily: 'MaterialIcons'),
+                    IconData(59637, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('All Doulas',
@@ -138,7 +138,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57921, fontFamily: 'MaterialIcons'),
+                    IconData(59722, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('All Clients',
@@ -149,7 +149,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59448, fontFamily: 'MaterialIcons'),
+                    IconData(59938, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Frequently asked Questions',
@@ -159,7 +159,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59534, fontFamily: 'MaterialIcons'),
+                    IconData(59354, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('About Atlanta Doula Connect',
@@ -170,7 +170,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59576, fontFamily: 'MaterialIcons'),
+                    IconData(59846, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Settings',
@@ -181,7 +181,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59519, fontFamily: 'MaterialIcons'),
+                    IconData(59407, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -195,7 +195,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59464, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Log Out',
@@ -226,7 +226,7 @@ class CurrentMenu extends StatelessWidget {
                     child: Text("Welcome, Client")),
                 ListTile(
                   leading: Icon(
-                    IconData(59530, fontFamily: 'MaterialIcons'),
+                    IconData(59322, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Home',
@@ -237,7 +237,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
+                    IconData(59262, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Messages',
@@ -252,7 +252,7 @@ class CurrentMenu extends StatelessWidget {
                       !(currentUser as Client).completedApplication(),
                   child: ListTile(
                     leading: Icon(
-                      IconData(59485, fontFamily: 'MaterialIcons'),
+                      IconData(58810, fontFamily: 'MaterialIcons'),
                       color: Colors.white,
                     ),
                     title: Text('Request Form',
@@ -267,7 +267,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59448, fontFamily: 'MaterialIcons'),
+                    IconData(59938, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Frequently asked Questions',
@@ -277,7 +277,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59534, fontFamily: 'MaterialIcons'),
+                    IconData(59354, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('About Atlanta Doula Connect',
@@ -288,7 +288,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59576, fontFamily: 'MaterialIcons'),
+                    IconData(59846, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Settings',
@@ -296,11 +296,12 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: (currentUser as Client).completedApplication() == true
-                      ? toClientSettings : toSettings,
+                      ? toClientSettings
+                      : toSettings,
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59519, fontFamily: 'MaterialIcons'),
+                    IconData(57443, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -314,7 +315,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59464, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Log Out',
@@ -345,7 +346,7 @@ class CurrentMenu extends StatelessWidget {
                     child: Text("Welcome, Doula")),
                 ListTile(
                   leading: Icon(
-                    IconData(59530, fontFamily: 'MaterialIcons'),
+                    IconData(59322, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Home',
@@ -356,7 +357,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
+                    IconData(59262, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Messages',
@@ -371,7 +372,7 @@ class CurrentMenu extends StatelessWidget {
                       !(currentUser as Doula).completedApplication(),
                   child: ListTile(
                     leading: Icon(
-                      IconData(59485, fontFamily: 'MaterialIcons'),
+                      IconData(58810, fontFamily: 'MaterialIcons'),
                       color: Colors.white,
                     ),
                     title: Text('Application Form',
@@ -386,7 +387,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59448, fontFamily: 'MaterialIcons'),
+                    IconData(59938, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Frequently asked Questions',
@@ -396,7 +397,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59534, fontFamily: 'MaterialIcons'),
+                    IconData(59354, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('About Atlanta Doula Connect',
@@ -407,7 +408,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59576, fontFamily: 'MaterialIcons'),
+                    IconData(59846, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Settings',
@@ -415,11 +416,12 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: (currentUser as Doula).status != 'incomplete'
-                      ? toDoulaSettings : toSettings,
+                      ? toDoulaSettings
+                      : toSettings,
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59519, fontFamily: 'MaterialIcons'),
+                    IconData(57443, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -433,7 +435,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59464, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Log Out',
@@ -464,7 +466,7 @@ class CurrentMenu extends StatelessWidget {
                     child: Text("Welcome")),
                 ListTile(
                   leading: Icon(
-                    IconData(59530, fontFamily: 'MaterialIcons'),
+                    IconData(59322, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Home',
@@ -475,7 +477,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
+                    IconData(59262, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Messages',
@@ -486,7 +488,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59485, fontFamily: 'MaterialIcons'),
+                    IconData(58810, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Start Application',
@@ -500,7 +502,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59448, fontFamily: 'MaterialIcons'),
+                    IconData(59938, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Frequently asked Questions',
@@ -510,7 +512,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59534, fontFamily: 'MaterialIcons'),
+                    IconData(59354, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('About Atlanta Doula Connect',
@@ -521,7 +523,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59576, fontFamily: 'MaterialIcons'),
+                    IconData(59846, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Settings',
@@ -532,7 +534,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59519, fontFamily: 'MaterialIcons'),
+                    IconData(57443, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -546,7 +548,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59464, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Log Out',
@@ -577,7 +579,7 @@ class CurrentMenu extends StatelessWidget {
                     child: Text("Welcome")),
                 ListTile(
                   leading: Icon(
-                    IconData(59530, fontFamily: 'MaterialIcons'),
+                    IconData(59322, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Home',
@@ -590,7 +592,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59448, fontFamily: 'MaterialIcons'),
+                    IconData(59938, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Frequently asked Questions',
@@ -600,7 +602,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59534, fontFamily: 'MaterialIcons'),
+                    IconData(59354, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('About Atlanta Doula Connect',
@@ -611,7 +613,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59485, fontFamily: 'MaterialIcons'),
+                    IconData(59651, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Signup',
@@ -622,7 +624,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59576, fontFamily: 'MaterialIcons'),
+                    IconData(59846, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Settings',
@@ -633,7 +635,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59519, fontFamily: 'MaterialIcons'),
+                    IconData(57443, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Feedback',
@@ -647,7 +649,7 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59513, fontFamily: 'MaterialIcons'),
+                    IconData(59463, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
                   title: Text('Log In',

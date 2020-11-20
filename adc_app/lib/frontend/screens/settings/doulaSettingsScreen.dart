@@ -7,7 +7,6 @@ import 'package:table_calendar/table_calendar.dart';
 
 class DoulaSettingsScreen extends StatefulWidget {
   final Doula currentUser;
-  final VoidCallback toHome;
   final VoidCallback logout;
   final VoidCallback toConfirmSettings;
   final void Function(String, List<Phone>, String, String, bool)
@@ -19,7 +18,6 @@ class DoulaSettingsScreen extends StatefulWidget {
 
   DoulaSettingsScreen(
       this.currentUser,
-      this.toHome,
       this.toConfirmSettings,
       this.logout,
       this.updateDoulaAccount,
@@ -27,8 +25,6 @@ class DoulaSettingsScreen extends StatefulWidget {
       this.updateDoulaAvailability,
       this.updateEmail,
       this.doulaToDB);
-
-//      : assert(currentUser != null && toHome != null && logout != null);
 
   @override
   State<StatefulWidget> createState() => DoulaSettingsScreenState();
@@ -41,7 +37,6 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
   Future<void> Function() doulaToDB;
   void Function(String) updateEmail;
 
-  VoidCallback toHome;
   VoidCallback toConfirmSettings;
 
   Doula currentUser;
@@ -81,7 +76,6 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
 
   bool pushNotification = true;
   bool smsNotification = true;
-  bool emailNotification = true;
   bool messagesNotification = true;
 
   String bio = '';
@@ -95,7 +89,6 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
 
   @override
   void initState() {
-    toHome = widget.toHome;
     toConfirmSettings = widget.toConfirmSettings;
     currentUser = widget.currentUser;
 
@@ -184,7 +177,6 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               child: Text("Confirm"),
               onPressed: () {
                 password = oldPasswordCtrl.text.toString().trim();
-                //passwordForEmailChange(true);
                 Navigator.of(context, rootNavigator: true).pop('dialog');
               },
             ),
@@ -212,8 +204,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
             FlatButton(
               child: Text("Go back"),
               onPressed: () {
-                toHome();
-                //Navigator.of(context, rootNavigator: true).pop('dialog');
+                Navigator.of(context, rootNavigator: true).pop('dialog');
               },
             ),
           ],
@@ -375,7 +366,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
             children: <Widget>[
               Form(
                   key: _accountKey,
-                  autovalidate: false,
+                  autovalidateMode: AutovalidateMode.disabled,
                   child: ExpansionTile(
                     title: Text(
                       'My Account',
@@ -529,7 +520,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                   )),
               Form(
                 key: _pwdKey,
-                autovalidate: false,
+                autovalidateMode: AutovalidateMode.disabled,
                 child: ExpansionTile(
                     title: Text(
                       'Password',
@@ -606,7 +597,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                           ),
                           obscureText: !passwordVisible,
                           controller: newPasswordCtrl,
-                          //validator: ,
+                          validator: pwdValidator,
                         ),
                       ),
                       Padding(
@@ -704,7 +695,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               ),
               Form(
                 key: _emailKey,
-                autovalidate: false,
+                autovalidateMode: AutovalidateMode.disabled,
                 child: ExpansionTile(
                     title: Text(
                       'Email',
@@ -833,7 +824,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               ),
               Form(
                 key: _certKey,
-                autovalidate: false,
+                autovalidateMode: AutovalidateMode.disabled,
                 child: ExpansionTile(
                     title: Text(
                       'Certification',
@@ -956,7 +947,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               ),
               Form(
                 key: _availabilityKey,
-                autovalidate: false,
+                autovalidateMode: AutovalidateMode.disabled,
                 child: ExpansionTile(
                     title: Text(
                       'Availability',
@@ -1033,7 +1024,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
               ),
               Form(
                 key: _notificationsKey,
-                autovalidate: false,
+                autovalidateMode: AutovalidateMode.disabled,
                 child: ExpansionTile(
                     title: Text(
                       'Notifications',
@@ -1068,17 +1059,6 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                         padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
                         child: SwitchListTile(
                           activeColor: themeColors['yellow'],
-                          value: emailNotification,
-                          title: Text('Email Notifications'),
-                          onChanged: (value) {
-                            emailNotification = value;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-                        child: SwitchListTile(
-                          activeColor: themeColors['yellow'],
                           value: matchWithClientNotification,
                           title: Text('Matched with Client'),
                           onChanged: (value) {
@@ -1091,7 +1071,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                         child: SwitchListTile(
                           activeColor: themeColors['yellow'],
                           value: clientInLaborNotification,
-                          title: Text('Client going into labor'),
+                          title: Text('Client is in Labor'),
                           onChanged: (value) {
                             clientInLaborNotification = value;
                           },
@@ -1105,7 +1085,6 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                               side: BorderSide(color: themeColors['yellow'])),
                           onPressed: () async {
                             //TODO add notifications functionality
-                            toHome();
                           },
                           color: themeColors['yellow'],
                           textColor: Colors.black,
@@ -1129,15 +1108,6 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                   ),
                   //TODO what else to add to privacy
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-                      child: SwitchListTile(
-                        activeColor: themeColors['yellow'],
-                        value: true,
-                        title: Text('Make Account Private'),
-                        onChanged: (value) {},
-                      ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
                       child: Text('Link to Privacy Policy goes here'),
@@ -1174,34 +1144,13 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
                 padding: const EdgeInsets.all(8),
                 child: Center(
                   child: Text(
-                    'Version Number 1',
+                    'Version 1.0.0',
                     style: TextStyle(
                       fontSize: 20,
                     ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Center(
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(color: themeColors['emoryBlue'])),
-                    onPressed: () async {
-                      toHome();
-                    },
-                    color: themeColors['emoryBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['emoryBlue'],
-                    child: Text(
-                      "Back to Home",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                ),
-              )
             ],
           ),
         ));
@@ -1216,7 +1165,6 @@ class DoulaSettingsScreenConnector extends StatelessWidget {
         model: ViewModel(),
         builder: (BuildContext context, ViewModel vm) => DoulaSettingsScreen(
             vm.currentUser,
-            vm.toHome,
             vm.toConfirmSettings,
             vm.logout,
             vm.updateDoulaAccount,
@@ -1231,7 +1179,6 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   Doula currentUser;
-  VoidCallback toHome;
   VoidCallback toConfirmSettings;
   VoidCallback logout;
   void Function(String, List<Phone>, String, String, bool) updateDoulaAccount;
@@ -1242,7 +1189,6 @@ class ViewModel extends BaseModel<AppState> {
 
   ViewModel.build({
     @required this.currentUser,
-    @required this.toHome,
     @required this.toConfirmSettings,
     @required this.logout,
     @required this.updateDoulaAccount,
@@ -1256,7 +1202,6 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
       currentUser: state.currentUser as Doula,
-      toHome: () => dispatch(NavigateAction.pushNamed("/")),
       toConfirmSettings: () =>
           dispatch(NavigateAction.pushNamed("/confirmSettings")),
       logout: () {

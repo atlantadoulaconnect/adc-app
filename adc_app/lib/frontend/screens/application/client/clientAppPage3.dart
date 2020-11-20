@@ -261,7 +261,7 @@ class ClientAppPage3State extends State<ClientAppPage3> {
             body: Center(
                 child: Form(
                     key: _c3formKey,
-                    autovalidate: false,
+                    autovalidateMode: AutovalidateMode.disabled,
                     child: ListView(children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(8.0),

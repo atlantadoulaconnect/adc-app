@@ -215,7 +215,7 @@ class ClientAppPage2State extends State<ClientAppPage2> {
             body: Center(
                 child: Form(
                     key: _c2formKey,
-                    autovalidate: false,
+                    autovalidateMode: AutovalidateMode.disabled,
                     child: ListView(children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(8.0),

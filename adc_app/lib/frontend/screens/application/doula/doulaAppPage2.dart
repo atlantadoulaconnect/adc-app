@@ -139,7 +139,7 @@ class DoulaAppPage2State extends State<DoulaAppPage2> {
                     padding: const EdgeInsets.all(8.0),
                     child: Form(
                       key: _formKey,
-                      autovalidate: false,
+                      autovalidateMode: AutovalidateMode.disabled,
                       child: Container(
                         width: 300.0,
                         height: 250.0,

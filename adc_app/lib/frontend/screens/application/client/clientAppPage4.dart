@@ -168,7 +168,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
             body: Center(
               child: Form(
                   key: _c4formKey,
-                  autovalidate: false,
+                  autovalidateMode: AutovalidateMode.disabled,
                   child: ListView(
                     children: <Widget>[
                       Padding(

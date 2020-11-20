@@ -80,7 +80,7 @@ class LoginScreenState extends State<LoginScreen> {
                   textAlign: TextAlign.center),
               Form(
                   key: _loginFormKey,
-                  autovalidate: false,
+                  autovalidateMode: AutovalidateMode.disabled,
                   child: Column(children: <Widget>[
                     TextFormField(
                       decoration: InputDecoration(

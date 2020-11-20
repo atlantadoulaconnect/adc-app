@@ -202,7 +202,7 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
           body: Center(
               child: Form(
                   key: _formKey,
-                  autovalidate: false,
+                  autovalidateMode: AutovalidateMode.disabled,
                   child: ListView(
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

@@ -8,7 +8,6 @@ import '../common.dart';
 
 class ClientSettingsScreen extends StatefulWidget {
   final User currentUser;
-  final VoidCallback toHome;
   final VoidCallback logout;
   final VoidCallback toClientSettings;
 
@@ -24,7 +23,6 @@ class ClientSettingsScreen extends StatefulWidget {
 
   ClientSettingsScreen(
       this.currentUser,
-      this.toHome,
       this.logout,
       this.updateClientAccount,
       this.updateBirthInformation,
@@ -32,15 +30,12 @@ class ClientSettingsScreen extends StatefulWidget {
       this.updateEmail,
       this.clientToDB,
       this.toClientSettings);
-//      : assert(currentUser != null && toHome != null && logout != null);
 
   @override
   State<StatefulWidget> createState() => ClientSettingsScreenState();
 }
 
 class ClientSettingsScreenState extends State<ClientSettingsScreen> {
-  final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
-
   void Function(String, List<Phone>, String, bool) updateClientAccount;
   void Function(
           String, String, String, List<String>, bool, bool, bool, bool, bool)
@@ -49,7 +44,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
   void Function(Client, String) updateEmail;
   Future<void> Function() clientToDB;
 
-  VoidCallback toHome;
   VoidCallback toClientSettings;
 
   User currentUser;
@@ -111,7 +105,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
 
   bool pushNotification = true;
   bool smsNotification = true;
-  bool emailNotification = true;
   bool messagesNotification = true;
 
   //clients only
@@ -121,7 +114,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
 
   @override
   void initState() {
-    toHome = widget.toHome;
     toClientSettings = widget.toClientSettings;
     currentUser = widget.currentUser;
 
@@ -197,11 +189,9 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
         ? (currentUser as Client).epidural
         : false;
 
-
     photoRelease = (currentUser as Client).photoRelease != null
         ? (currentUser as Client).photoRelease
         : false;
-
 
     firstNameCtrl = new TextEditingController(text: userName);
     phoneNumCtrl = new TextEditingController(text: phone);
@@ -210,7 +200,8 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
 
     //clients
     emergencyContactNameCtrl = new TextEditingController(
-        text: (emergencyContacts[0].name != '' ? emergencyContacts[0].name : ''));
+        text:
+            (emergencyContacts[0].name != '' ? emergencyContacts[0].name : ''));
     emergencyContactRelationCtrl = new TextEditingController(
         text: (emergencyContacts[0].relationship != ''
             ? emergencyContacts[0].relationship
@@ -221,7 +212,8 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
             : ''));
 
     emergencyContactNameCtrl2 = new TextEditingController(
-        text: (emergencyContacts[1].name != '' ? emergencyContacts[1].name : ''));
+        text:
+            (emergencyContacts[1].name != '' ? emergencyContacts[1].name : ''));
     emergencyContactRelationCtrl2 = new TextEditingController(
         text: (emergencyContacts[1].relationship != ''
             ? emergencyContacts[1].relationship
@@ -295,8 +287,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
             FlatButton(
               child: Text("Go back"),
               onPressed: () {
-                toHome();
-                //Navigator.of(context, rootNavigator: true).pop('dialog');
+                Navigator.of(context, rootNavigator: true).pop('dialog');
               },
             ),
           ],
@@ -324,8 +315,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -336,7 +325,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
             children: <Widget>[
               Form(
                 key: _accountKey,
-                autovalidate: false,
+                autovalidateMode: AutovalidateMode.disabled,
                 child: ExpansionTile(
                     title: Text(
                       'My Account',
@@ -459,7 +448,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               ),
               Form(
                 key: _pwdKey,
-                autovalidate: false,
+                autovalidateMode: AutovalidateMode.disabled,
                 child: ExpansionTile(
                     title: Text(
                       'Password',
@@ -536,7 +525,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                           ),
                           obscureText: !passwordVisible,
                           controller: newPasswordCtrl,
-                          //validator: ,
+                          validator: pwdValidator,
                         ),
                       ),
                       Padding(
@@ -590,8 +579,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                               form.save();
                               if (oldPasswordCtrl.text.toString().trim() !=
                                   '') {
-                                print(
-                                    'oldPasswordCtrl: ${oldPasswordCtrl.text.toString().trim()}');
                                 AuthResult result = await FirebaseAuth.instance
                                     .signInWithEmailAndPassword(
                                         email: currentUser.email,
@@ -634,7 +621,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               ),
               Form(
                 key: _emailKey,
-                autovalidate: false,
+                autovalidateMode: AutovalidateMode.disabled,
                 child: ExpansionTile(
                     title: Text(
                       'Email',
@@ -718,8 +705,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                                   .text
                                   .toString()
                                   .trim();
-                              print(
-                                  'new email: $newClientEmail  pw: $clientPassword');
                               try {
                                 AuthResult result = await FirebaseAuth.instance
                                     .signInWithEmailAndPassword(
@@ -762,7 +747,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               ),
               Form(
                 key: _emgContactsKey,
-                autovalidate: false,
+                autovalidateMode: AutovalidateMode.disabled,
                 child: ExpansionTile(
                   title: Text(
                     'Emergency Contacts',
@@ -794,9 +779,10 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                       child: TextFormField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          hintText: 'Robert',
+                          hintText: 'John',
                         ),
                         controller: emergencyContactNameCtrl,
+                        validator: nameValidator,
                       ),
                     ),
                     Padding(
@@ -811,12 +797,12 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
                       child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Father',
-                        ),
-                        controller: emergencyContactRelationCtrl,
-                      ),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Father',
+                          ),
+                          controller: emergencyContactRelationCtrl,
+                          validator: nameValidator),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
@@ -859,12 +845,12 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
                       child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Robert',
-                        ),
-                        controller: emergencyContactNameCtrl2,
-                      ),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Robert',
+                          ),
+                          controller: emergencyContactNameCtrl2,
+                          validator: nameValidator),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
@@ -878,12 +864,12 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
                       child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Father',
-                        ),
-                        controller: emergencyContactRelationCtrl2,
-                      ),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Father',
+                          ),
+                          controller: emergencyContactRelationCtrl2,
+                          validator: nameValidator),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
@@ -957,7 +943,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                             setState(() {});
                             await clientToDB();
                           }
-                          //toHome();
                         },
                         color: themeColors['yellow'],
                         textColor: Colors.black,
@@ -975,10 +960,10 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               ),
               Form(
                 key: _birthKey,
-                autovalidate: false,
+                autovalidateMode: AutovalidateMode.disabled,
                 child: ExpansionTile(
                     title: Text(
-                      'Birth Information',
+                      'Pregnancy and Delivery',
                       style: TextStyle(
                         fontSize: 25,
                       ),
@@ -993,12 +978,12 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
                         child: TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Grady',
-                          ),
-                          controller: birthLocationCtrl,
-                        ),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Grady',
+                            ),
+                            controller: birthLocationCtrl,
+                            validator: nameValidator),
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
@@ -1241,7 +1226,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                           //padding: EdgeInsets.all(15.0),
                           splashColor: themeColors['yellow'],
                           child: Text(
-                            "Update Birth Information",
+                            "Update Pregnancy and Delivery",
                             style: TextStyle(fontSize: 15.0),
                           ),
                           //onPressed: ,
@@ -1251,7 +1236,7 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
               ),
               Form(
                 key: _notificationsKey,
-                autovalidate: false,
+                autovalidateMode: AutovalidateMode.disabled,
                 child: ExpansionTile(
                     title: Text(
                       'Notifications',
@@ -1286,32 +1271,10 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                         padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
                         child: SwitchListTile(
                           activeColor: themeColors['yellow'],
-                          value: emailNotification,
-                          title: Text('Email Notifications'),
-                          onChanged: (value) {
-                            emailNotification = value;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-                        child: SwitchListTile(
-                          activeColor: themeColors['yellow'],
                           value: matchWithDoulaNotification,
                           title: Text('Matched with Doula'),
                           onChanged: (value) {
                             matchWithDoulaNotification = value;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-                        child: SwitchListTile(
-                          activeColor: themeColors['yellow'],
-                          value: statusReportNotification,
-                          title: Text('Status Report Reminders'),
-                          onChanged: (value) {
-                            statusReportNotification = value;
                           },
                         ),
                       ),
@@ -1323,7 +1286,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                               side: BorderSide(color: themeColors['yellow'])),
                           onPressed: () async {
                             //TODO add notifications functionality
-                            toHome();
                           },
                           color: themeColors['yellow'],
                           textColor: Colors.black,
@@ -1347,15 +1309,6 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                   ),
                   //TODO what else to add to privacy
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 0, 0, 2),
-                      child: SwitchListTile(
-                        activeColor: themeColors['yellow'],
-                        value: true,
-                        title: Text('Make Account Private'),
-                        onChanged: (value) {},
-                      ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(12, 8, 8, 2),
                       child: Text('Link to Privacy Policy goes here'),
@@ -1392,57 +1345,9 @@ class ClientSettingsScreenState extends State<ClientSettingsScreen> {
                 padding: const EdgeInsets.all(8),
                 child: Center(
                   child: Text(
-                    'Version Number 1',
+                    'Version 1.0.0',
                     style: TextStyle(
                       fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Center(
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        side: BorderSide(color: themeColors['emoryBlue'])),
-                    onPressed: () async {
-                      String clientEmail = emailCtrl.text.toString().trim();
-
-                      if (clientEmail != currentUser.email) {
-                        print(
-                            'password: ${changeEmailPasswordCtrl.text.toString().trim()}');
-                        if (changeEmailPasswordCtrl.text.toString().trim() !=
-                            '') {
-                          print(
-                              'changeEmailPasswordCtrl: ${changeEmailPasswordCtrl.text.toString().trim()}');
-                          AuthResult result = await FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                                  email: currentUser.email,
-                                  password:
-                                      '${changeEmailPasswordCtrl.text.toString().trim()}');
-                          FirebaseUser user = result.user;
-                          print('user: $user');
-                          String userId = user.uid;
-                          print('userId: $userId');
-                          if (userId.length > 0 && userId != null) {
-                            user.updateEmail(clientEmail);
-                            print('email was changed to: $clientEmail');
-                          } else {
-                            print('email was not changed');
-                          }
-                        }
-                      }
-
-                      toHome();
-                    },
-                    color: themeColors['emoryBlue'],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15.0),
-                    splashColor: themeColors['emoryBlue'],
-                    child: Text(
-                      "Back to Home",
-                      style: TextStyle(fontSize: 20.0),
                     ),
                   ),
                 ),
@@ -1461,7 +1366,6 @@ class ClientSettingsScreenConnector extends StatelessWidget {
         model: ViewModel(),
         builder: (BuildContext context, ViewModel vm) => ClientSettingsScreen(
               vm.currentUser,
-              vm.toHome,
               vm.logout,
               vm.updateClientAccount,
               vm.updateBirthInformation,
@@ -1477,7 +1381,6 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   User currentUser;
-  VoidCallback toHome;
   VoidCallback logout;
   VoidCallback toClientSettings;
 
@@ -1491,7 +1394,6 @@ class ViewModel extends BaseModel<AppState> {
 
   ViewModel.build({
     @required this.currentUser,
-    @required this.toHome,
     @required this.logout,
     @required this.updateClientAccount,
     @required this.updateBirthInformation,
@@ -1505,7 +1407,6 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
       currentUser: state.currentUser,
-      toHome: () => dispatch(NavigateAction.pushNamed("/")),
       toClientSettings: () =>
           dispatch(NavigateAction.pushNamed("/clientSettings")),
       logout: () {

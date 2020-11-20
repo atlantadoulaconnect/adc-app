@@ -6,15 +6,9 @@ import '../common.dart';
 
 class SettingsScreen extends StatefulWidget {
   final User currentUser;
-  final VoidCallback toHome;
   final VoidCallback logout;
 
-
-  SettingsScreen(
-      this.currentUser,
-      this.toHome,
-      this.logout);
-//      : assert(currentUser != null && toHome != null && logout != null);
+  SettingsScreen(this.currentUser, this.logout);
 
   @override
   State<StatefulWidget> createState() => SettingsScreenState();
@@ -23,18 +17,12 @@ class SettingsScreen extends StatefulWidget {
 class SettingsScreenState extends State<SettingsScreen> {
   final GlobalKey<FormState> _settingsKey = GlobalKey<FormState>();
 
-  VoidCallback toHome;
-
   User currentUser;
 
   TextEditingController firstNameCtrl;
   TextEditingController phoneNumCtrl;
   TextEditingController dateOfBirthCtrl;
   TextEditingController emailCtrl;
-  TextEditingController oldPasswordCtrl;
-  TextEditingController newPasswordCtrl;
-  TextEditingController confirmPasswordCtrl;
-  TextEditingController changeEmailPasswordCtrl;
 
   //general
   String userName;
@@ -42,23 +30,15 @@ class SettingsScreenState extends State<SettingsScreen> {
   String email;
   String dob;
   bool photoRelease = false;
-  bool passwordVisible = false;
-  String password;
-  String newPassword;
-  String confirmPassword;
 
   bool pushNotification = true;
   bool smsNotification = true;
   bool emailNotification = true;
   bool messagesNotification = true;
 
-
-
   @override
   void initState() {
-    toHome = widget.toHome;
     currentUser = widget.currentUser;
-
 
     String userType = currentUser != null ? currentUser.userType : 'unlogged';
 
@@ -70,16 +50,10 @@ class SettingsScreenState extends State<SettingsScreen> {
       email = currentUser.email != null ? currentUser.email : '';
     }
 
-
     firstNameCtrl = new TextEditingController(text: userName);
     phoneNumCtrl = new TextEditingController(text: phone);
     dateOfBirthCtrl = new TextEditingController(text: dob);
     emailCtrl = new TextEditingController(text: email);
-
-    oldPasswordCtrl = new TextEditingController();
-    newPasswordCtrl = new TextEditingController();
-    confirmPasswordCtrl = new TextEditingController();
-    changeEmailPasswordCtrl = new TextEditingController();
 
     super.initState();
   }
@@ -89,43 +63,6 @@ class SettingsScreenState extends State<SettingsScreen> {
     //firstNameCtrl.dispose();
     super.dispose();
   }
-
-  confirmPasswordDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Enter Your Password"),
-          content: TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: '*****',
-            ),
-            controller: oldPasswordCtrl,
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("Confirm"),
-              onPressed: () {
-                password = oldPasswordCtrl.text.toString().trim();
-                //passwordForEmailChange(true);
-                Navigator.of(context, rootNavigator: true).pop('dialog');
-              },
-            ),
-            FlatButton(
-              child: Text("Cancel"),
-              onPressed: () {
-                password = '';
-                //passwordForEmailChange(false);
-                Navigator.of(context, rootNavigator: true).pop('dialog');
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
-
 
   // settings page for user that is not logged in or user without type
   Form unlogged() {
@@ -175,7 +112,7 @@ class SettingsScreenState extends State<SettingsScreen> {
       padding: const EdgeInsets.all(8),
       child: Center(
         child: Text(
-          'Version Number 1',
+          'Version 1.0.0',
           style: TextStyle(
             fontSize: 20,
           ),
@@ -205,7 +142,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     ));
     return Form(
         key: _settingsKey,
-        autovalidate: false,
+        autovalidateMode: AutovalidateMode.disabled,
         child: ListView(
           children: unloggedCategoryExpansionTiles,
         ));
@@ -216,7 +153,6 @@ class SettingsScreenState extends State<SettingsScreen> {
     Form settingsForm;
 
     settingsForm = unlogged();
-
 
     return Scaffold(
         appBar: AppBar(title: Text("Settings")),
@@ -232,10 +168,8 @@ class SettingsScreenConnector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
         model: ViewModel(),
-        builder: (BuildContext context, ViewModel vm) => SettingsScreen(
-            vm.currentUser,
-            vm.toHome,
-            vm.logout));
+        builder: (BuildContext context, ViewModel vm) =>
+            SettingsScreen(vm.currentUser, vm.logout));
   }
 }
 
@@ -243,28 +177,22 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel();
 
   User currentUser;
-  VoidCallback toHome;
   VoidCallback logout;
-
 
   ViewModel.build({
     @required this.currentUser,
-    @required this.toHome,
     @required this.logout,
-
   }) : super(equals: [currentUser]);
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
       currentUser: state.currentUser,
-      toHome: () => dispatch(NavigateAction.pushNamed("/")),
       logout: () {
         print("logging out from settings");
         dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         dispatch(LogoutUserAction());
       },
-
     );
   }
 }

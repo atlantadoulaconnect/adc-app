@@ -213,33 +213,33 @@ class ViewModel extends BaseModel<AppState> {
           dispatchFuture(LoginUserAction(email, password)),
       toHome: () {
         if (state.currentUser == null) {
-          dispatch(NavigateAction.pushNamed("/"));
+          dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         } else {
           switch (state.currentUser.userType) {
             case "admin":
               {
-                dispatch(NavigateAction.pushNamed("/adminHome"));
+                dispatch(NavigateAction.pushNamedAndRemoveAll("/adminHome"));
               }
               break;
             case "client":
               {
-                dispatch(NavigateAction.pushNamed("/clientHome"));
+                dispatch(NavigateAction.pushNamedAndRemoveAll("/clientHome"));
               }
               break;
             case "doula":
               {
-                dispatch(NavigateAction.pushNamed("/doulaHome"));
+                dispatch(NavigateAction.pushNamedAndRemoveAll("/doulaHome"));
               }
               break;
             default:
               {
-                dispatch(NavigateAction.pushNamed("/"));
+                dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
               }
               break;
           }
         }
       },
-      toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
+      toSignup: () => dispatch(NavigateAction.pushNamedAndRemoveAll("/signup")),
       isWaiting: state.waiting,
       popScreen: () => dispatch(NavigateAction.pop()),
     );

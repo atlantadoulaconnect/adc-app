@@ -756,7 +756,6 @@ class ViewModel extends BaseModel<AppState> {
         toClients: () =>
             dispatch(NavigateAction.pushNamed("/registeredClients")),
         logout: () {
-          print("logging out from menu");
           dispatch(LogoutUserAction());
           dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
         },

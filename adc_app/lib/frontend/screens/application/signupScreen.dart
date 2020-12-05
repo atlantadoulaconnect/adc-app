@@ -235,10 +235,9 @@ class ViewModel extends BaseModel<AppState> {
     return ViewModel.build(
         signUp: (String email, String password) =>
             dispatchFuture(CreateUserAction(email, password)),
-        toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
-        toAppType: () => dispatch(NavigateAction.pushNamedAndRemoveUntil(
-            "/appType",
-            predicate: (Route<dynamic> route) => route.settings.name == "/")),
+        toLogin: () => dispatch(NavigateAction.pushNamedAndRemoveAll("/login")),
+        toAppType: () =>
+            dispatch(NavigateAction.pushNamedAndRemoveAll("/appType")),
         isWaiting: state.waiting,
         popScreen: () => dispatch(NavigateAction.pop()));
   }

@@ -83,6 +83,6 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        toHome: () => dispatch(NavigateAction.pushNamed("/home")));
+        toHome: () => dispatch(NavigateAction.pushNamedAndRemoveAll("/home")));
   }
 }

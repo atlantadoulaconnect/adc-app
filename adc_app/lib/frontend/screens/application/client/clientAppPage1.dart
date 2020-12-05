@@ -199,7 +199,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 prefixIcon: Icon(
-                                  IconData(0xe7fd, fontFamily: 'MaterialIcons'),
+                                  IconData(59648, fontFamily: 'MaterialIcons'),
                                 ),
                                 labelText: "First Name",
                                 hintText: "Jane",

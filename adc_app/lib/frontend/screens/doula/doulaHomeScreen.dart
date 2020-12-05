@@ -7,10 +7,18 @@ class DoulaHomeScreen extends StatelessWidget {
   final VoidCallback toRecentMessages;
   final VoidCallback toInfo;
   final VoidCallback toProfile;
+  final VoidCallback toDoulaApplication;
   final Future<void> Function(String, String) setProfileUser;
 
-  DoulaHomeScreen(this.currentUser, this.logout, this.toHome,
-      this.toRecentMessages, this.toInfo, this.toProfile, this.setProfileUser)
+  DoulaHomeScreen(
+      this.currentUser,
+      this.logout,
+      this.toHome,
+      this.toRecentMessages,
+      this.toInfo,
+      this.toProfile,
+      this.toDoulaApplication,
+      this.setProfileUser)
       : assert(logout != null &&
             toHome != null &&
             toRecentMessages != null &&
@@ -152,6 +160,28 @@ class DoulaHomeScreen extends StatelessWidget {
                       )),
                 ),
               ),
+              Visibility(
+                visible: (currentUser.status == null ||
+                        currentUser.status == "incomplete") &&
+                    !currentUser.completedApplication(),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        side: BorderSide(color: themeColors['mediumBlue'])),
+                    onPressed: toDoulaApplication,
+                    color: themeColors['mediumBlue'],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15.0),
+                    splashColor: themeColors['mediumBlue'],
+                    child: Text(
+                      "Continue Application",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: RaisedButton(
@@ -254,6 +284,7 @@ class DoulaHomeScreenConnector extends StatelessWidget {
           vm.toRecentMessages,
           vm.toInfo,
           vm.toProfile,
+          vm.toDoulaApplication,
           vm.setProfileUser),
     );
   }
@@ -268,6 +299,7 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toRecentMessages;
   VoidCallback toInfo;
   VoidCallback toProfile;
+  VoidCallback toDoulaApplication;
   Future<void> Function(String, String) setProfileUser;
 
   ViewModel.build({
@@ -277,6 +309,7 @@ class ViewModel extends BaseModel<AppState> {
     @required this.toRecentMessages,
     @required this.toInfo,
     @required this.toProfile,
+    @required this.toDoulaApplication,
     @required this.setProfileUser,
   }) : super(equals: [currentUser]);
 
@@ -293,6 +326,8 @@ class ViewModel extends BaseModel<AppState> {
           dispatch(NavigateAction.pushNamed("/recentMessages")),
       toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
       toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+      toDoulaApplication: () =>
+          dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
       setProfileUser: (String userid, String userType) =>
           dispatchFuture(SetProfileUser(userid, userType)),
     );

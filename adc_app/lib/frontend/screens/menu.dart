@@ -255,7 +255,7 @@ class CurrentMenu extends StatelessWidget {
                       IconData(58810, fontFamily: 'MaterialIcons'),
                       color: Colors.white,
                     ),
-                    title: Text('Request Form',
+                    title: Text('Continue Application',
                         style: TextStyle(
                           color: Colors.white,
                         )),
@@ -270,7 +270,7 @@ class CurrentMenu extends StatelessWidget {
                     IconData(59938, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
-                  title: Text('Frequently asked Questions',
+                  title: Text('Frequently Asked Questions',
                       style: TextStyle(
                         color: Colors.white,
                       )),
@@ -375,7 +375,7 @@ class CurrentMenu extends StatelessWidget {
                       IconData(58810, fontFamily: 'MaterialIcons'),
                       color: Colors.white,
                     ),
-                    title: Text('Application Form',
+                    title: Text('Continue Application',
                         style: TextStyle(
                           color: Colors.white,
                         )),

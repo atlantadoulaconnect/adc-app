@@ -7,10 +7,18 @@ class ClientHomeScreen extends StatelessWidget {
   final VoidCallback toRecentMessages;
   final VoidCallback toInfo;
   final VoidCallback toProfile;
+  final VoidCallback toClientApplication;
   final Future<void> Function(String, String) setProfileUser;
 
-  ClientHomeScreen(this.currentUser, this.logout, this.toHome,
-      this.toRecentMessages, this.toInfo, this.toProfile, this.setProfileUser)
+  ClientHomeScreen(
+      this.currentUser,
+      this.logout,
+      this.toHome,
+      this.toRecentMessages,
+      this.toInfo,
+      this.toProfile,
+      this.toClientApplication,
+      this.setProfileUser)
       : assert(logout != null &&
             toHome != null &&
             toRecentMessages != null &&
@@ -61,6 +69,28 @@ class ClientHomeScreen extends StatelessWidget {
                       splashColor: themeColors['mediumBlue'],
                       child: Text(
                         "See Doula's Profile",
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: (currentUser.status == null ||
+                          currentUser.status == "incomplete") &&
+                      !currentUser.completedApplication(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10.0),
+                          side: BorderSide(color: themeColors['mediumBlue'])),
+                      onPressed: toClientApplication,
+                      color: themeColors['mediumBlue'],
+                      textColor: Colors.white,
+                      padding: EdgeInsets.all(15.0),
+                      splashColor: themeColors['mediumBlue'],
+                      child: Text(
+                        "Continue Application",
                         style: TextStyle(fontSize: 20.0),
                       ),
                     ),
@@ -185,6 +215,7 @@ class ClientHomeScreenConnector extends StatelessWidget {
           vm.toRecentMessages,
           vm.toInfo,
           vm.toProfile,
+          vm.toClientApplication,
           vm.setProfileUser),
     );
   }
@@ -199,6 +230,7 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toRecentMessages;
   VoidCallback toInfo;
   VoidCallback toProfile;
+  VoidCallback toClientApplication;
   Future<void> Function(String, String) setProfileUser;
 
   ViewModel.build({
@@ -208,6 +240,7 @@ class ViewModel extends BaseModel<AppState> {
     @required this.toRecentMessages,
     @required this.toInfo,
     @required this.toProfile,
+    @required this.toClientApplication,
     @required this.setProfileUser,
   }) : super(equals: [currentUser]);
 
@@ -224,6 +257,8 @@ class ViewModel extends BaseModel<AppState> {
           dispatch(NavigateAction.pushNamed("/recentMessages")),
       toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
       toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
+      toClientApplication: () =>
+          dispatch(NavigateAction.pushNamed("/clientAppPage1")),
       setProfileUser: (String userid, String userType) =>
           dispatchFuture(SetProfileUser(userid, userType)),
     );

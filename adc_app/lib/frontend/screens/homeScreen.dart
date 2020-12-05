@@ -127,6 +127,7 @@ class HomeScreenConnector extends StatelessWidget {
                     vm.toRecentMessages,
                     vm.toInfo,
                     vm.toProfile,
+                    vm.toClientApp,
                     vm.setProfileUser);
               }
               break;
@@ -139,6 +140,7 @@ class HomeScreenConnector extends StatelessWidget {
                     vm.toRecentMessages,
                     vm.toInfo,
                     vm.toProfile,
+                    vm.toDoulaApp,
                     vm.setProfileUser);
               }
               break;

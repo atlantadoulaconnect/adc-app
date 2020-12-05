@@ -112,12 +112,10 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        toClientApp: () => dispatch(NavigateAction.pushNamedAndRemoveUntil(
-            "/clientAppPage1",
-            predicate: (Route<dynamic> route) => route.settings.name == "/")),
-        toDoulaApp: () => dispatch(NavigateAction.pushNamedAndRemoveUntil(
-            "/doulaAppPage1",
-            predicate: (Route<dynamic> route) => route.settings.name == "/")),
+        toClientApp: () =>
+            dispatch(NavigateAction.pushNamedAndRemoveAll("/clientAppPage1")),
+        toDoulaApp: () =>
+            dispatch(NavigateAction.pushNamedAndRemoveAll("/doulaAppPage1")),
         updateClient: (String id, String email) {
           dispatch(CreateUserFromApp(
               userid: id,

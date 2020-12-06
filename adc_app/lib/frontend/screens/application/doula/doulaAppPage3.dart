@@ -118,7 +118,7 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
       value: certPrograms[3],
     ));
 
-    if (currentUser.certInProgress) {
+    if (currentUser.certInProgress != null && currentUser.certInProgress) {
       switch (currentUser.certProgram) {
         case "DONA":
           {
@@ -153,6 +153,8 @@ class DoulaAppPage3State extends State<DoulaAppPage3> {
             }
           }
       }
+    } else {
+      selectedProgram = null;
     }
   }
 

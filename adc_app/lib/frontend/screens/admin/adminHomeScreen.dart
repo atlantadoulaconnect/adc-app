@@ -42,7 +42,6 @@ class AdminHomeScreen extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(10),
             children: <Widget>[
-            NotificationHandler(),
             Padding(
               padding: EdgeInsets.only(top: 40.0, bottom: 20.0),
               child: Text(

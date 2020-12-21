@@ -5,7 +5,7 @@ export 'package:firebase_messaging/firebase_messaging.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export '../theme/colors.dart';
 export './menu.dart';
-export './notificationHandler.dart';
+//export './notificationHandler.dart';
 
 // models
 export '../../backend/models/admin.dart';

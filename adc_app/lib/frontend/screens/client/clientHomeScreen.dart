@@ -33,11 +33,10 @@ class ClientHomeScreen extends StatelessWidget {
         drawer: Menu(),
         body: Padding(
             padding: const EdgeInsets.all(26.0),
-            child: Center(
-                child: ListView(
+           child: Center(
+              child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
               children: <Widget>[
-                NotificationHandler(),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 15.0, horizontal: 8.0),

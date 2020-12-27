@@ -64,7 +64,6 @@ class DoulaHomeScreen extends StatelessWidget {
               child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
             children: <Widget>[
-              NotificationHandler(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(

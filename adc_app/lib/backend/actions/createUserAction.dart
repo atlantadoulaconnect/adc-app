@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:adc_app/backend/util/UserErrorException.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 import 'common.dart';
 
@@ -30,7 +32,17 @@ class CreateUserAction extends ReduxAction<AppState> {
         await dbRef
             .collection("users")
             .document(userId)
-            .setData({"userid": userId, "status": "incomplete"});
+            .setData({"userid": userId, "status": "incomplete" });
+
+        // TODO trying to see if this works
+        // FirebaseMessaging _fcm;
+        // String token = await _fcm.getToken();
+        // print("FirebaseMessaging token: $token");
+        //
+        // await dbRef
+        //     .collection("users")
+        //     .document(userId)
+        //     .setData({"deviceToken": token});
 
         // get the admin info
         QuerySnapshot adminQuery = await Firestore.instance

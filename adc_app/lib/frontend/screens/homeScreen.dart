@@ -20,10 +20,9 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(title: Text("Home")),
       drawer: Menu(),
       body: Padding(
-          padding: const EdgeInsets.all(26.0),
-          child: Center(
-              child: Column(children: <Widget>[
-            NotificationHandler(),
+         padding: const EdgeInsets.all(26.0),
+         child: Center(
+           child: Column(children: <Widget>[
             Spacer(flex: 2),
             Text("Atlanta Doula Connect",
                 textAlign: TextAlign.center,

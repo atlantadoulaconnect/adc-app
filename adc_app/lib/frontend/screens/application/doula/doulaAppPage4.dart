@@ -102,7 +102,7 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
       ),
       startingDayOfWeek: StartingDayOfWeek.monday,
       startDay: DateTime.now(),
-      onDaySelected: (date, events) {
+      onDaySelected: (date, events, holidays) {
         setState(() {
           if (unavailableDates.contains(date)) {
             unavailableDates.remove(date);

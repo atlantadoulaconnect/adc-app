@@ -83,7 +83,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
 
   void initialPlaceholders() {
     selectedBirthCount =
-        currentUser.liveBirths != null ? counts[currentUser.liveBirths] : null;
+        currentUser.liveBirths != null ? counts[currentUser.liveBirths] : 0;
     pretermValue = currentUser.preterm == null || !currentUser.preterm ? 2 : 1;
     lowBirthWeightValue =
         currentUser.lowWeight == null || !currentUser.lowWeight ? 2 : 1;
@@ -137,8 +137,9 @@ class ClientAppPage4State extends State<ClientAppPage4> {
     if (vbac) {
       deliveries.add("vbac");
     }
-
+    print ("before births");
     int births = selectedBirthCount == null ? 0 : int.parse(selectedBirthCount);
+    print ("births: $births");
 
     if (births == 0) {
       print("NO BIRTHS");
@@ -222,7 +223,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                           )),
 
                       Visibility(
-                        visible: int.parse(selectedBirthCount) > 0,
+                        visible: selectedBirthCount != '0',
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -236,7 +237,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
 
                       //preterm
                       Visibility(
-                        visible: int.parse(selectedBirthCount) > 0,
+                        visible: selectedBirthCount != '0',
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
                           child: Text(
@@ -248,7 +249,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                         ),
                       ),
                       Visibility(
-                          visible: int.parse(selectedBirthCount) > 0,
+                          visible: selectedBirthCount != '0',
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
                             child: Row(children: <Widget>[
@@ -277,7 +278,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
 
                       //low birth weight
                       Visibility(
-                        visible: int.parse(selectedBirthCount) > 0,
+                        visible: selectedBirthCount != '0',
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
                           child: Text(
@@ -289,7 +290,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                         ),
                       ),
                       Visibility(
-                          visible: int.parse(selectedBirthCount) > 0,
+                          visible: selectedBirthCount != '0',
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
                             child: Row(children: <Widget>[
@@ -318,7 +319,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
 
                       //Previous Birth Types
                       Visibility(
-                        visible: int.parse(selectedBirthCount) > 0,
+                        visible: selectedBirthCount != '0',
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -331,7 +332,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                       ),
 
                       Visibility(
-                        visible: int.parse(selectedBirthCount) > 0,
+                        visible: selectedBirthCount != '0',
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
@@ -397,7 +398,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
 //                        ),
 //                      ),
                       Visibility(
-                        visible: int.parse(selectedBirthCount) > 0,
+                        visible: selectedBirthCount != '0',
                         child: Padding(
                           padding: const EdgeInsets.all(8),
                           child: Text(
@@ -409,7 +410,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                         ),
                       ),
                       Visibility(
-                          visible: int.parse(selectedBirthCount) > 0,
+                          visible: selectedBirthCount != '0',
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(20, 0, 8, 0),
                             child: Row(children: <Widget>[
@@ -499,6 +500,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                                     deliveries.add("vbac");
                                   }
 
+                                  //int births = 2;
                                   int births = int.parse(selectedBirthCount);
 
                                   if (births == 0) {
@@ -537,6 +539,7 @@ class ClientAppPage4Connector extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
+
       builder: (BuildContext context, ViewModel vm) => ClientAppPage4(
           vm.currentUser,
           vm.updateClient,

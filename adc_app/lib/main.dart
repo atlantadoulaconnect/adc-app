@@ -11,6 +11,7 @@ import './frontend/theme/style.dart';
 import './frontend/screens/homeScreen.dart';
 import './frontend/screens/loginScreen.dart';
 import './frontend/screens/infoScreen.dart';
+import 'frontend/screens/common.dart';
 import 'frontend/screens/settings/unloggedSettingsScreen.dart';
 import './frontend/screens/settings/clientSettingsScreen.dart';
 import './frontend/screens/settings/doulaSettingsScreen.dart';
@@ -86,11 +87,14 @@ void main() async {
 
 class ADCApp extends StatelessWidget {
   final Store<AppState> store;
+  static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   ADCApp({this.store});
 
   @override
   Widget build(BuildContext context) {
+    final pushNotificationService = PushNotificationService(_firebaseMessaging);
+    pushNotificationService.initialise();
     return StoreProvider<AppState>(
         store: store,
         child: MaterialApp(

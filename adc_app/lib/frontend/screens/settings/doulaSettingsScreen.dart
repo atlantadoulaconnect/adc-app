@@ -245,7 +245,7 @@ class DoulaSettingsScreenState extends State<DoulaSettingsScreen> {
       ),
       startingDayOfWeek: StartingDayOfWeek.monday,
       startDay: DateTime.now(),
-      onDaySelected: (date, events) {
+      onDaySelected: (date, events, holidays) {
         setState(() {
           if (unavailableDates.contains(date.toUtc())) {
             unavailableDates.remove(date);

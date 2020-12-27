@@ -144,9 +144,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Expanded(
-              child: Container(
-                  child: StreamBuilder(
+           Expanded(
+             child: Container(
+               child: StreamBuilder(
                 stream: FirebaseDatabase.instance
                     .reference()
                     .child("chats/${peer.threadId}/messages")

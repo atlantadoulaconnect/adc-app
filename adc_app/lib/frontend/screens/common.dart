@@ -5,7 +5,6 @@ export 'package:firebase_messaging/firebase_messaging.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export '../theme/colors.dart';
 export './menu.dart';
-//export './notificationHandler.dart';
 
 // models
 export '../../backend/models/admin.dart';
@@ -16,6 +15,7 @@ export '../../backend/models/phone.dart';
 export '../../backend/models/user.dart';
 export '../../backend/models/message.dart';
 export '../../backend/models/contact.dart';
+export '../../backend/models/pushNotificationMessage.dart';
 
 // actions
 export '../../backend/actions/createUserAction.dart';
@@ -33,3 +33,5 @@ export '../../backend/states/messagesState.dart';
 // util
 export '../../backend/util/timeConversion.dart';
 export '../../backend/util/UserErrorException.dart';
+export '../../backend/util/PushNotificationService.dart';
+

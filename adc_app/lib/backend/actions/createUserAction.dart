@@ -35,14 +35,14 @@ class CreateUserAction extends ReduxAction<AppState> {
             .setData({"userid": userId, "status": "incomplete" });
 
         // TODO trying to see if this works
-        FirebaseMessaging _fcm;
-        String token = await _fcm.getToken();
-        print("FirebaseMessaging token: $token");
-
-        await dbRef
-            .collection("users")
-            .document(userId)
-            .setData({"deviceToken": token});
+        // FirebaseMessaging _fcm;
+        // String token = await _fcm.getToken();
+        // print("FirebaseMessaging token: $token");
+        //
+        // await dbRef
+        //     .collection("users")
+        //     .document(userId)
+        //     .setData({"deviceToken": token});
 
         // get the admin info
         QuerySnapshot adminQuery = await Firestore.instance

@@ -29,6 +29,7 @@ dependencies:
 
   # notifications
   overlay_support:
+  http: any
 
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2

@@ -83,7 +83,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
 
   void initialPlaceholders() {
     selectedBirthCount =
-        currentUser.liveBirths != null ? counts[currentUser.liveBirths] : 0;
+        currentUser.liveBirths != null ? counts[currentUser.liveBirths] : '0';
     pretermValue = currentUser.preterm == null || !currentUser.preterm ? 2 : 1;
     lowBirthWeightValue =
         currentUser.lowWeight == null || !currentUser.lowWeight ? 2 : 1;

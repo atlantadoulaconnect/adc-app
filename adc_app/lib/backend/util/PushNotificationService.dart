@@ -7,20 +7,28 @@ import '../../backend/models/pushNotificationMessage.dart';
 
 
 class PushNotificationService {
-  final FirebaseMessaging _fcm;
+  final Firestore _db = Firestore.instance;
+  FirebaseMessaging _fcm = FirebaseMessaging();
 
   PushNotificationService(this._fcm);
+  StreamSubscription iosSubscription;
 
   Future initialise() async {
     if (Platform.isIOS) {
+      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
+        print(data);
+        _saveDeviceToken();
+      });
       _fcm.requestNotificationPermissions(IosNotificationSettings());
+    } else {
+      _saveDeviceToken();
     }
 
     // If you want to test the push notification locally,
     // you need to get the token and input to the Firebase console
     // https://console.firebase.google.com/project/YOUR_PROJECT_ID/notification/compose
     String token = await _fcm.getToken();
-    //print("FirebaseMessaging token: $token");
+    print("FirebaseMessaging token: $token");
 
     _fcm.configure(
       //when app is open and it receives push notification
@@ -50,9 +58,34 @@ class PushNotificationService {
     );
     //adds device token to user document in firestore
     //Future<FirebaseUser> user = FirebaseAuth.instance.currentUser();
+  }
 
+  _saveDeviceToken() async {
+    // Get the current user
 
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final FirebaseUser user = await auth.currentUser();
+    final uid = user.uid;
+    print("uid: $uid");
+    final dbRef = Firestore.instance;
 
+    // FirebaseUser user = await _auth.currentUser();
 
+    // Get the token for this device
+    String fcmToken = await _fcm.getToken();
+    print("fcmToken: $fcmToken");
+
+    // Save it to Firestore
+    if (fcmToken != null) {
+      await dbRef
+          .collection('users')
+          .document(uid).updateData({
+            'token': fcmToken,
+          });
+
+      // await tokens.updateData({
+      //   'token': fcmToken,
+      // });
+    }
   }
 }

@@ -111,7 +111,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
               print(
                   "message: ${textController.text.toString()}\nme: ${currentUser.userid}\nthread: ${peer.threadId}");
               await sendMsg(Message.now(textController.text.toString(),
-                  currentUser.userid, "text", peer.threadId));
+                  currentUser.userid, peer.userId, "text", peer.threadId));
               textController.clear();
             },
           ),
@@ -163,6 +163,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       messages.add(Message(
                         value["content"],
                         value["senderId"],
+                        value["receiverId"],
                         value["timeSent"],
                         value["type"],
                         peer.threadId,

@@ -10,6 +10,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
   return Message(
     json['content'] as String,
     json['senderId'] as String,
+    json['receiverId'] as String,
     json['timeSent'] as int,
     json['type'] as String,
     json['threadId'] as String,

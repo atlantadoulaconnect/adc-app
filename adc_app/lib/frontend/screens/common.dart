@@ -14,9 +14,7 @@ export '../../backend/models/emergencyContact.dart';
 export '../../backend/models/doula.dart';
 export '../../backend/models/phone.dart';
 export '../../backend/models/user.dart';
-export '../../backend/models/message.dart';
 export '../../backend/models/contact.dart';
-export '../../backend/models/pushNotificationMessage.dart';
 
 // actions
 export '../../backend/actions/createUserAction.dart';
@@ -24,14 +22,11 @@ export '../../backend/actions/loginUserAction.dart';
 export '../../backend/actions/profileAction.dart';
 export '../../backend/actions/updateApplicationAction.dart';
 export '../../backend/actions/updateUserAction.dart';
-export '../../backend/actions/messageAction.dart';
 export '../../backend/actions/loadingAction.dart';
 
 // states
 export '../../backend/states/appState.dart';
-export '../../backend/states/messagesState.dart';
 
 // util
 export '../../backend/util/timeConversion.dart';
 export '../../backend/util/UserErrorException.dart';
-export '../../backend/util/PushNotificationService.dart';

@@ -1,29 +1,29 @@
 import '../../common.dart';
 
-class DoulaAppPage5 extends StatefulWidget {
+class Dp5PhotoRelease extends StatefulWidget {
   final Doula currentUser;
   final void Function(bool) updateDoula;
-  final VoidCallback toDoulaAppConfirmation;
+  final VoidCallback toDp6Confirmation;
   final void Function(bool) cancelApplication;
 
-  DoulaAppPage5(this.currentUser, this.updateDoula, this.toDoulaAppConfirmation,
+  Dp5PhotoRelease(this.currentUser, this.updateDoula, this.toDp6Confirmation,
       this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "doula" &&
             updateDoula != null &&
-            toDoulaAppConfirmation != null &&
+            toDp6Confirmation != null &&
             cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
-    return DoulaAppPage5State();
+    return Dp5PhotoReleaseState();
   }
 }
 
-class DoulaAppPage5State extends State<DoulaAppPage5> {
+class Dp5PhotoReleaseState extends State<Dp5PhotoRelease> {
   Doula currentUser;
   Function(bool) updatedoula;
-  VoidCallback toDoulaAppConfirmation;
+  VoidCallback toDp6Confirmation;
   void Function(bool) cancelApplication;
 
   bool photoReleasePermission;
@@ -32,7 +32,7 @@ class DoulaAppPage5State extends State<DoulaAppPage5> {
   void initState() {
     currentUser = widget.currentUser;
     updatedoula = widget.updateDoula;
-    toDoulaAppConfirmation = widget.toDoulaAppConfirmation;
+    toDp6Confirmation = widget.toDp6Confirmation;
     cancelApplication = widget.cancelApplication;
 
     photoReleasePermission =
@@ -216,7 +216,7 @@ class DoulaAppPage5State extends State<DoulaAppPage5> {
                                       BorderSide(color: themeColors['yellow'])),
                               onPressed: () {
                                 updatedoula(photoReleasePermission);
-                                toDoulaAppConfirmation();
+                                toDp6Confirmation();
                               },
                               color: themeColors['yellow'],
                               textColor: Colors.white,
@@ -239,15 +239,15 @@ class DoulaAppPage5State extends State<DoulaAppPage5> {
   }
 }
 
-class DoulaAppPage5Connector extends StatelessWidget {
+class Dp5PhotoReleaseConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) => DoulaAppPage5(
+      builder: (BuildContext context, ViewModel vm) => Dp5PhotoRelease(
           vm.currentUser,
           vm.updateDoula,
-          vm.toDoulaAppConfirmation,
+          vm.toDp6Confirmation,
           vm.cancelApplication),
     );
   }
@@ -258,13 +258,13 @@ class ViewModel extends BaseModel<AppState> {
 
   Doula currentUser;
   void Function(bool) updateDoula;
-  VoidCallback toDoulaAppConfirmation;
+  VoidCallback toDp6Confirmation;
   void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateDoula,
-      @required this.toDoulaAppConfirmation,
+      @required this.toDp6Confirmation,
       @required this.cancelApplication});
 
   @override
@@ -273,7 +273,7 @@ class ViewModel extends BaseModel<AppState> {
         currentUser: state.currentUser,
         updateDoula: (bool photoRelease) =>
             dispatch(UpdateDoulaUserAction(photoRelease: photoRelease)),
-        toDoulaAppConfirmation: () =>
+        toDp6Confirmation: () =>
             dispatch(NavigateAction.pushNamed("/doulaAppConfirmation")),
         cancelApplication: (bool confirmed) {
           dispatch(NavigateAction.pop());

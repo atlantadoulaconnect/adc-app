@@ -3,7 +3,6 @@ export 'client.dart';
 export 'contact.dart';
 export 'doula.dart';
 export 'emergencyContact.dart';
-export 'message.dart';
 export 'phone.dart';
 export 'user.dart';
 

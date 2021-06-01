@@ -20,9 +20,9 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(title: Text("Home")),
       drawer: Menu(),
       body: Padding(
-         padding: const EdgeInsets.all(26.0),
-         child: Center(
-           child: Column(children: <Widget>[
+          padding: const EdgeInsets.all(26.0),
+          child: Center(
+              child: Column(children: <Widget>[
             Spacer(flex: 2),
             Text("Atlanta Doula Connect",
                 textAlign: TextAlign.center,
@@ -224,7 +224,7 @@ class ViewModel extends BaseModel<AppState> {
           dispatch(NavigateAction.pushNamed("/unmatchedClients")),
       toRecentMessages: () =>
           dispatch(NavigateAction.pushNamed("/recentMessages")),
-      toClientApp: () => dispatch(NavigateAction.pushNamed("/clientAppPage1")),
+      toClientApp: () => dispatch(NavigateAction.pushNamed("/cp1PersonalInfo")),
       toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
       updateClient: (String id, String email) {
         dispatch(CreateUserFromApp(

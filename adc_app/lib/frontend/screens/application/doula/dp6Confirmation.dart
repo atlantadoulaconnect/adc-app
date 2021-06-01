@@ -1,6 +1,6 @@
 import '../../common.dart';
 
-class DoulaAppConfirmationPage extends StatelessWidget {
+class Dp6Confirmation extends StatelessWidget {
   final Doula currentUser;
   final VoidCallback toRequestSent;
   final Future<void> Function() userToDB;
@@ -9,7 +9,7 @@ class DoulaAppConfirmationPage extends StatelessWidget {
   String phonesString;
   String photoPermission;
 
-  DoulaAppConfirmationPage(this.currentUser, this.userToDB, this.toRequestSent,
+  Dp6Confirmation(this.currentUser, this.userToDB, this.toRequestSent,
       this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "doula" &&
@@ -308,14 +308,14 @@ class DoulaAppConfirmationPage extends StatelessWidget {
   }
 }
 
-class DoulaAppConfirmationPageConnector extends StatelessWidget {
+class Dp6ConfirmationConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) {
-        return DoulaAppConfirmationPage(vm.currentUser, vm.userToDB,
-            vm.toRequestSent, vm.cancelApplication);
+        return Dp6Confirmation(vm.currentUser, vm.userToDB, vm.toRequestSent,
+            vm.cancelApplication);
       },
     );
   }

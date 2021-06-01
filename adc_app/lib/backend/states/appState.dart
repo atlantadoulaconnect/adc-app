@@ -1,7 +1,5 @@
 import 'common.dart';
 import 'connectionsState.dart';
-import 'errorsState.dart';
-import 'messagesState.dart';
 
 part 'appState.g.dart';
 
@@ -12,8 +10,6 @@ class AppState {
 
   @JsonKey(ignore: true)
   final bool waiting;
-
-  final MessagesState messagesState;
 
   //final Map<String, bool> pages;
 
@@ -26,28 +22,21 @@ class AppState {
 //  @JsonKey(ignore: true)
 //  final ConnectionsState;
 
-  AppState(
-      {this.currentUser, this.waiting, this.messagesState, this.profileUser});
+  AppState({this.currentUser, this.waiting, this.profileUser});
 
   static AppState initialState() {
-    return AppState(
-        currentUser: null,
-        waiting: false,
-        messagesState: MessagesState.initialState(),
-        profileUser: null);
+    return AppState(currentUser: null, waiting: false, profileUser: null);
   }
 
   AppState copy(
       {User currentUser,
       bool waiting,
       String loginError,
-      MessagesState messagesState,
       User profileUser,
       Map<String, bool> pages}) {
     return AppState(
         currentUser: currentUser ?? this.currentUser,
         waiting: waiting ?? this.waiting,
-        messagesState: messagesState ?? this.messagesState,
         profileUser: profileUser ?? this.profileUser);
   }
 
@@ -58,16 +47,12 @@ class AppState {
             runtimeType == other.runtimeType &&
             currentUser == other.currentUser &&
             waiting == other.waiting &&
-            messagesState == other.messagesState &&
             profileUser == other.profileUser;
   }
 
   @override
   int get hashCode {
-    return currentUser.hashCode ^
-        waiting.hashCode ^
-        messagesState.hashCode ^
-        profileUser.hashCode;
+    return currentUser.hashCode ^ waiting.hashCode ^ profileUser.hashCode;
   }
 
   @override

@@ -2,31 +2,31 @@ import 'package:adc_app/backend/actions/common.dart';
 
 import '../../common.dart';
 
-class ClientAppPage3 extends StatefulWidget {
+class Cp3CurrentPregnancy extends StatefulWidget {
   final Client currentUser;
   final void Function(String, String, String, bool, bool) updateClient;
-  final VoidCallback toClientAppPage4;
+  final VoidCallback toCp4PreviousBirth;
   final void Function(bool) cancelApplication;
 
-  ClientAppPage3(this.currentUser, this.updateClient, this.toClientAppPage4,
-      this.cancelApplication)
+  Cp3CurrentPregnancy(this.currentUser, this.updateClient,
+      this.toCp4PreviousBirth, this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
-            toClientAppPage4 != null &&
+            toCp4PreviousBirth != null &&
             cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
-    return ClientAppPage3State();
+    return Cp3CurrentPregnancyState();
   }
 }
 
-class ClientAppPage3State extends State<ClientAppPage3> {
+class Cp3CurrentPregnancyState extends State<Cp3CurrentPregnancy> {
   final GlobalKey<FormState> _c3formKey = GlobalKey<FormState>();
   Client currentUser;
   void Function(String, String, String, bool, bool) updateClient;
-  VoidCallback toClientAppPage4;
+  VoidCallback toCp4PreviousBirth;
   void Function(bool) cancelApplication;
 
   TextEditingController _dueDateCtrl;
@@ -56,7 +56,7 @@ class ClientAppPage3State extends State<ClientAppPage3> {
   void initState() {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
-    toClientAppPage4 = widget.toClientAppPage4;
+    toCp4PreviousBirth = widget.toCp4PreviousBirth;
 
     _dueDateCtrl = TextEditingController();
     _dueDateCtrl..text = currentUser.dueDate;
@@ -508,7 +508,7 @@ class ClientAppPage3State extends State<ClientAppPage3> {
                                       epiduralValue == 1,
                                       cSectionValue == 1);
 
-                                  toClientAppPage4();
+                                  toCp4PreviousBirth();
                                 }
                               },
                               color: themeColors['yellow'],
@@ -525,15 +525,15 @@ class ClientAppPage3State extends State<ClientAppPage3> {
   }
 }
 
-class ClientAppPage3Connector extends StatelessWidget {
+class Cp3CurrentPregnancyConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) => ClientAppPage3(
+      builder: (BuildContext context, ViewModel vm) => Cp3CurrentPregnancy(
           vm.currentUser,
           vm.updateClient,
-          vm.toClientAppPage4,
+          vm.toCp4PreviousBirth,
           vm.cancelApplication),
     );
   }
@@ -544,13 +544,13 @@ class ViewModel extends BaseModel<AppState> {
 
   Client currentUser;
   void Function(String, String, String, bool, bool) updateClient;
-  VoidCallback toClientAppPage4;
+  VoidCallback toCp4PreviousBirth;
   void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateClient,
-      @required this.toClientAppPage4,
+      @required this.toCp4PreviousBirth,
       @required this.cancelApplication})
       : super(equals: []);
 
@@ -558,8 +558,8 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
       currentUser: state.currentUser,
-      toClientAppPage4: () =>
-          dispatch(NavigateAction.pushNamed("/clientAppPage4")),
+      toCp4PreviousBirth: () =>
+          dispatch(NavigateAction.pushNamed("/cp4PreviousBirth")),
       updateClient: (String dueDate, String birthLocation, String birthType,
               bool epidural, bool cesarean) =>
           dispatch(UpdateClientUserAction(

@@ -3,30 +3,30 @@ import 'package:flutter/cupertino.dart';
 import '../../common.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class DoulaAppPage4 extends StatefulWidget {
+class Dp4Availability extends StatefulWidget {
   final Doula currentUser;
   final void Function(List<String>) updateDoula;
-  final VoidCallback toDoulaAppPage5;
+  final VoidCallback toDp5PhotoRelease;
   final void Function(bool) cancelApplication;
 
-  DoulaAppPage4(this.currentUser, this.updateDoula, this.toDoulaAppPage5,
+  Dp4Availability(this.currentUser, this.updateDoula, this.toDp5PhotoRelease,
       this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "doula" &&
             updateDoula != null &&
-            toDoulaAppPage5 != null &&
+            toDp5PhotoRelease != null &&
             cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
-    return DoulaAppPage4State();
+    return Dp4AvailabilityState();
   }
 }
 
-class DoulaAppPage4State extends State<DoulaAppPage4> {
+class Dp4AvailabilityState extends State<Dp4Availability> {
   Doula currentUser;
   void Function(List<String>) updateDoula;
-  VoidCallback toDoulaAppPage5;
+  VoidCallback toDp5PhotoRelease;
   void Function(bool) cancelApplication;
   CalendarController calendarController;
   List<DateTime> unavailableDates;
@@ -37,7 +37,7 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
 
     currentUser = widget.currentUser;
     updateDoula = widget.updateDoula;
-    toDoulaAppPage5 = widget.toDoulaAppPage5;
+    toDp5PhotoRelease = widget.toDp5PhotoRelease;
     cancelApplication = widget.cancelApplication;
     calendarController = CalendarController();
     unavailableDates = List<DateTime>();
@@ -352,7 +352,7 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
                                         .add(formatDateYYYYMMDD(d));
                                   }
                                   updateDoula(unavailableDatesAsString);
-                                  toDoulaAppPage5();
+                                  toDp5PhotoRelease();
                                 },
                                 color: themeColors['yellow'],
                                 textColor: Colors.white,
@@ -374,15 +374,15 @@ class DoulaAppPage4State extends State<DoulaAppPage4> {
   }
 }
 
-class DoulaAppPage4Connector extends StatelessWidget {
+class Dp4AvailabilityConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) => DoulaAppPage4(
+      builder: (BuildContext context, ViewModel vm) => Dp4Availability(
           vm.currentUser,
           vm.updateDoula,
-          vm.toDoulaAppPage5,
+          vm.toDp5PhotoRelease,
           vm.cancelApplication),
     );
   }
@@ -393,13 +393,13 @@ class ViewModel extends BaseModel<AppState> {
 
   Doula currentUser;
   void Function(List<String>) updateDoula;
-  VoidCallback toDoulaAppPage5;
+  VoidCallback toDp5PhotoRelease;
   void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateDoula,
-      @required this.toDoulaAppPage5,
+      @required this.toDp5PhotoRelease,
       @required this.cancelApplication});
 
   @override
@@ -408,7 +408,7 @@ class ViewModel extends BaseModel<AppState> {
         currentUser: state.currentUser,
         updateDoula: (List<String> availableDates) =>
             dispatch(UpdateDoulaUserAction(availableDates: availableDates)),
-        toDoulaAppPage5: () =>
+        toDp5PhotoRelease: () =>
             dispatch(NavigateAction.pushNamed("/doulaAppPage5")),
         cancelApplication: (bool confirmed) {
           dispatch(NavigateAction.pop());

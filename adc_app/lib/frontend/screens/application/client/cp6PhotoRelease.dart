@@ -1,29 +1,29 @@
 import '../../common.dart';
 
-class ClientAppPage6 extends StatefulWidget {
+class Cp6PhotoRelease extends StatefulWidget {
   final Client currentUser;
   final void Function(bool) updateClient;
-  final VoidCallback toClientAppConfirmation;
+  final VoidCallback toCp7Confirmation;
   final void Function(bool) cancelApplication;
 
-  ClientAppPage6(this.currentUser, this.updateClient,
-      this.toClientAppConfirmation, this.cancelApplication)
+  Cp6PhotoRelease(this.currentUser, this.updateClient, this.toCp7Confirmation,
+      this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
-            toClientAppConfirmation != null &&
+            toCp7Confirmation != null &&
             cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
-    return ClientAppPage6State();
+    return Cp6PhotoReleaseState();
   }
 }
 
-class ClientAppPage6State extends State<ClientAppPage6> {
+class Cp6PhotoReleaseState extends State<Cp6PhotoRelease> {
   Client currentUser;
   void Function(bool) updateClient;
-  VoidCallback toClientAppConfirmation;
+  VoidCallback toCp7Confirmation;
   void Function(bool) cancelApplication;
 
   bool statementAgree;
@@ -32,7 +32,7 @@ class ClientAppPage6State extends State<ClientAppPage6> {
   void initState() {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
-    toClientAppConfirmation = widget.toClientAppConfirmation;
+    toCp7Confirmation = widget.toCp7Confirmation;
     cancelApplication = widget.cancelApplication;
 
     initialPlaceholders();
@@ -204,7 +204,7 @@ class ClientAppPage6State extends State<ClientAppPage6> {
                         onPressed: () {
                           updateClient(statementAgree);
 
-                          toClientAppConfirmation();
+                          toCp7Confirmation();
                         },
                         color: themeColors['yellow'],
                         textColor: Colors.black,
@@ -221,15 +221,15 @@ class ClientAppPage6State extends State<ClientAppPage6> {
   }
 }
 
-class ClientAppPage6Connector extends StatelessWidget {
+class Cp6PhotoReleaseConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) => ClientAppPage6(
+      builder: (BuildContext context, ViewModel vm) => Cp6PhotoRelease(
           vm.currentUser,
           vm.updateClient,
-          vm.toClientAppConfirmation,
+          vm.toCp7Confirmation,
           vm.cancelApplication),
     );
   }
@@ -240,13 +240,13 @@ class ViewModel extends BaseModel<AppState> {
 
   Client currentUser;
   void Function(bool) updateClient;
-  VoidCallback toClientAppConfirmation;
+  VoidCallback toCp7Confirmation;
   void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateClient,
-      @required this.toClientAppConfirmation,
+      @required this.toCp7Confirmation,
       @required this.cancelApplication})
       : super(equals: []);
 
@@ -254,8 +254,8 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
       currentUser: state.currentUser,
-      toClientAppConfirmation: () =>
-          dispatch(NavigateAction.pushNamed("/clientAppConfirmation")),
+      toCp7Confirmation: () =>
+          dispatch(NavigateAction.pushNamed("/cp7Confirmation")),
       updateClient: (bool photoRelease) =>
           dispatch(UpdateClientUserAction(photoRelease: photoRelease)),
       cancelApplication: (bool confirmed) {

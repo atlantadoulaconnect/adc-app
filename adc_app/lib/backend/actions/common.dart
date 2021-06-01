@@ -4,14 +4,12 @@ export '../models/client.dart';
 export '../models/contact.dart';
 export '../models/doula.dart';
 export '../models/emergencyContact.dart';
-export '../models/message.dart';
 export '../models/phone.dart';
 export '../models/user.dart';
 
 // states
 export '../states/appState.dart';
 export '../states/connectionsState.dart';
-export '../states/messagesState.dart';
 
 // util
 export '../util/persistence.dart';

@@ -1,30 +1,30 @@
 import 'package:adc_app/frontend/screens/common.dart';
 
-class DoulaAppPage2 extends StatefulWidget {
+class Dp2ShortBio extends StatefulWidget {
   final Doula currentUser;
   final void Function(String) updateDoula;
-  final VoidCallback toDoulaAppPage3;
+  final VoidCallback toDp3Certification;
   final void Function(bool) cancelApplication;
 
-  DoulaAppPage2(this.currentUser, this.updateDoula, this.toDoulaAppPage3,
+  Dp2ShortBio(this.currentUser, this.updateDoula, this.toDp3Certification,
       this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "doula" &&
             updateDoula != null &&
-            toDoulaAppPage3 != null &&
+            toDp3Certification != null &&
             cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
-    return DoulaAppPage2State();
+    return Dp2ShortBioState();
   }
 }
 
-class DoulaAppPage2State extends State<DoulaAppPage2> {
+class Dp2ShortBioState extends State<Dp2ShortBio> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Doula currentUser;
   void Function(String) updateDoula;
-  VoidCallback toDoulaAppPage3;
+  VoidCallback toDp3Certification;
   void Function(bool) cancelApplication;
 
   TextEditingController _bioCtrl;
@@ -33,7 +33,7 @@ class DoulaAppPage2State extends State<DoulaAppPage2> {
   void initState() {
     currentUser = widget.currentUser;
     updateDoula = widget.updateDoula;
-    toDoulaAppPage3 = widget.toDoulaAppPage3;
+    toDp3Certification = widget.toDp3Certification;
     cancelApplication = widget.cancelApplication;
 
     _bioCtrl = TextEditingController();
@@ -220,7 +220,7 @@ class DoulaAppPage2State extends State<DoulaAppPage2> {
                               form.save();
 
                               updateDoula(_bioCtrl.text.toString().trim());
-                              toDoulaAppPage3();
+                              toDp3Certification();
                             },
                             color: themeColors['yellow'],
                             textColor: Colors.white,
@@ -242,16 +242,16 @@ class DoulaAppPage2State extends State<DoulaAppPage2> {
   }
 }
 
-class DoulaAppPage2Connector extends StatelessWidget {
+class Dp2ShortBioConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return StoreConnector<AppState, ViewModel>(
         model: ViewModel(),
-        builder: (BuildContext context, ViewModel vm) => DoulaAppPage2(
+        builder: (BuildContext context, ViewModel vm) => Dp2ShortBio(
             vm.currentUser,
             vm.updateDoula,
-            vm.toDoulaAppPage3,
+            vm.toDp3Certification,
             vm.cancelApplication));
   }
 }
@@ -261,20 +261,20 @@ class ViewModel extends BaseModel<AppState> {
 
   Doula currentUser;
   void Function(String) updateDoula;
-  VoidCallback toDoulaAppPage3;
+  VoidCallback toDp3Certification;
   void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateDoula,
-      @required this.toDoulaAppPage3,
+      @required this.toDp3Certification,
       @required this.cancelApplication});
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        toDoulaAppPage3: () =>
+        toDp3Certification: () =>
             dispatch(NavigateAction.pushNamed("/doulaAppPage3")),
         updateDoula: (String bio) => dispatch(UpdateDoulaUserAction(bio: bio)),
         cancelApplication: (bool confirmed) {

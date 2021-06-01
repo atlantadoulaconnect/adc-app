@@ -10,17 +10,14 @@ class UserProfileScreen extends StatefulWidget {
   // if profileUser.userid == currentUser.userid then user is viewing their own
   // profile and can edit it
   final User currentUser;
-  final void Function(Contact) setPeer;
-  final void Function(String) addThread;
-  final VoidCallback toMessages;
 
   UserProfileScreen(this.changeStatus, this.profileUser, this.currentUser,
-      this.toDoulasListMatching, this.setPeer, this.addThread, this.toMessages)
+      this.toDoulasListMatching)
       : assert(profileUser != null && currentUser != null);
 
   @override
   State<StatefulWidget> createState() {
-    return UserProfileScreenState(toDoulasListMatching, setPeer, addThread, toMessages);
+    return UserProfileScreenState(toDoulasListMatching);
   }
 }
 
@@ -32,14 +29,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   bool userHasDoula;
   bool userHasBackupDoula;
   final VoidCallback toDoulasListMatching;
-  final void Function(Contact) setPeer;
-  final void Function(String) addThread;
-  final VoidCallback toMessages;
 
-
-
-  UserProfileScreenState(this.toDoulasListMatching, this.setPeer,
-                          this.addThread, this.toMessages);
+  UserProfileScreenState(this.toDoulasListMatching);
 
   @override
   void initState() {
@@ -71,8 +62,6 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       String availableDates = profileUserDoula.availableDates != null
           ? profileUserDoula.availableDates.join(", ")
           : "(no dates selected)";
-
-
 
       return ListView(
         children: <Widget>[
@@ -357,8 +346,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ],
       );
-    }
-    else {
+    } else {
       String phonesString = profileUser.phones.join(", ");
       Client profileUserClient = profileUser;
       String deliveryTypes = "";
@@ -865,12 +853,11 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         emergencyContacts = profileUserClient.emergencyContacts.join("\n");
       }
 
-
       return ListView(
         children: <Widget>[
           Padding(
             padding:
-            EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+                EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -1108,8 +1095,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                     ),
                     textAlign: TextAlign.left),
                 Text(
-                  "Number of Previous Live Births: ${profileUserClient
-                      .liveBirths}",
+                  "Number of Previous Live Births: ${profileUserClient.liveBirths}",
                   style: TextStyle(
                       fontFamily: 'Roboto',
                       color: themeColors['black'],
@@ -1120,8 +1106,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                 Visibility(
                   visible: profileUserClient.liveBirths > 0,
                   child: Text(
-                    "Previous preterm baby? ${boolStr(
-                        profileUserClient.preterm)}",
+                    "Previous preterm baby? ${boolStr(profileUserClient.preterm)}",
                     style: TextStyle(
                         fontFamily: 'Roboto',
                         color: themeColors['black'],
@@ -1133,8 +1118,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                 Visibility(
                   visible: profileUserClient.liveBirths > 0,
                   child: Text(
-                    "Previous low weight baby? ${boolStr(
-                        profileUserClient.lowWeight)}",
+                    "Previous low weight baby? ${boolStr(profileUserClient.lowWeight)}",
                     style: TextStyle(
                         fontFamily: 'Roboto',
                         color: themeColors['black'],
@@ -1176,8 +1160,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                     ),
                     textAlign: TextAlign.left),
                 Text(
-                  "Meet doula before birth?: ${boolStr(
-                      profileUserClient.meetBefore)}",
+                  "Meet doula before birth?: ${boolStr(profileUserClient.meetBefore)}",
                   style: TextStyle(
                       fontFamily: 'Roboto',
                       color: themeColors['black'],
@@ -1186,8 +1169,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                   textAlign: TextAlign.left,
                 ),
                 Text(
-                  "Doula post birth home visit?: ${boolStr(
-                      profileUserClient.homeVisit)}",
+                  "Doula post birth home visit?: ${boolStr(profileUserClient.homeVisit)}",
                   style: TextStyle(
                       fontFamily: 'Roboto',
                       color: themeColors['black'],
@@ -1230,8 +1212,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ],
       );
-    }
-    else {
+    } else {
       String phonesString = profileUser.phones.join(", ");
       Doula profileUserDoula = profileUser;
       String availableDates = profileUserDoula.availableDates != null
@@ -1242,7 +1223,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         children: <Widget>[
           Padding(
             padding:
-            EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
+                EdgeInsets.only(top: 30.0, bottom: 10.0, right: 5.0, left: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -1290,37 +1271,6 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
               ],
-            ),
-          ),
-          Center(
-            child: Visibility(
-              visible: true,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(15.0),
-                    side: BorderSide(color: themeColors['emoryBlue'])),
-                onPressed: ()  {
-                  String threadId = currentUser.userid.compareTo(profileUser.userid) < 0 ?
-                                    "${profileUser.userid}-${currentUser.userid}" :
-                                    "${currentUser.userid}-${profileUser.userid}";
-                  Contact peer = Contact(
-                      profileUser.name, profileUser.userid, profileUser.userType, threadId);
-                  addThread(threadId);
-                  setPeer(peer);
-                  toMessages();
-                },
-                color: themeColors['emoryBlue'],
-                textColor: Colors.black,
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['emoryBlue'],
-                child: Text(
-                  "Message Doula",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: themeColors['white'],
-                  ),
-                ),
-              ),
             ),
           ),
           Padding(
@@ -1774,8 +1724,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ],
       );
-    }
-    else {
+    } else {
       String phonesString = profileUser.phones.join(", ");
       Client profileUserClient = profileUser;
       String deliveryTypes = "";
@@ -1839,37 +1788,6 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
               ],
-            ),
-          ),
-          Center(
-            child: Visibility(
-              visible: true,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(15.0),
-                    side: BorderSide(color: themeColors['emoryBlue'])),
-                onPressed: ()  {
-                  String threadId = currentUser.userid.compareTo(profileUser.userid) < 0 ?
-                  "${profileUser.userid}-${currentUser.userid}" :
-                  "${currentUser.userid}-${profileUser.userid}";
-                  Contact peer = Contact(
-                      profileUser.name, profileUser.userid, profileUser.userType, threadId);
-                  addThread(threadId);
-                  setPeer(peer);
-                  toMessages();
-                },
-                color: themeColors['emoryBlue'],
-                textColor: Colors.black,
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['emoryBlue'],
-                child: Text(
-                  "Message ${profileUser.name}",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: themeColors['white'],
-                  ),
-                ),
-              ),
             ),
           ),
           Padding(
@@ -2197,10 +2115,7 @@ class UserProfileScreenConnector extends StatelessWidget {
             vm.changeStatus,
             vm.profileUser,
             vm.currentUser,
-            vm.toDoulasListMatching,
-            vm.setPeer,
-            vm.addThread,
-            vm.toMessages,));
+            vm.toDoulasListMatching));
   }
 }
 
@@ -2213,18 +2128,11 @@ class ViewModel extends BaseModel<AppState> {
   User currentUser;
   Future<void> Function(User, String) changeStatus;
 
-  void Function(Contact) setPeer;
-  void Function(String) addThread;
-  VoidCallback toMessages;
-
   ViewModel.build(
       {@required this.profileUser,
       @required this.currentUser,
       @required this.changeStatus,
-      @required this.toDoulasListMatching,
-      @required this.setPeer,
-      @required this.addThread,
-      @required this.toMessages})
+      @required this.toDoulasListMatching})
       : super(equals: [profileUser]);
 
   @override
@@ -2236,9 +2144,6 @@ class ViewModel extends BaseModel<AppState> {
           dispatch(NavigateAction.pushReplacementNamed("/doulasListMatching")),
       changeStatus: (User profile, String status) =>
           dispatchFuture(UpdateUserStatus(profile, status)),
-      setPeer: (Contact peer) => dispatch(SetPeer(peer)),
-      addThread: (String peerId) => dispatch(AddChat(peerId)),
-      toMessages: () => dispatch(NavigateAction.pushNamed("/messages")),
     );
   }
 }

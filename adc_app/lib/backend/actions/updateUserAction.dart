@@ -315,9 +315,7 @@ class UpdateClientDoulas extends ReduxAction<AppState> {
     client.primaryDoulaId = primaryDoulaId;
     client.primaryDoulaName = primaryDoulaName;
 
-    return state.copy(
-        profileUser: client,
-        messagesState: state.messagesState.addChat(primaryDoulaId));
+    return state.copy(profileUser: client);
   }
 }
 
@@ -333,7 +331,6 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
   @override
   Future<AppState> reduce() async {
     final dbRef = Firestore.instance;
-    Set<String> chats = state.messagesState.chats;
 
     // push the match to the collection in database
     // Note: this action is always invoked after the primary doula is set
@@ -355,9 +352,7 @@ class UpdateClientBackupDoula extends ReduxAction<AppState> {
     client.backupDoulaId = backupDoulaId;
     client.backupDoulaName = backupDoulaName;
 
-    return state.copy(
-        profileUser: client,
-        messagesState: state.messagesState.addChat(backupDoulaId));
+    return state.copy(profileUser: client);
   }
 }
 

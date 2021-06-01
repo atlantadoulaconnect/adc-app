@@ -8,10 +8,11 @@ import 'package:firebase_database/firebase_database.dart';
 @immutable
 class ConnectionsState {
   // final bool internetConn: connected to internet?
-  final FirebaseAuth auth; // FirebaseAut
-  final Firestore fs;
-  final FirebaseDatabase rtdb;
-  // cloud storage
+  final FirebaseAuth auth; // Firebase Auth
+  final Firestore fs; // Firestore
+  final FirebaseDatabase rtdb; // Realtime Database
+  // cloud storage (for profile photos)
+  // track internet connection
 
   ConnectionsState({this.auth, this.fs, this.rtdb});
 

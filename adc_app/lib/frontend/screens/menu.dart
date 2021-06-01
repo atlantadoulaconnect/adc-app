@@ -10,7 +10,6 @@ class CurrentMenu extends StatelessWidget {
   final VoidCallback toSignup;
   final VoidCallback toLogin;
   final VoidCallback toInfo;
-  final VoidCallback toRecentMessages;
   final VoidCallback toDoulas;
   final VoidCallback toClients;
   final VoidCallback logout;
@@ -31,7 +30,6 @@ class CurrentMenu extends StatelessWidget {
       this.toSignup,
       this.toLogin,
       this.toInfo,
-      this.toRecentMessages,
       this.toDoulas,
       this.toClients,
       this.logout,
@@ -113,17 +111,6 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toAdminHome,
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59262, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Messages',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toRecentMessages,
                 ),
                 ListTile(
                   leading: Icon(
@@ -235,17 +222,6 @@ class CurrentMenu extends StatelessWidget {
                       )),
                   onTap: toClientHome,
                 ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59262, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Messages',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toRecentMessages,
-                ),
                 Visibility(
                   visible: (currentUser.status == null ||
                           currentUser.status == "incomplete") &&
@@ -355,17 +331,6 @@ class CurrentMenu extends StatelessWidget {
                       )),
                   onTap: toDoulaHome,
                 ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59262, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Messages',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toRecentMessages,
-                ),
                 Visibility(
                   visible: (currentUser.status == null ||
                           currentUser.status == "incomplete") &&
@@ -474,17 +439,6 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toHome,
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59262, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Messages',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toRecentMessages,
                 ),
                 ListTile(
                   leading: Icon(
@@ -676,7 +630,6 @@ class Menu extends StatelessWidget {
             toSignup: vm.toSignup,
             toLogin: vm.toLogin,
             toInfo: vm.toInfo,
-            toRecentMessages: vm.toRecentMessages,
             toDoulas: vm.toDoulas,
             toClients: vm.toClients,
             logout: vm.logout,
@@ -703,7 +656,6 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toSignup;
   VoidCallback toLogin;
   VoidCallback toInfo;
-  VoidCallback toRecentMessages;
   VoidCallback toDoulas;
   VoidCallback toClients;
   VoidCallback logout;
@@ -724,7 +676,6 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toSignup,
       @required this.toLogin,
       @required this.toInfo,
-      @required this.toRecentMessages,
       @required this.toDoulas,
       @required this.toClients,
       @required this.logout,
@@ -750,8 +701,6 @@ class ViewModel extends BaseModel<AppState> {
         toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
         toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
         toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
-        toRecentMessages: () =>
-            dispatch(NavigateAction.pushNamed("/recentMessages")),
         toDoulas: () => dispatch(NavigateAction.pushNamed("/registeredDoulas")),
         toClients: () =>
             dispatch(NavigateAction.pushNamed("/registeredClients")),
@@ -770,7 +719,7 @@ class ViewModel extends BaseModel<AppState> {
         toAdminSettings: () =>
             dispatch(NavigateAction.pushNamed("/adminSettings")),
         toClientApplication: () =>
-            dispatch(NavigateAction.pushNamed("/clientAppPage1")),
+            dispatch(NavigateAction.pushNamed("/cp1PersonalInfo")),
         toDoulaApplication: () =>
             dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
         toAppType: () => dispatch(NavigateAction.pushNamed("/appType")));

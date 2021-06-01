@@ -3,6 +3,7 @@ export 'package:flutter/material.dart';
 export 'package:async_redux/async_redux.dart';
 export 'package:firebase_messaging/firebase_messaging.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
+
 export '../theme/colors.dart';
 export './menu.dart';
 
@@ -34,4 +35,3 @@ export '../../backend/states/messagesState.dart';
 export '../../backend/util/timeConversion.dart';
 export '../../backend/util/UserErrorException.dart';
 export '../../backend/util/PushNotificationService.dart';
-

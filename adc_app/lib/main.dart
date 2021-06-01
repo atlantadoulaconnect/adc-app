@@ -23,20 +23,20 @@ import './frontend/screens/application/signupScreen.dart';
 import './frontend/screens/application/appTypeScreen.dart';
 import './frontend/screens/application/requestSentScreen.dart';
 
-import './frontend/screens/application/client/clientAppPage1.dart';
-import './frontend/screens/application/client/clientAppPage2.dart';
-import './frontend/screens/application/client/clientAppPage3.dart';
-import './frontend/screens/application/client/clientAppPage4.dart';
-import './frontend/screens/application/client/clientAppPage5.dart';
-import './frontend/screens/application/client/clientAppPage6.dart';
-import './frontend/screens/application/client/clientAppConfirmationPage.dart';
+import './frontend/screens/application/client/cp1PersonalInfo.dart';
+import './frontend/screens/application/client/cp2EmergencyContacts.dart';
+import './frontend/screens/application/client/cp3CurrentPregnancy.dart';
+import './frontend/screens/application/client/cp4PreviousBirth.dart';
+import './frontend/screens/application/client/cp5DoulaPreferences.dart';
+import './frontend/screens/application/client/cp6PhotoRelease.dart';
+import './frontend/screens/application/client/cp7Confirmation.dart';
 
-import './frontend/screens/application/doula/doulaAppPage1.dart';
-import './frontend/screens/application/doula/doulaAppPage2.dart';
-import './frontend/screens/application/doula/doulaAppPage3.dart';
-import './frontend/screens/application/doula/doulaAppPage4.dart';
-import './frontend/screens/application/doula/doulaAppPage5.dart';
-import './frontend/screens/application/doula/doulaAppConfirmationPage.dart';
+import './frontend/screens/application/doula/dp1PersonalInfo.dart';
+import './frontend/screens/application/doula/dp2ShortBio.dart';
+import './frontend/screens/application/doula/dp3Certification.dart';
+import './frontend/screens/application/doula/dp4Availability.dart';
+import './frontend/screens/application/doula/dp5PhotoRelease.dart';
+import './frontend/screens/application/doula/dp6Confirmation.dart';
 
 // client screens
 import './frontend/screens/client/clientHomeScreen.dart';

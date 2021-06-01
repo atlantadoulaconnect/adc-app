@@ -14,13 +14,19 @@ class SendMessageAction extends ReduxAction<AppState> {
   // appends message object to corresponding thread
   @override
   Future<AppState> reduce() async {
-    String senderId;
+    String senderId, serverToken;
     try {
       var ref = FirebaseDatabase.instance.reference();
       senderId = ref.child("chats/${msg.senderId}").key;
+      var serverTokenRef = ref.child('ServerToken');
+      serverTokenRef.once().then((DataSnapshot snapshot){
+        serverToken = snapshot.value;
+      });
 
-      print("sending: ${msg.content}");
-      print("senderId ref: $senderId");
+      // print("serverToken: $serverToken");
+      //
+      // print("sending: ${msg.content}");
+      // print("senderId ref: $senderId");
 
       await ref.child("chats/${msg.threadId}/messages/").push().set({
         "senderId": msg.senderId,
@@ -32,20 +38,20 @@ class SendMessageAction extends ReduxAction<AppState> {
       print("error sending: $e");
       // change error state ie "message not sent"
     }
-    sendNotification(senderId, msg);
+    sendNotification(serverToken, senderId, msg.receiverId, msg);
 
     return null; // "messageDelivered" state change
 
   }
 
-  Future<void> sendNotification(receiver, msg) async {
+  Future<void> sendNotification(serverToken, sender, receiver, msg) async {
     Message message = msg;
     var token, name;
-    String serverToken = 'AAAASUv1BA4:APA91bGmEgyUU6UnsAwZqLFQksHHAqcTL3JPDOllyVeOfVXXXPwCllg2cOBGt4aawjl935vECraU5vic8CV2-ZFjnJqPqRJ3QCpQRC4b5DNeldXxOKhLHY3_Y21E2Tkm28H2Y_Z2YH2p';
-
+    //TODO gotta hide the server token for security reasons
+    print("notification serverToken: $serverToken");
     final Firestore _db = Firestore.instance;
     await _db.collection('users')
-        .document(receiver).get().then((querySnapshot) {
+        .document(sender).get().then((querySnapshot) {
       name = querySnapshot.data['name'].toString();
       //print("querySnapshot.data['token'].toString()" + querySnapshot.data['token'].toString());
 
@@ -69,8 +75,8 @@ class SendMessageAction extends ReduxAction<AppState> {
       body: jsonEncode(
         <String, dynamic>{
           'notification': <String, dynamic>{
-            'body': '$name sent a new message!',
-            'title': '${message.content}',
+            'body': '${message.content}',
+            'title': '$name sent a new message!',
           },
           'priority': 'high',
           'data': <String, dynamic>{

@@ -7,17 +7,18 @@ part 'message.g.dart';
 class Message {
   //String messageId;
   String senderId;
+  String receiverId;
   String type;
   String content;
   String threadId;
   int timeSent;
   //Timestamp timeRead;
 
-  Message.now(this.content, this.senderId, this.type, this.threadId) {
+  Message.now(this.content, this.senderId, this.receiverId, this.type, this.threadId) {
     this.timeSent = DateTime.now().millisecondsSinceEpoch;
   }
 
-  Message(this.content, this.senderId, this.timeSent, this.type, this.threadId);
+  Message(this.content, this.senderId, this.receiverId, this.timeSent, this.type, this.threadId);
 
   @override
   String toString() {

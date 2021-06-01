@@ -1,30 +1,30 @@
 import '../../common.dart';
 
-class ClientAppPage5 extends StatefulWidget {
+class Cp5DoulaPreferences extends StatefulWidget {
   final Client currentUser;
   final void Function(bool, bool) updateClient;
-  final VoidCallback toClientAppPage6;
+  final VoidCallback toCp6PhotoRelease;
   final void Function(bool) cancelApplication;
 
-  ClientAppPage5(this.currentUser, this.updateClient, this.toClientAppPage6,
-      this.cancelApplication)
+  Cp5DoulaPreferences(this.currentUser, this.updateClient,
+      this.toCp6PhotoRelease, this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
-            toClientAppPage6 != null &&
+            toCp6PhotoRelease != null &&
             cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
-    return ClientAppPage5State();
+    return Cp5DoulaPreferencesState();
   }
 }
 
-class ClientAppPage5State extends State<ClientAppPage5> {
+class Cp5DoulaPreferencesState extends State<Cp5DoulaPreferences> {
   final GlobalKey<FormState> _c5formKey = GlobalKey<FormState>();
   Client currentUser;
   void Function(bool, bool) updateClient;
-  VoidCallback toClientAppPage6;
+  VoidCallback toCp6PhotoRelease;
   void Function(bool) cancelApplication;
 
   int meetDoula;
@@ -34,7 +34,7 @@ class ClientAppPage5State extends State<ClientAppPage5> {
   void initState() {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
-    toClientAppPage6 = widget.toClientAppPage6;
+    toCp6PhotoRelease = widget.toCp6PhotoRelease;
     cancelApplication = widget.cancelApplication;
 
     initialPlaceholders();
@@ -250,7 +250,7 @@ class ClientAppPage5State extends State<ClientAppPage5> {
 
                                   updateClient(meetDoula == 1, doulaVisit == 1);
 
-                                  toClientAppPage6();
+                                  toCp6PhotoRelease();
                                 }
                               },
                               color: themeColors['yellow'],
@@ -269,15 +269,15 @@ class ClientAppPage5State extends State<ClientAppPage5> {
   }
 }
 
-class ClientAppPage5Connector extends StatelessWidget {
+class Cp5DoulaPreferencesConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) => ClientAppPage5(
+      builder: (BuildContext context, ViewModel vm) => Cp5DoulaPreferences(
           vm.currentUser,
           vm.updateClient,
-          vm.toClientAppPage6,
+          vm.toCp6PhotoRelease,
           vm.cancelApplication),
     );
   }
@@ -288,13 +288,13 @@ class ViewModel extends BaseModel<AppState> {
 
   Client currentUser;
   void Function(bool, bool) updateClient;
-  VoidCallback toClientAppPage6;
+  VoidCallback toCp6PhotoRelease;
   void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateClient,
-      @required this.toClientAppPage6,
+      @required this.toCp6PhotoRelease,
       @required this.cancelApplication})
       : super(equals: []);
 
@@ -302,8 +302,8 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
       currentUser: state.currentUser,
-      toClientAppPage6: () =>
-          dispatch(NavigateAction.pushNamed("/clientAppPage6")),
+      toCp6PhotoRelease: () =>
+          dispatch(NavigateAction.pushNamed("/cp6PhotoRelease")),
       updateClient: (bool meetBefore, bool homeVisit) => dispatch(
           UpdateClientUserAction(meetBefore: meetBefore, homeVisit: homeVisit)),
       cancelApplication: (bool confirmed) {

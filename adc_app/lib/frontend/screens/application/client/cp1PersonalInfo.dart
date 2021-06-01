@@ -5,33 +5,33 @@ import 'package:adc_app/backend/actions/common.dart';
 import '../../common.dart';
 import '../../../../backend/util/inputValidation.dart';
 
-class ClientAppPage1 extends StatefulWidget {
+class Cp1PersonalInfo extends StatefulWidget {
   final Client currentUser;
   final void Function(String, String, List<Phone>) updateClient;
-  final VoidCallback toClientAppPage2;
+  final VoidCallback toCp2EmergencyContacts;
   final void Function(bool) cancelApplication;
   final void Function(String) completePage;
 
-  ClientAppPage1(this.currentUser, this.updateClient, this.toClientAppPage2,
-      this.cancelApplication, this.completePage)
+  Cp1PersonalInfo(this.currentUser, this.updateClient,
+      this.toCp2EmergencyContacts, this.cancelApplication, this.completePage)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
-            toClientAppPage2 != null &&
+            toCp2EmergencyContacts != null &&
             cancelApplication != null &&
             completePage != null);
 
   @override
   State<StatefulWidget> createState() {
-    return ClientAppPage1State();
+    return Cp1PersonalInfoState();
   }
 }
 
-class ClientAppPage1State extends State<ClientAppPage1> {
+class Cp1PersonalInfoState extends State<Cp1PersonalInfo> {
   final GlobalKey<FormState> _c1formKey = GlobalKey<FormState>();
   Client currentUser;
   void Function(String, String, List<Phone>) updateClient;
-  VoidCallback toClientAppPage2;
+  VoidCallback toCp2EmergencyContacts;
   void Function(bool) cancelApplication;
   void Function(String) completePage;
 
@@ -45,7 +45,7 @@ class ClientAppPage1State extends State<ClientAppPage1> {
   void initState() {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
-    toClientAppPage2 = widget.toClientAppPage2;
+    toCp2EmergencyContacts = widget.toCp2EmergencyContacts;
     cancelApplication = widget.cancelApplication;
     completePage = widget.completePage;
 
@@ -326,8 +326,8 @@ class ClientAppPage1State extends State<ClientAppPage1> {
                                 }
 
                                 updateClient(displayName, birthday, phones);
-                                completePage("clientAppPage1");
-                                toClientAppPage2();
+                                completePage("cp1PersonalInfo");
+                                toCp2EmergencyContacts();
                               }
                             },
                             color: themeColors['yellow'],
@@ -350,15 +350,15 @@ class ClientAppPage1State extends State<ClientAppPage1> {
   }
 }
 
-class ClientAppPage1Connector extends StatelessWidget {
+class Cp1PersonalInfoConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) => ClientAppPage1(
+      builder: (BuildContext context, ViewModel vm) => Cp1PersonalInfo(
           vm.currentUser,
           vm.updateClient,
-          vm.toClientAppPage2,
+          vm.toCp2EmergencyContacts,
           vm.cancelApplication,
           vm.completePage),
     );
@@ -370,14 +370,14 @@ class ViewModel extends BaseModel<AppState> {
 
   Client currentUser;
   void Function(String, String, List<Phone>) updateClient;
-  VoidCallback toClientAppPage2;
+  VoidCallback toCp2EmergencyContacts;
   void Function(bool) cancelApplication;
   void Function(String) completePage;
 
   ViewModel.build({
     @required this.currentUser,
     @required this.updateClient,
-    @required this.toClientAppPage2,
+    @required this.toCp2EmergencyContacts,
     @required this.cancelApplication,
     @required this.completePage,
   }) : super(equals: []);
@@ -386,8 +386,8 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        toClientAppPage2: () =>
-            dispatch(NavigateAction.pushNamed("/clientAppPage2")),
+        toCp2EmergencyContacts: () =>
+            dispatch(NavigateAction.pushNamed("/cp2EmergencyContacts")),
         updateClient: (String name, String bday, List<Phone> phones) =>
             dispatch(
                 UpdateClientUserAction(name: name, phones: phones, bday: bday)),

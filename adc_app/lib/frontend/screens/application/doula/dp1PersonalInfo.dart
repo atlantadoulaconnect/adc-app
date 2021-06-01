@@ -1,31 +1,31 @@
 import '../../common.dart';
 import '../../../../backend/util/inputValidation.dart';
 
-class DoulaAppPage1 extends StatefulWidget {
+class Dp1PersonalInfo extends StatefulWidget {
   final Doula currentUser;
   final void Function(String, String, List<Phone>) updateDoula;
-  final VoidCallback toDoulaAppPage2;
+  final VoidCallback toDp2ShortBio;
   final void Function(bool) cancelApplication;
 
-  DoulaAppPage1(this.currentUser, this.updateDoula, this.toDoulaAppPage2,
+  Dp1PersonalInfo(this.currentUser, this.updateDoula, this.toDp2ShortBio,
       this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "doula" &&
             updateDoula != null &&
-            toDoulaAppPage2 != null &&
+            toDp2ShortBio != null &&
             cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
-    return DoulaAppPage1State();
+    return Dp1PersonalInfoState();
   }
 }
 
-class DoulaAppPage1State extends State<DoulaAppPage1> {
+class Dp1PersonalInfoState extends State<Dp1PersonalInfo> {
   final GlobalKey<FormState> _d1formKey = GlobalKey<FormState>();
   Doula currentUser;
   void Function(String, String, List<Phone>) updateDoula;
-  VoidCallback toDoulaAppPage2;
+  VoidCallback toDp2ShortBio;
   void Function(bool) cancelApplication;
 
   TextEditingController _firstNameCtrl;
@@ -38,7 +38,7 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
   void initState() {
     currentUser = widget.currentUser;
     updateDoula = widget.updateDoula;
-    toDoulaAppPage2 = widget.toDoulaAppPage2;
+    toDp2ShortBio = widget.toDp2ShortBio;
     cancelApplication = widget.cancelApplication;
 
     _firstNameCtrl = TextEditingController();
@@ -294,7 +294,7 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
                                         updateDoula(
                                             displayName, birthday, phones);
 
-                                        toDoulaAppPage2();
+                                        toDp2ShortBio();
                                       }
                                     },
                                     color: themeColors['yellow'],
@@ -321,15 +321,15 @@ class DoulaAppPage1State extends State<DoulaAppPage1> {
   }
 }
 
-class DoulaAppPage1Connector extends StatelessWidget {
+class Dp1PersonalInfoConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) => DoulaAppPage1(
+      builder: (BuildContext context, ViewModel vm) => Dp1PersonalInfo(
           vm.currentUser,
           vm.updateDoula,
-          vm.toDoulaAppPage2,
+          vm.toDp2ShortBio,
           vm.cancelApplication),
     );
   }
@@ -340,21 +340,20 @@ class ViewModel extends BaseModel<AppState> {
 
   Doula currentUser;
   void Function(String, String, List<Phone>) updateDoula;
-  VoidCallback toDoulaAppPage2;
+  VoidCallback toDp2ShortBio;
   void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateDoula,
-      @required this.toDoulaAppPage2,
+      @required this.toDp2ShortBio,
       @required this.cancelApplication});
 
   @override
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        toDoulaAppPage2: () =>
-            dispatch(NavigateAction.pushNamed("/doulaAppPage2")),
+        toDp2ShortBio: () => dispatch(NavigateAction.pushNamed("/dp2ShortBio")),
         updateDoula: (
           String name,
           String bday,

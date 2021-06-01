@@ -770,9 +770,9 @@ class ViewModel extends BaseModel<AppState> {
         toAdminSettings: () =>
             dispatch(NavigateAction.pushNamed("/adminSettings")),
         toClientApplication: () =>
-            dispatch(NavigateAction.pushNamed("/clientAppPage1")),
+            dispatch(NavigateAction.pushNamed("/cp1PersonalInfo")),
         toDoulaApplication: () =>
-            dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
+            dispatch(NavigateAction.pushNamed("/dp1PersonalInfo")),
         toAppType: () => dispatch(NavigateAction.pushNamed("/appType")));
   }
 }

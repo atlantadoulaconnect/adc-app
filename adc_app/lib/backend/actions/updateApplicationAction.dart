@@ -8,12 +8,12 @@ class ClientInitFormAction extends ReduxAction<AppState> {
   @override
   AppState reduce() {
     Map<String, bool> form = {
-      "clientAppPage1": false,
-      "clientAppPage2": false,
-      "clientAppPage3": false,
-      "clientAppPage4": false,
-      "clientAppPage5": false,
-      "clientAppPage6": false,
+      "cp1PersonalInfo": false,
+      "cp2EmergencyContacts": false,
+      "cp3CurrentPregnancy": false,
+      "cp4PreviousBirth": false,
+      "cp5DoulaPreferences": false,
+      "cp6PhotoRelease": false,
     };
     return state.copy(pages: form);
   }
@@ -25,11 +25,11 @@ class DoulaInitFormAction extends ReduxAction<AppState> {
   @override
   AppState reduce() {
     Map<String, bool> form = {
-      "doulaAppPage1": false,
-      "doulaAppPage2": false,
-      "doulaAppPage3": false,
-      "doulaAppPage4": false,
-      "doulaAppPage5": false,
+      "dp1PersonalInfo": false,
+      "dp2ShortBio": false,
+      "dp3Certification": false,
+      "dp4Availability": false,
+      "dp5PhotoRelease": false,
     };
     return state.copy(pages: form);
   }

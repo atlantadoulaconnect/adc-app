@@ -1,6 +1,6 @@
 import '../../common.dart';
 
-class ClientAppConfirmationPage extends StatelessWidget {
+class Cp7Confirmation extends StatelessWidget {
   final Client currentUser;
   final VoidCallback toRequestSent;
   final Future<void> Function() userToDB;
@@ -10,7 +10,7 @@ class ClientAppConfirmationPage extends StatelessWidget {
   String deliveryTypes;
   String photoPermission;
 
-  ClientAppConfirmationPage(this.currentUser, this.toRequestSent, this.userToDB,
+  Cp7Confirmation(this.currentUser, this.toRequestSent, this.userToDB,
       this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
@@ -362,14 +362,14 @@ class ClientAppConfirmationPage extends StatelessWidget {
   }
 }
 
-class ClientAppConfirmationPageConnector extends StatelessWidget {
+class Cp7ConfirmationConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
       builder: (BuildContext context, ViewModel vm) {
-        return ClientAppConfirmationPage(vm.currentUser, vm.toRequestSent,
-            vm.userToDB, vm.cancelApplication);
+        return Cp7Confirmation(vm.currentUser, vm.toRequestSent, vm.userToDB,
+            vm.cancelApplication);
       },
     );
   }

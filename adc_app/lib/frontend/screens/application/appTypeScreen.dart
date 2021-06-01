@@ -113,9 +113,9 @@ class ViewModel extends BaseModel<AppState> {
     return ViewModel.build(
         currentUser: state.currentUser,
         toClientApp: () =>
-            dispatch(NavigateAction.pushNamedAndRemoveAll("/clientAppPage1")),
+            dispatch(NavigateAction.pushNamedAndRemoveAll("/cp1PersonalInfo")),
         toDoulaApp: () =>
-            dispatch(NavigateAction.pushNamedAndRemoveAll("/doulaAppPage1")),
+            dispatch(NavigateAction.pushNamedAndRemoveAll("/dp1PersonalInfo")),
         updateClient: (String id, String email) {
           dispatch(CreateUserFromApp(
               userid: id,

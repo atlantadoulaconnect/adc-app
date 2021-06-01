@@ -2,31 +2,31 @@ import 'package:adc_app/backend/actions/common.dart';
 
 import '../../common.dart';
 
-class ClientAppPage4 extends StatefulWidget {
+class Cp4PreviousBirth extends StatefulWidget {
   final Client currentUser;
   final void Function(int, bool, bool, List<String>, bool) updateClient;
-  final VoidCallback toClientAppPage5;
+  final VoidCallback toCp5DoulaPreferences;
   final void Function(bool) cancelApplication;
 
-  ClientAppPage4(this.currentUser, this.updateClient, this.toClientAppPage5,
-      this.cancelApplication)
+  Cp4PreviousBirth(this.currentUser, this.updateClient,
+      this.toCp5DoulaPreferences, this.cancelApplication)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
-            toClientAppPage5 != null &&
+            toCp5DoulaPreferences != null &&
             cancelApplication != null);
 
   @override
   State<StatefulWidget> createState() {
-    return ClientAppPage4State();
+    return Cp4PreviousBirthState();
   }
 }
 
-class ClientAppPage4State extends State<ClientAppPage4> {
+class Cp4PreviousBirthState extends State<Cp4PreviousBirth> {
   final GlobalKey<FormState> _c4formKey = GlobalKey<FormState>();
   Client currentUser;
   void Function(int, bool, bool, List<String>, bool) updateClient;
-  VoidCallback toClientAppPage5;
+  VoidCallback toCp5DoulaPreferences;
   void Function(bool) cancelApplication;
 
   List<DropdownMenuItem<String>> birthCount;
@@ -42,7 +42,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
   void initState() {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
-    toClientAppPage5 = widget.toClientAppPage5;
+    toCp5DoulaPreferences = widget.toCp5DoulaPreferences;
     cancelApplication = widget.cancelApplication;
 
     print(
@@ -137,9 +137,9 @@ class ClientAppPage4State extends State<ClientAppPage4> {
     if (vbac) {
       deliveries.add("vbac");
     }
-    print ("before births");
+    print("before births");
     int births = selectedBirthCount == null ? 0 : int.parse(selectedBirthCount);
-    print ("births: $births");
+    print("births: $births");
 
     if (births == 0) {
       print("NO BIRTHS");
@@ -515,7 +515,7 @@ class ClientAppPage4State extends State<ClientAppPage4> {
                                         previousTwinsOrTriplets == 1);
                                   }
 
-                                  toClientAppPage5();
+                                  toCp5DoulaPreferences();
                                 }
                               },
                               color: themeColors['yellow'],
@@ -534,16 +534,15 @@ class ClientAppPage4State extends State<ClientAppPage4> {
   }
 }
 
-class ClientAppPage4Connector extends StatelessWidget {
+class Cp4PreviousBirthConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-
-      builder: (BuildContext context, ViewModel vm) => ClientAppPage4(
+      builder: (BuildContext context, ViewModel vm) => Cp4PreviousBirth(
           vm.currentUser,
           vm.updateClient,
-          vm.toClientAppPage5,
+          vm.toCp5DoulaPreferences,
           vm.cancelApplication),
     );
   }
@@ -554,13 +553,13 @@ class ViewModel extends BaseModel<AppState> {
 
   Client currentUser;
   void Function(int, bool, bool, List<String>, bool) updateClient;
-  VoidCallback toClientAppPage5;
+  VoidCallback toCp5DoulaPreferences;
   void Function(bool) cancelApplication;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateClient,
-      @required this.toClientAppPage5,
+      @required this.toCp5DoulaPreferences,
       @required this.cancelApplication})
       : super(equals: []);
 
@@ -568,8 +567,8 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
       currentUser: state.currentUser,
-      toClientAppPage5: () =>
-          dispatch(NavigateAction.pushNamed("/clientAppPage5")),
+      toCp5DoulaPreferences: () =>
+          dispatch(NavigateAction.pushNamed("/cp5DoulaPreferences")),
       updateClient: (int liveBirths, bool preterm, bool lowWeight,
               List<String> deliveryTypes, bool multiples) =>
           dispatch(UpdateClientUserAction(

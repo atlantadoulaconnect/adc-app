@@ -33,8 +33,8 @@ class ClientHomeScreen extends StatelessWidget {
         drawer: Menu(),
         body: Padding(
             padding: const EdgeInsets.all(26.0),
-           child: Center(
-              child: ListView(
+            child: Center(
+                child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
               children: <Widget>[
                 Padding(
@@ -257,7 +257,7 @@ class ViewModel extends BaseModel<AppState> {
       toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
       toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
       toClientApplication: () =>
-          dispatch(NavigateAction.pushNamed("/clientAppPage1")),
+          dispatch(NavigateAction.pushNamed("/cp1PersonalInfo")),
       setProfileUser: (String userid, String userType) =>
           dispatchFuture(SetProfileUser(userid, userType)),
     );

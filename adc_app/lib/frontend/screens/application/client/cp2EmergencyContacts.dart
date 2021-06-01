@@ -1,33 +1,33 @@
 import '../../common.dart';
 import '../../../../backend/util/inputValidation.dart';
 
-class ClientAppPage2 extends StatefulWidget {
+class Cp2EmergencyContacts extends StatefulWidget {
   final Client currentUser;
   final void Function(List<EmergencyContact>) updateClient;
-  final VoidCallback toClientAppPage3;
+  final VoidCallback toCp3CurrentPregnancy;
   final void Function(bool) cancelApplication;
   final void Function(String) completePage;
 
-  ClientAppPage2(this.currentUser, this.updateClient, this.toClientAppPage3,
-      this.cancelApplication, this.completePage)
+  Cp2EmergencyContacts(this.currentUser, this.updateClient,
+      this.toCp3CurrentPregnancy, this.cancelApplication, this.completePage)
       : assert(currentUser != null &&
             currentUser.userType == "client" &&
             updateClient != null &&
-            toClientAppPage3 != null &&
+            toCp3CurrentPregnancy != null &&
             cancelApplication != null &&
             completePage != null);
 
   @override
   State<StatefulWidget> createState() {
-    return ClientAppPage2State();
+    return Cp2EmergencyContactsState();
   }
 }
 
-class ClientAppPage2State extends State<ClientAppPage2> {
+class Cp2EmergencyContactsState extends State<Cp2EmergencyContacts> {
   final GlobalKey<FormState> _c2formKey = GlobalKey<FormState>();
   Client currentUser;
   void Function(List<EmergencyContact>) updateClient;
-  VoidCallback toClientAppPage3;
+  VoidCallback toCp3CurrentPregnancy;
   void Function(bool) cancelApplication;
   void Function(String) completePage;
 
@@ -45,7 +45,7 @@ class ClientAppPage2State extends State<ClientAppPage2> {
   void initState() {
     currentUser = widget.currentUser;
     updateClient = widget.updateClient;
-    toClientAppPage3 = widget.toClientAppPage3;
+    toCp3CurrentPregnancy = widget.toCp3CurrentPregnancy;
     cancelApplication = widget.cancelApplication;
     completePage = widget.completePage;
 
@@ -518,8 +518,8 @@ class ClientAppPage2State extends State<ClientAppPage2> {
                                     ecs.add(ec2);
 
                                     updateClient(ecs);
-                                    completePage("clientAppPage2");
-                                    toClientAppPage3();
+                                    completePage("cp2EmergencyContacts");
+                                    toCp3CurrentPregnancy();
                                   }
                                 }),
                           ]),
@@ -527,15 +527,15 @@ class ClientAppPage2State extends State<ClientAppPage2> {
   }
 }
 
-class ClientAppPage2Connector extends StatelessWidget {
+class Cp2EmergencyContactsConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       model: ViewModel(),
-      builder: (BuildContext context, ViewModel vm) => ClientAppPage2(
+      builder: (BuildContext context, ViewModel vm) => Cp2EmergencyContacts(
           vm.currentUser,
           vm.updateClient,
-          vm.toClientAppPage3,
+          vm.toCp3CurrentPregnancy,
           vm.cancelApplication,
           vm.completePage),
     );
@@ -547,14 +547,14 @@ class ViewModel extends BaseModel<AppState> {
 
   Client currentUser;
   void Function(List<EmergencyContact>) updateClient;
-  VoidCallback toClientAppPage3;
+  VoidCallback toCp3CurrentPregnancy;
   void Function(bool) cancelApplication;
   void Function(String) completePage;
 
   ViewModel.build(
       {@required this.currentUser,
       @required this.updateClient,
-      @required this.toClientAppPage3,
+      @required this.toCp3CurrentPregnancy,
       @required this.cancelApplication,
       @required this.completePage})
       : super(equals: []);
@@ -563,8 +563,8 @@ class ViewModel extends BaseModel<AppState> {
   ViewModel fromStore() {
     return ViewModel.build(
         currentUser: state.currentUser,
-        toClientAppPage3: () =>
-            dispatch(NavigateAction.pushNamed("/clientAppPage3")),
+        toCp3CurrentPregnancy: () =>
+            dispatch(NavigateAction.pushNamed("/cp3CurrentPregnancy")),
         updateClient: (List<EmergencyContact> contacts) =>
             dispatch(UpdateClientUserAction(emergencyContacts: contacts)),
         cancelApplication: (bool confirmed) {

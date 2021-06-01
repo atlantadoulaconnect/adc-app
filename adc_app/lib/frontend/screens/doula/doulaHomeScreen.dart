@@ -326,7 +326,7 @@ class ViewModel extends BaseModel<AppState> {
       toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
       toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
       toDoulaApplication: () =>
-          dispatch(NavigateAction.pushNamed("/doulaAppPage1")),
+          dispatch(NavigateAction.pushNamed("/dp1PersonalInfo")),
       setProfileUser: (String userid, String userType) =>
           dispatchFuture(SetProfileUser(userid, userType)),
     );

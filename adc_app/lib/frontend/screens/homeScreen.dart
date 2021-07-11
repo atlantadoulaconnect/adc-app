@@ -20,9 +20,9 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(title: Text("Home")),
       drawer: Menu(),
       body: Padding(
-          padding: const EdgeInsets.all(26.0),
-          child: Center(
-              child: Column(children: <Widget>[
+        padding: const EdgeInsets.all(26.0),
+        child: Center(
+          child: Column(children: <Widget>[
             NotificationHandler(),
             Spacer(flex: 1),
             Text("Atlanta Doula Connect",
@@ -154,7 +154,6 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toUnmatchedClients;
   VoidCallback toRegisteredClients;
   VoidCallback toHome;
-  VoidCallback toRecentMessages;
   void Function(Client) updateClient;
   void Function(Doula) updateDoula;
   VoidCallback toClientApp;
@@ -173,7 +172,6 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toHome,
       @required this.toPendingApps,
       @required this.toUnmatchedClients,
-      @required this.toRecentMessages,
       @required this.toClientApp,
       @required this.toDoulaApp,
       @required this.updateClient,
@@ -197,8 +195,6 @@ class ViewModel extends BaseModel<AppState> {
         toHome: () => dispatch(NavigateAction.pushNamed("/")),
         toPendingApps: () => dispatch(NavigateAction.pushNamed("/pendingApps")),
         toUnmatchedClients: () => dispatch(NavigateAction.pushNamed("/unmatchedClients")),
-        toRecentMessages: () =>
-            dispatch(NavigateAction.pushNamed("/recentMessages")),
         toClientApp: () =>
             dispatch(NavigateAction.pushNamed("/clientAppPage1")),
         toDoulaApp: () => dispatch(NavigateAction.pushNamed("/doulaAppPage1")),

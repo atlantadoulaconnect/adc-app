@@ -10,17 +10,13 @@ class CurrentMenu extends StatelessWidget {
   final VoidCallback toSignup;
   final VoidCallback toLogin;
   final VoidCallback toInfo;
-  final VoidCallback toRecentMessages;
   final VoidCallback toDoulas;
   final VoidCallback toClients;
   final VoidCallback logout;
   final VoidCallback toAdminHome;
   final VoidCallback toClientHome;
   final VoidCallback toDoulaHome;
-  final VoidCallback toSettings;
-  final VoidCallback toClientSettings;
-  final VoidCallback toDoulaSettings;
-  final VoidCallback toAdminSettings;
+
 
   CurrentMenu(
       {this.currentUser,
@@ -28,17 +24,12 @@ class CurrentMenu extends StatelessWidget {
       this.toSignup,
       this.toLogin,
       this.toInfo,
-      this.toRecentMessages,
       this.toDoulas,
       this.toClients,
       this.logout,
       this.toAdminHome,
       this.toClientHome,
-      this.toDoulaHome,
-      this.toSettings,
-      this.toClientSettings,
-      this.toDoulaSettings,
-      this.toAdminSettings});
+      this.toDoulaHome});
 
   @override
   Widget build(BuildContext context) {
@@ -110,17 +101,6 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Messages',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toRecentMessages,
-                ),
-                ListTile(
-                  leading: Icon(
                     IconData(57921, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
@@ -161,17 +141,6 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toInfo,
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59576, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Settings',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toAdminSettings,
                 ),
                 ListTile(
                   leading: Icon(
@@ -231,17 +200,6 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Messages',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toRecentMessages,
-                ),
-                ListTile(
-                  leading: Icon(
                     IconData(59448, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
@@ -260,17 +218,6 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toInfo,
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59576, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Settings',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toClientSettings,
                 ),
                 ListTile(
                   leading: Icon(
@@ -330,17 +277,6 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Messages',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toRecentMessages,
-                ),
-                ListTile(
-                  leading: Icon(
                     IconData(59448, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
@@ -359,17 +295,6 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toInfo,
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59576, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Settings',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toDoulaSettings,
                 ),
                 ListTile(
                   leading: Icon(
@@ -429,17 +354,6 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(57545, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Messages',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toRecentMessages,
-                ),
-                ListTile(
-                  leading: Icon(
                     IconData(59448, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
@@ -458,17 +372,6 @@ class CurrentMenu extends StatelessWidget {
                         color: Colors.white,
                       )),
                   onTap: toInfo,
-                ),
-                ListTile(
-                  leading: Icon(
-                    IconData(59576, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Settings',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toSettings,
                 ),
                 ListTile(
                   leading: Icon(
@@ -562,17 +465,6 @@ class CurrentMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    IconData(59576, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ),
-                  title: Text('Settings',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onTap: toSettings,
-                ),
-                ListTile(
-                  leading: Icon(
                     IconData(59519, fontFamily: 'MaterialIcons'),
                     color: Colors.white,
                   ),
@@ -614,17 +506,12 @@ class Menu extends StatelessWidget {
               toSignup: vm.toSignup,
               toLogin: vm.toLogin,
               toInfo: vm.toInfo,
-              toRecentMessages: vm.toRecentMessages,
               toDoulas: vm.toDoulas,
               toClients: vm.toClients,
               logout: vm.logout,
               toAdminHome: vm.toAdminHome,
               toClientHome: vm.toClientHome,
-              toDoulaHome: vm.toDoulaHome,
-              toSettings: vm.toSettings,
-              toClientSettings: vm.toClientSettings,
-              toDoulaSettings: vm.toDoulaSettings,
-              toAdminSettings: vm.toAdminSettings,);
+              toDoulaHome: vm.toDoulaHome,);
         });
   }
 }
@@ -637,17 +524,13 @@ class ViewModel extends BaseModel<AppState> {
   VoidCallback toSignup;
   VoidCallback toLogin;
   VoidCallback toInfo;
-  VoidCallback toRecentMessages;
   VoidCallback toDoulas;
   VoidCallback toClients;
   VoidCallback logout;
   VoidCallback toAdminHome;
   VoidCallback toClientHome;
   VoidCallback toDoulaHome;
-  VoidCallback toSettings;
-  VoidCallback toClientSettings;
-  VoidCallback toDoulaSettings;
-  VoidCallback toAdminSettings;
+
 
   ViewModel.build(
       {@required this.currentUser,
@@ -655,17 +538,12 @@ class ViewModel extends BaseModel<AppState> {
       @required this.toSignup,
       @required this.toLogin,
       @required this.toInfo,
-      @required this.toRecentMessages,
       @required this.toDoulas,
       @required this.toClients,
       @required this.logout,
       @required this.toAdminHome,
       @required this.toClientHome,
-      @required this.toDoulaHome,
-      @required this.toSettings,
-      @required this.toClientSettings,
-      @required this.toDoulaSettings,
-      @required this.toAdminSettings,})
+      @required this.toDoulaHome,})
       : super(equals: [currentUser]);
 
   @override
@@ -678,8 +556,6 @@ class ViewModel extends BaseModel<AppState> {
       toSignup: () => dispatch(NavigateAction.pushNamed("/signup")),
       toLogin: () => dispatch(NavigateAction.pushNamed("/login")),
       toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
-      toRecentMessages: () =>
-          dispatch(NavigateAction.pushNamed("/recentMessages")),
       toDoulas: () => dispatch(NavigateAction.pushNamed("/registeredDoulas")),
       toClients: () => dispatch(NavigateAction.pushNamed("/registeredClients")),
       logout: () {
@@ -690,10 +566,6 @@ class ViewModel extends BaseModel<AppState> {
       toAdminHome: () => dispatch(NavigateAction.pushNamed("/adminHome")),
       toClientHome: () => dispatch(NavigateAction.pushNamed("/clientHome")),
       toDoulaHome: () => dispatch(NavigateAction.pushNamed("/doulaHome")),
-      toSettings: () => dispatch(NavigateAction.pushNamed("/settings")),
-      toClientSettings: () => dispatch(NavigateAction.pushNamed("/clientSettings")),
-      toDoulaSettings: () => dispatch(NavigateAction.pushNamed("/doulaSettings")),
-      toAdminSettings: () => dispatch(NavigateAction.pushNamed("/adminSettings")),
     );
   }
 }

@@ -4,16 +4,14 @@ class ClientHomeScreen extends StatelessWidget {
   final Client currentUser;
   final VoidCallback logout;
   final VoidCallback toHome;
-  final VoidCallback toRecentMessages;
   final VoidCallback toInfo;
   final VoidCallback toProfile;
   final Future<void> Function(String, String) setProfileUser;
 
   ClientHomeScreen(this.currentUser, this.logout, this.toHome,
-      this.toRecentMessages, this.toInfo, this.toProfile, this.setProfileUser)
+      this.toInfo, this.toProfile, this.setProfileUser)
       : assert(logout != null &&
             toHome != null &&
-            toRecentMessages != null &&
             toInfo != null);
 
   @override
@@ -36,23 +34,6 @@ class ClientHomeScreen extends StatelessWidget {
                     fontSize: 50.0,
                     fontWeight: FontWeight.bold,
                   )),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    side: BorderSide(color: themeColors['mediumBlue'])),
-                onPressed: toRecentMessages,
-                color: themeColors['mediumBlue'],
-                textColor: Colors.white,
-                padding: EdgeInsets.all(15.0),
-                splashColor: themeColors['mediumBlue'],
-                child: Text(
-                  "See Messages",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -100,7 +81,7 @@ class ClientHomeScreen extends StatelessWidget {
                     side: BorderSide(
                         color: themeColors['darkPurple'], width: 2.0)),
                 //TODO change route to messaging doula
-                onPressed: toRecentMessages,
+                onPressed: toHome,
                 color: themeColors['hItPink'],
                 textColor: themeColors['darkPurple'],
                 padding: EdgeInsets.all(15.0),
@@ -148,7 +129,6 @@ class ClientHomeScreenConnector extends StatelessWidget {
           vm.currentUser,
           vm.logout,
           vm.toHome,
-          vm.toRecentMessages,
           vm.toInfo,
           vm.toProfile,
           vm.setProfileUser),
@@ -171,7 +151,6 @@ class ViewModel extends BaseModel<AppState> {
     @required this.currentUser,
     @required this.logout,
     @required this.toHome,
-    @required this.toRecentMessages,
     @required this.toInfo,
     @required this.toProfile,
     @required this.setProfileUser,
@@ -186,8 +165,6 @@ class ViewModel extends BaseModel<AppState> {
         dispatch(NavigateAction.pushNamedAndRemoveAll("/"));
       },
       toHome: () => dispatch(NavigateAction.pushNamed("/")),
-      toRecentMessages: () =>
-          dispatch(NavigateAction.pushNamed("/recentMessages")),
       toInfo: () => dispatch(NavigateAction.pushNamed("/info")),
       toProfile: () => dispatch(NavigateAction.pushNamed("/userProfile")),
       setProfileUser: (String userid, String userType) =>

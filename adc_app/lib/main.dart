@@ -6,14 +6,11 @@ import 'backend/util/persistence.dart';
 
 import './frontend/theme/style.dart';
 
+
 // general screens
 import './frontend/screens/homeScreen.dart';
 import './frontend/screens/loginScreen.dart';
 import './frontend/screens/infoScreen.dart';
-import 'frontend/screens/settings/unloggedSettingsScreen.dart';
-import './frontend/screens/settings/clientSettingsScreen.dart';
-import './frontend/screens/settings/doulaSettingsScreen.dart';
-import './frontend/screens/settings/adminSettingsScreen.dart';
 import './frontend/screens/userProfileScreen.dart';
 
 // application screens
@@ -51,11 +48,6 @@ import './frontend/screens/admin/pendingApplicationsScreen.dart';
 import './frontend/screens/admin/unmatchedClientsScreen.dart';
 import './frontend/screens/admin/doulasListForMatchingScreen.dart';
 
-// messaging screens
-import './frontend/screens/messaging/contactsScreen.dart';
-import './frontend/screens/messaging/messagesScreen.dart';
-import './frontend/screens/messaging/recentMessagesScreen.dart';
-import './frontend/screens/messaging/textBankScreen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -125,10 +117,6 @@ class ADCApp extends StatelessWidget {
             '/clientHome': (context) => ClientHomeScreenConnector(),
             '/doulaHome': (context) => DoulaHomeScreenConnector(),
             '/adminHome': (context) => AdminHomeScreenConnector(),
-            '/contacts': (context) => ContactsScreenConnector(),
-            '/messages': (context) => MessagesScreenConnector(),
-            '/recentMessages': (context) => RecentMessagesScreenConnector(),
-            '/textBank': (context) => TextBankScreen(),
             '/registeredDoulas': (context) => RegisteredDoulasScreenConnector(),
             '/doulasListMatching': (context) =>
                 DoulasListForMatchingScreenConnector(),
@@ -137,10 +125,6 @@ class ADCApp extends StatelessWidget {
             '/userProfile': (context) => UserProfileScreenConnector(),
             '/pendingApps': (context) => PendingApplicationsScreenConnector(),
             '/unmatchedClients': (context) => UnmatchedClientsScreenConnector(),
-            '/settings': (context) => SettingsScreenConnector(),
-            '/clientSettings': (context) => ClientSettingsScreenConnector(),
-            '/doulaSettings': (context) => DoulaSettingsScreenConnector(),
-            '/adminSettings': (context) => AdminSettingsScreenConnector(),
           },
         ));
   }

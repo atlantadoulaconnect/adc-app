@@ -114,13 +114,13 @@ class HomeScreenConnector extends StatelessWidget {
             case "client":
               {
                 return ClientHomeScreen(vm.currentUser, vm.logout, vm.toHome,
-                    vm.toRecentMessages, vm.toInfo, vm.toProfile, vm.setProfileUser);
+                     vm.toInfo, vm.toProfile, vm.setProfileUser);
               }
               break;
             case "doula":
               {
                 return DoulaHomeScreen(vm.currentUser, vm.logout, vm.toHome,
-                    vm.toRecentMessages, vm.toInfo, vm.toProfile, vm.setProfileUser);
+                     vm.toInfo, vm.toProfile, vm.setProfileUser);
               }
               break;
             case "none":
